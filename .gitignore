@@ -1,0 +1,22 @@
+*.pdf
+*.rds
+*.RDS
+*.msg
+#*.jpg
+*.csv
+*.RData
+.Rhistory
+*.ppt
+/*_cache/
+*.docx
+
+# intermediate files
+*.aux
+*.tex
+*.log
+*.out
+*.fff
+*.ttt
+*.toc
+*.lot
+*.lof
