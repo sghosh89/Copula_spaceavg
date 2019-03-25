@@ -1,0 +1,58 @@
+---
+title: "Makefile, compiliation notes"
+author: "Daniel Reuman, Shyamolina Ghosh"
+date: ""
+output: pdf_document
+params: 
+  mf : MT_spatial_avg.Rmd
+  sf : SI_spatial_avg.Rmd
+---
+
+<!--checkpoint package-->
+```{r checkpoint_chunk, echo=F, warning=F, message=F, results="hide"}
+library(checkpoint)
+if (!dir.exists("./.checkpoint/")){
+  dir.create("./.checkpoint/")
+}
+checkpoint("2018-07-23",R.version=getRversion(),checkpointLocation=getwd()) #mine is R-3.4.4
+```
+
+```{r}
+library(stringr)
+mfile.Rmd<-params$mf
+sfile.Rmd<-params$sf
+ym<-str_sub(mfile.Rmd,start=1,end=-5)
+mfile.tex<-paste(ym,".tex",sep="")
+ys<-str_sub(sfile.Rmd,start=1,end=-5)
+sfile.tex<-paste(ys,".tex",sep="")
+```
+
+# Get tex files and pdf files for the supp mat, but the pdf files 
+#are missing the external references 
+
+```{r tex_for_supp_mat}
+library(rmarkdown)
+rmarkdown::render(input=sfile.Rmd) 
+```
+
+# Get tex files and pdf files for the main text, but the pdf files 
+#are missing the external references 
+
+```{r tex_for_main_text}
+rmarkdown::render(input=mfile.Rmd) 
+```
+
+# Now recompile the latex
+
+```{r recompile_latex}
+#do it once
+system2(command="pdflatex",args=sfile.tex,stdout=TRUE,stderr=TRUE)
+system2(command="pdflatex",args=mfile.tex,stdout=TRUE,stderr=TRUE)
+
+#do it again to make sure to get the external references right
+system2(command="pdflatex",args=sfile.tex,stdout=TRUE,stderr=TRUE)
+system2(command="pdflatex",args=mfile.tex,stdout=TRUE,stderr=TRUE)
+```
+
+
+

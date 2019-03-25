@@ -1,0 +1,407 @@
+taken from MT_spatial_avg.Rmd :
+---------------------------------------
+We chose Jasper Ridge Biological
+Preserve (JRBP), a biodiversity hotspot in californian serpentine grassland, as our study system. 
+Long term observations in JRBP showed the serpentine grassland vary widely in its 
+species composition both in temporal and spatial scale [@hobbs2007; @zhu2016]. 
+Climate change and invasion by 
+exotic species in JRBP had detrimental effect on native species shifting its dominance 
+from one species to another
+and thereby posing habitat loss of their
+dependent species leading to extinction [@stromberg2007]. 
+For example, bay-checkerspot butterfly 
+\textit{Euphydryas editha bayensis} is now locally extinct at Jasper Ridge.
+It may be due to declining abundance of its principal larval 
+host plant \textit{Plantago erecta}
+in competition with invasive species like \textit{Bromus hordeaceus}.
+Jasper Ridge has been served as an experimental model system to 
+study ecological hypothesis since long and proved to be effective
+in decision making from conservation and management perspective. 
+
+Our objective is to find the 
+synchronous (for positively correlated variables)
+or compensatory (for negatively correlated variables) dynamics in 
+the serpentine grassland of JRBP and mixed-prairie of Hays in Kansas 
+using "tail-dependence" feature of copula.
+Using a model selection approach as well as nonparametric analysis, we try to
+find is there any asymmetric tail-dependence in those grassland community and
+if there is, then could this tail-dependence be explained depending on 
+species-environment interactions? We also suggest an alternative measure of 
+community variability in terms of quantifying skewness of total biomass over years.
+
+#--------------------------------
+
+```{r read hays_rawdata,echo=F,results="hide"}
+# later add results="hide" , echo=F in chunk header
+set.seed(seed)
+# basal cover data
+cover<-read.csv("./Data/HaysData/allrecords.csv") # this is basal cover
+
+# quadrat sampling ? Yes or not
+quadsamp<-read.csv("./Data/HaysData/quadrat_inventory.csv")
+
+# Information on species list
+spinfo<-read.csv("./Data/HaysData/species_list.csv")
+nonplant<-as.character(spinfo$species[which(spinfo$type=="remove")]) 
+#These are not plant species as per metadata file (page 8 in pdf) for more info: though I doubt on mixed grass and polygonum spp.]
+#"Bare ground"    "Fragment"       "Mixed grass"    "Polygonum spp." "Unknown"
+spinfo[which(spinfo$type=="remove"),] # for details
+```
+
+```{r prepare_hays_spaceavg,results="hide",echo=F,cache=T, cache.extra=list(seed,cover,spinfo,nonplant)}
+# later add results="hide" , echo=F in chunk header
+set.seed(seed)
+library(stringr)
+py<-(cover$plotyear)
+plots<-str_sub(string = py,start=1,end=str_length(py)-2) #extracting only plot no.
+yrs<-str_sub(string = py,start=-2)        #extracting last 2digit of an year
+cover<-cbind(plot=plots,yr=as.numeric(yrs),cover)
+
+uyr<-sort(unique(cover$yr)) # 41 unique years
+uplot<-sort(unique(cover$plot)) # 51 unique quadrats
+uplot<-as.character(uplot)
+
+splist<-sort(unique(cover$species))
+splist<-as.character(splist)  
+
+# check with raw data:
+spcount<-as.data.frame(table(cover$species))
+checkcount<-(spinfo$count==spcount$Freq)
+all(checkcount=T) #These should be true
+
+#sink("./Results/hays_results/hays_myquadsamplinginfo.txt", append=TRUE, split=TRUE)
+
+hays_array<-array(Inf,dim=c(length(uyr),length(uplot),length(splist)),dimnames = list(uyr,uplot,splist))
+
+for(iyr in 1:length(uyr)){
+  tempo<-subset(cover,cover$yr==uyr[iyr])
+  for(iplot in 1:length(uplot)){
+    tempo2<-subset(tempo,tempo$plot==uplot[iplot])
+    if(nrow(tempo2)==0){
+      cat("iyr = ",iyr, " Year : ",uyr[iyr], "iplot = ",iplot," plot : ",uplot[iplot],"Not surveyed : --NA--","\n")
+      hays_array[iyr,iplot,]<-NA # NA means this plot is not surveyed in that given year : so all species should get NA as basal cover
+    }else{
+      z<-split( tempo2 , f = tempo2$species ) # This will split the data tempo2 by its species levels (which is a factor)
+      for(isp in 1:length(z)){
+        cs<-sum(z[[isp]]$area)  # if cs=0 that means that sp. is absent for that plot and for that given year 
+                                # it will sum over the area of a particular sp. taken from all ID in a quadrat
+        hays_array[iyr,iplot,isp]<-cs
+      }
+    }
+  }
+}
+
+#check with prepared data
+# check1 : Total basal cover reported for any specific year from 1 sq. meter quadrat should be ~10000 cm^2
+check_matcover<-apply(hays_array,FUN=sum,MARGIN=c(1,2),na.rm=T)
+check_matcover[check_matcover==0]<-NA
+# This check_matcover matrix contains entries either NA for plots not surveyed or 9999...value ~10000 cm^2
+range(check_matcover,na.rm=T)
+#hist(check_matcover,ylim=c(0,5),col="grey",breaks=100) # check with plot
+
+#sink()
+
+#It's a check : There should not be all zeros for all sp on any plot-year combination
+s<-apply(hays_array,FUN = sum,MARGIN = c(1,2)) #This matrix should contain either NA or some +ve number
+any(s==0,na.rm = T)  #There should not be any zeros
+
+saveRDS(hays_array,"./Results/hays_results/hays_array_41yr_51plot_151sp.RDS")
+
+# Now calculate average basal cover over all plots for any given year for all species
+tot_cover_over_plots<-matrix(Inf,nrow=length(uyr),ncol=length(splist))
+rownames(tot_cover_over_plots)<-c(1932:1972)
+colnames(tot_cover_over_plots)<-splist
+tot_cover_over_plots<-as.data.frame(tot_cover_over_plots)
+
+#check2:
+
+#from raw data
+plotsurveyed<-rowSums(!is.na(quadsamp))-1 
+
+#from prepared data
+isp<-1 # This should be same for any species
+numplot_surveyed_by_year<-apply(hays_array[,,isp], MARGIN = 1, function(x){sum(is.finite(x))}) 
+
+all((plotsurveyed==numplot_surveyed_by_year)==T) #They are same.
+
+for(isp in c(1:length(splist))){
+  m<-hays_array[,,isp]
+  idNA<-which(apply(m, 1, function(x) all(is.na(x)))) #This should be empty : means should not be all NA's along any row
+  if(length(idNA)==0){
+    cs<-apply(m,FUN = mean,MARGIN = 1,na.rm=T)
+    tot_cover_over_plots[,isp]<-cs
+  }else{
+    cat("Caution : This means for a given year not any plot was surveyed!!!")
+  }
+}
+anyNA(tot_cover_over_plots) #This should be FALSE
+
+saveRDS(tot_cover_over_plots,"./Results/hays_results/timeseries_matrix_spatialavg_allsp_hays.RDS")
+
+# Now screen the species
+count0<-apply(tot_cover_over_plots,2,function(x){sum(x==0)}) # This is the count of zero 
+count0_allsp<-as.data.frame(count0)
+
+id_nonplant<-which(colnames(tot_cover_over_plots)%in%nonplant)
+
+not_common_sp_id<-which(count0_allsp$count0>6) # threshold on rarity : greater than 6 years of zeros is considered as rare event
+
+badsp_id<-union(not_common_sp_id,id_nonplant)
+
+goodsp<-splist[-badsp_id]
+goodsp_id<-setdiff(c(1:151),badsp_id)
+
+# Now make hays_spaceavg data in your format
+hays_spaceavg<-vector("list",1)
+names(hays_spaceavg)<-"avg.basal.cover"
+
+sp.screened.data<-vector("list",length(goodsp))
+names(sp.screened.data)<-goodsp
+
+for(isp in 1:length(goodsp)){
+  sp.screened.data[[isp]]<-data.frame(Year=c(32:72),Dat=tot_cover_over_plots[,goodsp_id[isp]])
+}
+
+hays_spaceavg$avg.basal.cover<-sp.screened.data
+
+saveRDS(hays_spaceavg,"./Results/hays_results/hays_spaceavg_data_for_screened_plantsp.RDS")
+
+#------plot hays_spaceavg data for all screened sp for all yearspan-------------------------------
+pdf("./Results/hays_results/hays_spaceavg_screenedsp_avgcover.pdf",height = 20,width=20)
+op<-par(mfrow=c(5,5),mar=c(5,3,3,3))
+for (i in c(1:length(hays_spaceavg$avg.basal.cover))){
+  plot(hays_spaceavg$avg.basal.cover[[i]]$Year,hays_spaceavg$avg.basal.cover[[i]]$Dat,col=rgb(0,0,1,0.3),pch=19,
+       ylim=c(0,max(hays_spaceavg$avg.basal.cover[[i]]$Dat,na.rm=T)),xlab="Year (1932-1972)")
+  abline(h=0)
+  n0<-sum(hays_spaceavg$avg.basal.cover[[i]]$Dat==0)
+  mtext(paste0("sp = ",i," : ",names(hays_spaceavg$avg.basal.cover)[i],", n0=",n0,sep=""))
+}
+par(op)
+dev.off()
+
+# ---------------------generate copula plots for all selected splist_hays_spaceavg--------------------
+source("./vivj_matrix.R")
+good_sp<-c(1:length(hays_spaceavg[[1]]))
+lensp<-length(good_sp)
+pdf("./Results/hays_results/copula_hays_spaceavg.pdf",height=2*lensp,width = 2*lensp)
+op<-par(mfrow=c(lensp,lensp),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
+for(i in c(1:lensp)){
+  for(j in c(1:lensp)){
+    vivj_matrix(d_allsp=hays_spaceavg,loc=1,
+                i=good_sp[i],j=good_sp[j],level=0.05,
+                ploton=T,timeavg=F,tagon=F)
+  }
+}
+par(op)
+dev.off()
+```
+
+```{r ms_hays_spaceavg,echo=F, results="hide", cache=T, cache.extra=list(seed,hays_spaceavg,mtime("FittingCopula_ms.R"), mtime("vivj_matrix.R"),mtime("OurBiCopSelect.R"),mtime("MyBiCopGofTest.R"),mtime("preprocessors.R"))}
+source("./FittingCopula_ms.R") # top most hierarchy source file
+
+set.seed(seed)
+#-----------------------------Model selection approach for hays_spaceavg data -----------------------
+source("FittingCopula_ms.R") # top most hierarchy source file
+
+RES_hays_spaceavg<-RES_single_loc(loc=1,d_allsp=hays_spaceavg,
+                                good_sp=c(1:length(hays_spaceavg[[1]])),
+                                families=c(1,3:10,13,14,16:20),level=0.05,timeavg=F)
+
+saveRDS(RES_hays_spaceavg,"./Results/hays_results/RES_hays_spaceavg.RDS")
+```
+
+```{r plot_LTmUT_hays_spaceavg, echo=F,results="hide",message=F}
+set.seed(seed)
+source("./mycorrplot.R")
+
+pdf("./Results/hays_results/LTmUT_hays_spaceavg.pdf",height=20,width=20)
+z<-RES_hays_spaceavg$LTmUTdep
+spnm_short<-spinfo$PLANTS.Symbol[which(spinfo$species %in% names(hays_spaceavg$avg.basal.cover))]
+rownames(z)<-paste0(rownames(z)," : ",spnm_short,sep="")
+
+colnames(z)<-rownames(z)
+cmin<-min(RES_hays_spaceavg$LTmUTdep,na.rm=T)
+cmax<-max(RES_hays_spaceavg$LTmUTdep,na.rm=T)
+cr<-max(abs(cmin),abs(cmax))
+mycorrplot(z=z,
+           posnI_ind = RES_hays_spaceavg$posnI_ind,
+           posnN_ind = RES_hays_spaceavg$posnN_ind,
+           colrange = c(-cr,cr),
+           nsm=RES_hays_spaceavg$neg_sp_mat)
+nvar<-0
+dl2<-nrow(z)-nvar
+z1<-z
+z1[RES_hays_spaceavg$posnN_ind]<-NA
+z1<-z1[1:dl2,1:dl2]
+nL<-sum(z1>0,na.rm = T)
+nU<-sum(z1<0,na.rm = T)
+mtext(paste0("nL =",nL,", nU =",nU),cex=3,side=1,line=1)
+#segments(x0=c(0.5, 0.5), y0=c(0.5+nvar, 0.5+nrow(z)), x1=c(0.5+nrow(z), 0.5+nrow(z)), y1=c(0.5+nvar,0.5+nrow(z)), lwd=6,col="green")
+#segments(c(0.5,0.5+nrow(z)), rep(0.5+nvar,1), c(0.5,0.5+nrow(z)), rep(0.5+nrow(z),1), lwd=6, col="green")
+dev.off()
+```
+
+```{r npa_hays_spaceavg, echo=F, cache=T, cache.extra=list(seed,hays_spaceavg,mtime("NonParamStat.R"),mtime("vivj_matrix.R"),mtime("CopulaFunctions.R"), mtime("CopulaFunctions_flexible.R"))}
+
+set.seed(seed) 
+source("./NonParamStat.R")
+
+resloc<-"./Results/hays_results/hays_npa_results/"
+loc<-1
+
+stat_hays_npa_spaceavg<-vector("list",1)
+names(stat_hays_npa_spaceavg)<-"hays_spaceavg"
+
+if (!dir.exists(paste(resloc,names(stat_hays_npa_spaceavg),sep=""))){
+  dir.create(paste(resloc,names(stat_hays_npa_spaceavg),sep=""))
+}
+
+stat_hays_spaceavg<-multcall(d_allsp=hays_spaceavg,
+                           loc=1,
+                           pfname=paste(resloc,names(stat_hays_npa_spaceavg),"/",names(stat_hays_npa_spaceavg),sep=''),
+                           good_sp=c(1:length(hays_spaceavg[[1]])),
+                           nbin=2,timeavg=F)
+
+stat_hays_npa_spaceavg[[loc]]<-stat_hays_spaceavg
+
+saveRDS(stat_hays_npa_spaceavg,paste(resloc,names(stat_hays_npa_spaceavg),"/",file="stat_hays_npa_spaceavg.RDS",sep=''))
+```
+
+```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,stat_hays_npa_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
+set.seed(seed)
+source("./NonParamStat_matrixplot.R")
+r<-readRDS("./Results/hays_results/RES_hays_spaceavg.RDS")
+resloc<-"./Results/hays_results/hays_npa_results/"
+
+nvar<-0
+nvar_names<-NA
+
+npa_diff_hays_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_hays_npa_spaceavg,
+                                              posnI_list_ln_all = list(r$posnI_ind),
+                                              posnN_list_ln_all = list(r$posnN_ind),
+                                              resloc=paste(resloc,sep=""),
+                                              nvar=nvar,nvar_names=nvar_names,r=list(r),tagon=F)
+saveRDS(npa_diff_hays_spaceavg,paste(resloc,file="npa_diff_hays_spaceavg.RDS",sep=''))
+```
+
+```{r skewness_hays_spaceavg_allplantsp, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,hays_array,mtime("skewness_testing.R"),mtime("ncsurrog.R"))}
+
+#we suppress the warning coming from ncsurrog by using warning=F in chunk header 
+# Kendall does not handle ties so we didn't use that
+set.seed(seed)
+source("skewness_testing.R")
+
+ts_mat<-readRDS("./Results/hays_results/timeseries_matrix_spatialavg_allsp_hays.RDS") #a matrix : 41(years) by 151(sp.) 
+
+id_nonplant<-which(colnames(ts_mat)%in%nonplant) # omit sp in "remove" category : see spinfo and metadata for details
+ts_mat<-ts_mat[,-id_nonplant] # 41 by 146 matrix
+
+resloc<-"./Results/hays_results/skewness_results/"
+tempo<-paste(resloc,"sp_",ncol(ts_mat),sep="")
+
+if (!dir.exists(tempo)){
+  dir.create(tempo)
+}
+resloc2<-paste(tempo,"/",sep="")
+  
+pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(ts_mat),".pdf",sep=""),height=6,width=6)
+ans<-skewness_testing(ts_matrix = ts_mat,splist = c(1:ncol(ts_mat)),numsurrog = 10000, ploton=F, 
+                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
+# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
+dev.off()
+
+saveRDS(ans,paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(ts_mat),".RDS",sep="")) 
+
+pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(ts_mat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 4.1, 2.1))
+hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realskw,col="black")
+mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.8)
+dev.off()
+```
+
+```{r skewness_hays_spaceavg_excluding_raresp, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,hays_array,mtime("skewness_testing.R"),mtime("ncsurrog.R"))}
+
+#we suppress the warning coming from ncsurrog by using warning=F in chunk header 
+# Kendall does not handle ties so we didn't use that
+set.seed(seed)
+source("skewness_testing.R")
+
+ts_mat<-readRDS("./Results/hays_results/timeseries_matrix_spatialavg_allsp_hays.RDS") #a matrix : 41(years) by 151(sp.) 
+
+id_nonplant<-which(colnames(ts_mat)%in%nonplant) # omit sp in "remove" category : see spinfo and metadata for details
+ts_mat<-ts_mat[,-id_nonplant] # 41 by 146 matrix
+
+count0<-apply(ts_mat,2,function(x){sum(x==0)}) # This is the count of zero years for each sp.
+count0_allsp<-as.data.frame(count0)
+rare_id<-which(count0_allsp$count0>=39) # threshold on rarity : when a sp was absent for 39 years or more, that sp was considered rare
+ 
+ts_mat<-ts_mat[,-rare_id] #41 by 100 matrix : 30 sp were excluded due to rarity
+
+resloc<-"./Results/hays_results/skewness_results/"
+tempo<-paste(resloc,"sp_",ncol(ts_mat),sep="")
+if (!dir.exists(tempo)){
+  dir.create(tempo)
+}
+resloc2<-paste(tempo,"/",sep="")
+  
+pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(ts_mat),".pdf",sep=""),height=6,width=6)
+ans<-skewness_testing(ts_matrix = ts_mat,splist = c(1:ncol(ts_mat)),numsurrog = 10000, ploton=F, 
+                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
+# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
+dev.off()
+
+saveRDS(ans,paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(ts_mat),".RDS",sep="")) 
+
+pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(ts_mat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 4.1, 2.1))
+hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realskw,col="black")
+mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.8)
+dev.off()
+```
+
+```{r skewness_hays_spaceavg_combined_raresp, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,hays_array,mtime("skewness_testing.R"),mtime("ncsurrog.R"))}
+
+#we suppress the warning coming from ncsurrog by using warning=F in chunk header 
+# Kendall does not handle ties so we didn't use that
+set.seed(seed)
+source("skewness_testing.R")
+
+ts_mat<-readRDS("./Results/hays_results/timeseries_matrix_spatialavg_allsp_hays.RDS") #a matrix : 41(years) by 151(sp.) 
+
+id_nonplant<-which(colnames(ts_mat)%in%nonplant) # omit sp in "remove" category : see spinfo and metadata for details
+ts_mat<-ts_mat[,-id_nonplant] # 41 by 100 matrix
+
+count0<-apply(ts_mat,2,function(x){sum(x==0)}) # This is the count of zero 
+count0_allsp<-as.data.frame(count0)
+rare_id<-which(count0_allsp$count0>=39) # threshold on rarity : when a sp was absent for 39 years or more, that sp was considered rare
+
+rare_mat<-ts_mat[,rare_id]
+combined_rare_sp<-apply(rare_mat,1,sum)
+  
+ts_mat<-ts_mat[,-rare_id] #41 by 100 matrix : 46 sp were rare
+ts_mat<-cbind(ts_mat,combined_rare_sp) #41 by 101 matrix
+  
+resloc<-"./Results/hays_results/skewness_results/"
+tempo<-paste(resloc,"sp_",ncol(ts_mat),sep="")
+if (!dir.exists(tempo)){
+  dir.create(tempo)
+}
+resloc2<-paste(tempo,"/",sep="")
+  
+pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(ts_mat),".pdf",sep=""),height=6,width=6)
+ans<-skewness_testing(ts_matrix = ts_mat,splist = c(1:ncol(ts_mat)),numsurrog = 10000, ploton=F, 
+                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
+# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
+dev.off()
+
+saveRDS(ans,paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(ts_mat),".RDS",sep="")) 
+
+pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(ts_mat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 4.1, 2.1))
+hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realskw,col="black")
+mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.8)
+dev.off()
+```
