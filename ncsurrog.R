@@ -107,7 +107,7 @@ ncsurrog<-function(m,corpres,numsurrog,plotcheckon,resloc){
       }
       diag(quantres)<-NA
       #quantres
-      hist(as.vector(quantres)) # Is it distributed around 0.5 ?? 
+      hist(as.vector(quantres),main="",xlab="Fraction of data-correlation > surrogate-correlations") # Is it distributed around 0.5 ?? 
       saveRDS(quantres,paste(resloc,"quantres_spearman.RDS",sep=""))
     }
     
@@ -124,7 +124,7 @@ ncsurrog<-function(m,corpres,numsurrog,plotcheckon,resloc){
       }
       diag(quantres)<-NA
       #quantres
-      hist(as.vector(quantres)) # Is it distributed around 0.5 ?? 
+      hist(as.vector(quantres),main="",xlab="Fraction of data-correlation > surrogate-correlations") # Is it distributed around 0.5 ?? 
       saveRDS(quantres,paste(resloc,"quantres_kendall.RDS",sep=""))
      }
     }
