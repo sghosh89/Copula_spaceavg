@@ -35,36 +35,32 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 
 <!--keywords-->
 \noindent
-Synchrony | Tail-dependence | Serpentine grassland | Jasper Ridge
+Synchrony | Tail-dependence | grassland | community stability 
 \linebreak
 
 <!--# Introduction\label{Intro}-->
-<!--Q1 : Estimating cross-species synchrony have any specific tail dependence, 
-Q2: if yes, then what is the reason behind that?
-Q3: Skewness change due to asymmetric taildep. as a new estimate of community variability?-->
+<!--Q1 : is there asymmetric tail dependence in a grassland community? what is the interpretation for any individual sp. pair?, 
+Q2: How it could affect the productivity? (connection to skewness)
+Skewness change due to asymmetric taildep. as a new estimate of community variability?-->
 
-<!--grassland and earlier work-->
+<!--grassland and earlier work : Here I deliberately exclude the ref. for environmental variable effect on species-->
 \lettrine{U}{}nderstanding the mechanisms behind spatial and temporal 
 dynamics has been a long-standing focus in community ecology [@gibson2009; @turner1989].
 Interspecies interaction in a grassland 
 community could be advantageous or
 disadvantageous to either or both species involved, 
 which led to mutualism or competition
-as the case might be. These inter-species response were 
-found to be affected by several biotic and abiotic factors 
-including climate, fire, soil-nutrients, pollinators, micorrhizae,
-grazing and other form of disturbances 
-[@mcnaughton1983; @parton1995; @bardgett2008; @belsky1992; 
-@collins1992; @olff1998; @fry2017; @potts2003; @hudewenz2012;
-@canals2003; @hallett2014].
-Excessive pressure of any of those 
-disturbances could alter the competitive balance in the community
-and could shift the species-dominance affecting overall species richness and 
-ecosystem-function. Most of the prior studies used, in general, the correlation 
-or regression based approach to understand species-variability with other
+as the case might be. A community is thought to be resilient towards environmental extremes
+through time when members of that community show variable fluctuations. But if most of 
+the species in a community vary synchronously through time then in a "bad"
+year (e.g. extreme drought) with limiting resource could wipe out the whole community.
+Thus identifying patterns of species fluctuations over time and in relation to 
+each other is essential to understand community-stability. Most of the prior studies 
+used, in general, the correlation or regression based approach to 
+understand variability of a species response with other
 species within a community (or with environmental variables) to establish causal
-relationship and thereby lacking important information embedded in their joint
-distribution structure.
+relationship. But they are inadequate to explain the joint distribution structure 
+of multiple species response within a community.
 
 <!--Limitation of usual approach and introduction of copula?-->
 Common correlation measures, i. e., Pearson's correlation used in earlier studies, is based 
@@ -99,27 +95,21 @@ upper-tail dependence (ADD SI FIG); and vice versa if higher values are more str
 associated than smaller ones (ADD SI FIG). A copula might have symmetric 
 (with zero tail-dependence in both tail) or asymmetric (finite tail-dependence in either
 or both tail) feature depending on its family and parameters [@nelsen2006_copula].
-Recently few studies have shown implication of copula in modelling spatial dependence of 
-environental variables [@li2013; @serinaldi2008; 
-@goswami2018; @she2018], but as of our knowledge,
-it remains unexplored in studying interactive relationships between multiple
-species and their responses with several biotic and/ or abiotoic factors among a community.
-In this paper, we will preach for the potential of using "copula" approach to analyze
-species' response within a community in understanding variation in species-richness
-over a temporal scale. 
 
 <!--why copula (and tail-dep.) is important in ecology, specially on grassland? : 
 1) direction of competetion
 2) leibig's law
 3) global climate change : ongoing invasion and sp. extinction : pollinators?
 -->
-The relevance of copula with its unique tail-dependence feature is that it can be applied
+The relevance of a copula with its unique tail-dependence feature is that it can be applied
 to model synchronous (or compensatory) response between two or more ecological variables. 
 Spatial synchrony [@liebhold2004; @walter2017; @sheppard2016] between 
 metapopulations, is recently investigated using copula (BIVAN paper),
-but there has been no report using copula approach in multi-species dynamics.
-Here we will summarize how copula could be useful in ecology, specially in grassland community.
-First, in case of compensatory dynamics between any two species over years, tail dependence
+but there has been no report using copula approach in explaining 
+multi-species dynamics within a commulity.
+Here we will summarize how copula could be useful in ecology, specially in a grassland 
+ecosystem perspective. First, in case of compensatory dynamics between any two species 
+over years, tail dependence
 measurement using a bivariate copula not only shows species are negatively correlated but 
 in addition could indicate which one is superior competitor between them. Secondly, earlier 
 studies showed the importance of limiting resources (soil nutrients, N, P)
@@ -127,45 +117,24 @@ studies showed the importance of limiting resources (soil nutrients, N, P)
 Therefore, a community showing overall
 lower tail-dependence throughout years could suggest that the species-abundance on average
 was limited as a particular resource became rare in that field and experimental addition of 
-soil-fertilizer could improve their productivity (showing increase in upper-tail dependence)
-after years. As multiple species in a grassland community could show limited growth
+soil-fertilizer could improve their productivity after years. As multiple species in a
+grassland community could show limited growth
 with respect to multiple nutrients and to different extent, therefore adding nutrient 
 may increase the net primary productivity but could also reduce niche-dimensionality 
 and increase compositional turnover [@harpole2016]. Using pairwise copula approach for
 modelling a multivariate dependence structure offers more insight to understand
-different species' response towards their drivers separately. Third, long-term and short-term
-experiments established that change in global climate
-(temperature, elevated CO$_{2}$ level, N-deposition) induced changes in species-composition 
+individual species' response towards their drivers separately. Third, long-term and short-term
+experiments established that change in global climate induced changes in species-composition 
 in a grassland community 
 [@cowles2016; @garcia2018; @harrison2015; @eisenhauer2013; @zavaleta2003]. 
-As a result, some species could show high abundance with elevated
-level of weather variables (upper-tail dependence) over years, but they also could suppress
-and even lead to extinction of their weak competitors. Thus change in climate or 
-resource has been proved to be a threat to the sustainability of native species 
-in a grassland where invasive species replace them in their "favorable" scope on
-space or time-scale [@white2001; @sm2001; @thomason2017].
+For example, abundant growth of invasive species in their "favorable" scope on
+space or time-scale [@white2001; @thomason2017] could suppress
+and even lead to extinction of their weak competitors which are natives in a community.
 This scenario could also evoke a potential threat for the pollinator 
 community (e.g. butterfly) due to their habitat loss [@mclaughlin2002; @thomas2004].
-Monitoring tail-dependence of species-above ground biomass (or percent cover) of 
+Monitoring tail-dependence of species-above ground biomass of 
 a plant with respect to any of biotic and/ or abiotic factors could be beneficial
 against this threat of biodiversity loss in a grassland eco-system. 
-
-<!--community variability in view of skewness change?-->
-Overall asymmetric tail-dependence (either lower or upper) bears a major implication
-in determining community-variability and thus in turn stability of its compositional balance. 
-A lower (or upper) tail dependence in community structure arises due to simultaneous rare
-(or abundant) occurrence of the species and thus the "spikiness" of their individual 
-time series become more or less synchronous. This synchronous response of multiple species
-within a community generates a "skewed" distribution of total biomass over 
-years. Skewness of a synchronous community could be significantly different from a community 
-which either shows no interspecific tail-dependence or showing more compensatory dynamics 
-so that their tail dependence cancel out. Significantly lower skewness (arising from lower 
-tail dependence) has not only affected net primary productivity of a community 
-but could also make some native species disappear from the system. 
-Thus tracking skewness of a community over a period of years could serve
-beneficial to better strategize conservation and management of native species. 
-In terms of stability assessment, a community could be considered as less stable 
-if the absolute value of skewness of total biomass time series is relatively high. <!-- am I right for this last sentence?-->
 
 \begin{tcolorbox}[width=\columnwidth,colback={blue!20},arc=0mm,colframe=blue!50!black,coltext=blue!50!black]
 Significance
@@ -173,8 +142,44 @@ Significance
 Write significance here.
 \end{tcolorbox}  
 
-<!--Why choose jasper ridge and hays as study system?, what is our objective?-->
-We consider two grassland ecosystem for our study. First one is Jasper Ridge Biological
+
+<!--community variability in view of skewness change?-->
+Overall asymmetric tail-dependence (either lower or upper) bears a major implication
+in estimating the pattern of community-variability and thus in turn stability of its 
+compositional balance. A lower (or upper) tail dependence in community structure arises 
+due to simultaneous rare (or abundant) occurrence of the species and thus the "spikiness" of 
+their individual time series become more or less synchronous in their low (or high) values
+(see Fig. \ref{fig_pedag_skewness}). 
+This synchronous response of multiple species
+within a community generates a "skewed" distribution of total biomass over 
+years. Skewness of a synchronous community could be significantly different from a community 
+which either shows no tail-dependence or showing more compensatory dynamics 
+so that their tail dependence measures cancel out. Significantly lower skewness (arising from lower 
+tail dependence) has not only affected net primary productivity of a community 
+but could also make some native species disappear from the system. The second scenario is 
+the overall skewness could change abruptly due to some "episodic" species, which occur 
+in plenty in the community all of a sudden. Thus in a favorable scope these episodic species
+could take over the existing community and change the compositional balance in subsequent stages. 
+Thus tracking skewness of a community over a period of years could serve
+beneficial to better strategize conservation and management of native species. 
+In terms of stability assessment, a community could be considered as less stable 
+if the absolute value of skewness of total biomass time series is relatively high. <!-- am I right for this last sentence?-->
+
+<!--jrg & hays : time-series results plot -->
+\begin{figure}[!h]
+\begin{center}
+\textbf{ \hspace{0.5 cm} (A) \hspace{5.5 cm} (B)} \\
+\includegraphics[width=6 cm]{./Results/p/skewness_results/total_timeseries.pdf}
+\includegraphics[width=6 cm]{./Results/hays_results/skewness_results/total_timeseries.pdf}\\
+\caption{ Timeseries plot for (A) Jasper Ridge and $(B)$ Hays data; "common" species indicate the most abundant species
+throughout years averaging over quadrats and only absent maximum for $6$ years, whereas "rare" species refer to the species which 
+was present maximum for 2 years. The rest are classified into "intermediate" category.\label{fig_spaceavg_timeseries}}
+\end{center}
+\end{figure}
+
+
+<!--Why choose jasper ridge and hays as study system?-->
+We consider two grassland ecosystems for our study. First one is Jasper Ridge Biological
 Preserve (JRBP), a biodiversity hotspot in californian serpentine grassland. 
 Long term observations in JRBP showed the serpentine grassland vary widely in its 
 species composition both in temporal and spatial scale [@hobbs2007; @zhu2016]. 
@@ -197,17 +202,20 @@ Both datasets have been served as experimental model system to
 study ecological hypothesis since long and proved to be effective
 in decision making from conservation and management perspective. 
 
-Our objective is to find the 
+<!-- what is our objective?-->
+In this paper, we will preach for the potential of using "copula" approach to analyze
+species' response within a community in understanding variation in species-richness
+over a temporal scale. Our objective is to examine the 
 synchronous (for positively correlated variables)
-or compensatory (for negatively correlated variables) dynamics in 
+or compensatory (for negatively correlated variables) dynamics, if any, in 
 the serpentine grassland of JRBP and prairie of Hays in Kansas 
 using "tail-dependence" feature of copula.
 Implementing a model selection approach as well as nonparametric analysis, we 
-try to find is there any asymmetric tail-dependence in those grassland community and
+try to find is there any overall major asymmetric tail-dependence in those grassland community and
 if there is, then what could we interpret about inter-species response from this
 asymmetric tail-dependence? We also suggest an alternative measure of 
 community variability (henceforth stability) in terms of quantifying skewness of 
-total biomass distribution over years.
+total biomass distribution over years using those two datasets.
 
 # Results\label{Results}
 
