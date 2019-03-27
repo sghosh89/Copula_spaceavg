@@ -1,0 +1,388 @@
+---
+title: "Estimating synchronous and compensatory dynamics in grassland community using a novel “copula” approach"
+author: "Shyamolina Ghosh"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+#date: "October 12, 2018"
+geometry: "left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm"
+
+output: 
+  pdf_document:
+    number_sections: no
+    keep_tex: yes
+    fig_caption: yes
+
+header-includes:
+      - \usepackage{xr} \externaldocument[SI-]{SI_spatial_avg}
+      - \input{head_maintext.sty}
+
+tables: True
+link-citations: True
+urlcolor : blue
+indent : True
+csl: pnas.csl
+bibliography: REF_CSS.bib
+---
+
+```{r setup_Paper, echo=F}
+knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
+options(scipen = 1, digits = 5) #This option round all numbers appeared in the inline r code upto 5th digit
+```
+
+<!--Abstract-->
+\noindent
+\textbf{write abstract here.}
+\linebreak
+
+<!--keywords-->
+\noindent
+Synchrony | Tail-dependence | Serpentine grassland | Jasper Ridge
+\linebreak
+
+<!--# Introduction\label{Intro}-->
+<!--Q1 : Estimating cross-species synchrony have any specific tail dependence, 
+Q2: if yes, then what is the reason behind that?
+Q3: Skewness change due to asymmetric taildep. as a new estimate of community variability?-->
+
+<!--grassland and earlier work-->
+\lettrine{U}{}nderstanding the mechanisms behind spatial and temporal 
+dynamics has been a long-standing focus in community ecology [@gibson2009; @turner1989].
+Interspecies interaction in a grassland 
+community could be advantageous or
+disadvantageous to either or both species involved, 
+which led to mutualism or competition
+as the case might be. These inter-species response were 
+found to be affected by several biotic and abiotic factors 
+including climate, fire, soil-nutrients, pollinators, micorrhizae,
+grazing and other form of disturbances 
+[@mcnaughton1983; @parton1995; @bardgett2008; @belsky1992; 
+@collins1992; @olff1998; @fry2017; @potts2003; @hudewenz2012;
+@canals2003; @hallett2014].
+Excessive pressure of any of those 
+disturbances could alter the competitive balance in the community
+and could shift the species-dominance affecting overall species richness and 
+ecosystem-function. Most of the prior studies used, in general, the correlation 
+or regression based approach to understand species-variability with other
+species within a community (or with environmental variables) to establish causal
+relationship and thereby lacking important information embedded in their joint
+distribution structure.
+
+<!--Limitation of usual approach and introduction of copula?-->
+Common correlation measures, i. e., Pearson's correlation used in earlier studies, is based 
+on the notions of linearity, normality and mean which are not appropriate when dealing 
+with extreme events or for non-normal distributions which occur commonly in ecological
+datasets [our BIVAN paper]. Though rank-based non-parametric dependence measures, Spearman's 
+$\rho$ and Kendall's $\tau$, do not assume linearity and normality, but they do not attribute 
+sufficient weight to the extreme values and the distribution tail. Thus a better approach to model
+multivariate dependence structure is necessary. Concept of a copula is a widely used 
+statistical tool in other fields to model dependence between 
+multiple variables [@joe2014_dependence; @nelsen2006_copula; 
+@sklar1959_theorem; @burnham2003_modelselection]. A "copula" can separate the 
+information contained in a joint distribution of bivariate random variables 
+into two distinct parts: the information contained in the marginal 
+distributions (which says nothing about the dependence between the 
+variables), and the remaining information (which is solely
+about the dependence between the variables). From a data perspective, we can construct 
+a bivariate copula from a set of two variables
+$\{ x_i, y_i\}, i = 1, 2, \ldots , n$ after some ranking procedure is applied so that 
+their marginal distributions become uniform. If $\{ \bar{u_i}, \bar{v_i}\}$ are the
+corresponding ranks of $\{ x_i, y_i\}$, then the "normalized rank" 
+$\{ u_i, v_i\} = \{ \bar{u_i}, \bar{v_i}\} / (n+1)$
+reveals the associated dependence in the bivariate copula when plotted in a unit square. 
+Through suitable choice from a wide varity of families and parameters, one can control 
+this dependence structure of a bivariate copula which shows over which parts of the 
+distributions the variables are more strongly associated. This information
+is implied in their degree of "tail-dependence" which can be viewed as stronger 
+association between two random variables in their extreme values. If smaller values of 
+two positively associated variables are more strongly correlated than are larger values, 
+the variables are said to have stronger lower- or left-tail dependence than right- or 
+upper-tail dependence (ADD SI FIG); and vice versa if higher values are more strongly
+associated than smaller ones (ADD SI FIG). A copula might have symmetric 
+(with zero tail-dependence in both tail) or asymmetric (finite tail-dependence in either
+or both tail) feature depending on its family and parameters [@nelsen2006_copula].
+Recently few studies have shown implication of copula in modelling spatial dependence of 
+environental variables [@li2013; @serinaldi2008; 
+@goswami2018; @she2018], but as of our knowledge,
+it remains unexplored in studying interactive relationships between multiple
+species and their responses with several biotic and/ or abiotoic factors among a community.
+In this paper, we will preach for the potential of using "copula" approach to analyze
+species' response within a community in understanding variation in species-richness
+over a temporal scale. 
+
+<!--why copula (and tail-dep.) is important in ecology, specially on grassland? : 
+1) direction of competetion
+2) leibig's law
+3) global climate change : ongoing invasion and sp. extinction : pollinators?
+-->
+The relevance of copula with its unique tail-dependence feature is that it can be applied
+to model synchronous (or compensatory) response between two or more ecological variables. 
+Spatial synchrony [@liebhold2004; @walter2017; @sheppard2016] between 
+metapopulations, is recently investigated using copula (BIVAN paper),
+but there has been no report using copula approach in multi-species dynamics.
+Here we will summarize how copula could be useful in ecology, specially in grassland community.
+First, in case of compensatory dynamics between any two species over years, tail dependence
+measurement using a bivariate copula not only shows species are negatively correlated but 
+in addition could indicate which one is superior competitor between them. Secondly, earlier 
+studies showed the importance of limiting resources (soil nutrients, N, P)
+(Leibig's law) in the grassland productivity [@reynolds2003; @de2004; @john2007; @fay2015]. 
+Therefore, a community showing overall
+lower tail-dependence throughout years could suggest that the species-abundance on average
+was limited as a particular resource became rare in that field and experimental addition of 
+soil-fertilizer could improve their productivity (showing increase in upper-tail dependence)
+after years. As multiple species in a grassland community could show limited growth
+with respect to multiple nutrients and to different extent, therefore adding nutrient 
+may increase the net primary productivity but could also reduce niche-dimensionality 
+and increase compositional turnover [@harpole2016]. Using pairwise copula approach for
+modelling a multivariate dependence structure offers more insight to understand
+different species' response towards their drivers separately. Third, long-term and short-term
+experiments established that change in global climate
+(temperature, elevated CO$_{2}$ level, N-deposition) induced changes in species-composition 
+in a grassland community 
+[@cowles2016; @garcia2018; @harrison2015; @eisenhauer2013; @zavaleta2003]. 
+As a result, some species could show high abundance with elevated
+level of weather variables (upper-tail dependence) over years, but they also could suppress
+and even lead to extinction of their weak competitors. Thus change in climate or 
+resource has been proved to be a threat to the sustainability of native species 
+in a grassland where invasive species replace them in their "favorable" scope on
+space or time-scale [@white2001; @sm2001; @thomason2017].
+This scenario could also evoke a potential threat for the pollinator 
+community (e.g. butterfly) due to their habitat loss [@mclaughlin2002; @thomas2004].
+Monitoring tail-dependence of species-above ground biomass (or percent cover) of 
+a plant with respect to any of biotic and/ or abiotic factors could be beneficial
+against this threat of biodiversity loss in a grassland eco-system. 
+
+<!--community variability in view of skewness change?-->
+Overall asymmetric tail-dependence (either lower or upper) bears a major implication
+in determining community-variability and thus in turn stability of its compositional balance. 
+A lower (or upper) tail dependence in community structure arises due to simultaneous rare
+(or abundant) occurrence of the species and thus the "spikiness" of their individual 
+time series become more or less synchronous. This synchronous response of multiple species
+within a community generates a "skewed" distribution of total biomass over 
+years. Skewness of a synchronous community could be significantly different from a community 
+which either shows no interspecific tail-dependence or showing more compensatory dynamics 
+so that their tail dependence cancel out. Significantly lower skewness (arising from lower 
+tail dependence) has not only affected net primary productivity of a community 
+but could also make some native species disappear from the system. 
+Thus tracking skewness of a community over a period of years could serve
+beneficial to better strategize conservation and management of native species. 
+In terms of stability assessment, a community could be considered as less stable 
+if the absolute value of skewness of total biomass time series is relatively high. <!-- am I right for this last sentence?-->
+
+\begin{tcolorbox}[width=\columnwidth,colback={blue!20},arc=0mm,colframe=blue!50!black,coltext=blue!50!black]
+Significance
+
+Write significance here.
+\end{tcolorbox}  
+
+<!--Why choose jasper ridge and hays as study system?, what is our objective?-->
+We consider two grassland ecosystem for our study. First one is Jasper Ridge Biological
+Preserve (JRBP), a biodiversity hotspot in californian serpentine grassland. 
+Long term observations in JRBP showed the serpentine grassland vary widely in its 
+species composition both in temporal and spatial scale [@hobbs2007; @zhu2016]. 
+Climate change and invasion by 
+exotic species in JRBP had detrimental effect on native species shifting its dominance 
+from one species to another
+and thereby posing habitat loss of their
+dependent species leading to extinction [@stromberg2007]. 
+For example, bay-checkerspot butterfly 
+\textit{Euphydryas editha bayensis} is now locally extinct at Jasper Ridge 
+possibly due to declining abundance of its principal larval 
+host plant \textit{Plantago erecta}
+in competition with invasive species like \textit{Bromus hordeaceus}.
+The second dataset we choose to invetigate is long-term mapping of 
+individual herbaceous plants on permanent quadrats in a mixed grass 
+priarie of Hays, Kansas. Hays grassland also played major role in investigating 
+plants' demographic process, their co-existence and extreme climatic effect on annual productivity 
+in the past studies [@fair1999demography; @adler2006climate; @lauenroth2008demography; @heisler2009contingent].
+Both datasets have been served as experimental model system to 
+study ecological hypothesis since long and proved to be effective
+in decision making from conservation and management perspective. 
+
+Our objective is to find the 
+synchronous (for positively correlated variables)
+or compensatory (for negatively correlated variables) dynamics in 
+the serpentine grassland of JRBP and prairie of Hays in Kansas 
+using "tail-dependence" feature of copula.
+Implementing a model selection approach as well as nonparametric analysis, we 
+try to find is there any asymmetric tail-dependence in those grassland community and
+if there is, then what could we interpret about inter-species response from this
+asymmetric tail-dependence? We also suggest an alternative measure of 
+community variability (henceforth stability) in terms of quantifying skewness of 
+total biomass distribution over years.
+
+# Results\label{Results}
+
+We present the results from the study carried out with the
+spatio-temporal percent cover data (for 216 plots over 36 years, 1983-2018)
+of several species found in the serpentine grassland
+of Jasper Ridge Biological
+Preserve (JRBP), located near Stanford
+University in San Mateo County, California 
+(for details see Appendix \ref{SI-Data}). We here analyzed
+our findings from a model-selection based 
+copula approach, but we also verified the overall finding using
+alternative nonparametric analysis (Appendix \ref{SI-compare_methods}).
+
+```{r read_res,echo=F}
+RES_jrg_spaceavg<-readRDS("./Results/jrg_results/RES_jrg_spaceavg.RDS")
+#res_skew<-readRDS("./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_common_sp_39.RDS")
+```
+
+<!--## Results from spatial averaging showing temporal dynamics \label{Results_spaceavg}-->
+For a given year, we averaged percent cover data for each 
+of 15 screened species over 216 plots. 
+Tail-dependence analysis (see Appendix \ref{SI-Methods} for details)
+was carried out with pairwise copula
+made of those spatially averaged percent cover time-series.
+The 19 $\times$ 19 matrix [15 plant species :
+Table \ref{SI-tab_spinfo}
+and 4 weather variables : total precipitation, average, 
+maximum and minimum temperature 
+for growing season (September-April)] 
+in Fig. \ref{fig_LTmUT_spaceavg_jrg}
+showed tail-dependence difference (lower minus upper) plotted 
+for each pair-wise copula through 36 years (1983 - 2018). 
+Spatially averaged data could only show a prominent
+tail-dependence results in
+our case when there is stronger correlation for some unusually 
+good or bad years for both species' percent-cover considered.
+We found considerable amount of interspecific competetion
+and co-existence in the serpentine community. Here we will 
+discuss a few exemplary cases. For instance,
+when invasive species \textit{Bromus hordeaceus} were more abundant
+throughout the plots over certain years,
+native species \textit{Plantago Erecta} could not do well 
+and became rare from the
+system for those years, but when \textit{Bromus} was scarce in the
+system \textit{Plantago} showed a varied abundance. 
+This phenomenon indicated the causal relationship that
+\textit{Bromus} appeared to be a stronger competitor
+limiting \textit{Plantago}'s growth synchronously [represented in 
+Fig. \ref{fig_LTmUT_spaceavg_jrg}
+by the blue cell indicating 
+stronger upper tail-dependence between yearly percent cover of
+\textit{Bromus} (sp6 in row) and 
+\textit{Plantago} (sp31 in column, plotted as negative
+percent cover, so that the copula showed positive correlation,
+see Fig. \ref{SI-fig_jrg_spaceavg_invasion} for details].
+The interaction was conceptually same
+as shown by the red cell with lower tail-dependence in 
+Fig \ref{fig_LTmUT_spaceavg_jrg}(sp31 in row and
+sp6 in column).
+Similar finding was also observed earlier
+by Hobbs et al.[@hobbs1991] where several years of above-average rainfall 
+led to an abundance in \textit{Bromus hordeaceus} and shifted the dominance 
+among native annuals from \textit{Plantago Erecta} to \textit{Lasthenia Californica}.
+
+Strong co-existence with similar dynamics was found (both abundant simultaneosly 
+in certain years) between two native annuals \textit{Hemizonia congesta}
+and \textit{Lotus wrangelianus} (Fig. \ref{fig_LTmUT_spaceavg_jrg}, blue cell
+with upper tail dependence between sp17, sp24) where the two species were 
+abundant synchronously. When \textit{Hemizonia} and 
+\textit{Lotus} were not dominantly prolific in the system, they did not 
+show a strong correlation 
+and another weak competitor \textit{Microseris douglasii} got a chance to flourish.
+When those two species (\textit{Hemizonia} and \textit{Lotus}) were both 
+abundant in their "good" years (specifically 3 successive years from 2016-2018,
+(Fig. \ref{fig_LTmUT_spaceavg_jrg}), native annual \textit{Microseris}
+(sp28) became uncommon and appeared as a weak competitor towards their joint
+competitive pressure (sp17 and sp24 in rows with sp28 in column, for details
+see Fig. \ref{SI-fig_jrg_spaceavg_competition}). If this trend continues, then it could be 
+a potential threat for existence of native species \textit{Microseris douglasii}. 
+This type of "diffuse competition" intrigued many experimental studies in the past 
+to better understand plant competition and facilitation in serpentine grassland 
+[@harrison2011] and in our study we showed tal-dependence could be a measure
+of inter-specific competition. Another multispecies interaction was native annual 
+\textit{Vulpia microstachys} (sp42) 
+found to show stronger lower tail dependence (positive correlation with
+simultaneous low-abundance) with other two species \textit{Layia Platyglossa} (sp19)
+and \textit{Castilleja densiflora} (sp30). 
+
+<!--Results including growing season ppt. effect on jrg spatial avg data-- 
+Interestingly, we found
+that annual and perennial showed different tolerance towards total precipitation 
+for the growing season. For example, some extreme dry years [e.g. 2012 or 2014's 
+drought [@griffin2014]]
+with little precipitation made annual 
+forb \textit{Castilleja densiflora} (sp30) uncommon whereas perennial forb 
+\textit{Brodiaea spp.} (sp5)
+became abundant at those years (see Fig. \ref{SI-fig_spaceavg_drought}). 
+Earlier study [@pitt1978] showed years with "suboptimal" rainfall had relatively higher cover
+of perennial forbs whereas years with "favorable" rainfall patterns promoted earlier
+germination and better growth for annual grasses. Another perennial 
+native bunchgrass \textit{Nassella pulchra} (sp36) became rare in the community with
+low average temperature (considered as sp44)
+during growing season for two successive years, showing lower tail-dependence.--> 
+
+<!--Results from skewness as a measure of community variability-->
+Major lower tail dependence than upper was observed in interspecific interactions 
+as visually evident from Fig. \ref{fig_LTmUT_spaceavg_jrg}. We counted the number of positively correlated 
+cells among $15 \times 15$ plant species interaction matrix and classified as $nL$
+(showing more lower tail-dependence) and $nU$ (showing more upper tail dependence).
+These numbers (or more specifically their associated asymmetric tail-dependence
+values) play a significant contributors to the skewness of total community biomass
+distribution over years. For each of the 36 years (1983-2018), we computed total percent cover
+(averaged throughout the plots) of all species 
+(except LASP : 2014-2018 data reported only, need clarification from Lauren, Bare Ground).
+We measured skewness 
+of this aggregated percent cover time-series and compared against skewnesses of $10000$
+spearman-correlation preserving "Normal" surrogate time-series generated by a resampling approach
+(for details see Appendix \ref{SI-skew_ncsurrog}). We found remarkable change in 
+skewness (Fig. \ref{fig_skewness}) and that was marginally significant as compared 
+to their "Normal" analog. As skewness is related to the "spikiness" of the time-series
+concerned, lower skewness means the community could have a potential 
+threat for some of its native species which could crash simultaneously below a threshold.
+
+\begin{figure*}[!h]
+\begin{center}
+\includegraphics[width=12cm]{./Results/jrg_results/LTmUT_jrg_spaceavg.pdf} 
+\caption{Model averaged lower tail - upper tail dependence matrix for 15 most common plant species, 
+details were discussed in \nameref{Results}. 
+nL and nU are the count of cells (considered for positive correlation only)
+with positive and negative tail-dependence difference 
+values for 15$\times$15 matrix; 
+nL$>$nU (majority of red cells) indicates major lower tail dependence
+in sp-sp interaction matrix.
+Yellow cells indicate independent relationship. \label{fig_LTmUT_spaceavg_jrg}}
+\end{center}
+\end{figure*}
+
+\begin{figure*}[!h]
+\begin{center}
+\includegraphics[width=15cm]{./Results/hays_results/LTmUT_hays_spaceavg.pdf} 
+\caption{Model averaged lower tail - upper tail dependence matrix for 20 most common plant species, 
+details were discussed in \nameref{Results}. 
+nL and nU are the count of cells (considered for positive correlation only)
+with positive and negative tail-dependence difference 
+values for 15$\times$15 matrix; 
+nL$>$nU (majority of red cells) indicates major lower tail dependence
+in sp-sp interaction matrix.
+Yellow cells indicate independent relationship. \label{fig_LTmUT_spaceavg_hays}}
+\end{center}
+\end{figure*}
+
+
+
+
+# Discussion
+
+
+
+### \textbf{For Data and Methods, see Appendix \ref{SI-Data} and \ref{SI-Methods} in Supporting material, respectively.}
+
+
+
+
+
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{1pt}
+\noindent
+
+
+
+
+
+
+
+
+

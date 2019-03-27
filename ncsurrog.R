@@ -107,7 +107,10 @@ ncsurrog<-function(m,corpres,numsurrog,plotcheckon,resloc){
       }
       diag(quantres)<-NA
       #quantres
-      hist(as.vector(quantres),main="",xlab="Fraction of data-correlation > surrogate-correlations") # Is it distributed around 0.5 ?? 
+      ops<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+      hist(as.vector(quantres),main="",xlab=expression(Fraction~of~(Cor[data]>Cor[surrogs])),
+           cex.lab=2,cex.axis=2,col="grey",border=F,breaks=100) # Is it distributed around 0.5 ?? 
+      par(ops)
       saveRDS(quantres,paste(resloc,"quantres_spearman.RDS",sep=""))
     }
     
