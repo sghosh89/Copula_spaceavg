@@ -942,6 +942,80 @@ par(op)
 dev.off()
 ```
 
+```{r pedagog_fig, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,mtime("ExtremeTailDep.R"),mtime("ncsurrog.R"))}
+library(copula)
+library(e1071)
+source("./ncsurrog.R")
+source("./ExtremeTailDep.R")
+
+set.seed(seed)
+nsp<-25
+nyr<-500
+
+#----------------calling copula-----------------
+#par<-5
+#cop<-claytonCopula(param=par,dim=nsp)
+#cop<-gumbelCopula(param=par,dim=nsp)
+#cmat<-rCopula(n=nyr,cop)
+#plot(cmat[,1],cmat[,2]) # LTdep
+#----------------------------------------------
+
+#------------------calling extreme copula for LTdep.---------------
+xmat<-retd(n=nyr,d=nsp,rl=-1,mn=0,sdev=1) #LTdep.
+range(xmat)
+cmat<-xmat+5 # this line makes cover data positive
+any(cmat<0) # This should be FALSE
+#plot(xmat[,1],xmat[,2])
+#plot(cmat[,1],cmat[,2])
+#plot(c(1:nyr),cmat[,1])
+tot_ts_l<-apply(cmat,MARGIN = 1, FUN=sum)
+
+surrog_array<-ncsurrog(m=cmat,corpres="spearman",numsurrog=1,plotcheckon=F,resloc="./Results")
+surrog_mat<-surrog_array[,,1]
+#plot(surrog_mat[,1],surrog_mat[,2])
+tot_ts_surrogl<-apply(surrog_mat,MARGIN = 1, FUN=sum)
+
+skw_real_l<-skewness(tot_ts_l,type=2)
+skw_surrogl<-skewness(tot_ts_surrogl,type=2)
+
+#------------------calling extreme copula for RTdep.---------------
+xmat<-retd(n=nyr,d=nsp,rl=1,mn=0,sdev=1) #RTdep.
+range(xmat)
+cmat<-xmat+5 # this line makes cover data positive
+any(cmat<0) # This should be FALSE
+#plot(cmat[,1]+10,cmat[,2]+10)
+#plot(c(1:nyr),cmat[,1]+10)
+
+tot_ts_r<-apply(cmat,MARGIN = 1, FUN=sum)
+
+surrog_array<-ncsurrog(m=cmat,corpres="spearman",numsurrog=1,plotcheckon=F,resloc="./Results")
+surrog_mat<-surrog_array[,,1]
+tot_ts_surrogr<-apply(surrog_mat,MARGIN = 1, FUN=sum)
+
+skw_real_r<-skewness(tot_ts_r,type=2)
+skw_surrogr<-skewness(tot_ts_surrogr,type=2)
+
+#---------------Now plot-----------------------------------------
+ylm<-range(tot_ts_l,tot_ts_surrogl,tot_ts_surrogr)
+pdf("./Results/pedagog_figs/extremeLT_tot_ts.pdf",height=2,width=6)
+op<-par(mar=c(4.1, 4.1, 0.5, 1.1))
+plot(c(1:nyr),tot_ts_surrogl,type="l",ylim=c(ylm[1],ylm[2]+50),col="grey",xlab="Years",ylab="Total biomass")
+lines(c(1:nyr),tot_ts_l)
+legend("topleft",c(paste("LTdep., skew=",round(skw_real_l,3),sep=""),paste("Normal, skew=",round(skw_surrogl,3),sep="")),lty=c(1,1),horiz=T,
+       col=c("black","grey"),bty="n",cex=1)
+par(op)
+dev.off()
+
+pdf("./Results/pedagog_figs/extremeRT_tot_ts.pdf",height=2,width=6)
+op<-par(mar=c(4.1, 4.1, 0.5, 1.1))
+plot(c(1:nyr),tot_ts_surrogr,type="l",ylim=c(ylm[1],ylm[2]+50),col="grey",xlab="Years",ylab="Total biomass")
+lines(c(1:nyr),tot_ts_r)
+legend("topleft",c(paste("LTdep., skew=",round(skw_real_r,3),sep=""),paste("Normal, skew=",round(skw_surrogr,3),sep="")),lty=c(1,1),horiz=T,
+       col=c("black","grey"),bty="n",cex=1)
+par(op)
+dev.off()
+```
+
 
 # Data \label{Data} 
 
