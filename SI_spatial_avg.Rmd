@@ -1001,7 +1001,7 @@ pdf("./Results/pedagog_figs/extremeLT_tot_ts.pdf",height=2,width=6)
 op<-par(mar=c(4.1, 4.1, 0.5, 1.1))
 plot(c(1:nyr),tot_ts_surrogl,type="l",ylim=c(ylm[1],ylm[2]+50),col="grey",xlab="Years",ylab="Total biomass")
 lines(c(1:nyr),tot_ts_l)
-legend("topleft",c(paste("LTdep., skew=",round(skw_real_l,3),sep=""),paste("Normal, skew=",round(skw_surrogl,3),sep="")),lty=c(1,1),horiz=T,
+legend("topleft",c(paste("LTdep., skew=",round(skw_real_l,3),sep=""),paste("No Tdep., skew=",round(skw_surrogl,3),sep="")),lty=c(1,1),horiz=T,
        col=c("black","grey"),bty="n",cex=1)
 par(op)
 dev.off()
@@ -1010,8 +1010,20 @@ pdf("./Results/pedagog_figs/extremeRT_tot_ts.pdf",height=2,width=6)
 op<-par(mar=c(4.1, 4.1, 0.5, 1.1))
 plot(c(1:nyr),tot_ts_surrogr,type="l",ylim=c(ylm[1],ylm[2]+50),col="grey",xlab="Years",ylab="Total biomass")
 lines(c(1:nyr),tot_ts_r)
-legend("topleft",c(paste("LTdep., skew=",round(skw_real_r,3),sep=""),paste("Normal, skew=",round(skw_surrogr,3),sep="")),lty=c(1,1),horiz=T,
+legend("topleft",c(paste("RTdep., skew=",round(skw_real_r,3),sep=""),paste("No Tdep., skew=",round(skw_surrogr,3),sep="")),lty=c(1,1),horiz=T,
        col=c("black","grey"),bty="n",cex=1)
+par(op)
+dev.off()
+#------------------------------------------------------------------
+# another pedagog fig. showing LT, UT with same correlation
+library(VineCopula)
+par_rho_0.8<-copula::iRho(claytonCopula(5),rho=0.8)
+ccop<-BiCopSim(500,3,par=par_rho_0.8)
+sccop<-BiCopSim(500,13,par=par_rho_0.8)
+pdf("./Results/pedagog_figs/LTUT_rho_0.8.pdf",height=2,width=4)
+op<-par(mfrow=c(1,2),mar=c(3.1, 3.1, 0.5, 1.1),mgp=c(2,1,0))
+plot(ccop[,1],ccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="x",ylab="y",cex.lab=1,cex.axis=1)
+plot(sccop[,1],sccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="x",ylab="y",cex.lab=1,cex.axis=1)
 par(op)
 dev.off()
 ```
