@@ -242,13 +242,11 @@ total biomass distribution over years using those two datasets.
 
 # Results\label{Results}
 
-We present the results from the study carried out with the
+As mentioned earlier, we here present the results from the study carried out with the
 spatio-temporal percent cover data (for 216 plots over 36 years, 1983-2018)
-of several species found in the serpentine grassland
-of Jasper Ridge Biological
-Preserve (JRBP), located near Stanford
-University in San Mateo County, California 
-(for details see Appendix \ref{SI-Data}). We here analyzed
+of Jasper Ridge Biological Preserve (JRBP) and 41 years (1932-1972) long basal cover
+data from 51 quadrats of mixed grass priarie near Hays, KS (for details see
+Appendix \ref{SI-Data}). We here analyzed
 our findings from a model-selection based 
 copula approach, but we also verified the overall finding using
 alternative nonparametric analysis (Appendix \ref{SI-compare_methods}).
