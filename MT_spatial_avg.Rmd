@@ -142,7 +142,6 @@ Monitoring tail-dependence of species-above ground biomass of
 a plant with respect to any of biotic and/ or abiotic factors could be beneficial
 against this threat of biodiversity loss in a grassland eco-system. 
 
-
 <!--community variability in view of skewness change?-->
 Overall asymmetric tail-dependence (either lower or upper) bears a major implication
 in estimating the pattern of community-variability and thus in turn stability of its 
@@ -175,12 +174,11 @@ in their extreme values. <!-- am I right for this last sentence?-->
 \begin{center}
 \includegraphics[width=\columnwidth]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
 \caption{ Pedagogical figure showing asymmetric tail dependence between $500$ observations of 
-two positively correlated variables $(x, y)$ with same Spearman correlation $\rho = 0.8$;
+two positively correlated variables $(u,v)$ with same Spearman correlation $\rho = 0.8$;
 $(A)$ lower or left tail dependence indicates stronger association in extreme lower values, whereas $(B)$ upper 
 or right tail dependence indicates stronger association in their extreme higher values.\label{fig_pedag_taildep}}
 \end{center}
 \end{figure}
-
 
 <!--Pedagogical figure for skewness & taildep.-->
 \begin{figure}[!h]
@@ -195,7 +193,6 @@ its total biomass more negatively skewed $(A)$, whereas major upper tail depende
 its total biomass more positively skewed $(B)$, compared to a community having no tail-dependence.\label{fig_pedag_skewness}}
 \end{center}
 \end{figure}
-
 
 <!--Why choose jasper ridge and hays as study system?-->
 In this paper, we will preach for the potential of using "copula" approach to analyze
@@ -253,23 +250,19 @@ alternative nonparametric analysis (Appendix \ref{SI-compare_methods}).
 
 ```{r read_res,echo=F}
 RES_jrg_spaceavg<-readRDS("./Results/jrg_results/RES_jrg_spaceavg.RDS")
-#res_skew<-readRDS("./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_common_sp_39.RDS")
+RES_hays_spaceavg<-readRDS("./Results/hays_results/RES_hays_spaceavg.RDS")
 ```
 
-<!--## Results from spatial averaging showing temporal dynamics \label{Results_spaceavg}-->
-For a given year, we averaged percent cover data for each 
-of 15 screened species over 216 plots. 
-Tail-dependence analysis (see Appendix \ref{SI-Methods} for details)
+<!--## Results from jrg spaceavg LT-UT matrix plot-->
+We averaged percent cover data for each 
+of 23 most common species in JRBP (Table \ref{SI-tab_spinfo_jrg}) over 216 plots for
+each year of 1983-2018. Tail-dependence analysis 
+(see Appendix \ref{SI-Methods} for details)
 was carried out with pairwise copula
 made of those spatially averaged percent cover time-series.
-The 19 $\times$ 19 matrix [15 plant species :
-Table \ref{SI-tab_spinfo}
-and 4 weather variables : total precipitation, average, 
-maximum and minimum temperature 
-for growing season (September-April)] 
-in Fig. \ref{fig_LTmUT_spaceavg_jrg}
+The 23 $\times$ 23 matrix in Fig. \ref{fig_LTmUT_spaceavg_jrg}
 showed tail-dependence difference (lower minus upper) plotted 
-for each pair-wise copula through 36 years (1983 - 2018). 
+for each pair-wise copula. 
 Spatially averaged data could only show a prominent
 tail-dependence results in
 our case when there is stronger correlation for some unusually 
@@ -296,51 +289,37 @@ see Fig. \ref{SI-fig_jrg_spaceavg_invasion} for details].
 The interaction was conceptually same
 as shown by the red cell with lower tail-dependence in 
 Fig \ref{fig_LTmUT_spaceavg_jrg}(sp31 in row and
-sp6 in column).
-Similar finding was also observed earlier
-by Hobbs et al.[@hobbs1991] where several years of above-average rainfall 
-led to an abundance in \textit{Bromus hordeaceus} and shifted the dominance 
-among native annuals from \textit{Plantago Erecta} to \textit{Lasthenia Californica}.
-
-Strong co-existence with similar dynamics was found (both abundant simultaneosly 
+sp6 in column). Strong co-existence with similar dynamics was 
+found (both abundant simultaneosly 
 in certain years) between two native annuals \textit{Hemizonia congesta}
 and \textit{Lotus wrangelianus} (Fig. \ref{fig_LTmUT_spaceavg_jrg}, blue cell
-with upper tail dependence between sp17, sp24) where the two species were 
-abundant synchronously. When \textit{Hemizonia} and 
+with upper tail dependence between sp17, sp24). When \textit{Hemizonia} and 
 \textit{Lotus} were not dominantly prolific in the system, they did not 
 show a strong correlation 
 and another weak competitor \textit{Microseris douglasii} got a chance to flourish.
 When those two species (\textit{Hemizonia} and \textit{Lotus}) were both 
 abundant in their "good" years (specifically 3 successive years from 2016-2018,
-(Fig. \ref{fig_LTmUT_spaceavg_jrg}), native annual \textit{Microseris}
-(sp28) became uncommon and appeared as a weak competitor towards their joint
+native annual \textit{Microseris} (sp28) became uncommon and appeared as a weak 
+competitor towards their joint
 competitive pressure (sp17 and sp24 in rows with sp28 in column, for details
 see Fig. \ref{SI-fig_jrg_spaceavg_competition}). If this trend continues, then it could be 
 a potential threat for existence of native species \textit{Microseris douglasii}. 
 This type of "diffuse competition" intrigued many experimental studies in the past 
 to better understand plant competition and facilitation in serpentine grassland 
-[@harrison2011] and in our study we showed tal-dependence could be a measure
-of inter-specific competition. Another multispecies interaction was native annual 
-\textit{Vulpia microstachys} (sp42) 
-found to show stronger lower tail dependence (positive correlation with
-simultaneous low-abundance) with other two species \textit{Layia Platyglossa} (sp19)
-and \textit{Castilleja densiflora} (sp30). 
+[@harrison2011] and in our study we showed tail-dependence could be a measure
+to understand inter-specific competition and mutualism in a multi-species metric. 
 
-<!--Results including growing season ppt. effect on jrg spatial avg data-- 
-Interestingly, we found
-that annual and perennial showed different tolerance towards total precipitation 
-for the growing season. For example, some extreme dry years [e.g. 2012 or 2014's 
-drought [@griffin2014]]
-with little precipitation made annual 
-forb \textit{Castilleja densiflora} (sp30) uncommon whereas perennial forb 
-\textit{Brodiaea spp.} (sp5)
-became abundant at those years (see Fig. \ref{SI-fig_spaceavg_drought}). 
-Earlier study [@pitt1978] showed years with "suboptimal" rainfall had relatively higher cover
-of perennial forbs whereas years with "favorable" rainfall patterns promoted earlier
-germination and better growth for annual grasses. Another perennial 
-native bunchgrass \textit{Nassella pulchra} (sp36) became rare in the community with
-low average temperature (considered as sp44)
-during growing season for two successive years, showing lower tail-dependence.--> 
+
+
+
+
+
+
+
+
+
+
+
 
 <!--Results from skewness as a measure of community variability-->
 Major lower tail dependence than upper was observed in interspecific interactions 

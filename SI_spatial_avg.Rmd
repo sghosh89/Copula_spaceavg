@@ -1021,9 +1021,9 @@ par_rho_0.8<-copula::iRho(claytonCopula(5),rho=0.8)
 ccop<-BiCopSim(500,3,par=par_rho_0.8)
 sccop<-BiCopSim(500,13,par=par_rho_0.8)
 pdf("./Results/pedagog_figs/LTUT_rho_0.8.pdf",height=2,width=4)
-op<-par(mfrow=c(1,2),mar=c(3.1, 3.1, 0.5, 1.1),mgp=c(2,1,0))
-plot(ccop[,1],ccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="x",ylab="y",cex.lab=1,cex.axis=1)
-plot(sccop[,1],sccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="x",ylab="y",cex.lab=1,cex.axis=1)
+op<-par(mfrow=c(1,2),mar=c(2.5, 2.5, 0.5, 1.1),mgp=c(1.3,0.5,0))
+plot(ccop[,1],ccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="u",ylab="v",cex.lab=1,cex.axis=0.8)
+plot(sccop[,1],sccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="u",ylab="v",cex.lab=1,cex.axis=0.8)
 par(op)
 dev.off()
 ```
@@ -1382,7 +1382,7 @@ tab_spinfo$`Species name`<-c(splistfullnm)
 #tab_spinfo[c(1:42),3]<-cell_spec(tab_spinfo[c(1:42),3],"latex",italic=T)
 knitr::kable(tab_spinfo, 
              format="latex", align="c", linesep = "",
-             caption = "Information of the species considered for Jasper Ridge data \\label{tab_spinfo}", 
+             caption = "Information of the species considered for Jasper Ridge data; 23 most common species (highlighted) are selected based on the criterion that they are absent all over the 216 plots for not more than 6 years.\\label{tab_spinfo_jrg}", 
              booktabs = T,col.names = NULL) %>%
              row_spec(splist_jrg_spaceavg, bold = T, color = "blue")%>%
              column_spec(3,italic=T)%>%

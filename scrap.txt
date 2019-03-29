@@ -25,7 +25,6 @@ relationship and thereby lacking important information embedded in their joint
 distribution structure.
 
 
-
 We chose Jasper Ridge Biological
 Preserve (JRBP), a biodiversity hotspot in californian serpentine grassland, as our study system. 
 Long term observations in JRBP showed the serpentine grassland vary widely in its 
@@ -54,5 +53,65 @@ find is there any asymmetric tail-dependence in those grassland community and
 if there is, then could this tail-dependence be explained depending on 
 species-environment interactions? We also suggest an alternative measure of 
 community variability in terms of quantifying skewness of total biomass over years.
+
+=============================================================================================
+Results : jrg
+
+BRMO-PLER study reference
+
+Similar finding was also observed earlier
+by Hobbs et al.[@hobbs1991] where several years of above-average rainfall 
+led to an abundance in \textit{Bromus hordeaceus} and shifted the dominance 
+among native annuals from \textit{Plantago Erecta} to \textit{Lasthenia Californica}.
+
+VUMI-LAPL_ORDE dynamics (all LTdep.)
+
+Another multispecies interaction was native annual 
+\textit{Vulpia microstachys} (sp42) 
+found to show stronger lower tail dependence (positive correlation with
+simultaneous low-abundance) with other two species \textit{Layia Platyglossa} (sp19)
+and \textit{Castilleja densiflora} (sp30). 
+
+================Results including growing season ppt. effect on jrg spatial avg data====================
+Interestingly, we found
+that annual and perennial showed different tolerance towards total precipitation 
+for the growing season. For example, some extreme dry years [e.g. 2012 or 2014's 
+drought [@griffin2014]]
+with little precipitation made annual 
+forb \textit{Castilleja densiflora} (sp30) uncommon whereas perennial forb 
+\textit{Brodiaea spp.} (sp5)
+became abundant at those years (see Fig. \ref{SI-fig_spaceavg_drought}). 
+Earlier study [@pitt1978] showed years with "suboptimal" rainfall had relatively higher cover
+of perennial forbs whereas years with "favorable" rainfall patterns promoted earlier
+germination and better growth for annual grasses. Another perennial 
+native bunchgrass \textit{Nassella pulchra} (sp36) became rare in the community with
+low average temperature (considered as sp44)
+during growing season for two successive years, showing lower tail-dependence.--> 
+
+===========================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
