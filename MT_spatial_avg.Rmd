@@ -254,21 +254,23 @@ RES_hays_spaceavg<-readRDS("./Results/hays_results/RES_hays_spaceavg.RDS")
 ```
 
 <!--## Results from jrg spaceavg LT-UT matrix plot-->
-We averaged percent cover data for each 
-of 23 most common species in JRBP (Table \ref{SI-tab_spinfo_jrg}) over 216 plots for
-each year of 1983-2018. Tail-dependence analysis 
+Tail-dependence analysis 
 (see Appendix \ref{SI-Methods} for details)
 was carried out with pairwise copula
-made of those spatially averaged percent cover time-series.
-The 23 $\times$ 23 matrix in Fig. \ref{fig_LTmUT_spaceavg_jrg}
+made of spatially averaged percent cover time-series (1983-2018)
+of 23 most common species found in JRBP (Table \ref{SI-tab_spinfo_jrg}).
+The multi-species interaction matrix in Fig. \ref{fig_LTmUT_spaceavg_jrg}
 showed tail-dependence difference (lower minus upper) plotted 
 for each pair-wise copula. 
 Spatially averaged data could only show a prominent
 tail-dependence results in
 our case when there is stronger correlation for some unusually 
 good or bad years for both species' percent-cover considered.
+
 We found considerable amount of interspecific competetion
-and co-existence in the serpentine community. Here we will 
+and co-existence with overall major lower tail-dependence in 
+the serpentine grassland community of JRBP.
+Here we will 
 discuss a few exemplary cases. For instance,
 when invasive species \textit{Bromus hordeaceus} were more abundant
 throughout the plots over certain years,
@@ -309,6 +311,21 @@ to better understand plant competition and facilitation in serpentine grassland
 [@harrison2011] and in our study we showed tail-dependence could be a measure
 to understand inter-specific competition and mutualism in a multi-species metric. 
 
+On a similar note, we carried out the tail-dependence analysis for 20 most common species
+(Table \ref{SI-tab_spinfo_hays}) basal cover of Hays in Kansas, as our second data set. We 
+found similar trend as of 
+JRBP, showing lower tail-dependence (considering positively correlation in
+counting lower and upper tail dependent pairwise copula) were dominant, overall, in 
+the community (Fig. ). We will discuss here few instances of interspecific interactions which 
+we found interesting. Some dry season favorable deep rooted grasses (e.g. sp2 : ANGE, 
+sp11 : PAVI2 and sp13 : PSTE5) showed upper tail dependence with synchronous abundance
+(Fig. \ref{fig_LTmUT_spaceavg_hays}) whereas they were not as strongly correlated into
+other moderate years (see Fig. \ref{SI-fig_hays_spaceavg_dryseasoned_grass_UTdep}). 
+
+
+
+
+
 
 
 
@@ -323,9 +340,9 @@ to understand inter-specific competition and mutualism in a multi-species metric
 
 <!--Results from skewness as a measure of community variability-->
 Major lower tail dependence than upper was observed in interspecific interactions 
-as visually evident from Fig. \ref{fig_LTmUT_spaceavg_jrg}. We counted the number of positively correlated 
-cells among $15 \times 15$ plant species interaction matrix and classified as $nL$
-(showing more lower tail-dependence) and $nU$ (showing more upper tail dependence).
+as visually evident from Fig. \ref{fig_LTmUT_spaceavg_jrg}. We counted the number of 
+positively correlated cells among $23 \times 23$ multi-species interaction matrix 
+and classified as $nL$ (showing more lower tail-dependence) and $nU$ (showing more upper tail dependence).
 These numbers (or more specifically their associated asymmetric tail-dependence
 values) play a significant contributors to the skewness of total community biomass
 distribution over years. For each of the 36 years (1983-2018), we computed total percent cover
@@ -339,6 +356,24 @@ skewness (Fig. \ref{fig_skewness}) and that was marginally significant as compar
 to their "Normal" analog. As skewness is related to the "spikiness" of the time-series
 concerned, lower skewness means the community could have a potential 
 threat for some of its native species which could crash simultaneously below a threshold.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \begin{figure*}[!h]
 \begin{center}

@@ -942,6 +942,57 @@ par(op)
 dev.off()
 ```
 
+```{r hays_spaceavg_some_figs,echo=F,results="hide"}
+source("vivj_matrix.R")
+
+#UT dep. among all dry seasoned deep rooted grasses
+pdf("./Results/hays_results/hays_spaceavg_ANGE_PAVI2_PSTE5.pdf",height=3,width=10)
+op<-par(mfrow=c(1,3),mar=c(5,5,2,2))
+i<-2
+j<-11
+d_allsp<-hays_spaceavg
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
+     ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
+text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
+mtext(paste0("(sp_x, sp_y) = (",i," , ",j,")"),
+          side = 3, line=0.15, adj=0.5, col="black")
+
+i<-2
+j<-13
+d_allsp<-hays_spaceavg
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
+     ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
+text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
+mtext(paste0("(sp_x, sp_y) = (",i," , ",j,")"),
+          side = 3, line=0.15, adj=0.5, col="black")
+
+i<-11
+j<-13
+d_allsp<-hays_spaceavg
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
+     ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
+text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
+mtext(paste0("(sp_x, sp_y) = (",i," , ",j,")"),
+          side = 3, line=0.15, adj=0.5, col="black")
+
+par(op)
+dev.off()
+
+
+
+
+
+
+
+
+
+
+
+```
+
 ```{r pedagog_fig, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,mtime("ExtremeTailDep.R"),mtime("ncsurrog.R"))}
 library(copula)
 library(e1071)
@@ -1354,7 +1405,7 @@ For an acceptable nearest positive semidefinite covariance matrix, this histogra
 should spread around 50\% probability with no extreme tail.
 
 
-<!--Make a table with species list-->
+<!--Make a table with species list for jrg-->
 ```{r make_tab_splist_for_jrg, echo=F, results="asis"}
 library(kableExtra)
 library(dplyr)
@@ -1382,9 +1433,27 @@ tab_spinfo$`Species name`<-c(splistfullnm)
 #tab_spinfo[c(1:42),3]<-cell_spec(tab_spinfo[c(1:42),3],"latex",italic=T)
 knitr::kable(tab_spinfo, 
              format="latex", align="c", linesep = "",
-             caption = "Information of the species considered for Jasper Ridge data; 23 most common species (highlighted) are selected based on the criterion that they are absent all over the 216 plots for not more than 6 years.\\label{tab_spinfo_jrg}", 
+             caption = "Information of the species considered for Jasper Ridge data; 23 most common species (highlighted) are selected based on the criterion that they were absent all over the 216 plots for not more than 6 years.\\label{tab_spinfo_jrg}", 
              booktabs = T,col.names = NULL) %>%
              row_spec(splist_jrg_spaceavg, bold = T, color = "blue")%>%
+             column_spec(3,italic=T)%>%
+             add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
+```
+
+```{r make_tab_common_splist_for_hays, echo=F, results="asis"}
+library(kableExtra)
+library(dplyr)
+tab_spinfo<-as.data.frame(matrix(NA,nrow=20,ncol=3))
+colnames(tab_spinfo)<-c("ID","Sp. code","Species name")
+tab_spinfo$ID<-c(1:20)
+tab_spinfo$`Sp. code`<-spinfo$PLANTS.Symbol[which(spinfo$species %in% names(hays_spaceavg$avg.basal.cover))]
+splistfullnm<-names(hays_spaceavg$avg.basal.cover)
+
+tab_spinfo$`Species name`<-c(splistfullnm)
+knitr::kable(tab_spinfo, 
+             format="latex", align="c", linesep = "",
+             caption = "Information of the most common species considered for Hays data; 20 most common species (highlighted) are selected based on the criterion that they were absent from all the 51 quadrats for not more than 6 years, for full list of all the species, including rare ones see Appendix \\ref{Data}.\\label{tab_spinfo_hays}", 
+             booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
@@ -1449,6 +1518,24 @@ respectively.\label{fig_jrg_spaceavg_competition}}
 $(C)$ $\Dsq_u-\Dsq_l$. $nL$ and $nU$ indicate the numbers of lower tail and upper tail dependent cells (with positive correlation), respectively.\label{fig_hays_spaceavg_npa}}
 \end{center}
 \end{figure}
+
+<!--hays : interspecific interaction : some plots-->
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=18 cm]{./Results/hays_results/hays_spaceavg_ANGE_PAVI2_PSTE5.pdf}
+\caption[Upper tail-dependence among space-averaged basal cover of dry seasoned grasses in Hyas]
+{Upper tail-dependence among space-averaged basal cover of dry seasoned grasses in Hyas; sp$_{-}$x 
+and sp$_{-}$y are the id of species plotted along x- and y-axis, respectively. \label{fig_hays_spaceavg_dryseasoned_grass_UTdep}}
+\end{center}
+\end{figure}
+
+
+
+
+
+
+
 
 <!--jrg & hays : time-series results plot -->
 \begin{figure}[!h]
