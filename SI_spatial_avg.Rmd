@@ -632,6 +632,7 @@ names(sp.screened.data)<-splist[id_common_sp_hays]
 
 for(isp in 1:length(id_common_sp_hays)){
   sp.screened.data[[isp]]<-data.frame(Year=c(32:72),Dat=avg_cover_over_plots_hays[,id_common_sp_hays[isp]])
+  #sp.screened.data[[isp]]<-data.frame(Year=c(1932:1972),Dat=avg_cover_over_plots_hays[,id_common_sp_hays[isp]])
 }
 
 hays_spaceavg$avg.basal.cover<-sp.screened.data
@@ -982,15 +983,54 @@ par(op)
 dev.off()
 
 
+pdf("./Results/hays_results/hays_spaceavg_SCSC_interactions.pdf",height=10,width=6)
+op<-par(mfrow=c(4,2),mar=c(4,5,3,3))
+i<-5
+j<-14
+d_allsp<-hays_spaceavg
 
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
 
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
+     ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
+text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
 
+i<-12
+j<-14
+d_allsp<-hays_spaceavg
 
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
 
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
+     ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
+text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
 
+i<-17
+j<-14
+d_allsp<-hays_spaceavg
 
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
 
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
+     ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
+text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
 
+i<-18
+j<-14
+d_allsp<-hays_spaceavg
+
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
+
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
+     ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
+text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
+
+par(op)
+dev.off()
 ```
 
 ```{r pedagog_fig, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,mtime("ExtremeTailDep.R"),mtime("ncsurrog.R"))}
@@ -1545,10 +1585,18 @@ and sp$_{-}$y are the id of species plotted along x- and y-axis, respectively. \
 \end{figure}
 
 
-
-
-
-
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=14 cm]{./Results/hays_results/hays_spaceavg_SCSC_interactions.pdf}
+\caption[Upper tail-dependence among space-averaged basal cover of dry seasoned grasses in Hyas]
+{Upper tail-dependence among space-averaged basal cover of dry seasoned grasses in Hyas; sp$_{-}$x 
+and sp$_{-}$y are the id of species plotted along x- and y-axis, respectively. Species in the y-axis 
+of left column was reversed in the y-axis of right column so that species showed positive correlaion
+in the copula plot; right column showed significant lower tail-dependent in pairwise copulas which was 
+indicated in the red cells [(5,14), (5,12), (5,17) and (5,18)] of Fig. \ref{MT-fig_LTmUT_spaceavg_hays} 
+in the maintext.\label{fig_hays_spaceavg_SCSC_interactions}}
+\end{center}
+\end{figure}
 
 
 <!--jrg & hays : time-series results plot -->

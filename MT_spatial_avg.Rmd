@@ -320,11 +320,18 @@ the community (Fig. \ref{fig_LTmUT_spaceavg_hays}). We will discuss here few ins
 of interspecific interactions which 
 we found interesting. Some deep rooted grasses (e.g. sp2 : ANGE, 
 sp11 : PAVI2 and sp13 : PSTE5) showed upper tail dependence with synchronous abundance
-with each other most probably favored by unusually dry years (Fig. \ref{fig_LTmUT_spaceavg_hays}) 
+with each other (Fig. \ref{fig_LTmUT_spaceavg_hays}) 
 whereas they were not as strongly 
-correlated in other moderate years 
+correlated in other years 
 (see Fig. \ref{SI-fig_hays_spaceavg_dryseasoned_grass_UTdep}). 
-
+On the other hand, when \textit{Schizachyrium scoparium} (sp14) was abundant throughout 
+the plots for certain years, it appeared to be a stronger competitor 
+(Fig \ref{SI-fig_hays_spaceavg_SCSC_interactions}) suppressing growth of 
+other drought-tolerant grasses (e. g. \textit{Bouteloua gracilis} (sp5), 
+\textit{Paronychia jamesii} (sp12), 
+\textit{Sporobolus asper} (sp17) , \textit{Sporobolus cryptandrus} (sp18)) which
+were found to be synchronously rare and lower tail-dependent within themselves (positively 
+correlated red cells in Fig. \ref{fig_LTmUT_spaceavg_hays}).
 
 
 
