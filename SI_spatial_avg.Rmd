@@ -1348,17 +1348,22 @@ positive under the same conditions. These statistics were used for smaller data 
 
 # Comparing results from two approaches \label{compare_methods} 
 
-<!--Need to ask how should I compare : like fL, fU only for sp-sp interaction from model sel and npa?-->
-
-<!--At this moment this is written only for jrg results, we need to add hays results too later-->
-From model selection approach, we got results of more lower tail-dependence when we considered pairwise copula
-for some screened species percent cover data over 36 years. To ensure our finding we also used alternative methods,
-i. e., non-parametric analysis to implement 3 statistics ($\cor_l -\cor_u$, $\Ps_l-\Ps_u$ and $\Dsq_u-\Dsq_l$).
-Using each statistics we got similar interaction matrix (Fig. \ref{fig_jrg_spaceavg_npa}) as of
-Fig. \ref{MT-fig_LTmUT_spaceavg_jrg} in the main text
-and counted the number of lower and upper tail dependent cells which were positively correlated. The result
-(i.e. major lower tail depence, $nL > nU$) was similar. The mere discrepancy arises due to the fact for 
-non-parametric analysis used a much wider boundary to see tail-dependence (due to smaller sample size)
+From model selection approach, we got results of more lower tail-dependence when we 
+considered pairwise copula for most common species cover data 
+for both data sets (JRBP and Hays). To ensure our 
+finding we also used alternative methods,
+i. e., non-parametric analysis to implement 3 statistics 
+($\cor_l -\cor_u$, $\Ps_l-\Ps_u$ and $\Dsq_u-\Dsq_l$).
+Using each statistics we got similar interaction matrix 
+(Figs. \ref{fig_jrg_spaceavg_npa} and \ref{fig_hays_spaceavg_npa}) as of
+Figs. \ref{MT-fig_LTmUT_spaceavg_jrg}  and \ref{MT-fig_LTmUT_spaceavg_hays} 
+in the main text, respectively, 
+and counted the number of lower and upper tail dependent cells 
+which were positively correlated. The results
+(i.e. major lower tail depence, $nL > nU$) were similar. The mere 
+discrepancy arises due to the fact for 
+non-parametric analysis used a much wider boundary to see 
+tail-dependence (due to smaller sample size)
 whereas model selection result was based on extreme regime.
 
 # Resampling methods to generate correlation preserving Normal copula \label{skew_ncsurrog} 

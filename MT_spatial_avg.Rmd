@@ -316,11 +316,14 @@ On a similar note, we carried out the tail-dependence analysis for 20 most commo
 found similar trend as of 
 JRBP, showing lower tail-dependence (considering positively correlation in
 counting lower and upper tail dependent pairwise copula) were dominant, overall, in 
-the community (Fig. ). We will discuss here few instances of interspecific interactions which 
-we found interesting. Some dry season favorable deep rooted grasses (e.g. sp2 : ANGE, 
+the community (Fig. \ref{fig_LTmUT_spaceavg_hays}). We will discuss here few instances 
+of interspecific interactions which 
+we found interesting. Some deep rooted grasses (e.g. sp2 : ANGE, 
 sp11 : PAVI2 and sp13 : PSTE5) showed upper tail dependence with synchronous abundance
-(Fig. \ref{fig_LTmUT_spaceavg_hays}) whereas they were not as strongly correlated into
-other moderate years (see Fig. \ref{SI-fig_hays_spaceavg_dryseasoned_grass_UTdep}). 
+with each other most probably favored by unusually dry years (Fig. \ref{fig_LTmUT_spaceavg_hays}) 
+whereas they were not as strongly 
+correlated in other moderate years 
+(see Fig. \ref{SI-fig_hays_spaceavg_dryseasoned_grass_UTdep}). 
 
 
 
