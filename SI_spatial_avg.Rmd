@@ -1104,6 +1104,8 @@ were stored in `species_list.csv` file with categories like `type`, `PLANTS.Symb
 `PLANTS.Synonym` (for explanation see [`metadata file`](http://esapubs.org/archive/ecol/E088/161/metadata.htm)). 
 5 of 151 species were classified in `'remove'` category as mentioned in `type` column of `species_list.csv`. They were non-plant species
 like `Bare ground`, `Fragment` and other unidentified sp. like `Mixed grass`, `Polygonum spp.` (only occurred once), `Unknown`.
+For our purpose, we calculated average basal cover over the quadrats surveyed for each year for 
+each 146 species (excluding the `remove` category from 151 species list). 
 
 Among 51 quadrats, 36 permanent quadrats were arranged along a gradient of soil depth and located in two livestock exclosures
 ("e1" and "e2"). Rest 15 quadrats were located in grazed areas outside the exclosures, mostly in the 
@@ -1114,10 +1116,17 @@ in GIS tracking position for individual plants.
 Each polygon location was recorded as centroid co-ordinate (x $cm$, y $cm$) of 
 corresponding polygon (see `allrecords.csv`). 
 
-For our purpose, we calculated average basal cover over the quadrats surveyed for each year for 
-each 146 species (excluding the `remove` category from 151 species list). For tail dependence results,
-we considered average basal cover time series for $20$ most common species which had at least $35$ years 
-of finite data.
+For both datasets, we classified all the species into 3 distinct categories depending on their 
+availability throughout the study period over all the quadrats considered. They are 
+(i) "common sp." which were absent from all over the plots for not more than 6 years,
+(ii) "rare sp." which were present maximum for 2 years (if some "rare sp." appeared to be abundant 
+suddenly for one or two years then they were considered as "episodic sp."), (iii) the rests were
+put into "intermediate" class. For tail dependence analysis,
+we considered only the common sp. for each datasets (see 
+Tables \ref{tab_spinfo_jrg} and \ref{tab_spinfo_hays}). For skewness 
+analysis we used all three categories along with some combinations of 
+them to verify the consistency between different 
+approaches (see Figs \ref{fig_jrg_spaceavg_skewness} and \ref{fig_hays_spaceavg_skewness}).
 
 
 # Methods \label{Methods} 
