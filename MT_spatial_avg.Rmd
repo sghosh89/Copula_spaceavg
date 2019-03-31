@@ -35,7 +35,7 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 
 <!--keywords-->
 \noindent
-Synchrony | Tail-dependence | grassland | community stability 
+Synchrony | Tail-dependence | grassland | community variability
 \linebreak
 
 <!--# Introduction\label{Intro}-->
@@ -187,10 +187,15 @@ or right tail dependence indicates stronger association in their extreme higher 
 \includegraphics[width=\columnwidth]{./Results/pedagog_figs/extremeLT_tot_ts.pdf}\\
 \textbf{ \hspace{-6 cm} (B)} \\
 \includegraphics[width=\columnwidth]{./Results/pedagog_figs/extremeRT_tot_ts.pdf}
-\caption{ Pedagogical figure showing how skewness of total biomass distribution of a community through years is
-affected by asymmetric tail-dependence in individual species biomass; major lower tail dependence in a community makes 
-its total biomass more negatively skewed $(A)$, whereas major upper tail dependence in a community makes 
-its total biomass more positively skewed $(B)$, compared to a community having no tail-dependence.\label{fig_pedag_skewness}}
+\caption{Pedagogical figure showing how skewness of total biomass distribution of a community 
+is affected by extreme asymmetric tail-dependence (Appendix \ref{SI-extreme_taildep_mat}) in individual 
+species biomass-distribution throughout years. Major lower tail dependence in 
+a community makes its total biomass more negatively skewed $(A)$, whereas
+major upper tail dependence in a community makes 
+its total biomass more positively skewed $(B)$, compared to a
+community which is generated via a resampling method (Appendix \ref{SI-skew_ncsurrog})
+to have no tail-dependence but preserving pairwise Spearman correlation
+between any two species' time series.\label{fig_pedag_skewness}}
 \end{center}
 \end{figure}
 
@@ -220,7 +225,7 @@ plants' demographic process, their co-existence and extreme climatic effect
 on annual productivity 
 in the past studies [@fair1999demography; @adler2006climate; 
 @lauenroth2008demography; @heisler2009contingent].
-Both datasets have been served as experimental model system to 
+Both datasets (Appendix \ref{SI-Data}) have been served as experimental model system to 
 study ecological hypothesis since long and proved to be effective
 in decision making from conservation and management perspective. 
 
@@ -230,7 +235,8 @@ synchronous (for positively correlated variables)
 or compensatory (for negatively correlated variables) dynamics, if any, in 
 the serpentine grassland of JRBP and prairie of Hays in Kansas 
 using "tail-dependence" feature of copula.
-Implementing a model selection approach as well as nonparametric analysis, we 
+Implementing a model selection approach (Appendix \ref{SI-model_sel}) as well as nonparametric 
+analysis (Appendix \ref{SI-nonparam}), we 
 try to find is there any overall major asymmetric tail-dependence in those grassland community and
 if there is, then what could we interpret about inter-species response from this
 asymmetric tail-dependence? We also suggest an alternative measure of 
@@ -247,11 +253,6 @@ Appendix \ref{SI-Data}). We here analyzed
 our findings from a model-selection based 
 copula approach, but we also verified the overall finding using
 alternative nonparametric analysis (Appendix \ref{SI-compare_methods}).
-
-```{r read_res,echo=F}
-RES_jrg_spaceavg<-readRDS("./Results/jrg_results/RES_jrg_spaceavg.RDS")
-RES_hays_spaceavg<-readRDS("./Results/hays_results/RES_hays_spaceavg.RDS")
-```
 
 <!--## Results from jrg spaceavg LT-UT matrix plot-->
 Tail-dependence analysis 
@@ -311,8 +312,8 @@ to better understand plant competition and facilitation in serpentine grassland
 [@harrison2011] and in our study we showed tail-dependence could be a measure
 to understand inter-specific competition and mutualism in a multi-species metric. 
 
-On a similar note, we carried out the tail-dependence analysis for 20 most common species
-(Table \ref{SI-tab_spinfo_hays}) basal cover of Hays in Kansas, as our second data set. We 
+On a similar note, we carried out the tail-dependence analysis with the basal cover time series of
+20 most common species found in prairie of Hays, Kansas (Table \ref{SI-tab_spinfo_hays}). We
 found similar trend as of 
 JRBP, showing lower tail-dependence (considering positively correlation in
 counting lower and upper tail dependent pairwise copula) were dominant, overall, in 
@@ -333,83 +334,54 @@ other drought-tolerant grasses (e. g. \textit{Bouteloua gracilis} (sp5),
 were found to be synchronously rare and lower tail-dependent within themselves (positively 
 correlated red cells in Fig. \ref{fig_LTmUT_spaceavg_hays}).
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!--Results from skewness as a measure of community variability-->
-Major lower tail dependence than upper was observed in interspecific interactions 
-as visually evident from Fig. \ref{fig_LTmUT_spaceavg_jrg}. We counted the number of 
-positively correlated cells among $23 \times 23$ multi-species interaction matrix 
-and classified as $nL$ (showing more lower tail-dependence) and $nU$ (showing more upper tail dependence).
-These numbers (or more specifically their associated asymmetric tail-dependence
-values) play a significant contributors to the skewness of total community biomass
-distribution over years. For each of the 36 years (1983-2018), we computed total percent cover
-(averaged throughout the plots) of all species 
-(except LASP : 2014-2018 data reported only, need clarification from Lauren, Bare Ground).
-We measured skewness 
-of this aggregated percent cover time-series and compared against skewnesses of $10000$
-spearman-correlation preserving "Normal" surrogate time-series generated by a resampling approach
-(for details see Appendix \ref{SI-skew_ncsurrog}). We found remarkable change in 
-skewness (Fig. \ref{fig_skewness}) and that was marginally significant as compared 
-to their "Normal" analog. As skewness is related to the "spikiness" of the time-series
-concerned, lower skewness means the community could have a potential 
-threat for some of its native species which could crash simultaneously below a threshold.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Major lower tail dependence than upper, as observed in interspecific interactions 
+in both grassland communities (Figs. \ref{fig_LTmUT_spaceavg_jrg}-\ref{fig_LTmUT_spaceavg_hays},
+$nL>NU$) could play a significant contributors in predicting their stabilities. Via skewness 
+measurement of total productivity through out the study period, one can assess an alternate measure 
+of community-variability. Following the idea as we introduced in the earlier section, 
+for each of the 36 years (1983-2018), we computed total percent cover
+(averaged throughout the plots) of the species in Jasper Ridge.
+We measured skewness of this aggregated percent cover time-series and compared against 
+skewnesses of $10000$ "Normal" surrogate time-series which were meant to have no tail-dependence
+but same pairwise Spearman correlation between species (for details see Appendix \ref{SI-skew_ncsurrog}).
+We repeated this procedure for five different combination of species (see Fig. \ref{SI-fig_jrg_spaceavg_skewness})
+in JRBP: considering total percent cover timeseries from (i) only 23 common sp., (ii) 23 common sp. and 
+rest aggregated into one pseudo sp., 
+(iii) 35 common and intermediate sp., (iv) 35 common and intermediate sp. along with the rest aggregated into 
+one pseudo sp., (v) all sp. including the rare ones (for classification of species 
+categories see Appendix \ref{SI-Data}). <!--(except LASP : 2014-2018 data reported only, 
+need clarification from Lauren, Bare Ground)--> As a community with major lower tail dependence, JRBP was 
+expected to show significantly lower skewness than symmetric "Normal" surrogates. We found the expected results with 
+(i) and (iii) combinations, the rest were marginally significant because of sudden abundance of one episodic sp. 
+(THSP??) in year 2017 (see Fig. \ref{SI-fig_spaceavg_timeseries}(A)). Similar results with significant lower skewness
+because of dominant lower tail-dependence in the comminity was observed with Hays datasets (Fig. 
+\ref{SI-fig_hays_spaceavg_skewness}). As skewness is related to the "spikiness" of the time-series
+concerned, significantly lower skewness than its "Normal" analog scale means the community could have 
+a potential threat for some of its native species which could crash simultaneously below a threshold.
 
 \begin{figure*}[!h]
 \begin{center}
-\includegraphics[width=12cm]{./Results/jrg_results/LTmUT_jrg_spaceavg.pdf} 
-\caption{Model averaged lower tail - upper tail dependence matrix for 15 most common plant species, 
+\includegraphics[width=10cm]{./Results/jrg_results/LTmUT_jrg_spaceavg.pdf} 
+\caption{Model averaged lower tail - upper tail dependence matrix for 23 most common plant species 
+(Table \ref{SI-tab_spinfo_jrg}), 
 details were discussed in \nameref{Results}. 
 nL and nU are the count of cells (considered for positive correlation only)
 with positive and negative tail-dependence difference 
-values for 15$\times$15 matrix; 
+values for 23$\times$23 matrix; 
 nL$>$nU (majority of red cells) indicates major lower tail dependence
 in sp-sp interaction matrix.
-Yellow cells indicate independent relationship. \label{fig_LTmUT_spaceavg_jrg}}
+Yellow cells indicate independent relationship. Initially negatively correlated cells contain a number 
+indicating the id of the species (in column) that was taken reversed when constructing bivariate
+copula to make positively correlated (for details see Appendix \ref{SI-model_sel}).\label{fig_LTmUT_spaceavg_jrg}}
 \end{center}
 \end{figure*}
 
 \begin{figure*}[!h]
 \begin{center}
-\includegraphics[width=15cm]{./Results/hays_results/LTmUT_hays_spaceavg.pdf} 
-\caption{Model averaged lower tail - upper tail dependence matrix for 20 most common plant species, 
-details were discussed in \nameref{Results}. 
-nL and nU are the count of cells (considered for positive correlation only)
-with positive and negative tail-dependence difference 
-values for 15$\times$15 matrix; 
-nL$>$nU (majority of red cells) indicates major lower tail dependence
-in sp-sp interaction matrix.
-Yellow cells indicate independent relationship. \label{fig_LTmUT_spaceavg_hays}}
+\includegraphics[width=10cm]{./Results/hays_results/LTmUT_hays_spaceavg.pdf} 
+\caption{Similar model averaged lower tail - upper tail dependence matrix as of Fig. \ref{fig_LTmUT_spaceavg_jrg}
+but for 20 most common plant species (Table \ref{SI-tab_spinfo_hays}) found in Hays priarie.\label{fig_LTmUT_spaceavg_hays}}
 \end{center}
 \end{figure*}
 
@@ -425,7 +397,7 @@ Yellow cells indicate independent relationship. \label{fig_LTmUT_spaceavg_hays}}
 
 
 
-
+\clearpage
 \setlength{\parindent}{-0.2in}
 \setlength{\leftskip}{0.2in}
 \setlength{\parskip}{1pt}

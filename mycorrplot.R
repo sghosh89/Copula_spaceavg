@@ -46,7 +46,7 @@ mycorrplot<-function(z,posnI_ind,posnN_ind,colrange,nsm){
     
     corrplot(N, cl.pos = "n", na.label = " ", add = T,addgrid.col = "transparent",
              bg = "transparent", tl.col = "transparent",p.mat = N,sig.level = -2,col="transparent",
-             pch=1,pch.col="green",pch.cex = 6,number.cex = 2)
+             pch=1,pch.col="green",pch.cex = 4,number.cex = 6)
     
   }
 
