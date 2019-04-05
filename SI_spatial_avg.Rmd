@@ -104,6 +104,18 @@ tot_sp_jrg==42
 
 tot_sp_jrg<-length(id_common_sp_jrg)+length(id_normal_sp_jrg)+length(id_rare_sp_jrg)+length(bad_id_jrg)
 tot_sp_jrg==42
+
+sp_jrg_category<-as.data.frame(matrix(NA,nrow=42,ncol=3))
+colnames(sp_jrg_category)<-c("id","sp","category")
+sp_jrg_category$id<-c(1:42)
+sp_jrg_category$sp<-names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)
+sp_jrg_category$category[id_common_sp_jrg]<-"C"
+sp_jrg_category$category[id_rare_sp_jrg]<-"R"
+sp_jrg_category$category[id_normal_sp_jrg]<-"I" # Intermediate and normal are used in same meaning
+
+all_sp_39_jrg_category<-na.omit(sp_jrg_category)
+all_sp_39_jrg_category<-all_sp_39_jrg_category[,c(2:3)]
+saveRDS(all_sp_39_jrg_category,"./Results/jrg_results/skewness_results/all_sp_39_jrg_category.RDS")
 #----------------------------------------------------------------------------------------------
 splist_jrg_spaceavg<-id_common_sp_jrg
 lensp<-length(splist_jrg_spaceavg)
@@ -299,6 +311,9 @@ dev.off()
 ```{r skewness_jrg_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,data_jrg_spaceavg,mtime("skewness_testing.R"),mtime("ncsurrog.R"))}
 #we suppressed the warning coming from ncsurrog by using warning=F in chunk header 
 # Kendall does not handle ties so we didn't use that
+
+# normal sp. and Intermediate sp. have the same interpretation
+
 set.seed(seed)
 source("skewness_testing.R")
 
@@ -331,6 +346,9 @@ total_ts_common_and_normal_sp_jrg<-apply(ts_mat_common_and_normal_sp_jrg,MARGIN 
 
 id_all_sp_jrg<-sort(c(id_common_sp_jrg,id_normal_sp_jrg, id_rare_sp_jrg))
 ts_mat_all_sp_jrg<-ts_mat[,id_all_sp_jrg]
+
+saveRDS(ts_mat_all_sp_jrg,"./Results/jrg_results/skewness_results/ts_mat_all_sp_39_jrg.RDS")
+
 total_ts_all_sp_jrg<-apply(ts_mat_all_sp_jrg,MARGIN = 1,FUN = sum,na.rm=T)
 
 total_ts<-cbind(total_ts_common_sp_jrg,total_ts_common_and_normal_sp_jrg,total_ts_all_sp_jrg)
@@ -622,6 +640,18 @@ id_normal_sp_hays<-setdiff(id_normal_sp_hays,id_nonplant)
 tot_sp_hays<-length(id_common_sp_hays)+length(id_normal_sp_hays)+length(id_rare_sp_hays)+length(id_nonplant)
 tot_sp_hays==151
 
+sp_hays_category<-as.data.frame(matrix(NA,nrow=length(splist),ncol=3))
+colnames(sp_hays_category)<-c("id","sp","category")
+sp_hays_category$id<-c(1:length(splist))
+sp_hays_category$sp<-splist
+sp_hays_category$category[id_common_sp_hays]<-"C" #common sp. for Hays data
+sp_hays_category$category[id_normal_sp_hays]<-"I" # normal or Intermediate sp. for Hays data
+sp_hays_category$category[id_rare_sp_hays]<-"R" # rare sp. for Hays data
+
+all_sp_146_hays_category<-na.omit(sp_hays_category)
+all_sp_146_hays_category<-all_sp_146_hays_category[,-1]
+saveRDS(all_sp_146_hays_category,"./Results/hays_results/skewness_results/all_sp_146_hays_category.RDS")
+
 # Now make hays_spaceavg data in your format
 hays_spaceavg<-vector("list",1)
 names(hays_spaceavg)<-"avg.basal.cover"
@@ -778,6 +808,7 @@ total_ts_common_and_normal_sp_hays<-apply(ts_mat_common_and_normal_sp_hays,MARGI
 id_all_sp_hays<-sort(c(id_common_sp_hays,id_normal_sp_hays, id_rare_sp_hays))
 ts_mat_all_sp_hays<-ts_mat[,id_all_sp_hays]
 total_ts_all_sp_hays<-apply(ts_mat_all_sp_hays,MARGIN = 1,FUN = sum,na.rm=T)
+saveRDS(ts_mat_all_sp_hays,"./Results/hays_results/skewness_results/ts_mat_all_sp_146_hays.RDS")
 
 total_ts<-cbind(total_ts_common_sp_hays,total_ts_common_and_normal_sp_hays,total_ts_all_sp_hays)
 

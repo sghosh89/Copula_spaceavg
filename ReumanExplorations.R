@@ -1,22 +1,18 @@
 
 
-#Insert code to import the two datasets
-dHAY<- #want a matrix of years by species (all species except those you excluded at the beginning)
-dJRG<- #want another such
+#Importing the two dataset matrices of years by species
+dHAY<- readRDS("./Results/hays_results/skewness_results/ts_mat_all_sp_146_hays.RDS")# for all species except in "REMOVE" category
+dJRG<- readRDS("./Results/jrg_results/skewness_results/ts_mat_all_sp_39_jrg.RDS")# for all species except "BARE","ROCK","LASP"
   
-#Insert code to make a vector with "c", "i", "r" values for common, intermediate, and rare species
+#Importing data with "C", "I", "R" values for common, intermediate, and rare species
+category_hays<-readRDS("./Results/hays_results/skewness_results/all_sp_146_hays_category.RDS")  
+category_jrg<-readRDS("./Results/jrg_results/skewness_results/all_sp_39_jrg_category.RDS")
+
+# check :
+all(colnames(dHAY)==category_hays$sp)==T
+all(colnames(dJRG)==category_jrg$sp)==T
+
 #src stands for species rarity category
-srcHAY<- #a vector with one entry for each species, corresponding to the columns of dHAY
-srcJRG<-
-  
-  
-  
-#to be deleted when you are done with it Shya
-library(copula)
-ccop<-claytonCopula(5,2)
-d<-rCopula(10000,ccop)
-plot(d[,1],d[,2],type="p")
-dq<-qnorm(d)
-plot(dq[,1],dq[,2],type="p")
-hist(dq[,1])
-hist(dq[,2])
+srcHAY<- category_hays$category #a vector with one entry for each species, corresponding to the columns of dHAY
+srcJRG<- category_jrg$category
+
