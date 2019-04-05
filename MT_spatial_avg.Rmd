@@ -1,5 +1,5 @@
 ---
-title: "Estimating synchronous and compensatory dynamics in grassland community using a novel “copula” approach"
+title: "Estimating synchronous and compensatory dynamics in grassland communities using a novel “copula” approach"
 author: "Shyamolina Ghosh"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 #date: "October 12, 2018"
@@ -22,6 +22,11 @@ indent : True
 csl: pnas.csl
 bibliography: REF_CSS.bib
 ---
+
+<!--***DAN: store alternative titles here, decide on one closer to the end
+1) A complete description of synchrony and compensatory dynamics yields a better understanding of community stability
+2) 
+-->
 
 ```{r setup_Paper, echo=F}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")

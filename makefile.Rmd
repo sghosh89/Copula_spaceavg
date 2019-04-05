@@ -1,5 +1,5 @@
 ---
-title: "Makefile, compiliation notes"
+title: "Space average makefile, compiliation notes"
 author: "Daniel Reuman, Shyamolina Ghosh"
 date: ""
 output: pdf_document
