@@ -1826,7 +1826,7 @@ was present maximum for 2 years. The rest are classified into "intermediate" cat
 \includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/skewness_hays_spaceavg_spearman_sp_146.pdf}
 \includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/skewness_hays_spaceavg_spearman_plotcheckon_sp_146.pdf}
 \includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/cvsq_hays_spaceavg_spearman_sp_146.pdf}\\
-\caption[Similar figure as of Fig. \ref{fig_jrg_spaceavg_skewness_cvsq} but for Hays dataset.]{Similar figure as of Fig. \ref{fig_jrg_spaceavg_skewness} but for Hays dataset. Figures are for $(A-C)$ 20 common species, $(D-F)$ 20 common sp. and rest aggregated into one pseudo sp., $(G-I)$ common and intermediate (total 100) sp., $(J-L)$ 100 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(M-O)$ all 146 species including rare ones though histogram $(J)$ did not validate the approximated version of positive semi-definite covariance matrix.\label{fig_hays_spaceavg_skewness_cvsq}}
+\caption[Similar figure as of Fig. \ref{fig_jrg_spaceavg_skewness_cvsq} but for Hays dataset.]{Similar figure as of Fig. \ref{fig_jrg_spaceavg_skewness_cvsq} but for Hays dataset. Figures are for $(A-C)$ 20 common species, $(D-F)$ 20 common sp. and rest aggregated into one pseudo sp., $(G-I)$ common and intermediate (total 100) sp., $(J-L)$ 100 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(M-O)$ all 146 species including rare ones though histogram $(J)$ did not validate the approximated version of positive semi-definite covariance matrix.\label{fig_hays_spaceavg_skewness_cvsq}}
 \end{center}
 \end{figure}
 
