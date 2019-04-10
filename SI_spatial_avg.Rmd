@@ -1754,6 +1754,33 @@ was present maximum for 2 years. The rest are classified into "intermediate" cat
 \end{center}
 \end{figure}
 
+<!--jrg : skewness and cvsq results plot -->
+\begin{figure}[!h]
+\begin{center}
+\textbf{ \hspace{0.5 cm} (A) \hspace{3.5 cm} (B) \hspace{3.5 cm} (C)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/skewness_jrg_spaceavg_spearman_sp_23.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/skewness_jrg_spaceavg_spearman_plotcheckon_sp_23.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/cvsq_jrg_spaceavg_spearman_sp_23.pdf}\\
+\textbf{ \hspace{0.5 cm} (D) \hspace{3.5 cm} (E) \hspace{3.5 cm} (F)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_sp_24.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_plotcheckon_sp_24.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/cvsq_jrg_spaceavg_spearman_sp_24.pdf}\\
+\textbf{ \hspace{0.5 cm} (G) \hspace{3.5 cm} (H) \hspace{3.5 cm} (I)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/skewness_jrg_spaceavg_spearman_sp_35.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/skewness_jrg_spaceavg_spearman_plotcheckon_sp_35.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/cvsq_jrg_spaceavg_spearman_sp_35.pdf}\\
+\textbf{ \hspace{0.5 cm} (J) \hspace{3.5 cm} (K) \hspace{3.5 cm} (L)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/skewness_jrg_spaceavg_spearman_sp_36.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/skewness_jrg_spaceavg_spearman_plotcheckon_sp_36.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/cvsq_jrg_spaceavg_spearman_sp_36.pdf}\\
+\textbf{ \hspace{0.5 cm} (M) \hspace{3.5 cm} (N) \hspace{3.5 cm} (O)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_sp_39.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_plotcheckon_sp_39.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/cvsq_jrg_spaceavg_spearman_sp_39.pdf}\\
+\caption[Skewness and $CV^2$ results for grassland community in Jasper ridge]{Skewness results for Jasper ridge; each row represents 3 histograms : first one is for comparing the position of skewness of data with its spearman preserving $10000$ surrogates having "Normal" copula structure, second one is for checking if the approximated positive semi-definite covariance matrix is acceptable or not (for details see \ref{skew_ncsurrog}) and the third is for comparing the value of $CV^2$ of data with its spearman preserving $10000$ surrogates having "Normal" copula structure. Figures are for $(A-C)$ 23 common species, $(D-F)$ 23 common sp. and rest aggregated into one pseudo sp., $(G-I)$ common and intermediate (total 35) sp., $(J-L)$ 35 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(M-O)$ all 39 species including rare ones.\label{fig_jrg_spaceavg_skewness_cvsq}}
+\end{center}
+\end{figure}
+
 <!--hays : skewness results plot -->
 \begin{figure}[!h]
 \begin{center}
@@ -1776,6 +1803,32 @@ was present maximum for 2 years. The rest are classified into "intermediate" cat
 \end{center}
 \end{figure}
 
+<!--hays : skewness + cvsq results plot -->
+\begin{figure}[!h]
+\begin{center}
+\textbf{ \hspace{0.5 cm} (A) \hspace{3.5 cm} (B) \hspace{3.5 cm} (C)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_sp_20/skewness_hays_spaceavg_spearman_sp_20.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_sp_20/skewness_hays_spaceavg_spearman_plotcheckon_sp_20.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_sp_20/cvsq_hays_spaceavg_spearman_sp_20.pdf}\\
+\textbf{ \hspace{0.5 cm} (D) \hspace{3.5 cm} (E) \hspace{3.5 cm} (F)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_pseudo_sp_21/skewness_hays_spaceavg_spearman_sp_21.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_pseudo_sp_21/skewness_hays_spaceavg_spearman_plotcheckon_sp_21.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_pseudo_sp_21/cvsq_hays_spaceavg_spearman_sp_21.pdf}\\
+\textbf{ \hspace{0.5 cm} (G) \hspace{3.5 cm} (H) \hspace{3.5 cm} (I)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_sp_100/skewness_hays_spaceavg_spearman_sp_100.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_sp_100/skewness_hays_spaceavg_spearman_plotcheckon_sp_100.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_sp_100/cvsq_hays_spaceavg_spearman_sp_100.pdf}\\
+\textbf{ \hspace{0.5 cm} (J) \hspace{3.5 cm} (K) \hspace{3.5 cm} (L)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_and_pseudo_sp_101/skewness_hays_spaceavg_spearman_sp_101.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_and_pseudo_sp_101/skewness_hays_spaceavg_spearman_plotcheckon_sp_101.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_and_pseudo_sp_101/cvsq_hays_spaceavg_spearman_sp_101.pdf}\\
+\textbf{ \hspace{0.5 cm} (M) \hspace{3.5 cm} (N) \hspace{3.5 cm} (O)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/skewness_hays_spaceavg_spearman_sp_146.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/skewness_hays_spaceavg_spearman_plotcheckon_sp_146.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/cvsq_hays_spaceavg_spearman_sp_146.pdf}\\
+\caption[Similar figure as of Fig. \ref{fig_jrg_spaceavg_skewness} but for Hays dataset.]{Similar figure as of Fig. \ref{fig_jrg_spaceavg_skewness} but for Hays dataset. Figures are for $(A-C)$ 20 common species, $(D-F)$ 20 common sp. and rest aggregated into one pseudo sp., $(G-I)$ common and intermediate (total 100) sp., $(J-L)$ 100 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(M-O)$ all 146 species including rare ones though histogram $(J)$ did not validate the approximated version of positive semi-definite covariance matrix.\label{fig_hays_spaceavg_skewness_cvsq}}
+\end{center}
+\end{figure}
 
 
 
