@@ -308,14 +308,14 @@ par(op)
 dev.off()
 ```
 
-```{r skewness_jrg_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,data_jrg_spaceavg,mtime("skewness_testing.R"),mtime("ncsurrog.R"))}
+```{r skewness_jrg_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,data_jrg_spaceavg,mtime("skewness_cvsq_testing.R"),mtime("ncsurrog.R"),mtime("mycvsq.R"))}
 #we suppressed the warning coming from ncsurrog by using warning=F in chunk header 
 # Kendall does not handle ties so we didn't use that
 
 # normal sp. and Intermediate sp. have the same interpretation
 
 set.seed(seed)
-source("skewness_testing.R")
+source("skewness_cvsq_testing.R")
 
 # Generate matrix which holds timeseries for all 42 species along each of 42 column : 36 by 42 matrix
 splist<-c(1:42)
@@ -394,7 +394,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -405,7 +405,15 @@ pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
+
+pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 
@@ -420,7 +428,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -431,7 +439,15 @@ pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
+
+pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 
@@ -446,7 +462,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -457,10 +473,17 @@ pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 
+pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
 #--------------------------Now calculate skewness results with common + normal + pseudo-sp. ----------------------------------------
 mymat<-ts_mat_common_normal_pseudo_jrg
 resloc<-"./Results/jrg_results/skewness_results/"
@@ -472,7 +495,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -483,7 +506,15 @@ pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
+
+pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 
@@ -498,7 +529,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -509,7 +540,15 @@ pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
+
+pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 ```
@@ -785,12 +824,12 @@ npa_diff_hays_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_hays_npa_spac
 saveRDS(npa_diff_hays_spaceavg,paste(resloc,file="npa_diff_hays_spaceavg.RDS",sep=''))
 ```
 
-```{r skewness_hays_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,hays_array,avg_cover_over_plots_hays,mtime("skewness_testing.R"),mtime("ncsurrog.R"))}
+```{r skewness_hays_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,hays_array,avg_cover_over_plots_hays,mtime("skewness_cvsq_testing.R"),mtime("ncsurrog.R"),mtime("mycvsq.R"))}
 
 #we suppressed the warning coming from ncsurrog by using warning=F in chunk header 
 # Kendall does not handle ties so we didn't use that
 set.seed(seed)
-source("skewness_testing.R")
+source("skewness_cvsq_testing.R")
 
 # This is the matrix which holds timeseries for all 151 species along each of 151 column : 41 by 151 matrix
 ts_mat<-avg_cover_over_plots_hays
@@ -852,7 +891,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -863,10 +902,17 @@ pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep="
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 
+pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
 #--------------------------Now calculate skewness results with common species + pseudo-sp.----------------------------------------
 mymat<-ts_mat_common_pseudo_hays
 resloc<-"./Results/hays_results/skewness_results/"
@@ -878,7 +924,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -889,10 +935,17 @@ pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep="
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 
+pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
 #--------------------------Now calculate skewness results with common and normal species-------------------------
 mymat<-ts_mat_common_and_normal_sp_hays
 resloc<-"./Results/hays_results/skewness_results/"
@@ -904,7 +957,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -915,7 +968,15 @@ pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep="
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
+
+pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 
@@ -930,7 +991,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -941,10 +1002,17 @@ pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep="
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 
+pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
 #----------------------Now calculate skewness results with all species---------------------------------
 mymat<-ts_mat_all_sp_hays
 resloc<-"./Results/hays_results/skewness_results/"
@@ -956,7 +1024,7 @@ if (!dir.exists(tempo)){
 resloc2<-paste(tempo,"/",sep="")
 
 pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F,
+ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F,
                       plotcheckon=T, corpres = "spearman",resloc=resloc2)
 # this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
 dev.off()
@@ -967,7 +1035,15 @@ pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep="
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
 abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
+par(op)
+dev.off()
+
+pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
+op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
+hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
+abline(v=ans$realcvsq,col="black")
+mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 ```
@@ -1678,6 +1754,33 @@ was present maximum for 2 years. The rest are classified into "intermediate" cat
 \end{center}
 \end{figure}
 
+<!--jrg : skewness and cvsq results plot -->
+\begin{figure}[!h]
+\begin{center}
+\textbf{ \hspace{0.5 cm} (A) \hspace{3.5 cm} (B) \hspace{3.5 cm} (C)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/skewness_jrg_spaceavg_spearman_sp_23.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/skewness_jrg_spaceavg_spearman_plotcheckon_sp_23.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/cvsq_jrg_spaceavg_spearman_sp_23.pdf}\\
+\textbf{ \hspace{0.5 cm} (D) \hspace{3.5 cm} (E) \hspace{3.5 cm} (F)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_sp_24.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_plotcheckon_sp_24.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/cvsq_jrg_spaceavg_spearman_sp_24.pdf}\\
+\textbf{ \hspace{0.5 cm} (G) \hspace{3.5 cm} (H) \hspace{3.5 cm} (I)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/skewness_jrg_spaceavg_spearman_sp_35.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/skewness_jrg_spaceavg_spearman_plotcheckon_sp_35.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/cvsq_jrg_spaceavg_spearman_sp_35.pdf}\\
+\textbf{ \hspace{0.5 cm} (J) \hspace{3.5 cm} (K) \hspace{3.5 cm} (L)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/skewness_jrg_spaceavg_spearman_sp_36.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/skewness_jrg_spaceavg_spearman_plotcheckon_sp_36.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/cvsq_jrg_spaceavg_spearman_sp_36.pdf}\\
+\textbf{ \hspace{0.5 cm} (M) \hspace{3.5 cm} (N) \hspace{3.5 cm} (O)} \\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_sp_39.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_plotcheckon_sp_39.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/cvsq_jrg_spaceavg_spearman_sp_39.pdf}\\
+\caption[Skewness and $CV^2$ results for grassland community in Jasper ridge]{Skewness results for Jasper ridge; each row represents 3 histograms : first one is for comparing the position of skewness of data with its spearman preserving $10000$ surrogates having "Normal" copula structure, second one is for checking if the approximated positive semi-definite covariance matrix is acceptable or not (for details see \ref{skew_ncsurrog}) and the third is for comparing the value of $CV^2$ of data with its spearman preserving $10000$ surrogates having "Normal" copula structure. Figures are for $(A-C)$ 23 common species, $(D-F)$ 23 common sp. and rest aggregated into one pseudo sp., $(G-I)$ common and intermediate (total 35) sp., $(J-L)$ 35 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(M-O)$ all 39 species including rare ones.\label{fig_jrg_spaceavg_skewness_cvsq}}
+\end{center}
+\end{figure}
+
 <!--hays : skewness results plot -->
 \begin{figure}[!h]
 \begin{center}
@@ -1700,6 +1803,32 @@ was present maximum for 2 years. The rest are classified into "intermediate" cat
 \end{center}
 \end{figure}
 
+<!--hays : skewness + cvsq results plot -->
+\begin{figure}[!h]
+\begin{center}
+\textbf{ \hspace{0.5 cm} (A) \hspace{3.5 cm} (B) \hspace{3.5 cm} (C)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_sp_20/skewness_hays_spaceavg_spearman_sp_20.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_sp_20/skewness_hays_spaceavg_spearman_plotcheckon_sp_20.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_sp_20/cvsq_hays_spaceavg_spearman_sp_20.pdf}\\
+\textbf{ \hspace{0.5 cm} (D) \hspace{3.5 cm} (E) \hspace{3.5 cm} (F)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_pseudo_sp_21/skewness_hays_spaceavg_spearman_sp_21.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_pseudo_sp_21/skewness_hays_spaceavg_spearman_plotcheckon_sp_21.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_pseudo_sp_21/cvsq_hays_spaceavg_spearman_sp_21.pdf}\\
+\textbf{ \hspace{0.5 cm} (G) \hspace{3.5 cm} (H) \hspace{3.5 cm} (I)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_sp_100/skewness_hays_spaceavg_spearman_sp_100.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_sp_100/skewness_hays_spaceavg_spearman_plotcheckon_sp_100.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_sp_100/cvsq_hays_spaceavg_spearman_sp_100.pdf}\\
+\textbf{ \hspace{0.5 cm} (J) \hspace{3.5 cm} (K) \hspace{3.5 cm} (L)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_and_pseudo_sp_101/skewness_hays_spaceavg_spearman_sp_101.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_and_pseudo_sp_101/skewness_hays_spaceavg_spearman_plotcheckon_sp_101.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/common_and_normal_and_pseudo_sp_101/cvsq_hays_spaceavg_spearman_sp_101.pdf}\\
+\textbf{ \hspace{0.5 cm} (M) \hspace{3.5 cm} (N) \hspace{3.5 cm} (O)} \\
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/skewness_hays_spaceavg_spearman_sp_146.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/skewness_hays_spaceavg_spearman_plotcheckon_sp_146.pdf}
+\includegraphics[width=4 cm]{./Results/hays_results/skewness_results/all_sp_146/cvsq_hays_spaceavg_spearman_sp_146.pdf}\\
+\caption[Similar figure as of Fig. \ref{fig_jrg_spaceavg_skewness_cvsq} but for Hays dataset.]{Similar figure as of Fig. \ref{fig_jrg_spaceavg_skewness_cvsq} but for Hays dataset. Figures are for $(A-C)$ 20 common species, $(D-F)$ 20 common sp. and rest aggregated into one pseudo sp., $(G-I)$ common and intermediate (total 100) sp., $(J-L)$ 100 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(M-O)$ all 146 species including rare ones though histogram $(J)$ did not validate the approximated version of positive semi-definite covariance matrix.\label{fig_hays_spaceavg_skewness_cvsq}}
+\end{center}
+\end{figure}
 
 
 
