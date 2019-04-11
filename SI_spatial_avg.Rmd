@@ -308,7 +308,7 @@ par(op)
 dev.off()
 ```
 
-```{r skewness_jrg_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,data_jrg_spaceavg,mtime("skewness_cvsq_testing.R"),mtime("ncsurrog.R"),mtime("mycvsq.R"))}
+```{r skewness_jrg_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,data_jrg_spaceavg,mtime("skewness_cvsq_testing.R"),mtime("ncsurrog.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
 #we suppressed the warning coming from ncsurrog by using warning=F in chunk header 
 # Kendall does not handle ties so we didn't use that
 
@@ -824,7 +824,7 @@ npa_diff_hays_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_hays_npa_spac
 saveRDS(npa_diff_hays_spaceavg,paste(resloc,file="npa_diff_hays_spaceavg.RDS",sep=''))
 ```
 
-```{r skewness_hays_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,hays_array,avg_cover_over_plots_hays,mtime("skewness_cvsq_testing.R"),mtime("ncsurrog.R"),mtime("mycvsq.R"))}
+```{r skewness_hays_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,hays_array,avg_cover_over_plots_hays,mtime("skewness_cvsq_testing.R"),mtime("ncsurrog.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
 
 #we suppressed the warning coming from ncsurrog by using warning=F in chunk header 
 # Kendall does not handle ties so we didn't use that

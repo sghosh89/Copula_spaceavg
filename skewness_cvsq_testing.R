@@ -1,6 +1,6 @@
 source("ncsurrog.R")
 source("mycvsq.R")
-library(e1071)
+source("SkewnessAnd3CentMom.R")
 #----------------------------------------------------------------------------------------------------
 # Input : ts_matrix : a multivariate dataset (a matrix with dimension = timeseries by species)
 #         splist : a vector of selective locations 
@@ -30,7 +30,7 @@ skewness_cvsq_testing<-function(ts_matrix,splist,numsurrog,ploton,plotcheckon,co
   ts_matrix_w_tot<-cbind(ts_matrix,ts_tot)
   
   #---------skewness for given data--------------------------------------------
-  skw<-apply(FUN=skewness,X=ts_matrix_w_tot,MARGIN=2,type=2)
+  skw<-apply(FUN=myskns,X=ts_matrix_w_tot,MARGIN=2)
   realskw<-tail(skw,1)
   
   #--------------coefficient of variation^2 for given data------------------------
@@ -50,7 +50,7 @@ skewness_cvsq_testing<-function(ts_matrix,splist,numsurrog,ploton,plotcheckon,co
     }
   }
   
-  surrogskw<-apply(FUN=skewness,X=ts_surrog_tot,MARGIN=2,type=2)
+  surrogskw<-apply(FUN=myskns,X=ts_surrog_tot,MARGIN=2)
   surrogcvsq<-apply(FUN=mycvsq,X=ts_surrog_tot,MARGIN=2)
   
   p_left_skw<-sum(surrogskw < realskw)/numsurrog
