@@ -11,9 +11,10 @@
 #Output
 #The medians of each column of cors gives a vector of the same length as p.
 #These together determine a function, via linear interpolation between 
-#values. The function returns the unique complete pre-image under this map,
+#values. The code computes the complete pre-image under this map,
 #if it exists, of imval. If there is no point in the pre-image, the function
-#returns -Inf. If more than one point, it returns Inf.
+#returns -Inf. If more than one point, it returns Inf. If exactly one point,
+#it return that value.
 
 getinv<-function(p,cors,imval)
 {

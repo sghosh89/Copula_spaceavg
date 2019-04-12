@@ -225,6 +225,122 @@ eqres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors==array(cor(dHAYC),c(20,20,1000))))
 diag(gtres)<-NA
 hist(gtres) #same result. So we cannot do this.
 
+# Get the inverse range and see if you can find a PD matrix in there
+source("getinvrg.R")
+
+# explore the map for common species first, to make sure getinvrg is giving
+#sensible results
+x<-dHAY[,4]
+y<-dHAY[,7]
+
+p<-seq(from=-1,to=1,by=0.05)
+numreps<-500
+res<-copmap(x,y,p,numreps)
+mn<-apply(FUN=mean,MARGIN=2,X=res)
+quants<-apply(FUN=quantile,MARGIN=2,X=res,probs=c(.25,.5,.75))
+plot(p,mn,type='l',ylim=range(mn,quants))
+lines(p,quants[2,],type='l',lty="dashed")
+lines(p,quants[1,],type='l',lty="dashed")
+lines(p,quants[3,],type='l',lty="dashed")
+lines(range(p),rep(cor(x,y),2))
+all.equal(res[,1],rep(res[1,1],numreps))
+all.equal(res[,length(p)],rep(res[1,length(p)],numreps))
+invres<-getinvrg(p,res,cor(x,y))
+lines(rep(invres[1],2),c(-1,1))
+lines(rep(invres[2],2),c(-1,1))
+invres
+
+p<-seq(from=-1,to=1,by=0.1)
+numreps<-50
+res<-copmap(x,y,p,numreps)
+mn<-apply(FUN=mean,MARGIN=2,X=res)
+quants<-apply(FUN=quantile,MARGIN=2,X=res,probs=c(.25,.5,.75))
+plot(p,mn,type='l',ylim=range(mn,quants))
+lines(p,quants[2,],type='l',lty="dashed")
+lines(p,quants[1,],type='l',lty="dashed")
+lines(p,quants[3,],type='l',lty="dashed")
+lines(range(p),rep(cor(x,y),2))
+all.equal(res[,1],rep(res[1,1],numreps))
+all.equal(res[,length(p)],rep(res[1,length(p)],numreps))
+invres<-getinvrg(p,res,cor(x,y))
+lines(rep(invres[1],2),c(-1,1))
+lines(rep(invres[2],2),c(-1,1))
+invres
+#so based on these two results I hypothesize it will be good enough
+#to do 50 sims per value of p and to do values of p every .1 or so
+
+#now do all the common species, and for each pair find the preimage range
+dHAYC<-dHAY[,srcHAY=="C"]
+p<-seq(from=-1,to=1,by=0.1)
+numreps<-50
+
+numsp<-dim(dHAYC)[2]
+allparms<-array(NA,c(numsp,numsp,2))
+for (c1 in 1:(numsp-1))
+{
+  print(paste0("c1: ",c1))
+  for (c2 in (c1+1):numsp)
+  {
+    x<-dHAYC[,c1]
+    y<-dHAYC[,c2]
+    thisres<-copmap(x,y,p,numreps)
+    allparms[c1,c2,]<-getinvrg(p,thisres,cor(x,y))
+  }
+}
+allparms[1:numsp,1:numsp,1]
+allparms[1:numsp,1:numsp,2]
+
+# now look for a pd matrix with entries subject to these bounds
+numtries<-100000
+pdres<-NA*numeric(numtries)
+h1<-P2p(t(allparms[,,1]))
+h2<-P2p(t(allparms[,,2]))
+for (counter in 1:numtries)
+{
+  m<-p2P((h2-h1)*runif(length(h1))+h1)
+  pdres[counter]<-is.positive.semi.definite(m)  
+}
+sum(pdres)
+#did not find any pd mats! so we are probably screwed
+
+#but lets do a better search than random guesses
+fn<-function(h)
+{
+  res<-min(eigen(p2P(h))$values)
+  counter<-1
+  if (res>0)
+  {
+    save(res,file="pdmat.RData")
+    print(paste0("Found one! ",counter))
+    counter<-counter+1
+  }
+  return(res)
+}
+optim((h2+h1)/2,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.008126182
+optim(h1+(h2-h1)/3,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.005551332
+optim(h1+2*(h2-h1)/3,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.02355906
+set.seed(101)
+startvec<-(h2-h1)*runif(length(h1))+h1
+optim(startvec,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.05817708
+startvec<-(h2-h1)*runif(length(h1))+h1
+optim(startvec,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.06747409
+startvec<-(h2-h1)*runif(length(h1))+h1
+optim(startvec,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.03248601
+optim(h1+(h2-h1)/4,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.005046021
+optim(h1+(h2-h1)/5,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.0001480897
+optim(h1+(h2-h1)/6,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got -0.003144349
+
+#OK, need to come back and figure out a way to search overnight or soemthing.
+
 ### Now repeat all the above with JRG, perhaps we will get lucky and 
 #same problems will not present
 
@@ -416,6 +532,194 @@ eqres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors==array(cor(dHAYC),c(20,20,1000))))
 diag(gtres)<-NA
 hist(gtres) #same result. So we cannot do this.
 
+# Get the inverse range and see if you can find a PD matrix in there
+source("getinvrg.R")
+
+# explore the map for common species first, to make sure getinvrg is giving
+#sensible results
+x<-dJRG[,1]
+y<-dJRG[,3]
+
+p<-seq(from=-1,to=1,by=0.05)
+numreps<-500
+res<-copmap(x,y,p,numreps)
+mn<-apply(FUN=mean,MARGIN=2,X=res)
+quants<-apply(FUN=quantile,MARGIN=2,X=res,probs=c(.25,.5,.75))
+plot(p,mn,type='l',ylim=range(mn,quants))
+lines(p,quants[2,],type='l',lty="dashed")
+lines(p,quants[1,],type='l',lty="dashed")
+lines(p,quants[3,],type='l',lty="dashed")
+lines(range(p),rep(cor(x,y),2))
+all.equal(res[,1],rep(res[1,1],numreps))
+all.equal(res[,length(p)],rep(res[1,length(p)],numreps))
+invres<-getinvrg(p,res,cor(x,y))
+lines(rep(invres[1],2),c(-1,1))
+lines(rep(invres[2],2),c(-1,1))
+invres
+
+p<-seq(from=-1,to=1,by=0.1)
+numreps<-50
+res<-copmap(x,y,p,numreps)
+mn<-apply(FUN=mean,MARGIN=2,X=res)
+quants<-apply(FUN=quantile,MARGIN=2,X=res,probs=c(.25,.5,.75))
+plot(p,mn,type='l',ylim=range(mn,quants))
+lines(p,quants[2,],type='l',lty="dashed")
+lines(p,quants[1,],type='l',lty="dashed")
+lines(p,quants[3,],type='l',lty="dashed")
+lines(range(p),rep(cor(x,y),2))
+all.equal(res[,1],rep(res[1,1],numreps))
+all.equal(res[,length(p)],rep(res[1,length(p)],numreps))
+invres<-getinvrg(p,res,cor(x,y))
+lines(rep(invres[1],2),c(-1,1))
+lines(rep(invres[2],2),c(-1,1))
+invres
+#so based on these two results I hypothesize it will be good enough
+#to do 50 sims per value of p and to do values of p every .1 or so
+
+#now do all the common species, and for each pair find the preimage range
+dJRGC<-dJRG[,srcJRG=="C"]
+p<-seq(from=-1,to=1,by=0.1)
+numreps<-50
+
+numsp<-dim(dJRGC)[2]
+allparms<-array(NA,c(numsp,numsp,2))
+allparmscent<-matrix(NA,numsp,numsp)
+for (c1 in 1:(numsp-1))
+{
+  print(paste0("c1: ",c1))
+  for (c2 in (c1+1):numsp)
+  {
+    x<-dJRGC[,c1]
+    y<-dJRGC[,c2]
+    thisres<-copmap(x,y,p,numreps)
+    allparms[c1,c2,]<-getinvrg(p,thisres,cor(x,y))
+    allparmscent[c1,c2]<-getinv(p,thisres,cor(x,y))
+  }
+}
+#allparms[1:numsp,1:numsp,1]
+#allparms[1:numsp,1:numsp,2]
+sum(allparms[,,1]<allparmscent,na.rm=TRUE)
+sum(!is.na(allparmscent))
+sum(allparms[,,2]>allparmscent,na.rm=TRUE)
+
+which(allparms[,,2]<allparmscent,arr.ind=TRUE)
+#so check this one out
+x<-dJRGC[,7]
+y<-dJRGC[,13]
+res<-copmap(x,y,p,numreps)
+mn<-apply(FUN=mean,MARGIN=2,X=res)
+quants<-apply(FUN=quantile,MARGIN=2,X=res,probs=c(.25,.5,.75))
+plot(p,mn,type='l',ylim=range(mn,quants))
+lines(p,quants[2,],type='l',lty="dashed")
+lines(p,quants[1,],type='l',lty="dashed")
+lines(p,quants[3,],type='l',lty="dashed")
+lines(range(p),rep(cor(x,y),2))
+getinv(p,res,cor(x,y))
+allparms[7,13,]
+allparmscent[9,12]<-
 
 
 
+# now look for a pd matrix with entries subject to these bounds
+numtries<-100000
+pdres<-NA*numeric(numtries)
+h1<-P2p(t(allparms[,,1]))
+h2<-P2p(t(allparms[,,2]))
+for (counter in 1:numtries)
+{
+  m<-p2P((h2-h1)*runif(length(h1))+h1)
+  pdres[counter]<-is.positive.semi.definite(m)  
+}
+sum(pdres)
+#did not find any pd mats! so we are screwed
+
+#but lets do a better search than random guesses
+fn<-function(h)
+{
+  res<-min(eigen(p2P(h))$values)
+  counter<-1
+  if (res>0)
+  {
+    save(res,file="pdmat.RData")
+    print(paste0("Found one! ",counter))
+    counter<-counter+1
+  }
+  return(res)
+}
+optim((h2+h1)/2,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) #got 0.07191965
+#We seem to have found one!
+#We actually want one that is as close as possible to the middle of the ranges 
+#we determined. How do we find that?
+#Also, the sims for HAY suggest the likelihood surface is rough, so might want to
+#use simulated annealing.
+
+#How about we do a bunch of optims from various locations all over the bounding
+#box, and we set it up to save all evaluations that have positive eigenvalues.
+#Then we just find the closest ones.
+fn<-function(h)
+{
+  res<-min(eigen(p2P(h))$values)
+  if (res>0)
+  {
+    thisline<-matrix(c(h,res),1,1+length(h))
+    write.table(thisline,file="AllPosEvals.csv",row.names=FALSE,col.names=FALSE,append=TRUE,sep=",")
+    print("Found one!")
+  }
+  return(res)
+}
+optim((h2+h1)/2,fn,method="L-BFGS-B",lower=h1,upper=h2,
+      control=list(fnscale=-1)) 
+set.seed(101)
+for (counter in 1:1000)
+{
+  startvec<-(h2-h1)*runif(length(h1))+h1
+  optim(startvec,fn,method="L-BFGS-B",lower=h1,upper=h2,
+        control=list(fnscale=-1)) 
+}#ran this for 20 mins or so then cut it - the file got big fast!
+
+#now search the results to find the one closest to the middle in all dimensions
+pdmats<-read.csv(file="AllPosEvals.csv",header=FALSE)
+pdmats<-pdmats[,1:(dim(pdmats)[2]-1)]
+pdmats<-as.matrix(pdmats)
+cent<-matrix((h1+h2)/2,dim(pdmats)[1],length(h1),byrow = TRUE)
+size<-matrix((h2-h1)/2,dim(pdmats)[1],length(h1),byrow = TRUE)
+dist<-apply(X=((pdmats-cent)/size)^2,FUN=sum,MARGIN=1)
+besth<-unname(pdmats[which(dist==min(dist)),])
+bestmat<-p2P(besth)
+dim(bestmat)
+head(bestmat) #this is supposed to be my parameter matrix for a normal copula!
+
+#see if you get acceptable surrogates from this
+ncop<-normalCopula(param=besth,dim=dim(bestmat)[1],dispstr="un")
+nums<-1000
+sims<-rCopula((dim(dJRGC)[1])*nums,ncop)
+sims<-aperm(array(sims,c(dim(dJRGC)[1],nums,dim(dJRGC)[2])),c(1,3,2))
+remapd<-alignranks(dJRGC,sims)
+allcors<-array(apply(FUN=cor,MARGIN=3,X=remapd),c(23,23,1000))
+gtres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors>array(cor(dJRGC),c(23,23,1000))))
+gtres
+ltres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors<array(cor(dJRGC),c(23,23,1000))))
+ltres
+eqres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors==array(cor(dJRGC),c(23,23,1000))))
+eqres
+diag(gtres)<-NA
+hist(gtres) #this shows the surrogates this way are again terrible
+
+#try it another way to guard against mistakes
+library(mvtnorm)
+nums<-1000
+sims<-rmvnorm((dim(dJRGC)[1])*nums,sigma=bestmat)
+sims<-aperm(array(sims,c(dim(dJRGC)[1],nums,dim(dJRGC)[2])),c(1,3,2))
+dim(sims)
+remapd<-alignranks(dJRGC,sims)
+allcors<-array(apply(FUN=cor,MARGIN=3,X=remapd),c(23,23,1000))
+gtres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors>array(cor(dJRGC),c(23,23,1000))))
+gtres
+ltres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors<array(cor(dJRGC),c(23,23,1000))))
+ltres
+eqres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors==array(cor(dJRGC),c(23,23,1000))))
+diag(gtres)<-NA
+hist(gtres) #same result. So we cannot do this.
+
+#why is it so bad?
