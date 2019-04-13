@@ -114,15 +114,25 @@ sum(m1==m2)
 prod(dim(m1))
 is.positive.semi.definite(m1)
 eigen(m1)$values
-#If m1 is pos semi def, we can skip the next step
+#If m1 is pos semi def, we can skip the next two steps
 
-#prepare to search the space of parameters desribed by allparms for 
-#pos def
-set.seed(theseed2)
+#now use nearPD and see if you get a result between hlo and hhi
 hlo<-P2p(t(allparms[,,1]))
 hpre<-P2p(t(allparms[,,2]))
 hhi<-P2p(t(allparms[,,3]))
 hmid<-(hlo+hhi)/2
+bestmatNPD<-matrix(as.numeric(Matrix::nearPD(m2,corr=TRUE)$mat),numsp,numsp)
+bestmatNPDvect<-P2p(bestmatNPD)
+sum(bestmatNPDvect<=hhi & bestmatNPDvect>=hlo)
+length(bestmatNPDvect)
+inds<-which(bestmatNPDvect>hhi | bestmatNPDvect<hlo)
+cbind(hlo[inds],bestmatNPDvect[inds],hhi[inds])
+#so the nearPD matrix is well outside the bounds given by hlo and hhi for
+#some of the coords, so I won't bother with it
+
+#prepare to search the space of parameters desribed by allparms for 
+#pos def
+set.seed(theseed2)
 allposdef<-matrix(NA,numpd,length(hlo)+1)
 rowcount<-1
 
@@ -159,7 +169,7 @@ while (all(is.na(allposdef[numpd,])))
 
 save(allposdef,file=paste0(resloc,"PosDefMats.RData"))
 
-#Now find the one that is closes to hpre
+#Now find the one that is closest to hpre
 allposdef<-allposdef[,1:(dim(allposdef)[2]-1)]
 hpremat<-matrix(hpre,dim(allposdef)[1],length(hpre),byrow = TRUE)
 sizemat<-matrix((hhi-hlo)/2,dim(allposdef)[1],length(hlo),byrow = TRUE)

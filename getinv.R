@@ -9,7 +9,7 @@
 #           correlation of the x and y inputs to copmap
 #
 #Output
-#The medians of each column of cors gives a vector of the same length as p.
+#The means of each column of cors gives a vector of the same length as p.
 #These together determine a function, via linear interpolation between 
 #values. The code computes the complete pre-image under this map,
 #if it exists, of imval. If there is no point in the pre-image, the function
@@ -20,7 +20,7 @@ getinv<-function(p,cors,imval)
 {
   #x and y of the function to be inverted
   x<-p
-  y<-apply(FUN=median,X=cors,MARGIN=2)
+  y<-apply(FUN=mean,X=cors,MARGIN=2)
   
   res<-numeric(0)
   for (counter in 1:(length(x)-1))
