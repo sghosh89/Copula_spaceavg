@@ -173,7 +173,7 @@ while (all(is.na(allposdef[numpd,])))
 }
 #I stopped this after an overnight run
 
-save(allposdef,file=paste0(resloc,"PosDefMats.RData"))
+saveRDS(allposdef,file=paste0(resloc,"PosDefMats.RDS"))
 
 #Now find the one that is closest to hpre
 allposdef<-allposdef[1:sum(!is.na(allposdef[,1])),1:(dim(allposdef)[2]-1)]
@@ -238,7 +238,7 @@ hist(ltres)#very few of these should be outside the range 250-750,
 #as good surrogates here. Look at the upper edge of the distr for gtres and the 
 #lower for ltres.
 
-save(bestmat,file=paste0(resloc,"FinalParameterMatrix.RData"))
+saveRDS(bestmat,file=paste0(resloc,"FinalParameterMatrix.RDS"))
 #This is the final result. If you generate data from a normal copula
 #with this parameter matrix and then use alignranks, that will give 
 #ok Person-preserving surrogates.
@@ -255,7 +255,7 @@ for (counter in 1:numsp)
 }#need to sort the columns of d to use aligncall
 surrogs<-alignranks(sd,sims)
 
-save(surrogs,file=paste0(resloc,"SomeSurrogates.RData"))
+saveRDS(surrogs,file=paste0(resloc,"SomeSurrogates.RDS"))
 
-save.image(file=paste0(resloc,"WholeWorkspace.RData"))
+save.image(file=paste0(resloc,"WholeWorkspace.RDS"))
 
