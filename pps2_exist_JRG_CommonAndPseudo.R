@@ -4,7 +4,8 @@
 #non-common species lumped into one pseudo-species. To change the 
 #dataset on which the script operates, change the first section,
 #then the rest should more or less run, perhaps with a bit of hand-
-#holding.
+#holding. This is draft code, it is expected that algorithm and 
+#workflows will be optemized subsequently.
 #
 #Dan Reuman
 #2019 04 15
