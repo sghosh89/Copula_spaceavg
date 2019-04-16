@@ -16,9 +16,9 @@ test_that("tests for consistency with what I know should happen",{
   expect_true(all(res<=1))
   
   #test extreme values, for which I know what the result should be
-  h<-cor(sort(x),sort(y))
+  h<-cov(sort(x),sort(y))
   expect_true(all(res[,5]==h))
-  h<-cor(sort(x),rev(sort(y)))
+  h<-cov(sort(x),rev(sort(y)))
   expect_true(all(res[,1]==h))
 })
 

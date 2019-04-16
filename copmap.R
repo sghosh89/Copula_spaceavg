@@ -4,11 +4,12 @@ source("alignranks.R")
 #Creates the basis of the map that needs to be inverted
 #
 #Given two vectors of the same length (x and y), and a vector of values of
-#the parameter of the bivariate normal copula family, generates data from
-#the family, maps the ranks of x and y onto the data to acheive permutations
-#of x and y that have the same copula structure, and then computes the Pearson
-#correlation. Does so numreps time for each value of p. Returns all the 
-#resulting values.
+#the parameter of the bivariate normal copula family (p), for each entry p[i]
+#of p, generates data from the bivariate normal copula with that parameter, 
+#maps the ranks of x and y onto the data to acheive permutations of x and y 
+#that have the normal copula structure with the parameter p[i], and then 
+#computes the covariance. Does so numreps time for each value of p. 
+#Returns all the resulting values.
 #
 #Args
 #x, y     two time series of the same length
@@ -16,7 +17,7 @@ source("alignranks.R")
 #numreps  number of replicates for each value of p
 #
 #Output
-#A matrix of dimensions numreps by length(p) containing the Pearson correlation results
+#A matrix of dimensions numreps by length(p) containing the covariance results
 copmap<-function(x,y,p,numreps)
 {
   res<-matrix(NA,numreps,length(p))
@@ -38,7 +39,7 @@ copmap<-function(x,y,p,numreps)
     surrogs<-alignranks(cbind(sx,sy),ncopdat)
     
     #compute the correlations
-    res[,pcount]<-apply(FUN=function(x){res<-cor(x);return(res[1,2])},
+    res[,pcount]<-apply(FUN=function(x){res<-cov(x);return(res[1,2])},
                         MARGIN=3,X=surrogs)
   }
   
