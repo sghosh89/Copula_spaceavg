@@ -1,5 +1,5 @@
 #Attempts to find the unique preimage of a point under the map  
-#obtained by copmap
+#obtained by copmap (in expectation)
 #
 #Args
 #p        An increasing vector of points in [-1,1] - this would have been
