@@ -8,17 +8,18 @@ source("alignranks.R")
 #of p, generates data from the bivariate normal copula with that parameter, 
 #maps the ranks of x and y onto the data to acheive permutations of x and y 
 #that have the normal copula structure with the parameter p[i], and then 
-#computes the covariance. Does so numreps time for each value of p. 
-#Returns all the resulting values.
+#computes the covariance or correlation (accoring to the cflag input). Does 
+#so numreps time for each value of p. Returns all the resulting values.
 #
 #Args
 #x, y     two time series of the same length
 #p        a vector of values in [-1,1], parameters of a bivariate normal copula
 #numreps  number of replicates for each value of p
+#cflag    "cov" or "cor"
 #
 #Output
 #A matrix of dimensions numreps by length(p) containing the covariance results
-copmap<-function(x,y,p,numreps)
+copmap<-function(x,y,p,numreps,cflag)
 {
   res<-matrix(NA,numreps,length(p))
   
@@ -38,9 +39,17 @@ copmap<-function(x,y,p,numreps)
     #map ranks
     surrogs<-alignranks(cbind(sx,sy),ncopdat)
     
-    #compute the correlations
-    res[,pcount]<-apply(FUN=function(x){res<-cov(x);return(res[1,2])},
-                        MARGIN=3,X=surrogs)
+    #compute the correlations/covariances
+    if (cflag=="cov")
+    {
+      res[,pcount]<-apply(FUN=function(x){res<-cov(x);return(res[1,2])},
+                          MARGIN=3,X=surrogs)
+    }
+    if (cflag=="cor")
+    {
+      res[,pcount]<-apply(FUN=function(x){res<-cor(x);return(res[1,2])},
+                          MARGIN=3,X=surrogs)
+    }
   }
   
   return(res)
