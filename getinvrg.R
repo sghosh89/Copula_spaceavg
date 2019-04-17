@@ -2,23 +2,24 @@
 #stochastic version of the map obtained by copmap
 #
 #Args
-#p        An increasing vector of points in [-1,1] - this would have been
-#           the p argument of copmap
-#covs     The output of a call to copmap
-#imval    The image value to take the preimage of - would be the covariance 
-#           of the x and y inputs to copmap
+#p            An increasing vector of points in [-1,1] - this would have been
+#               the p argument of copmap
+#copmapout    The output of the call to copmap
+#imval        The image value to take the preimage of - would be the correlation 
+#               or covariance of the x and y inputs to copmap, depending on the 
+#               value of cflag that was used in the call to copmap
 #
 #Output
-#The values covs[,i] are samples from a stochastic map evaluated at p[i].
-#This function gives the range of values of p for which the 25% and
-#75% quantiles of the distribution of values include imval.
+#The values copmapout[,i] are samples from a stochastic map evaluated at p[i].
+#This function gives the range of values of p for which the 25% and 75% 
+#quantiles of the distribution of values include imval.
 
-getinvrg<-function(p,covs,imval)
+getinvrg<-function(p,copmapout,imval)
 {
   #x and y of the function to be inverted
   x<-p
-  ylow<-apply(FUN=quantile,X=covs,MARGIN=2,probs=0.25)
-  yhi<-apply(FUN=quantile,X=covs,MARGIN=2,probs=0.75)
+  ylow<-apply(FUN=quantile,X=copmapout,MARGIN=2,probs=0.25)
+  yhi<-apply(FUN=quantile,X=copmapout,MARGIN=2,probs=0.75)
 
   #linearly interpolate
   interplow<-approx(x,ylow,n=1000)

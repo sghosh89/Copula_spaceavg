@@ -1,26 +1,26 @@
-#Attempts to find the unique preimage of a point under the map  
+#Attempts to find the unique preimage of a point under a map  
 #obtained by copmap (in expectation)
 #
 #Args
-#p        An increasing vector of points in [-1,1] - this would have been
-#           the p argument of copmap
-#covs     The output of a call to copmap
-#imval    The image value to take the preimage of - would be the covariance 
-#           of the x and y inputs to copmap
+#p            An increasing vector of points in [-1,1] - this would have been
+#               the p argument of copmap
+#copmapout    The output of the call to copmap 
+#imval        The image value to take the preimage of - would be the correlation 
+#               or covariance of the x and y inputs to copmap, depending on the 
+#               value of cflag that was used in the call to copmap
 #
 #Output
-#The means of each column of covs gives a vector of the same length as p.
-#These together determine a function, via linear interpolation between 
-#values. The code computes the complete pre-image under this map,
-#if it exists, of imval. If there is no point in the pre-image, the function
-#returns -Inf. If more than one point, it returns Inf. If exactly one point,
-#it return that value.
+#Taking the means of each column of copmapout gives a vector of the same length 
+#as p. These together determine a function, via linear interpolation between 
+#values. The code computes the pre-image under this map, if it exists, of imval. 
+#If there is no point in the pre-image, the function returns -Inf. If more than 
+#one point, it returns Inf. If exactly one point, it returns that value.
 
-getinv<-function(p,covs,imval)
+getinv<-function(p,copmapout,imval)
 {
   #x and y of the function to be inverted
   x<-p
-  y<-apply(FUN=mean,X=covs,MARGIN=2)
+  y<-apply(FUN=mean,X=copmapout,MARGIN=2)
   
   res<-numeric(0)
   for (counter in 1:(length(x)-1))
