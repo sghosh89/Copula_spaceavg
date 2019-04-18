@@ -3,12 +3,13 @@
 #The script is currently written to work on the JRG dataset, with
 #non-common species lumped into one pseudo-species. To change the 
 #dataset on which the script operates, change the first section,
-#then the rest should more or less run, perhaps with a bit of hand-
-#holding. This is draft code, it is expected that algorithm and 
-#workflows will be optemized subsequently.
+#then the rest should more or less run, probably with some hand-
+#holding, though. This is draft code, it is expected that algorithm 
+#and workflows will be optimized subsequently.
+#
+#Notation now based on my notes on pp. 36ff.
 #
 #Dan Reuman
-#2019 04 15
 
 rm(list=ls())
 
@@ -30,7 +31,7 @@ d<-cbind(d[,src=="C"],apply(FUN=sum,X=d[,src!="C"],MARGIN=1))
 #**Settings
 
 pfine<-seq(from=-1,to=1,by=0.01) #p stands for a bivariate normal copula parameter
-numevalsfine<-1000 #number of times you will evaluate the stochastic map
+numevalsfine<-500 #number of times you will evaluate the stochastic map
 prough<-seq(from=-1,to=1,by=0.1)
 numevalsrough<-250
 
@@ -39,7 +40,7 @@ theseed1<-103
 theseed2<-1001
 theseed3<-203
 
-numpd<-10000 #find at least this many positive definite matrices of parameters before stopping
+numpd<-100
 
 #***Code imports, packages, and other setup
 
@@ -63,9 +64,13 @@ if (!dir.exists(paste0(resloc,"partmap")))
 {
   dir.create(paste0(resloc,"partmap"))
 }
+if (!dir.exists(paste0(resloc,"slices")))
+{
+  dir.create(paste0(resloc,"slices"))
+}
 
-#***For each pair of species, find the preimage of their covariance 
-#under the map defined by copmap.R
+#***For each pair of species, find the preimage of their correlation 
+#under the map defined by copmap.R with the cflag="cor" option
 
 set.seed(theseed1)
 
@@ -73,8 +78,10 @@ numsp<-dim(d)[2]
 
 #receptacle for results, the preimage in allprg[,,2], the range
 #specified by the other values
-allprg<-array(NA,c(numsp,numsp,3))
-
+pijlo<-matrix(NA,numsp,numsp)
+pijhi<-matrix(NA,numsp,numsp)
+pijpre<-matrix(NA,numsp,numsp)
+  
 #loop through each pair of species
 for (c1 in 1:(numsp-1))
 {
@@ -86,62 +93,60 @@ for (c1 in 1:(numsp-1))
     y<-d[,c2]
     
     #get the (stochastic) map
-    thisres<-copmap(x,y,prough,numevalsrough)
+    thisres<-copmap(x,y,prough,numevalsrough,"cor")
     
     #find the inverse range
-    allprg[c1,c2,c(1,3)]<-getinvrg(prough,thisres,cov(x,y))
+    h<-getinvrg(prough,thisres,cor(x,y))
+    pijlo[c1,c2]<-h[1]
+    pijhi[c1,c2]<-h[2]
     
     #find the actual preimage
-    allprg[c1,c2,2]<-getinv(prough,thisres,cov(x,y))
+    pijpre[c1,c2]<-getinv(prough,thisres,cor(x,y))
     
     #make and save a plot
     mn<-apply(FUN=mean,MARGIN=2,X=thisres)
     quants<-apply(FUN=quantile,MARGIN=2,X=thisres,probs=c(.25,.5,.75))
     pdf(paste0(resloc,"fullmap/mapplot_",c1,"_",c2,".pdf"))
-    plot(prough,mn,type='l',ylim=range(mn,quants))
+    plot(prough,mn,type='l',ylim=range(mn,quants),ylab="cor",xlab="norm cop param")
     lines(prough,quants[2,],type='l',lty="dashed")
     lines(prough,quants[1,],type='l',lty="dotted")
     lines(prough,quants[3,],type='l',lty="dotted")
-    lines(range(prough),rep(cov(x,y),2))
-    lines(rep(allprg[c1,c2,1],2),c(-1,1))
-    lines(rep(allprg[c1,c2,2],2),c(-1,1))
-    lines(rep(allprg[c1,c2,3],2),c(-1,1))
+    lines(range(prough),rep(cor(x,y),2))
+    lines(rep(pijlo[c1,c2],2),c(-1,1))
+    lines(rep(pijpre[c1,c2],2),c(-1,1))
+    lines(rep(pijhi[c1,c2],2),c(-1,1))
     dev.off()
   }
 }
 
 #make sure the preimage is within the preimage range in all cases,
 #and you got a sensible range and a single-point preimage in all cases
-sum(allprg[,,1]<allprg[,,2],na.rm=TRUE)
-sum(allprg[,,2]<allprg[,,3],na.rm=TRUE)
+sum(pijlo<pijpre,na.rm=TRUE)
+sum(pijpre<pijhi,na.rm=TRUE)
 (numsp^2-numsp)/2
 
 #***Now look for positive definite
 
 #First check to see if we got lucky and the preimage itself is pos def
-m1<-allprg[,,2]
+m1<-pijpre
 m1[is.na(m1)]<-0
 m1<-m1+t(m1)
 diag(m1)<-1
-m2<-p2P(P2p(m1))
+m2<-p2P(P2p(t(pijpre)))
 sum(m1==m2)
 prod(dim(m1))
 is.positive.semi.definite(m1)
 eigen(m1)$values
-#If m1 is pos semi def, we can skip some or all of the next steps
 
-#now use nearPD and see if you get a result between hlo and hhi
-pvlo<-P2p(t(allprg[,,1])) #pv stands for p in vector format
-pvpre<-P2p(t(allprg[,,2]))
-pvhi<-P2p(t(allprg[,,3]))
-pvmid<-(pvlo+pvhi)/2
-pmatNPD<-matrix(as.numeric(Matrix::nearPD(m2,corr=TRUE)$mat),numsp,numsp)
-pvNPD<-P2p(pmatNPD)
-sum(pvNPD<=pvhi & pvNPD>=pvlo)
-length(pvNPD)
+#now use nearPD and see if you get a result between the bounds given by allprg
+pvNPD<-matrix(as.numeric(Matrix::nearPD(m2,corr=TRUE)$mat),numsp,numsp)
+pvlo<-P2p(t(pijlo))
+pvhi<-P2p(t(pijhi))
+pvNPD<-P2p(pijNPD)
 inds<-which(pvNPD>pvhi | pvNPD<pvlo)
+length(inds)
 cbind(pvlo[inds],pvNPD[inds],pvhi[inds])
-#so the nearPD matrix is well outside the bounds given by hlo and hhi for
+#so the nearPD matrix is well outside the bounds given by pijlo and pijhi for
 #some of the coords, so I won't bother with it
 
 #***Evaluate the stochastic map thoroughly between the bounds obtained 
@@ -152,8 +157,9 @@ cbind(pvlo[inds],pvNPD[inds],pvhi[inds])
 set.seed(theseed2)
 
 #loop through each pair of species
-allcoefs<-array(NA,c(numsp,numsp,3))
-vbds<-array(NA,c(numsp,numsp,2))
+coefsij<-array(NA,c(numsp,numsp,3))
+cijlo<-matrix(NA,numsp,numsp)
+cijhi<-matrix(NA,numsp,numsp)
 for (c1 in 1:(numsp-1))
 {
   print(paste0("c1: ",c1))
@@ -164,8 +170,8 @@ for (c1 in 1:(numsp-1))
     y<-d[,c2]
     
     #get the (stochastic) map
-    pthis<-seq(from=allprg[c1,c2,1],to=allprg[c1,c2,3],length.out=30)
-    thisres<-copmap(x,y,pthis,numevalsfine)
+    pthis<-seq(from=pijlo[c1,c2],to=pijhi[c1,c2],length.out=30)
+    thisres<-copmap(x,y,pthis,numevalsfine,"cor")
     
     #do a regression
     pthisreg<-as.vector(matrix(pthis,dim(thisres)[1],length(pthis),byrow = TRUE))
@@ -177,7 +183,7 @@ for (c1 in 1:(numsp-1))
     mn<-apply(FUN=mean,MARGIN=2,X=thisres)
     quants<-apply(FUN=quantile,MARGIN=2,X=thisres,probs=c(.25,.5,.75))
     pdf(paste0(resloc,"partmap/mapplot_",c1,"_",c2,".pdf"))
-    plot(pthis,mn,type='l',ylim=range(mn,quants))
+    plot(pthis,mn,type='l',ylim=range(mn,quants),ylab="cor",xlab="norm cop param")
     lines(pthis,quants[2,],type='l',lty="dashed")
     lines(pthis,quants[1,],type='l',lty="dotted")
     lines(pthis,quants[3,],type='l',lty="dotted")
@@ -187,21 +193,13 @@ for (c1 in 1:(numsp-1))
     dev.off()
     
     #save the coefficients and v bounds
-    allcoefs[c1,c2,]<-unname(coef(mres))
-    vbds[c1,c2,]<-c(y[1],y[length(y)])
+    coefsij[c1,c2,]<-unname(coef(mres))
+    cijlo[c1,c2]<-y[1]
+    cijhi[c1,c2]<-y[length(y)]
   }
 }
 
 #***Now do the optimization
-
-set.seed(theseed3)
-
-allresults<-matrix(NA,numpd,2*length(pvlo)+1)
-rowcount<-1
-
-covd<-cov(d)
-vtotx<-sum(covd)
-sumvarsx<-sum(diag(covd))
 
 #For computing the inverse of the fitted expectation of copmap
 #
@@ -216,7 +214,7 @@ invval<-function(threecoefs,y,ylimits,xlimits)
   c<-threecoefs[1]
   b<-threecoefs[2]
   a<-threecoefs[3]
-
+  
   #some checks
   h<-a*xlimits^2+b*xlimits+c
   if (!isTRUE(all.equal(h,ylimits)))
@@ -224,11 +222,11 @@ invval<-function(threecoefs,y,ylimits,xlimits)
     stop("Error in invval: inconsistent arguments")
   }
   #maybe later add a check that the deriv of the function is positive everywhere inside xlimits?
-  #if (y<ylimits[1] || y>ylimits[2])
-  #{
-  #  print(paste0("y: ",y,"; ylimits[1]: ",ylimits[1],"; ylimits[2]: ",ylimits[2]))
-  #  stop("Error in invval: out of range y argument")
-  #}
+  if (y<ylimits[1] || y>ylimits[2])
+  {
+    #print(paste0("y: ",y,"; ylimits[1]: ",ylimits[1],"; ylimits[2]: ",ylimits[2]))
+    stop("Error in invval: out of range y argument")
+  }
   
   c<-(c-y)
   if (isTRUE(all.equal(a,0)))
@@ -240,45 +238,53 @@ invval<-function(threecoefs,y,ylimits,xlimits)
   }
   
   #more checks
-  #if (res<xlimits[1] || res>xlimits[2])
-  #{
-  #  stop("Error in invval: res not in range")
-  #}
+  if (res<xlimits[1] || res>xlimits[2])
+  {
+    stop("Error in invval: res not in range")
+  }
   
   return(res)
 }
 
+vijx<-unname(cov(d))
+vtotx<-unname(sum(vijx))
+viix<-unname(diag(vijx))
+cijx<-cor(d)
+
 #This function returns a minimum eigenvalue and needs to be maximized
-fn<-function(vpart)
+#
+#Args
+#cvpart      All the correlations except for the first, as a vector
+#
+#Output: The minimal eigenvalue
+#
+#cijpart is all the cij except c12
+fn<-function(cvpart)
 {
-  #get the remaining coordinate of v - the vs are covariances
-  v12<-(vtotx-2*sum(vpart)-sumvarsx)/2
+  cij<-p2P(c(NA,cvpart))
+  c12<-(vtotx-
+    sum(cij*sqrt(matrix(viix,numsp,numsp)*matrix(viix,numsp,numsp,byrow=TRUE)),na.rm=TRUE))/
+    (2*sqrt(viix[1]*viix[2]))
+  cij[1,2]<-c12
+  cij[2,1]<-c12
   
-  #if that coordinate is out of the acceptable range, return a low value - can't return
-  #-Inf because the optimizer I used needs finite values
-  if (v12<vbds[1,2,1] || v12>vbds[1,2,2])
-  {
-    return(-9)
-  }
-  v<-p2P(c(v12,vpart))
-  
-  #calculate the inverses to get p
-  p<-matrix(NA,numsp,numsp)
+  #calculate the inverses to get pij
+  pij<-matrix(NA,numsp,numsp)
   for (c1 in 1:(numsp-1))
   {
     for (c2 in (c1+1):numsp)
     {
       #print(paste0("c1: ",c1,"; c2: ",c2))
-      p[c1,c2]<-invval(threecoefs=allcoefs[c1,c2,],y=v[c1,c2],
-                       ylimits=vbds[c1,c2,],xlimits=allprg[c1,c2,c(1,3)])
+      pij[c1,c2]<-invval(threecoefs=coefsij[c1,c2,],y=cij[c1,c2],
+                       ylimits=c(cijlo[c1,c2],cijhi[c1,c2]),xlimits=c(pijlo[c1,c2],pijhi[c1,c2]))
     }
   }
-  p[is.na(p)]<-0
-  p<-p+t(p)
-  diag(p)<-1
+  pij[is.na(pij)]<-0
+  pij<-pij+t(pij)
+  diag(pij)<-1
   
   #calculate the minimum eigenvalue
-  res<-min(eigen(p)$values)
+  res<-min(eigen(pij)$values)
   if (res>0)
   {
     allresults[rowcount,]<<-c(P2p(p),P2p(v),res)
@@ -287,42 +293,128 @@ fn<-function(vpart)
   }
   
   #print(res)
+  #return(eigen(pij)$values)
   return(res)
 }
 
-vparttest<-P2p(covd)
-vparttest<-vparttest[2:length(vparttest)]
-fn(vparttest)
-fn(vparttest+c(-0.01,rep(0,length(vparttest)-1))) #just to make sure it changes
-fn(vparttest+c(0.01,rep(0,length(vparttest)-1))) 
+#test the function
+cvparttest<-P2p(cor(d))
+cvparttest<-cvparttest[2:length(cvparttest)]
+fn(cvpart=cvparttest)
+fn(cvparttest+c(-0.01,rep(0,length(cvparttest)-1))) #just to make sure it changes
+fn(cvparttest+c(0.01,rep(0,length(cvparttest)-1))) 
 
-#do a search starting with covariances of the actual data
-vpart<-P2p(covd)
-vpart<-vpart[2:length(vpart)]
-lower<-P2p(t(vbds[,,1]))
-lower<-lower[2:length(lower)]
-upper<-P2p(t(vbds[,,2]))
-upper<-upper[2:length(upper)]
-optres<-optim(vpart,fn,method="L-BFGS-B",lower=lower,upper=upper,
-      control=list(fnscale=-1)) 
+#do a search starting with correlations of the actual data
+cvpart<-P2p(cijx)
+cvpart<-cvpart[2:length(cvpart)] #sets up the initial condition
 
-#just eval fn at a bunch of points
-lower10<-(99/100)*vpart+(1/100)*lower
-upper10<-(99/100)*vpart+(1/100)*upper
-for (counter in 1:100)
+h<-sqrt(matrix(viix,numsp,numsp)*matrix(viix,numsp,numsp,byrow=TRUE))/(sqrt(viix[1]*viix[2]))
+h<-P2p(h)
+h<-h[2:length(h)]
+ui<-rbind(diag(length(cvpart)), #for the constraints cij>=cijlo
+          -diag(length(cvpart)), #for the constraints cij<=cijhi
+          -h, #for the complex constraint (see p. 38 of notes) involving c12lo
+          h #for the complex constraint (see p. 38 of notes) involving c12hi
+          )
+h1<-P2p(t(cijlo))
+h1<-h1[2:length(h1)]
+h2<-(-P2p(t(cijhi)))
+h2<-h2[2:length(h2)]
+ci<-c(h1, #for the constraints cij>=cijlo
+      h2, #for the constraints cij<=cijhi
+      cijlo[1,2]+sum(viix)/(2*sqrt(viix[1]*viix[2]))-vtotx/(2*sqrt(viix[1]*viix[2])), #for the complex constraint (see p. 38 of notes) involving c12lo
+      vtotx/(2*sqrt(viix[1]*viix[2]))-sum(viix)/(2*sqrt(viix[1]*viix[2]))-cijhi[1,2] #for the complex constraint (see p. 38 of notes) involving c12hi
+      ) #all this sets up the constraints
+
+sum(ui%*%cvpart-ci>=0)
+length(ci) #check the constraint is satisfied by the initial condition
+
+allresults<-matrix(NA,numpd,2*length(pvlo)+1)
+rowcount<-1 #captures all evaluations that result in pd matrix
+
+set.seed(theseed3)
+optresNM<-constrOptim(cvpart,fn,method="Nelder-Mead",ui=ui,ci=ci,
+      control=list(fnscale=-1,maxit=10000,trace=10)) 
+
+optresSANN<-constrOptim(cvpart,fn,method="SANN",ui=ui,ci=ci,
+      control=list(fnscale=-1,maxit=1000000,trace=10,temp=1000,tmax=10)) 
+
+#now do some searches starting from other places
+cvpartorig<-cvpart
+h<-sqrt(matrix(viix,numsp,numsp)*matrix(viix,numsp,numsp,byrow=TRUE))/(sqrt(viix[1]*viix[2]))
+h<-P2p(h)
+h<-h[2:length(h)]
+dotprodvect<-h
+dotprodbds<-c(vtotx/(2*sqrt(viix[1]*viix[2]))-sum(viix)/(2*sqrt(viix[1]*viix[2]))-cijhi[1,2],
+              vtotx/(2*sqrt(viix[1]*viix[2]))-sum(viix)/(2*sqrt(viix[1]*viix[2]))-cijlo[1,2])
+cvlo<-P2p(t(cijlo))
+cvhi<-P2p(t(cijhi))
+alloptres<-list()
+alloptreslen<-1
+for (counter in 1:1000000000)
 {
-  startv<-(upper10-lower10)*runif(length(lower10))+lower10
-  print(fn(startv))
+  cvpart<-(cvhi-cvlo)*runif(length(cvlo))+cvlo
+  cvpart<-cvpart[2:length(cvpart)]
+  dotprod<-sum(dotprodvect*cvpart)
+  if (dotprod>=dotprodbds[1] && dotprod<=dotprodbds[2] && fn(cvpart)>=fn(cvpartorig))
+  {
+    alloptres[[alloptreslen]]<-constrOptim(cvpart,fn,method="Nelder-Mead",ui=ui,ci=ci,
+                           control=list(fnscale=-1,maxit=1000,trace=10)) 
+    alloptreslen<-alloptreslen+1
+  }
 }
-#we are getting almost all values that don't work!
 
-hist(log10(upper-lower)) #this is terrible, no wonder the optimizer does not work.
-#Makes me think I should go back to cor.
+for (counter in 1:(alloptreslen-1))
+{
+  print(alloptres[[counter]]$value)
+}
 
-#do some searches from nearby starts
-lower10<-(9/10)*vpart+(1/10)*lower
-upper10<-(9/10)*vpart+(1/10)*upper
-start1<-(upper10-lower10)*runif(length(lower10))+lower10
-fn(start1)
-optres<-optim(start1,fn,method="L-BFGS-B",lower=lower,upper=upper,
-              control=list(fnscale=-1)) 
+#Results tend not even to be better than the original initial condition I used!
+#Also, optimization tends to improve on the initial guesses hardly at all!
+#Try doing slices through the original initial condition to get a sense what this 
+#objective function looks like. Or maybe do them through the best result I have so 
+#far. 
+
+lenplots<-100
+cvlopart<-cvlo[2:length(cvlo)]
+cvhipart<-cvhi[2:length(cvhi)]
+y<-NA*numeric(lenplots+1)
+maxy<-(-Inf)
+miny<-Inf
+for (ind in 1:length(cvpartorig))
+{
+  x<-seq(from=cvlopart[ind],to=cvhipart[ind],length.out=lenplots)
+  x<-c(x,cvpartorig[ind])
+  x<-sort(x)
+  for (counter in 1:length(x))
+  {
+    cvpart<-cvpartorig
+    cvpart[ind]<-x[counter]
+    if (all(ui%*%cvpart-ci>=1e-15))
+    {
+      y[counter]<-fn(cvpart)
+    }else
+    {
+      y[counter]<-NA
+    }
+  }
+  miny<-min(y,miny,na.rm=TRUE)
+  maxy<-max(y,maxy,na.rm=TRUE)
+  pdf(file=paste0(resloc,"slices/SliceAlongVar_",ind,".pdf"))
+  myxlims<-range(x)
+  myylims<-range(c(y,0),na.rm=TRUE)
+  plot(x,y,type='l',xlim=myxlims,ylim=myylims)
+  lines(rep(cvpartorig[ind],2),range(c(y,0),na.rm=TRUE),type='l',lty="dashed")
+  text(myxlims[2],myylims[2],sum(is.finite(y)),adj=c(1,1),cex=2)
+  dev.off()
+}
+
+#Here is what I learned from this slicing exercise: 1) the objective function 
+#appears nice and smooth, so I have no reason to think my optimizers are not
+#working well; however, 2) the objective function also appears to be extremely
+#flat within the constraints I am using! So this really makes me think the
+#surrogates I am looking for that preserve CV_com^2 and approximately 
+#preserve individual Pearson values and that preserve marginals (exactly)
+#probably do not exist for this dataset. The constraints I am imposing 
+#effectively make the resulting parameter matrix for the normal copula be
+#non-positive-semi-definite.
