@@ -26,7 +26,7 @@ getinv<-function(p,copmapout,imval,center="mean")
   {
     y<-apply(FUN=mean,X=copmapout,MARGIN=2)
   }
-  if (center="median")
+  if (center=="median")
   {
     y<-apply(FUN=median,X=copmapout,MARGIN=2)
   }
