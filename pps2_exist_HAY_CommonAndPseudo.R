@@ -1,6 +1,6 @@
 #This script looks for CV_com^2-preserving surrogates for a dataset
 #
-#The script is currently written to work on the JRG dataset, with
+#The script is currently written to work on the HAY dataset, with
 #non-common species lumped into one pseudo-species. To change the 
 #dataset on which the script operates, change the first section,
 #then the rest should more or less run, probably with some hand-
@@ -18,12 +18,12 @@ rm(list=ls())
 #**Data
 
 #Importing the dataset matrix of years by species
-d<-readRDS("./Results/jrg_results/skewness_results/ts_mat_all_sp_39_jrg.RDS")# for all species except "BARE","ROCK","LASP"
+d<-readRDS("./Results/hays_results/skewness_results/ts_mat_all_sp_146_hays.RDS")# for all species except "BARE","ROCK","LASP"
 
 #Importing data with "C", "I", "R" values for common, intermediate, and rare species
-category_jrg<-readRDS("./Results/jrg_results/skewness_results/all_sp_39_jrg_category.RDS")
-all(colnames(d)==category_jrg$sp)==T
-src<- category_jrg$category #src stands for species rarity category
+category_hays<-readRDS("./Results/hays_results/skewness_results/all_sp_146_hays_category.RDS")
+all(colnames(d)==category_hays$sp)==T
+src<- category_hays$category #src stands for species rarity category
 
 #Keep only the C species, combine the others into a pseudo-species
 d<-cbind(d[,src=="C"],apply(FUN=sum,X=d[,src!="C"],MARGIN=1))
@@ -35,7 +35,7 @@ numevalsfine<-500 #number of times you will evaluate the stochastic map
 prough<-seq(from=-1,to=1,by=0.1)
 numevalsrough<-250
 
-resloc<-"./Results/Results_pps2_exist_JRG_CommonAndPseudo/"
+resloc<-"./Results/Results_pps2_exist_HAY_CommonAndPseudo/"
 theseed1<-103
 theseed2<-1001
 theseed3<-203
@@ -46,6 +46,7 @@ numpd<-100
 
 library(matrixcalc)
 library(mvtnorm)
+library(quantreg)
 
 source("copmap.R")
 source("getinv.R")
@@ -76,8 +77,7 @@ set.seed(theseed1)
 
 numsp<-dim(d)[2]
 
-#receptacle for results, the preimage in allprg[,,2], the range
-#specified by the other values
+#receptacle for results
 pijlo<-matrix(NA,numsp,numsp)
 pijhi<-matrix(NA,numsp,numsp)
 pijpre<-matrix(NA,numsp,numsp)
@@ -101,7 +101,7 @@ for (c1 in 1:(numsp-1))
     pijhi[c1,c2]<-h[2]
     
     #find the actual preimage
-    pijpre[c1,c2]<-getinv(prough,thisres,cor(x,y))
+    pijpre[c1,c2]<-getinv(prough,thisres,cor(x,y),"median")
     
     #make and save a plot
     mn<-apply(FUN=mean,MARGIN=2,X=thisres)
@@ -124,10 +124,20 @@ for (c1 in 1:(numsp-1))
 sum(pijlo<pijpre,na.rm=TRUE)
 sum(pijpre<pijhi,na.rm=TRUE)
 (numsp^2-numsp)/2
+sum(is.finite(pijlo))
+sum(is.finite(pijhi))
+sum(is.finite(pijpre))
+badindsARR<-rbind(which(pijlo>=pijpre,arr.ind = TRUE),
+               which(pijhi<=pijpre,arr.ind = TRUE))
+pvlo<-P2p(t(pijlo))
+pvhi<-P2p(t(pijhi))
+pvpre<-P2p(t(pijpre))
+badinds<-which(pvlo>=pvpre | pvhi<=pvpre)
+bds<-cbind(pvlo[badinds],pvpre[badinds],pvhi[badinds])
 
 #***Now look for positive definite
 
-#First check to see if we got lucky and the preimage itself is pos def
+#First check to see if the preimage itself is pos def
 m1<-pijpre
 m1[is.na(m1)]<-0
 m1<-m1+t(m1)
@@ -137,11 +147,19 @@ sum(m1==m2)
 prod(dim(m1))
 is.positive.semi.definite(m1)
 eigen(m1)$values
+#it is not pd anyway
+
+#now see if the midpoints of the pijlo-pijhi ranges give a pd mat
+m1<-(pijlo+pijhi)/2
+m1[is.na(m1)]<-0
+m1<-m1+t(m1)
+diag(m1)<-1
+is.positive.semi.definite(m1)
+eigen(m1)$values
+#still not pd
 
 #now use nearPD and see if you get a result between the bounds given by pijlo and pijhi
-pijNPD<-matrix(as.numeric(Matrix::nearPD(m2,corr=TRUE)$mat),numsp,numsp)
-pvlo<-P2p(t(pijlo))
-pvhi<-P2p(t(pijhi))
+pijNPD<-matrix(as.numeric(Matrix::nearPD(m1,corr=TRUE)$mat),numsp,numsp)
 pvNPD<-P2p(pijNPD)
 inds<-which(pvNPD>pvhi | pvNPD<pvlo)
 length(inds)
@@ -177,8 +195,9 @@ for (c1 in 1:(numsp-1))
     pthisreg<-as.vector(matrix(pthis,dim(thisres)[1],length(pthis),byrow = TRUE))
     thisresreg<-as.vector(thisres)
     psqthisreg<-pthisreg^2
-    mres<-lm(thisresreg~pthisreg+psqthisreg)
-    
+    mreslm<-lm(thisresreg~pthisreg+psqthisreg)
+    mresrq<-rq(thisresreg~pthisreg+psqthisreg)
+      
     #make and save a plot
     mn<-apply(FUN=mean,MARGIN=2,X=thisres)
     quants<-apply(FUN=quantile,MARGIN=2,X=thisres,probs=c(.25,.5,.75))
@@ -188,14 +207,16 @@ for (c1 in 1:(numsp-1))
     lines(pthis,quants[1,],type='l',lty="dotted")
     lines(pthis,quants[3,],type='l',lty="dotted")
     psqthis<-pthis^2
-    y<-coef(mres)[1]+coef(mres)[2]*pthis+coef(mres)[3]*psqthis
-    lines(pthis,y,type="l")
+    ylm<-coef(mreslm)[1]+coef(mreslm)[2]*pthis+coef(mreslm)[3]*psqthis
+    yrq<-coef(mresrq)[1]+coef(mresrq)[2]*pthis+coef(mresrq)[3]*psqthis
+    lines(pthis,ylm,type="l")
+    lines(pthis,yrq)
     dev.off()
     
     #save the coefficients and v bounds
-    coefsij[c1,c2,]<-unname(coef(mres))
-    cijlo[c1,c2]<-y[1]
-    cijhi[c1,c2]<-y[length(y)]
+    coefsij[c1,c2,]<-unname(coef(mresrq))
+    cijlo[c1,c2]<-yrq[1]
+    cijhi[c1,c2]<-yrq[length(yrq)]
   }
 }
 
@@ -334,10 +355,10 @@ rowcount<-1 #captures all evaluations that result in pd matrix
 
 set.seed(theseed3)
 optresNM<-constrOptim(cvpart,fn,method="Nelder-Mead",ui=ui,ci=ci,
-      control=list(fnscale=-1,maxit=10000,trace=10)) 
+      control=list(fnscale=-1,maxit=1000,trace=10)) 
 
 optresSANN<-constrOptim(cvpart,fn,method="SANN",ui=ui,ci=ci,
-      control=list(fnscale=-1,maxit=1000000,trace=10,temp=1000,tmax=10)) 
+      control=list(fnscale=-1,maxit=10000,trace=10,temp=100,tmax=10)) 
 
 #now do some searches starting from other places
 cvpartorig<-cvpart
