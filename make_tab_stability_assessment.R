@@ -39,13 +39,13 @@ make_tab_stability<-function(m,surrogs,surrogs_given){
     df_stability_surrogs<-as.data.frame(matrix(NA,nrow=1,ncol=6))
     colnames(df_stability_surrogs)<-c("cvsq_ntd_0.025CI",  # 2.5%quantile of square of CVs from the surrogates having no tail dep. 
                                                               #     (possibly with Pearson preserving)
-                                      "cvsq_ntd_mean",  # mean of square of CVs from the surrogates having no tail dep. 
+                                      "cvsq_ntd_median",  # median of square of CVs from the surrogates having no tail dep. 
                                       #     (possibly with Pearson preserving)
-                                      "cvsq_ntd_0.975CI",  # mean of square of CVs from the surrogates having no tail dep. 
+                                      "cvsq_ntd_0.975CI",  # 97.5% CI of CVs from the surrogates having no tail dep. 
                                       #     (possibly with Pearson preserving)
                                       "skw_ntd_0.025CI",   # 2.5%quantile of skewness from the surrogates having no tail dep. 
                                       #             (possibly with Pearson preserving)
-                                      "skw_ntd_mean",   # mean of skewness from the surrogates having no tail dep. 
+                                      "skw_ntd_median",   # median of skewness from the surrogates having no tail dep. 
                                       #             (possibly with Pearson preserving)
                                       "skw_ntd_0.975CI"   # 97.5%quantile of skewness from the surrogates having no tail dep. 
                                       #             (possibly with Pearson preserving)
@@ -69,12 +69,12 @@ make_tab_stability<-function(m,surrogs,surrogs_given){
     CI_cvsq<-quantile(cvsq_surrogs,probs=c(.025,.975))
     df_stability_surrogs$cvsq_ntd_0.025CI<-CI_cvsq[1]
     df_stability_surrogs$cvsq_ntd_0.975CI<-CI_cvsq[2]
-    df_stability_surrogs$cvsq_ntd_mean<-mean(cvsq_surrogs)
+    df_stability_surrogs$cvsq_ntd_median<-median(cvsq_surrogs)
     
     CI_skw<-quantile(skw_surrogs,probs=c(.025,.975))
     df_stability_surrogs$skw_ntd_0.025CI<-CI_skw[1]
     df_stability_surrogs$skw_ntd_0.975CI<-CI_skw[2]
-    df_stability_surrogs$skw_ntd_mean<-mean(skw_surrogs)
+    df_stability_surrogs$skw_ntd_median<-median(skw_surrogs)
     
     df_stability<-cbind(df_stability,df_stability_surrogs)
     return(list(df_stability=df_stability,
@@ -166,7 +166,7 @@ abline(v=CI_cvsq_50[1],col="green")
 abline(v=CI_cvsq_50[2],col="green")
 
 # Cvsq with no tail dep.
-abline(v=ans$cvsq_ntd_mean,col="magenta")
+abline(v=ans$cvsq_ntd_median,col="magenta")
 
 # Cvsq if indep.
 abline(v=ans$cvsq_indep,col="black")
@@ -189,7 +189,7 @@ abline(v=CI_skw_50[1],col="green")
 abline(v=CI_skw_50[2],col="green")
 
 # Skewness with no tail dep.
-abline(v=ans$skw_ntd_mean,col="magenta")
+abline(v=ans$skw_ntd_median,col="magenta")
 
 # Skewness if indep.
 abline(v=ans$skw_indep,col="black")
@@ -197,7 +197,7 @@ abline(v=ans$skw_indep,col="black")
 # add legend
 legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
        horiz = F, bty="n",
-       legend=c("real value","no Tail-dep. (mean)","95%CI","50%CI","Indep."))
+       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
 
 
 par(op)
@@ -272,7 +272,7 @@ abline(v=CI_cvsq_50[1],col="green")
 abline(v=CI_cvsq_50[2],col="green")
 
 # Cvsq with no tail dep.
-abline(v=ans$cvsq_ntd_mean,col="magenta")
+abline(v=ans$cvsq_ntd_median,col="magenta")
 
 # Cvsq if indep.
 abline(v=ans$cvsq_indep,col="black")
@@ -295,7 +295,7 @@ abline(v=CI_skw_50[1],col="green")
 abline(v=CI_skw_50[2],col="green")
 
 # Skewness with no tail dep.
-abline(v=ans$skw_ntd_mean,col="magenta")
+abline(v=ans$skw_ntd_median,col="magenta")
 
 # Skewness if indep.
 abline(v=ans$skw_indep,col="black")
@@ -303,7 +303,7 @@ abline(v=ans$skw_indep,col="black")
 # add legend
 legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
        horiz = F, bty="n",
-       legend=c("real value","no Tail-dep. (mean)","95%CI","50%CI","Indep."))
+       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
 
 par(op)
 dev.off()
