@@ -1,4 +1,5 @@
-#This script looks for CV_com^2-preserving surrogates for a dataset
+#This script looks for CV_com^2-approximately-preserving surrogates 
+#for a dataset
 #
 #The script is currently written to work on the HAY dataset, with
 #non-common species lumped into one pseudo-species. To change the 
@@ -134,6 +135,7 @@ pvhi<-P2p(t(pijhi))
 pvpre<-P2p(t(pijpre))
 badinds<-which(pvlo>=pvpre | pvhi<=pvpre)
 bds<-cbind(pvlo[badinds],pvpre[badinds],pvhi[badinds])
+bds
 
 #***Now look for positive definite
 
@@ -270,25 +272,18 @@ invval<-function(threecoefs,y,ylimits,xlimits)
 vijx<-unname(cov(d))
 vtotx<-unname(sum(vijx))
 viix<-unname(diag(vijx))
-cijx<-cor(d)
+cijx<-unname(cor(d))
 
 #This function returns a minimum eigenvalue and needs to be maximized
 #
 #Args
-#cvpart      All the correlations except for the first, as a vector
+#cv      All the correlations, assembled into a vector using the approach of P2p
 #
 #Output: The minimal eigenvalue
-#
-#cijpart is all the cij except c12
-fn<-function(cvpart)
+fn<-function(cv)
 {
-  cij<-p2P(c(NA,cvpart))
-  c12<-(vtotx-
-    sum(cij*sqrt(matrix(viix,numsp,numsp)*matrix(viix,numsp,numsp,byrow=TRUE)),na.rm=TRUE))/
-    (2*sqrt(viix[1]*viix[2]))
-  cij[1,2]<-c12
-  cij[2,1]<-c12
-  
+  cij<-p2P(cv)
+
   #calculate the inverses to get pij
   pij<-matrix(NA,numsp,numsp)
   for (c1 in 1:(numsp-1))
@@ -318,102 +313,45 @@ fn<-function(cvpart)
   return(res)
 }
 
-#test the function
-cvparttest<-P2p(cor(d))
-cvparttest<-cvparttest[2:length(cvparttest)]
-fn(cvpart=cvparttest)
-fn(cvparttest+c(-0.01,rep(0,length(cvparttest)-1))) #just to make sure it changes
-fn(cvparttest+c(0.01,rep(0,length(cvparttest)-1))) 
+#test the function on the values that correspond to the real data
+cvx<-P2p(cijx)
+fn(cv=cvx)
+fn(cvx+c(-0.01,rep(0,length(cvx)-1))) #just to make sure it changes
+fn(cvx+c(0.01,rep(0,length(cvx)-1))) 
 
-#do a search starting with correlations of the actual data
-cvpart<-P2p(cijx)
-cvpart<-cvpart[2:length(cvpart)] #sets up the initial condition
-
-h<-sqrt(matrix(viix,numsp,numsp)*matrix(viix,numsp,numsp,byrow=TRUE))/(sqrt(viix[1]*viix[2]))
+#set up the constraints for optimizing
+h<-2*sqrt(matrix(viix,numsp,numsp)*matrix(viix,numsp,numsp,byrow=TRUE))
 h<-P2p(h)
-h<-h[2:length(h)]
-ui<-rbind(diag(length(cvpart)), #for the constraints cij>=cijlo
-          -diag(length(cvpart)), #for the constraints cij<=cijhi
-          -h, #for the complex constraint (see p. 38 of notes) involving c12lo
-          h #for the complex constraint (see p. 38 of notes) involving c12hi
-          )
-h1<-P2p(t(cijlo))
-h1<-h1[2:length(h1)]
-h2<-(-P2p(t(cijhi)))
-h2<-h2[2:length(h2)]
-ci<-c(h1, #for the constraints cij>=cijlo
-      h2, #for the constraints cij<=cijhi
-      cijlo[1,2]+sum(viix)/(2*sqrt(viix[1]*viix[2]))-vtotx/(2*sqrt(viix[1]*viix[2])), #for the complex constraint (see p. 38 of notes) involving c12lo
-      vtotx/(2*sqrt(viix[1]*viix[2]))-sum(viix)/(2*sqrt(viix[1]*viix[2]))-cijhi[1,2] #for the complex constraint (see p. 38 of notes) involving c12hi
-      ) #all this sets up the constraints
+ui<-rbind(diag(length(cvtest)), #for the constraints cij>=cijlo
+          -diag(length(cvtest)), #for the constraints cij<=cijhi
+          h, #for the complex constraint (see p. 41 of notes) 
+          -h #for the complex constraint (see p. 41 of notes) 
+)
+ci<-c(cvlo, #for the constraints cij>=cijlo
+      -cvhi, #for the constraints cij<=cijhi
+      .25*vtotx-sum(viix), #for the complex constraint (see p. 41 of notes) 
+      sum(viix)-1.75*vtotx #for the complex constraint (see p. 41 of notes) 
+) 
 
-sum(ui%*%cvpart-ci>=0)
-length(ci) #check the constraint is satisfied by the initial condition
-
-allresults<-matrix(NA,numpd,2*length(pvlo)+1)
-rowcount<-1 #captures all evaluations that result in pd matrix
-
-set.seed(theseed3)
-optresNM<-constrOptim(cvpart,fn,method="Nelder-Mead",ui=ui,ci=ci,
-      control=list(fnscale=-1,maxit=1000,trace=10)) 
-
-optresSANN<-constrOptim(cvpart,fn,method="SANN",ui=ui,ci=ci,
-      control=list(fnscale=-1,maxit=10000,trace=10,temp=100,tmax=10)) 
-
-#now do some searches starting from other places
-cvpartorig<-cvpart
-h<-sqrt(matrix(viix,numsp,numsp)*matrix(viix,numsp,numsp,byrow=TRUE))/(sqrt(viix[1]*viix[2]))
-h<-P2p(h)
-h<-h[2:length(h)]
-dotprodvect<-h
-dotprodbds<-c(vtotx/(2*sqrt(viix[1]*viix[2]))-sum(viix)/(2*sqrt(viix[1]*viix[2]))-cijhi[1,2],
-              vtotx/(2*sqrt(viix[1]*viix[2]))-sum(viix)/(2*sqrt(viix[1]*viix[2]))-cijlo[1,2])
-cvlo<-P2p(t(cijlo))
-cvhi<-P2p(t(cijhi))
-alloptres<-list()
-alloptreslen<-1
-for (counter in 1:1000000000)
-{
-  cvpart<-(cvhi-cvlo)*runif(length(cvlo))+cvlo
-  cvpart<-cvpart[2:length(cvpart)]
-  dotprod<-sum(dotprodvect*cvpart)
-  if (dotprod>=dotprodbds[1] && dotprod<=dotprodbds[2] && fn(cvpart)>=fn(cvpartorig))
-  {
-    alloptres[[alloptreslen]]<-constrOptim(cvpart,fn,method="Nelder-Mead",ui=ui,ci=ci,
-                           control=list(fnscale=-1,maxit=1000,trace=10)) 
-    alloptreslen<-alloptreslen+1
-  }
-}
-
-for (counter in 1:(alloptreslen-1))
-{
-  print(alloptres[[counter]]$value)
-}
-
-#Results tend not even to be better than the original initial condition I used!
-#Also, optimization tends to improve on the initial guesses hardly at all!
 #Try doing slices through the original initial condition to get a sense what this 
 #objective function looks like. Or maybe do them through the best result I have so 
 #far. 
-
 lenplots<-100
-cvlopart<-cvlo[2:length(cvlo)]
-cvhipart<-cvhi[2:length(cvhi)]
 y<-NA*numeric(lenplots+1)
 maxy<-(-Inf)
 miny<-Inf
-for (ind in 1:length(cvpartorig))
+for (ind in 1:length(cvx))
 {
-  x<-seq(from=cvlopart[ind],to=cvhipart[ind],length.out=lenplots)
-  x<-c(x,cvpartorig[ind])
+  x<-seq(from=cvlo[ind],to=cvhi[ind],length.out=lenplots)
+  x<-c(x,cvx[ind])
   x<-sort(x)
   for (counter in 1:length(x))
   {
-    cvpart<-cvpartorig
-    cvpart[ind]<-x[counter]
-    if (all(ui%*%cvpart-ci>=1e-15))
+    cv<-cvx
+    cv[ind]<-x[counter]
+    if (all(ui%*%cv-ci>=1e-15))
     {
-      y[counter]<-fn(cvpart)
+      y[counter]<-fn(cv)
     }else
     {
       y[counter]<-NA
@@ -425,17 +363,43 @@ for (ind in 1:length(cvpartorig))
   myxlims<-range(x)
   myylims<-range(c(y,0),na.rm=TRUE)
   plot(x,y,type='l',xlim=myxlims,ylim=myylims)
-  lines(rep(cvpartorig[ind],2),range(c(y,0),na.rm=TRUE),type='l',lty="dashed")
+  lines(rep(cvx[ind],2),range(c(y,0),na.rm=TRUE),type='l',lty="dashed")
   text(myxlims[2],myylims[2],sum(is.finite(y)),adj=c(1,1),cex=2)
   dev.off()
 }
 
-#Here is what I learned from this slicing exercise: 1) the objective function 
-#appears nice and smooth, so I have no reason to think my optimizers are not
-#working well; however, 2) the objective function also appears to be extremely
-#flat within the constraints I am using! So this really makes me think the
-#surrogates I am looking for that preserve CV_com^2 and approximately 
-#preserve individual Pearson values and that preserve marginals (exactly)
-#probably do not exist for this dataset. The constraints I am imposing 
-#effectively make the resulting parameter matrix for the normal copula be
-#non-positive-semi-definite.
+#do a search starting with correlations of the actual data
+sum(ui%*%cvx-ci>=0)
+length(ci) #check the constraint is satisfied by the initial condition
+
+allresults<-matrix(NA,numpd,2*length(pvlo)+1)
+rowcount<-1 #captures all evaluations that result in pd matrix
+
+set.seed(theseed3)
+optresNM<-constrOptim(cvx,fn,method="Nelder-Mead",ui=ui,ci=ci,
+      control=list(fnscale=-1,maxit=500,trace=1)) 
+optresNM$value
+
+optresSANN<-constrOptim(cvx,fn,method="SANN",ui=ui,ci=ci,
+      control=list(fnscale=-1,maxit=10000,trace=1,temp=100,tmax=10)) 
+optresSANN$value
+
+#now do some searches starting from other places
+alloptres<-list()
+alloptreslen<-1
+for (counter in 1:1000000000)
+{
+  cvx_alt<-(cvhi-cvlo)*runif(length(cvlo))+cvlo
+  if (all(ui%*%cvx_alt-ci>=0) && (fn(cvx_alt)>=fn(cvx)))
+  {
+    alloptres[[alloptreslen]]<-constrOptim(cvx_alt,fn,method="Nelder-Mead",ui=ui,ci=ci,
+                           control=list(fnscale=-1,maxit=500,trace=1)) 
+    alloptreslen<-alloptreslen+1
+  }
+}
+
+for (counter in 1:(alloptreslen-1))
+{
+  print(alloptres[[counter]]$value)
+}
+
