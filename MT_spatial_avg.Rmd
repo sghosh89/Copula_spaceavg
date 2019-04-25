@@ -353,13 +353,11 @@ but same pairwise Spearman correlation between species (for details see Appendix
 We repeated this procedure for five different combination of species (see Fig. \ref{SI-fig_jrg_spaceavg_skewness})
 in JRBP: considering total percent cover timeseries from (i) only 23 common sp., (ii) 23 common sp. and 
 rest aggregated into one pseudo sp., 
-(iii) 35 common and intermediate sp., (iv) 35 common and intermediate sp. along with the rest aggregated into 
+(iii) 34 common and intermediate sp., (iv) 34 common and intermediate sp. along with the rest aggregated into 
 one pseudo sp., (v) all sp. including the rare ones (for classification of species 
-categories see Appendix \ref{SI-Data}). <!--(except LASP : 2014-2018 data reported only, 
-need clarification from Lauren, Bare Ground)--> As a community with major lower tail dependence, JRBP was 
+categories see Appendix \ref{SI-Data}, Fig. \ref{SI-fig_spaceavg_timeseries}). As a community with major lower tail dependence, JRBP was 
 expected to show significantly lower skewness than symmetric "Normal" surrogates. We found the expected results with 
-(i) and (iii) combinations, the rest were marginally significant because of sudden abundance of one episodic sp. 
-(THSP??) in year 2017 (see Fig. \ref{SI-fig_spaceavg_timeseries}(A)). Similar results with significant lower skewness
+all five combinations. Similar results with significant lower skewness
 because of dominant lower tail-dependence in the comminity was observed with Hays datasets (Fig. 
 \ref{SI-fig_hays_spaceavg_skewness}). As skewness is related to the "spikiness" of the time-series
 concerned, significantly lower skewness than its "Normal" analog scale means the community could have 
