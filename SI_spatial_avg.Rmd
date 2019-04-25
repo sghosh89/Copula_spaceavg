@@ -57,12 +57,35 @@ names(sp_list)<-s_s
 for(i in 1:length(s_s)){
   temp<-subset(d2, species==s_s[i])[,c("year","cover")]
   names(temp)<-c("Year","Dat")
+  
+  # data filling for short time invasion by LASP
+  if(s_s[i]=="LASP"){
+    fillup<-c(0*numeric(length(1983:2013)),temp$Dat)
+    temp<-data.frame(Year=c(1983:2018),Dat=fillup)
+  }
+  
   sp_list[[i]]<-temp
 }
 data_jrg_spaceavg$jrg_spaceavg_cover_byyear<-sp_list
 
+
+#============================= NOTES : some formatting steps ==========================================================
+# updating sp name code
+i_BRSP<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="BR__")
+names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)[[i_BRSP]]<-"BRSP"
+
+# merging TRs : ("TRAL","TRSP","TRTR")
+all_TR<-(data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRSP$Dat+data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRTR$Dat)
+
+#=======overwrite TRSP data with total data from all Trifolium sp.=============
+data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRSP$Dat<-all_TR 
+
+#=================== and delete the TRAL and TRTR ones==============================
+id_TRTR<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)%in%c("TRTR","TRAL"))
+data_jrg_spaceavg$jrg_spaceavg_cover_byyear<-data_jrg_spaceavg$jrg_spaceavg_cover_byyear[-id_TRTR]
+
 #--------------------------time series plot for all sp with data_jrg_spaceavg-------------------------
-summary_raw_data_spaceavg<-data.frame(sp=s_s,n=NA,n0=NA,nT=NA,nrep0=NA,cover=NA)
+summary_raw_data_spaceavg<-data.frame(sp=names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear),n=NA,n0=NA,nT=NA,nrep0=NA,cover=NA)
 pdf("./Results/jrg_results/space_avg_cover_plot_all_sp.pdf",height=20,width = 20)
 op<-par(mfrow=c(7,6),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
 for(i in 1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)){
@@ -88,40 +111,41 @@ par(op)
 dev.off()
 
 #--------------------screening species for data_jrg_spaceavg----------------------------
+bad_id_jrg<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear) %in% c("BARE","ROCK","THSP","MISP")) # I drop for now this MISP
+
 id_common_sp_jrg<-which(summary_raw_data_spaceavg$n0<=6)
-id_not_common_sp_jrg<-setdiff(c(1:42),id_common_sp_jrg)
+id_common_sp_jrg<-setdiff(id_common_sp_jrg,bad_id_jrg) #if any
 
-bad_id_jrg<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear) %in% c("BARE","ROCK","LASP")) #For now just ignore LASP
-
-id_common_sp_jrg<-setdiff(id_common_sp_jrg,bad_id_jrg)
+id_not_common_sp_jrg<-setdiff(c(1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)),id_common_sp_jrg)
 id_not_common_sp_jrg<-setdiff(id_not_common_sp_jrg,bad_id_jrg)
 
 id_rare_sp_jrg<-which(summary_raw_data_spaceavg$n0>=34)
+id_rare_sp_jrg<-setdiff(id_rare_sp_jrg,bad_id_jrg)
+
 id_normal_sp_jrg<-setdiff(id_not_common_sp_jrg,id_rare_sp_jrg)
 
 tot_sp_jrg<-length(id_common_sp_jrg)+length(id_not_common_sp_jrg)+length(bad_id_jrg)
-tot_sp_jrg==42
+tot_sp_jrg==40
 
 tot_sp_jrg<-length(id_common_sp_jrg)+length(id_normal_sp_jrg)+length(id_rare_sp_jrg)+length(bad_id_jrg)
-tot_sp_jrg==42
+tot_sp_jrg==40
 
-sp_jrg_category<-as.data.frame(matrix(NA,nrow=42,ncol=3))
+sp_jrg_category<-as.data.frame(matrix(NA,nrow=tot_sp_jrg,ncol=3))
 colnames(sp_jrg_category)<-c("id","sp","category")
-sp_jrg_category$id<-c(1:42)
+sp_jrg_category$id<-c(1:tot_sp_jrg)
 sp_jrg_category$sp<-names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)
 sp_jrg_category$category[id_common_sp_jrg]<-"C"
 sp_jrg_category$category[id_rare_sp_jrg]<-"R"
 sp_jrg_category$category[id_normal_sp_jrg]<-"I" # Intermediate and normal are used in same meaning
 
-all_sp_39_jrg_category<-na.omit(sp_jrg_category)
-all_sp_39_jrg_category<-all_sp_39_jrg_category[,c(2:3)]
-saveRDS(all_sp_39_jrg_category,"./Results/jrg_results/skewness_results/all_sp_39_jrg_category.RDS")
+all_goodsp_jrg_category<-na.omit(sp_jrg_category)
+all_goodsp_jrg_category<-all_goodsp_jrg_category[,c(2:3)]
+saveRDS(all_goodsp_jrg_category,"./Results/jrg_results/skewness_results/all_goodsp_jrg_category.RDS")
 #----------------------------------------------------------------------------------------------
 splist_jrg_spaceavg<-id_common_sp_jrg
 lensp<-length(splist_jrg_spaceavg)
 #---------------------generate copula plots for all selected splist_jrg_spaceavg--------------------
 source("./vivj_matrix.R")
-#pdf("./Results/jrg_results/copula_splist_jrg_spaceavg_with_drivers.pdf",height=2*lensp,width = 2*lensp)
 pdf("./Results/jrg_results/copula_splist_jrg_spaceavg.pdf",height=2*lensp,width = 2*lensp)
 op<-par(mfrow=c(lensp,lensp),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
 for(i in c(1:lensp)){
@@ -133,8 +157,6 @@ for(i in c(1:lensp)){
 }
 par(op)
 dev.off()
-#saveRDS(data_jrg_spaceavg,"./Results/jrg_results/data_jrg_spaceavg_with_drivers.RDS")
-#saveRDS(splist_jrg_spaceavg_with_drivers,"./Results/jrg_results/goodsplist_jrg_spaceavg_with_drivers.RDS")
 
 saveRDS(data_jrg_spaceavg,"./Results/jrg_results/data_jrg_spaceavg.RDS")
 saveRDS(splist_jrg_spaceavg,"./Results/jrg_results/common_sp_jrg_spaceavg.RDS")
@@ -246,8 +268,8 @@ source("vivj_matrix.R")
 #invasion effect
 pdf("./Results/jrg_results/jrg_spaceavg_BRMO_PLER.pdf",height=3,width=8)
 op<-par(mfrow=c(1,2),mar=c(4,5,3,3))
-i<-6
-j<-31
+i<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="BRMO")
+j<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="PLER")
 d_allsp<-data_jrg_spaceavg
 
 vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
@@ -263,8 +285,8 @@ dev.off()
 #interspecies competition
 pdf("./Results/jrg_results/jrg_spaceavg_HELU_LOSU.pdf",height=3,width=4)
 op<-par(mar=c(4,5,3,3))
-i<-17
-j<-24
+i<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="HELU")
+j<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="LOSU")
 d_allsp<-data_jrg_spaceavg
 s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
@@ -277,8 +299,8 @@ dev.off()
 
 pdf("./Results/jrg_results/jrg_spaceavg_HELU_MIDO.pdf",height=3,width=8)
 op<-par(mfrow=c(1,2),mar=c(4,5,3,3))
-i<-17
-j<-28
+i<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="HELU")
+j<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="MIDO")
 d_allsp<-data_jrg_spaceavg
 
 vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
@@ -293,8 +315,8 @@ dev.off()
 
 pdf("./Results/jrg_results/jrg_spaceavg_LOSU_MIDO.pdf",height=3,width=8)
 op<-par(mfrow=c(1,2),mar=c(4,5,3,3))
-i<-24
-j<-28
+i<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="LOSU")
+j<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="MIDO")
 d_allsp<-data_jrg_spaceavg
 
 vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
@@ -317,18 +339,12 @@ dev.off()
 set.seed(seed)
 source("skewness_cvsq_testing.R")
 
-# Generate matrix which holds timeseries for all 42 species along each of 42 column : 36 by 42 matrix
-splist<-c(1:42)
+# Generate matrix which holds timeseries for all 41 species along each of 41 column : 36 by 41 matrix
+splist<-c(1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear))
 ts_mat<-c()
 for(i in splist){
   #cat("sp=",names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)[[i]],"\n")
   temp<-data_jrg_spaceavg$jrg_spaceavg_cover_byyear[[i]]$Dat
-  # NOTE : for i=20, LASP has only 2014-2018 cover information : I assumed NA for rest of the year
-  # but then it can't handle with ncsurrog so if you want to include LASP then use 0 for 1983-2013
-  if(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)[[i]]=="LASP"){
-    fillup<-NA*numeric(length(1983:2013))
-    temp<-append(fillup,temp)
-  }
   ts_mat<-cbind(ts_mat,temp)
 }
 rownames(ts_mat)<-c(1983:2018)
@@ -347,7 +363,7 @@ total_ts_common_and_normal_sp_jrg<-apply(ts_mat_common_and_normal_sp_jrg,MARGIN 
 id_all_sp_jrg<-sort(c(id_common_sp_jrg,id_normal_sp_jrg, id_rare_sp_jrg))
 ts_mat_all_sp_jrg<-ts_mat[,id_all_sp_jrg]
 
-saveRDS(ts_mat_all_sp_jrg,"./Results/jrg_results/skewness_results/ts_mat_all_sp_39_jrg.RDS")
+saveRDS(ts_mat_all_sp_jrg,"./Results/jrg_results/skewness_results/ts_mat_all_goodsp_jrg.RDS")
 
 total_ts_all_sp_jrg<-apply(ts_mat_all_sp_jrg,MARGIN = 1,FUN = sum,na.rm=T)
 
@@ -369,7 +385,7 @@ dev.off()
 
 #common sp. with 1 aggregated pseudo-sp.
 
-id_others<-setdiff(c(1:42),id_common_sp_jrg)
+id_others<-setdiff(splist,id_common_sp_jrg)
 id_pseudo<-setdiff(id_others,bad_id_jrg)
 ts_mat_pseudo<-ts_mat[,id_pseudo]
 ts_pseudo<-apply(ts_mat_pseudo,MARGIN = 1,FUN = sum)
@@ -377,7 +393,7 @@ ts_mat_common_pseudo_jrg<-cbind(ts_mat_common_sp_jrg,ts_pseudo)
 
 #common + normal sp. with 1 aggregated pseudo-sp.
 
-id_others<-setdiff(c(1:42),id_common_and_normal_sp_jrg)
+id_others<-setdiff(splist,id_common_and_normal_sp_jrg)
 id_pseudo<-setdiff(id_others,bad_id_jrg)
 ts_mat_pseudo<-ts_mat[,id_pseudo]
 ts_pseudo<-apply(ts_mat_pseudo,MARGIN = 1,FUN = sum)
@@ -1584,21 +1600,37 @@ whereas model selection result was based on extreme regime.
 ```{r make_tab_splist_for_jrg, echo=F, results="asis"}
 library(kableExtra)
 library(dplyr)
-tab_spinfo<-as.data.frame(matrix(NA,nrow=42,ncol=3))
+tab_spinfo<-as.data.frame(matrix(NA,nrow=length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear),ncol=3))
 colnames(tab_spinfo)<-c("ID","Sp. code","Species name")
-tab_spinfo$ID<-c(1:42)
+tab_spinfo$ID<-c(1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear))
 tab_spinfo$`Sp. code`<-names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)
+sp_jrg_full_des<-read.csv("./Data/jrg_data/datadescription_Lauren_Apr24_2019/JR_speciesnames.csv")
 splistfullnm<-c("Agoseris heterophylla","Minuartia douglasii","Astragalus gambelianus",
-                "This is bare land","Brodiaea spp.","Bromus hordeaceus","Don't know?","Bromus berteroanus",
-                "Calandrinia ciliata","Calycadenia multiglandulosa","Chlorogalum pomeridianum","Don't know?",
-                "Epilobium_brachycarpum","Eschscholzia alifornica","Hesperevax sparsiflora","Gilia clivorum",
-                "Hemizonia congesta","Lasthenia californica","Layia platyglossa", "Don't know?",
+                "Bare ground","Brodiaea spp.","Bromus hordeaceus","Bromus terrestris","Bromus berteroanus",
+                "Calandrinia ciliata","Calycadenia multiglandulosa","Chlorogalum pomeridianum","Clarkia rubicunda",
+                "Epilobium brachycarpum","Eschscholzia alifornica","Hesperevax sparsiflora","Gilia clivorum",
+                "Hemizonia congesta","Lasthenia californica","Layia platyglossa", "Lactuca serriola",
                 "Lepidium nitidum","Leptosiphon parviflorus","Lolium multiflorum","Lotus wrangelianus",
-                "Lomatium utriculatum","Melica californica","Bombycilaena californica","Microseris douglasii",
-                "Don't know?","Castilleja densiflora","Plantago erecta","Plagiobothrys nothofulvus","Poa secunda",
-                "This is rock","Elymus multisetus","Nassella pulchra","Don't know?",
-                "Crassula connata","Trifolium albopurpureum","Trifolium sp","Trifolium willdenovii","Vulpia microstachys"
+                "Lomatium utriculatum","Melica californica","Micropus californicus","Microseris douglasii",
+                "Miscellaneous ?","Castilleja densiflora","Plantago erecta","Plagiobothrys nothofulvus","Poa secunda",
+                "Rock","Elymus multisetus","Stipa pulchra","Thatch",
+                "Crassula connata","Trifolium sp.","Vulpia microstachys"
 )
+
+#================= old one ==============================
+#"AGHE" "ARDO" "ASGA" "BARE" "BR__" "BRMO" "BRTE" "BRTR" "CACI" "CAMU" "CHPO" "CLRU" "EPPA" "ESCA" "EVSP" "GICL" "HELU" "LACA" "LAPL" "LASP" "LENI" "LIAN"
+# "LOMU" "LOSU" "LOUT" "MECA" "MICA" "MIDO" "MISP" "ORDE" "PLER" "PLNO" "POSC" "ROCK" "SIJU" "STPU" "THSP" "TIER" "TRAL" "TRSP" "TRTR" "VUMI"
+#splistfullnm<-c("Agoseris heterophylla","Minuartia douglasii","Astragalus gambelianus",
+#                "This is bare land","Brodiaea spp.","Bromus hordeaceus","Don't know?","Bromus berteroanus",
+#                "Calandrinia ciliata","Calycadenia multiglandulosa","Chlorogalum pomeridianum","Don't know?",
+#                "Epilobium_brachycarpum","Eschscholzia alifornica","Hesperevax sparsiflora","Gilia clivorum",
+#                "Hemizonia congesta","Lasthenia californica","Layia platyglossa", "Don't know?",
+#                "Lepidium nitidum","Leptosiphon parviflorus","Lolium multiflorum","Lotus wrangelianus",
+#                "Lomatium utriculatum","Melica californica","Bombycilaena californica","Microseris douglasii",
+#                "Don't know?","Castilleja densiflora","Plantago erecta","Plagiobothrys nothofulvus","Poa secunda",
+#                "This is rock","Elymus multisetus","Nassella pulchra","Don't know?",
+#                "Crassula connata","Trifolium albopurpureum","Trifolium sp.","Trifolium willdenovii","Vulpia microstachys"
+#)
 #tab_spinfo$`Species name`<-c(splistfullnm,"Precipitation for growing season","Average temperature for growing season",
 #                             "Maximum temperature for growing season","Minimum temperature for growing season")
 
@@ -1742,15 +1774,15 @@ was present maximum for 2 years. The rest are classified into "intermediate" cat
 \includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_sp_24.pdf}
 \includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_plotcheckon_sp_24.pdf}\\
 \textbf{ \hspace{0.5 cm} (E) \hspace{3.5 cm} (F)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/skewness_jrg_spaceavg_spearman_sp_35.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/skewness_jrg_spaceavg_spearman_plotcheckon_sp_35.pdf}\\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/skewness_jrg_spaceavg_spearman_sp_34.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/skewness_jrg_spaceavg_spearman_plotcheckon_sp_34.pdf}\\
 \textbf{ \hspace{0.5 cm} (G) \hspace{3.5 cm} (H)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/skewness_jrg_spaceavg_spearman_sp_36.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/skewness_jrg_spaceavg_spearman_plotcheckon_sp_36.pdf}\\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/skewness_jrg_spaceavg_spearman_sp_35.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/skewness_jrg_spaceavg_spearman_plotcheckon_sp_35.pdf}\\
 \textbf{ \hspace{0.5 cm} (I) \hspace{3.5 cm} (J)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_sp_39.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_plotcheckon_sp_39.pdf}\\
-\caption[Skewness results for grassland community in Jasper ridge]{Skewness results for Jasper ridge; each row represents two histograms : one for comparing the position of skewness of data with its spearman preserving $10000$ surrogates having "Normal" copula structure, the other is for checking if the approximated positive semi-definite covariance matrix is acceptable or not (for details see \ref{skew_ncsurrog}). Figures are for $(A-B)$ 23 common species, $(C-D)$ 23 common sp. and rest aggregated into one pseudo sp., $(E-F)$ common and intermediate (total 35) sp., $(G-H)$ 35 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(I-J)$ all 39 species including rare ones.\label{fig_jrg_spaceavg_skewness}}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/skewness_jrg_spaceavg_spearman_sp_36.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/skewness_jrg_spaceavg_spearman_plotcheckon_sp_36.pdf}\\
+\caption[Skewness results for grassland community in Jasper ridge]{Skewness results for Jasper ridge; each row represents two histograms : one for comparing the position of skewness of data with its spearman preserving $10000$ surrogates having "Normal" copula structure, the other is for checking if the approximated positive semi-definite covariance matrix is acceptable or not (for details see \ref{skew_ncsurrog}). Figures are for $(A-B)$ 23 common species, $(C-D)$ 23 common sp. and rest aggregated into one pseudo sp., $(E-F)$ common and intermediate (total 34) sp., $(G-H)$ 35 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(I-J)$ all 36 species including rare ones.\label{fig_jrg_spaceavg_skewness}}
 \end{center}
 \end{figure}
 
@@ -1766,17 +1798,17 @@ was present maximum for 2 years. The rest are classified into "intermediate" cat
 \includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_plotcheckon_sp_24.pdf}
 \includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/cvsq_jrg_spaceavg_spearman_sp_24.pdf}\\
 \textbf{ \hspace{0.5 cm} (G) \hspace{3.5 cm} (H) \hspace{3.5 cm} (I)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/skewness_jrg_spaceavg_spearman_sp_35.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/skewness_jrg_spaceavg_spearman_plotcheckon_sp_35.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_35/cvsq_jrg_spaceavg_spearman_sp_35.pdf}\\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/skewness_jrg_spaceavg_spearman_sp_34.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/skewness_jrg_spaceavg_spearman_plotcheckon_sp_34.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/cvsq_jrg_spaceavg_spearman_sp_34.pdf}\\
 \textbf{ \hspace{0.5 cm} (J) \hspace{3.5 cm} (K) \hspace{3.5 cm} (L)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/skewness_jrg_spaceavg_spearman_sp_36.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/skewness_jrg_spaceavg_spearman_plotcheckon_sp_36.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_36/cvsq_jrg_spaceavg_spearman_sp_36.pdf}\\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/skewness_jrg_spaceavg_spearman_sp_35.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/skewness_jrg_spaceavg_spearman_plotcheckon_sp_35.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/cvsq_jrg_spaceavg_spearman_sp_35.pdf}\\
 \textbf{ \hspace{0.5 cm} (M) \hspace{3.5 cm} (N) \hspace{3.5 cm} (O)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_sp_39.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/skewness_jrg_spaceavg_spearman_plotcheckon_sp_39.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_39/cvsq_jrg_spaceavg_spearman_sp_39.pdf}\\
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/skewness_jrg_spaceavg_spearman_sp_36.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/skewness_jrg_spaceavg_spearman_plotcheckon_sp_36.pdf}
+\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/cvsq_jrg_spaceavg_spearman_sp_36.pdf}\\
 \caption[Skewness and $CV^2$ results for grassland community in Jasper ridge]{Skewness results for Jasper ridge; each row represents 3 histograms : first one is for comparing the position of skewness of data with its spearman preserving $10000$ surrogates having "Normal" copula structure, second one is for checking if the approximated positive semi-definite covariance matrix is acceptable or not (for details see \ref{skew_ncsurrog}) and the third is for comparing the value of $CV^2$ of data with its spearman preserving $10000$ surrogates having "Normal" copula structure. Figures are for $(A-C)$ 23 common species, $(D-F)$ 23 common sp. and rest aggregated into one pseudo sp., $(G-I)$ common and intermediate (total 35) sp., $(J-L)$ 35 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(M-O)$ all 39 species including rare ones.\label{fig_jrg_spaceavg_skewness_cvsq}}
 \end{center}
 \end{figure}
