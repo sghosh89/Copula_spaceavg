@@ -75,14 +75,14 @@ i_BRSP<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="BR__")
 names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)[[i_BRSP]]<-"BRSP"
 
 # merging TRs : ("TRAL","TRSP","TRTR")
-all_TR<-(data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRSP$Dat+data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRTR$Dat)
+all_TR<-(data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRAL$Dat+data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRSP$Dat+data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRTR$Dat)
 
 #=======overwrite TRSP data with total data from all Trifolium sp.=============
 data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRSP$Dat<-all_TR 
 
 #=================== and delete the TRAL and TRTR ones==============================
-id_TRTR<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)%in%c("TRTR","TRAL"))
-data_jrg_spaceavg$jrg_spaceavg_cover_byyear<-data_jrg_spaceavg$jrg_spaceavg_cover_byyear[-id_TRTR]
+id_TRTRs<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)%in%c("TRTR","TRAL"))
+data_jrg_spaceavg$jrg_spaceavg_cover_byyear<-data_jrg_spaceavg$jrg_spaceavg_cover_byyear[-id_TRTRs]
 
 #--------------------------time series plot for all sp with data_jrg_spaceavg-------------------------
 summary_raw_data_spaceavg<-data.frame(sp=names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear),n=NA,n0=NA,nT=NA,nrep0=NA,cover=NA)
