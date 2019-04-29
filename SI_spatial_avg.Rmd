@@ -1605,32 +1605,19 @@ colnames(tab_spinfo)<-c("ID","Sp. code","Species name")
 tab_spinfo$ID<-c(1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear))
 tab_spinfo$`Sp. code`<-names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)
 sp_jrg_full_des<-read.csv("./Data/jrg_data/datadescription_Lauren_Apr24_2019/JR_speciesnames.csv")
-splistfullnm<-c("Agoseris heterophylla","Minuartia douglasii","Astragalus gambelianus",
-                "Bare ground","Brodiaea spp.","Bromus hordeaceus","Bromus terrestris","Bromus berteroanus",
+splistfullnm<-c("Agoseris heterophylla","Minuartia douglasii","Astragalus gambellianus",
+                "Bare ground","Brodiaea sp.","Bromus hordeaceus","Bromus terrestris","Bromus berteroanus",
                 "Calandrinia ciliata","Calycadenia multiglandulosa","Chlorogalum pomeridianum","Clarkia rubicunda",
-                "Epilobium brachycarpum","Eschscholzia alifornica","Hesperevax sparsiflora","Gilia clivorum",
+                "Epilobium brachycarpum","Eschscholzia californica","Hesperevax sparsiflora","Gilia clivorum",
                 "Hemizonia congesta","Lasthenia californica","Layia platyglossa", "Lactuca serriola",
-                "Lepidium nitidum","Leptosiphon parviflorus","Lolium multiflorum","Lotus wrangelianus",
+                "Lepidium nitidum","Linanthus parviflorus","Lolium multiflorum","Lotus wrangelianus",
                 "Lomatium utriculatum","Melica californica","Micropus californicus","Microseris douglasii",
                 "Miscellaneous ?","Castilleja densiflora","Plantago erecta","Plagiobothrys nothofulvus","Poa secunda",
                 "Rock","Elymus multisetus","Stipa pulchra","Thatch",
                 "Crassula connata","Trifolium sp.","Vulpia microstachys"
 )
 
-#================= old one ==============================
-#"AGHE" "ARDO" "ASGA" "BARE" "BR__" "BRMO" "BRTE" "BRTR" "CACI" "CAMU" "CHPO" "CLRU" "EPPA" "ESCA" "EVSP" "GICL" "HELU" "LACA" "LAPL" "LASP" "LENI" "LIAN"
-# "LOMU" "LOSU" "LOUT" "MECA" "MICA" "MIDO" "MISP" "ORDE" "PLER" "PLNO" "POSC" "ROCK" "SIJU" "STPU" "THSP" "TIER" "TRAL" "TRSP" "TRTR" "VUMI"
-#splistfullnm<-c("Agoseris heterophylla","Minuartia douglasii","Astragalus gambelianus",
-#                "This is bare land","Brodiaea spp.","Bromus hordeaceus","Don't know?","Bromus berteroanus",
-#                "Calandrinia ciliata","Calycadenia multiglandulosa","Chlorogalum pomeridianum","Don't know?",
-#                "Epilobium_brachycarpum","Eschscholzia alifornica","Hesperevax sparsiflora","Gilia clivorum",
-#                "Hemizonia congesta","Lasthenia californica","Layia platyglossa", "Don't know?",
-#                "Lepidium nitidum","Leptosiphon parviflorus","Lolium multiflorum","Lotus wrangelianus",
-#                "Lomatium utriculatum","Melica californica","Bombycilaena californica","Microseris douglasii",
-#                "Don't know?","Castilleja densiflora","Plantago erecta","Plagiobothrys nothofulvus","Poa secunda",
-#                "This is rock","Elymus multisetus","Nassella pulchra","Don't know?",
-#                "Crassula connata","Trifolium albopurpureum","Trifolium sp.","Trifolium willdenovii","Vulpia microstachys"
-#)
+
 #tab_spinfo$`Species name`<-c(splistfullnm,"Precipitation for growing season","Average temperature for growing season",
 #                             "Maximum temperature for growing season","Minimum temperature for growing season")
 
