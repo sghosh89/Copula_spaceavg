@@ -671,6 +671,11 @@ usp<-sort(unique(dat_knz$species))
 usp<-as.character(usp)
 lenusp<-length(usp)
 
+# creating results folder for knz data
+if(!dir.exists("./Results/knz_results")){
+  dir.create("./Results/knz_results/")
+}
+
 # Fill the following table with average cover from all plots for a given year with a given sp.
 ts_all_sp<-matrix(NA,nrow=lenyr,ncol=lenusp) # timeseries for each sp along each column
 colnames(ts_all_sp)<-usp
