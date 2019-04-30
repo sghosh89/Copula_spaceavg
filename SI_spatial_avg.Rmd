@@ -42,533 +42,6 @@ library(rmarkdown)
 source("mtime.R") #A function needed for caching
 ```
 
-```{r prepare_data_jrg_spaceavg,echo=F,results="hide"}
-set.seed(seed)
-
-#---------------------------------data_cleaning for spatial avg data by year-----------------------------
-d2<-as.data.frame(read.csv("./Data/jrg_data/JR_cover-by-year.csv",header = T))
-
-data_jrg_spaceavg<-vector("list",1)
-names(data_jrg_spaceavg)<-"jrg_spaceavg_cover_byyear"
-s_s<-(as.character(unique(d2$species)))
-
-sp_list<-vector("list",length(s_s))
-names(sp_list)<-s_s
-for(i in 1:length(s_s)){
-  temp<-subset(d2, species==s_s[i])[,c("year","cover")]
-  names(temp)<-c("Year","Dat")
-  
-  # data filling for short time invasion by LASP
-  if(s_s[i]=="LASP"){
-    fillup<-c(0*numeric(length(1983:2013)),temp$Dat)
-    temp<-data.frame(Year=c(1983:2018),Dat=fillup)
-  }
-  
-  sp_list[[i]]<-temp
-}
-data_jrg_spaceavg$jrg_spaceavg_cover_byyear<-sp_list
-
-
-#============================= NOTES : some formatting steps ==========================================================
-# updating sp name code
-i_BRSP<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="BR__")
-names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)[[i_BRSP]]<-"BRSP"
-
-# merging TRs : ("TRAL","TRSP","TRTR")
-all_TR<-(data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRAL$Dat+data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRSP$Dat+data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRTR$Dat)
-
-#=======overwrite TRSP data with total data from all Trifolium sp.=============
-data_jrg_spaceavg$jrg_spaceavg_cover_byyear$TRSP$Dat<-all_TR 
-
-#=================== and delete the TRAL and TRTR ones==============================
-id_TRTRs<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)%in%c("TRTR","TRAL"))
-data_jrg_spaceavg$jrg_spaceavg_cover_byyear<-data_jrg_spaceavg$jrg_spaceavg_cover_byyear[-id_TRTRs]
-
-#--------------------------time series plot for all sp with data_jrg_spaceavg-------------------------
-summary_raw_data_spaceavg<-data.frame(sp=names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear),n=NA,n0=NA,nT=NA,nrep0=NA,cover=NA)
-pdf("./Results/jrg_results/space_avg_cover_plot_all_sp.pdf",height=20,width = 20)
-op<-par(mfrow=c(7,6),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
-for(i in 1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)){
-  temp<-data_jrg_spaceavg$jrg_spaceavg_cover_byyear[[i]]
-  cover<-mean(temp$Dat,na.rm = T)
-  n<-length(temp$Dat)
-  nTies<-n-length(unique(temp$Dat))
-  n0<-sum(temp$Dat==0)
-  if(n0>0){
-    nrep0<-n0-1
-  }else{
-    nrep0<-NA
-  }   
-  summary_raw_data_spaceavg$n[i]<-n
-  summary_raw_data_spaceavg$n0[i]<-n0
-  summary_raw_data_spaceavg$nT[i]<-nTies
-  summary_raw_data_spaceavg$nrep0[i]<-nrep0
-  summary_raw_data_spaceavg$cover[i]<-cover
-  plot(temp$Year,temp$Dat,col=rgb(1,0,0,0.3),pch=19)
-  mtext(paste0(s_s[[i]],", nT=",nTies,", nrep0=",nrep0,", cover=",round(cover,3),sep=""))
-}
-par(op)
-dev.off()
-
-#--------------------screening species for data_jrg_spaceavg----------------------------
-bad_id_jrg<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear) %in% c("BARE","ROCK","THSP","MISP")) # I drop for now this MISP
-
-id_common_sp_jrg<-which(summary_raw_data_spaceavg$n0<=6)
-id_common_sp_jrg<-setdiff(id_common_sp_jrg,bad_id_jrg) #if any
-
-id_not_common_sp_jrg<-setdiff(c(1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)),id_common_sp_jrg)
-id_not_common_sp_jrg<-setdiff(id_not_common_sp_jrg,bad_id_jrg)
-
-id_rare_sp_jrg<-which(summary_raw_data_spaceavg$n0>=34)
-id_rare_sp_jrg<-setdiff(id_rare_sp_jrg,bad_id_jrg)
-
-id_normal_sp_jrg<-setdiff(id_not_common_sp_jrg,id_rare_sp_jrg)
-
-tot_sp_jrg<-length(id_common_sp_jrg)+length(id_not_common_sp_jrg)+length(bad_id_jrg)
-tot_sp_jrg==40
-
-tot_sp_jrg<-length(id_common_sp_jrg)+length(id_normal_sp_jrg)+length(id_rare_sp_jrg)+length(bad_id_jrg)
-tot_sp_jrg==40
-
-sp_jrg_category<-as.data.frame(matrix(NA,nrow=tot_sp_jrg,ncol=3))
-colnames(sp_jrg_category)<-c("id","sp","category")
-sp_jrg_category$id<-c(1:tot_sp_jrg)
-sp_jrg_category$sp<-names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)
-sp_jrg_category$category[id_common_sp_jrg]<-"C"
-sp_jrg_category$category[id_rare_sp_jrg]<-"R"
-sp_jrg_category$category[id_normal_sp_jrg]<-"I" # Intermediate and normal are used in same meaning
-
-all_goodsp_jrg_category<-na.omit(sp_jrg_category)
-all_goodsp_jrg_category<-all_goodsp_jrg_category[,c(2:3)]
-saveRDS(all_goodsp_jrg_category,"./Results/jrg_results/skewness_results/all_goodsp_jrg_category.RDS")
-#----------------------------------------------------------------------------------------------
-splist_jrg_spaceavg<-id_common_sp_jrg
-lensp<-length(splist_jrg_spaceavg)
-#---------------------generate copula plots for all selected splist_jrg_spaceavg--------------------
-source("./vivj_matrix.R")
-pdf("./Results/jrg_results/copula_splist_jrg_spaceavg.pdf",height=2*lensp,width = 2*lensp)
-op<-par(mfrow=c(lensp,lensp),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
-for(i in c(1:lensp)){
-  for(j in c(1:lensp)){
-    vivj_matrix(d_allsp=data_jrg_spaceavg,loc=1,
-                i=splist_jrg_spaceavg[i],j=splist_jrg_spaceavg[j],level=0.05,
-                ploton=T,timeavg=F,tagon=F)
-  }
-}
-par(op)
-dev.off()
-
-saveRDS(data_jrg_spaceavg,"./Results/jrg_results/data_jrg_spaceavg.RDS")
-saveRDS(splist_jrg_spaceavg,"./Results/jrg_results/common_sp_jrg_spaceavg.RDS")
-```
-
-<!--## Results for data_jrg_spaceavg
-
-### Model selection calculation for jrg data_spaceavg-->
-
-```{r ms_jrg_spaceavg,echo=F, cache=T, cache.extra=list(seed,data_jrg_spaceavg,splist_jrg_spaceavg,mtime("FittingCopula_ms.R"), mtime("vivj_matrix.R"),mtime("OurBiCopSelect.R"),mtime("MyBiCopGofTest.R"),mtime("preprocessors.R"))}
-source("./FittingCopula_ms.R") # top most hierarchy source file
-
-set.seed(seed)
-#-----------------------------Model selection approach for data_jrg_spaceavg-----------------------
-source("FittingCopula_ms.R") # top most hierarchy source file
-
-RES_jrg_spaceavg<-RES_single_loc(loc=1,d_allsp=data_jrg_spaceavg,
-                                 good_sp=splist_jrg_spaceavg,
-                                 families=c(1,3:10,13,14,16:20),level=0.05,timeavg=F)
-
-saveRDS(RES_jrg_spaceavg,"./Results/jrg_results/RES_jrg_spaceavg.RDS")
-```
-
-```{r plot_LTmUT_jrg_spaceavg, echo=F,results="hide",message=F}
-set.seed(seed)
-source("./mycorrplot.R")
-
-nvar<-0
-#nvar<-nvar_jrg_spaceavg
-#nvar_names_jrg_spaceavg<-c("grs_ppt","grs_tmean","grs_tmax","grs_tmin")
-z<-RES_jrg_spaceavg$LTmUTdep
-pdf("./Results/jrg_results/LTmUT_jrg_spaceavg.pdf",height=12.5,width=13.5)
-rownames(z)<-paste0(rownames(z)," : ",names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear[splist_jrg_spaceavg]),sep="")
-#dl<-nrow(z)-nvar+1
-#rownames(z)[c(dl:nrow(z))]<-nvar_names
-colnames(z)<-rownames(z)
-cmin<-min(RES_jrg_spaceavg$LTmUTdep,na.rm=T)
-cmax<-max(RES_jrg_spaceavg$LTmUTdep,na.rm=T)
-cr<-max(abs(cmin),abs(cmax))
-mycorrplot(z=z,
-           posnI_ind = RES_jrg_spaceavg$posnI_ind,
-           posnN_ind = RES_jrg_spaceavg$posnN_ind,
-           colrange = c(-cr,cr),
-           nsm=RES_jrg_spaceavg$neg_sp_mat)
-dl2<-nrow(z)-nvar
-z1<-z
-z1[RES_jrg_spaceavg$posnN_ind]<-NA
-z1<-z1[1:dl2,1:dl2]
-nL<-sum(z1>0,na.rm = T)
-nU<-sum(z1<0,na.rm = T)
-ipos<-which(z1>0,arr.ind = T)
-ineg<-which(z1<0,arr.ind=T)
-fL<-sum(z1[ipos])/(sum(z1[ipos])+abs(sum(z1[ineg])))
-fU<-abs(sum(z1[ineg]))/(sum(z1[ipos])+abs(sum(z1[ineg])))
-mtext(paste0("nL =",nL,", nU =",nU),cex=3,side=1,line=3)
-#segments(x0=c(0.5, 0.5), y0=c(0.5+nvar, 0.5+nrow(z)), x1=c(0.5+nrow(z), 0.5+nrow(z)), y1=c(0.5+nvar,0.5+nrow(z)), lwd=6,col="green")
-#segments(c(0.5,0.5+nrow(z)), rep(0.5+nvar,1), c(0.5,0.5+nrow(z)), rep(0.5+nrow(z),1), lwd=6, col="green")
-dev.off()
-```
-
-<!--### Non-parametric analysis for jrg data_spaceavg-->
-
-```{r npa_jrg_spaceavg, echo=F, cache=T, cache.extra=list(seed,data_jrg_spaceavg,splist_jrg_spaceavg,mtime("NonParamStat.R"),mtime("vivj_matrix.R"),mtime("CopulaFunctions.R"), mtime("CopulaFunctions_flexible.R"))}
-
-set.seed(seed) 
-source("./NonParamStat.R")
-
-resloc<-"./Results/jrg_results/jrg_npa_results/"
-loc<-1
-
-stat_jrg_npa_spaceavg<-vector("list",1)
-names(stat_jrg_npa_spaceavg)<-"jrg_spaceavg"
-
-if (!dir.exists(paste(resloc,names(stat_jrg_npa_spaceavg),sep=""))){
-  dir.create(paste(resloc,names(stat_jrg_npa_spaceavg),sep=""))
-}
-
-stat_jrg_spaceavg<-multcall(d_allsp=data_jrg_spaceavg,
-                          loc=1,
-                          pfname=paste(resloc,names(stat_jrg_npa_spaceavg),"/",names(stat_jrg_npa_spaceavg),sep=''),
-                          good_sp=splist_jrg_spaceavg,
-                          nbin=2,timeavg=F)
-  
-stat_jrg_npa_spaceavg[[loc]]<-stat_jrg_spaceavg
-
-saveRDS(stat_jrg_npa_spaceavg,paste(resloc,names(stat_jrg_npa_spaceavg),"/",file="stat_jrg_npa_spaceavg.RDS",sep=''))
-```
-
-```{r plot_res_jrg_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,stat_jrg_npa_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
-set.seed(seed)
-source("./NonParamStat_matrixplot.R")
-r<-readRDS("./Results/jrg_results/RES_jrg_spaceavg.RDS")
-resloc<-"./Results/jrg_results/jrg_npa_results/"
-
-nvar<-0
-nvar_names<-NA
-
-npa_diff_jrg_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_jrg_npa_spaceavg,
-                                                  posnI_list_ln_all = list(r$posnI_ind),
-                                                  posnN_list_ln_all = list(r$posnN_ind),
-                                                  resloc=paste(resloc,sep=""),
-                                                  nvar=nvar,nvar_names=nvar_names,r=list(r),tagon=F)
-saveRDS(npa_diff_jrg_spaceavg,paste(resloc,file="npa_diff_jrg_spaceavg.RDS",sep=''))
-```
-
-```{r jrg_spaceavg_some_figs,echo=F,results="hide"}
-source("vivj_matrix.R")
-
-#invasion effect
-pdf("./Results/jrg_results/jrg_spaceavg_BRMO_PLER.pdf",height=3,width=8)
-op<-par(mfrow=c(1,2),mar=c(4,5,3,3))
-i<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="BRMO")
-j<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="PLER")
-d_allsp<-data_jrg_spaceavg
-
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
-
-ylabel<-paste("-",names(d_allsp[[loc]])[j],sep="")
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
-plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],ylab=ylabel,cex.lab=1.5)
-text(s1$mat[,1],s1$mat[,2],labels = c(1983:2018),cex=0.5,col="blue")
-par(op)
-dev.off()
-
-
-#interspecies competition
-pdf("./Results/jrg_results/jrg_spaceavg_HELU_LOSU.pdf",height=3,width=4)
-op<-par(mar=c(4,5,3,3))
-i<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="HELU")
-j<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="LOSU")
-d_allsp<-data_jrg_spaceavg
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
-plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
-     ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
-text(s1$mat[,1],s1$mat[,2],labels = c(1983:2018),cex=0.5,col="blue")
-mtext(paste0("(sp_x, sp_y) = (",i," , ",j,")"),
-          side = 3, line=0.15, adj=0.5, col="black")
-par(op)
-dev.off()
-
-pdf("./Results/jrg_results/jrg_spaceavg_HELU_MIDO.pdf",height=3,width=8)
-op<-par(mfrow=c(1,2),mar=c(4,5,3,3))
-i<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="HELU")
-j<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="MIDO")
-d_allsp<-data_jrg_spaceavg
-
-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
-
-ylabel<-paste("-",names(d_allsp[[loc]])[j],sep="")
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
-plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
-     ylab=ylabel,cex.lab=1.5)
-text(s1$mat[,1],s1$mat[,2],labels = c(1983:2018),cex=0.5,col="blue")
-par(op)
-dev.off()
-
-pdf("./Results/jrg_results/jrg_spaceavg_LOSU_MIDO.pdf",height=3,width=8)
-op<-par(mfrow=c(1,2),mar=c(4,5,3,3))
-i<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="LOSU")
-j<-which(names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)=="MIDO")
-d_allsp<-data_jrg_spaceavg
-
-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
-
-ylabel<-paste("-",names(d_allsp[[loc]])[j],sep="")
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
-plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
-     ylab=ylabel,cex.lab=1.5)
-text(s1$mat[,1],s1$mat[,2],labels = c(1983:2018),cex=0.5,col="blue")
-par(op)
-dev.off()
-```
-
-```{r skewness_jrg_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,data_jrg_spaceavg,mtime("skewness_cvsq_testing.R"),mtime("ncsurrog.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
-#we suppressed the warning coming from ncsurrog by using warning=F in chunk header 
-# Kendall does not handle ties so we didn't use that
-
-# normal sp. and Intermediate sp. have the same interpretation
-
-set.seed(seed)
-source("skewness_cvsq_testing.R")
-
-# Generate matrix which holds timeseries for all 41 species along each of 41 column : 36 by 41 matrix
-splist<-c(1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear))
-ts_mat<-c()
-for(i in splist){
-  #cat("sp=",names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)[[i]],"\n")
-  temp<-data_jrg_spaceavg$jrg_spaceavg_cover_byyear[[i]]$Dat
-  ts_mat<-cbind(ts_mat,temp)
-}
-rownames(ts_mat)<-c(1983:2018)
-colnames(ts_mat)<-names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)[splist]
-
-# Now see the total cover time-series with different species list
-#---------------------------------------------------------------------------------------------
-ts_mat_common_sp_jrg<-ts_mat[,id_common_sp_jrg]
-total_ts_common_sp_jrg<-apply(ts_mat_common_sp_jrg,MARGIN = 1,FUN = sum)
-#----------------------------------------------------------------------------------------
-id_common_and_normal_sp_jrg<-sort(c(id_common_sp_jrg,id_normal_sp_jrg))
-
-ts_mat_common_and_normal_sp_jrg<-ts_mat[,id_common_and_normal_sp_jrg]
-total_ts_common_and_normal_sp_jrg<-apply(ts_mat_common_and_normal_sp_jrg,MARGIN = 1,FUN = sum, na.rm=T)
-
-id_all_sp_jrg<-sort(c(id_common_sp_jrg,id_normal_sp_jrg, id_rare_sp_jrg))
-ts_mat_all_sp_jrg<-ts_mat[,id_all_sp_jrg]
-
-saveRDS(ts_mat_all_sp_jrg,"./Results/jrg_results/skewness_results/ts_mat_all_goodsp_jrg.RDS")
-
-total_ts_all_sp_jrg<-apply(ts_mat_all_sp_jrg,MARGIN = 1,FUN = sum,na.rm=T)
-
-total_ts<-cbind(total_ts_common_sp_jrg,total_ts_common_and_normal_sp_jrg,total_ts_all_sp_jrg)
-
-pdf("./Results/jrg_results/skewness_results/total_timeseries.pdf",height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-plot(c(1983:2018),total_ts[,1],ylim=range(total_ts),col=rgb(1,0,0,0.5),type="b",pch=16,
-     xlab="Years",ylab="Total % cover",xlim=c(1983,2018),cex.lab=2,cex.axis=2)
-lines(c(1983:2018),total_ts[,2],type="b",pch=16,col=rgb(0,1,0,0.5))
-lines(c(1983:2018),total_ts[,3],type="b",col="black",pch=1)
-legend("bottomright",c("common sp.","common + intermediate sp.","all sp. including rare"),lty=c(1,1,1),
-       col=c(rgb(1,0,0,0.5),rgb(0,1,0,0.5),"black"),pch=c(16,16,1),bty="n",cex=1.2)
-par(op)
-dev.off()
-
-
-#--------------matrices with psedospecies------------------------------
-
-#common sp. with 1 aggregated pseudo-sp.
-
-id_others<-setdiff(splist,id_common_sp_jrg)
-id_pseudo<-setdiff(id_others,bad_id_jrg)
-ts_mat_pseudo<-ts_mat[,id_pseudo]
-ts_pseudo<-apply(ts_mat_pseudo,MARGIN = 1,FUN = sum)
-ts_mat_common_pseudo_jrg<-cbind(ts_mat_common_sp_jrg,ts_pseudo)
-
-#common + normal sp. with 1 aggregated pseudo-sp.
-
-id_others<-setdiff(splist,id_common_and_normal_sp_jrg)
-id_pseudo<-setdiff(id_others,bad_id_jrg)
-ts_mat_pseudo<-ts_mat[,id_pseudo]
-ts_pseudo<-apply(ts_mat_pseudo,MARGIN = 1,FUN = sum)
-ts_mat_common_normal_pseudo_jrg<-cbind(ts_mat_common_and_normal_sp_jrg,ts_pseudo)
-
-#--------------------------Now calculate skewness results with common species only----------------------------------------
-mymat<-ts_mat_common_sp_jrg
-resloc<-"./Results/jrg_results/skewness_results/"
-tempo<-paste(resloc,"common_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-#--------------------------Now calculate skewness results with common species + pseudo-sp.----------------------------------------
-mymat<-ts_mat_common_pseudo_jrg
-resloc<-"./Results/jrg_results/skewness_results/"
-tempo<-paste(resloc,"common_and_pseudo_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-#--------------------------Now calculate skewness results with common and normal species-------------------------
-mymat<-ts_mat_common_and_normal_sp_jrg
-resloc<-"./Results/jrg_results/skewness_results/"
-tempo<-paste(resloc,"common_and_normal_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-#--------------------------Now calculate skewness results with common + normal + pseudo-sp. ----------------------------------------
-mymat<-ts_mat_common_normal_pseudo_jrg
-resloc<-"./Results/jrg_results/skewness_results/"
-tempo<-paste(resloc,"common_and_normal_and_pseudo_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-#----------------------Now calculate skewness results with all species---------------------------------
-mymat<-ts_mat_all_sp_jrg
-resloc<-"./Results/jrg_results/skewness_results/"
-tempo<-paste(resloc,"all_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_jrg_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-```
-
 ```{r read hays_rawdata,echo=F,results="hide"}
 # later add results="hide" , echo=F in chunk header
 set.seed(seed)
@@ -720,13 +193,21 @@ for(isp in 1:length(id_common_sp_hays)){
 
 hays_spaceavg$avg.basal.cover<-sp.screened.data
 
+# Append the pseudo species = merged sp. of I & R category
+pseudo_hays_IR<-apply(X=avg_cover_over_plots_hays[,which(sp_hays_category$category%in%c("I","R"))],MARGIN = 1,FUN = sum)
+pseudo_hays<-data.frame(Year=c(1932:1972),Dat=pseudo_hays_IR)
+pseudo_hays<-list(pseudo_hays)
+
+hays_spaceavg$avg.basal.cover<-append(hays_spaceavg$avg.basal.cover,pseudo_hays)
+names(hays_spaceavg$avg.basal.cover)[[length(id_common_sp_hays)+1]]<-"pseudo_hays"
+
 saveRDS(hays_spaceavg,"./Results/hays_results/hays_spaceavg_data_for_screened_plantsp.RDS")
 
 #------plot hays_spaceavg data for all screened sp for all yearspan-------------------------------
-pdf("./Results/hays_results/hays_spaceavg_screenedsp_avgcover.pdf",height = 20,width=20)
-op<-par(mfrow=c(5,5),mar=c(5,3,3,3))
+pdf("./Results/hays_results/hays_spaceavg_screenedsp_avgcover.pdf",height = 21,width=21)
+op<-par(mfrow=c(6,5),mar=c(5,3,3,3))
 for (i in c(1:length(hays_spaceavg$avg.basal.cover))){
-  plot(hays_spaceavg$avg.basal.cover[[i]]$Year,hays_spaceavg$avg.basal.cover[[i]]$Dat,col=rgb(0,0,1,0.3),pch=19,
+  plot(hays_spaceavg$avg.basal.cover[[i]]$Year,hays_spaceavg$avg.basal.cover[[i]]$Dat,col=rgb(0,0,1,0.3),pch=19,type="b",
        ylim=c(0,max(hays_spaceavg$avg.basal.cover[[i]]$Dat,na.rm=T)),xlab="Year (1932-1972)")
   abline(h=0)
   n0<-sum(hays_spaceavg$avg.basal.cover[[i]]$Dat==0)
@@ -1154,6 +635,269 @@ par(op)
 dev.off()
 ```
 
+```{r read_and_prepare_knz_data,echo=F,results="hide"}
+set.seed(seed)
+
+dat<-read.csv("./Data/KnzData/Grassland_group1_master.csv")
+dat_sitewise<-split(dat,dat$site)
+
+dat_knz<-dat_sitewise$knz
+
+# convert factor class into character class
+dat_knz$site<-as.character(dat_knz$site)
+dat_knz$plot<-as.character(dat_knz$plot)
+dat_knz$subplot<-as.character(dat_knz$subplot)
+dat_knz$uniqueID<-as.character(dat_knz$uniqueID)
+dat_knz$unitAbund<-as.character(dat_knz$unitAbund)
+dat_knz$scaleAbund<-as.character(dat_knz$scaleAbund)
+dat_knz$species<-as.character(dat_knz$species)
+
+# unique years?
+uyr<-sort(unique(dat_knz$year))
+lenyr<-length(uyr)
+
+# unique plots ? 
+uplot<-sort(unique(dat_knz$plot))
+uplot
+length(uplot)
+
+# unique subplots ?
+usplot<-sort(unique(dat_knz$subplot))
+usplot
+length(usplot)
+
+# unique species ?
+usp<-sort(unique(dat_knz$species))
+usp<-as.character(usp)
+lenusp<-length(usp)
+
+# Fill the following table with average cover from all plots for a given year with a given sp.
+ts_all_sp<-matrix(NA,nrow=lenyr,ncol=lenusp) # timeseries for each sp along each column
+colnames(ts_all_sp)<-usp
+rownames(ts_all_sp)<-uyr
+ts_all_sp<-as.data.frame(ts_all_sp)
+
+my_knz<-dat_knz[,c("year","species","abundance")]
+my_knz_eachsp<-split(my_knz,my_knz$species)
+
+all(names(my_knz_eachsp)==colnames(ts_all_sp))==T # It's a check
+
+for(i in 1:length(my_knz_eachsp)){
+  x1<-my_knz_eachsp[[i]]
+  ts_all_sp[,i]<-sapply(split(x=x1$abundance,f=x1$year), mean)
+}
+saveRDS(ts_all_sp,"./Results/knz_results/ts_all_sp.RDS")
+
+anyNA(ts_all_sp)
+
+# screen sp. for KNZ
+nyr_0_eachsp<-apply(ts_all_sp,MARGIN = 2,FUN = function(x){sum(x==0)})
+nyr_0_eachsp<-as.data.frame(nyr_0_eachsp)
+
+# common sp. for KNZ : these sp present for all 33 years
+id_common_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp==0) 
+ts_common_knz<-ts_all_sp[,id_common_sp_knz]
+
+# rare sp. for KNZ
+id_rare_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>=31)
+ts_rare_knz<-ts_all_sp[,id_rare_sp_knz]
+
+# normal or intermediate sp. for KNZ
+id_normal_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>0 & nyr_0_eachsp$nyr_0_eachsp<31)
+ts_normal_knz<-ts_all_sp[,id_normal_sp_knz]
+
+# sp. category for KNZ
+sp_category_knz<-data.frame(sp=rownames(nyr_0_eachsp),category=NA)
+sp_category_knz$category[id_common_sp_knz]<-"C"
+sp_category_knz$category[id_normal_sp_knz]<-"I"
+sp_category_knz$category[id_rare_sp_knz]<-"R"
+
+# Now make the usual format for KNZ data (with common sp and all other merged into a pseudo species) to be used in model selection later
+
+knz_spaceavg<-vector("list",1)
+names(knz_spaceavg)<-"avg.percent.cover"
+
+sp.screened.data<-vector("list",length(id_common_sp_knz))
+names(sp.screened.data)<-rownames(nyr_0_eachsp)[id_common_sp_knz]
+
+for(isp in 1:length(id_common_sp_knz)){
+  sp.screened.data[[isp]]<-data.frame(Year=c(1983:2015),Dat=ts_common_knz[,isp])
+}
+
+knz_spaceavg$avg.percent.cover<-sp.screened.data
+
+# Append the pseudo species = merged sp. of I & R category
+pseudo_knz_IR<-apply(X=ts_all_sp[,which(sp_category_knz$category%in%c("I","R"))],MARGIN = 1,FUN = sum)
+pseudo_knz<-data.frame(Year=c(1983:2015),Dat=pseudo_knz_IR)
+pseudo_knz<-list(pseudo_knz)
+
+knz_spaceavg$avg.percent.cover<-append(knz_spaceavg$avg.percent.cover,pseudo_knz)
+names(knz_spaceavg$avg.percent.cover)[[length(id_common_sp_knz)+1]]<-"pseudo_knz"
+
+ts_knz_CP<-cbind(ts_common_knz,pseudo_knz_IR)
+saveRDS(ts_knz_CP,"./Results/knz_results/ts_knz_CP.RDS") 
+
+#------plot knz_spaceavg data for all common sp for all yearspan-------------------------------
+good_sp<-c(1:length(knz_spaceavg[[1]]))
+lensp<-length(good_sp)
+
+summary_knz_commonsp<-data.frame(sp=names(knz_spaceavg$avg.percent.cover),n0=NA,nTies=NA)
+pdf("./Results/knz_results/rawplot_knz_spaceavg_commonsp_with_pseudosp_avgcover.pdf",height = 0.5*lensp,width=0.5*lensp)
+op<-par(mfrow=c(6,5),mar=c(5,5,3,3))
+for (i in good_sp){
+  n0<-sum(knz_spaceavg$avg.percent.cover[[i]]$Dat==0)
+  nTies<-sum(duplicated(knz_spaceavg$avg.percent.cover[[i]]$Dat)==T)
+  summary_knz_commonsp$n0[i]<-n0
+  summary_knz_commonsp$nTies[i]<-nTies
+  if(n0==0){
+    col1<-rgb(1,0,0,0.3) # these are the sp. present for all years : total 27 sp. + 1 pseudo sp.
+  }else{
+    col1<-rgb(0,0,1,0.3)
+  }
+  plot(knz_spaceavg$avg.percent.cover[[i]]$Year,knz_spaceavg$avg.percent.cover[[i]]$Dat,col=col1,pch=19,
+       ylim=c(0,max(knz_spaceavg$avg.percent.cover[[i]]$Dat)),xlab="Year (1983-2015)",type="b",ylab="avg. % cover")
+  abline(h=0)
+  
+  mtext(paste0("sp = ",i," : ",names(knz_spaceavg$avg.percent.cover)[i]," ,nT=",nTies,sep=""))
+}
+par(op)
+dev.off()
+
+# ---------------------generate copula plots for all common sp for knz_spaceavg--------------------
+source("./vivj_matrix.R")
+
+pdf("./Results/knz_results/copulaplot_knz_spaceavg_commonsp_with_pseudosp_avgcover.pdf",height=2*lensp,width = 2*lensp)
+op<-par(mfrow=c(lensp,lensp),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
+for(i in c(1:lensp)){
+  for(j in c(1:lensp)){
+    vivj_matrix(d_allsp=knz_spaceavg,loc=1,
+                i=good_sp[i],j=good_sp[j],level=0.05,
+                ploton=T,timeavg=F,tagon=F)
+  }
+}
+par(op)
+dev.off()
+
+# !!!!!!!!!!!!!!!!!!!!!! NOTE : even I consider the species which were present every year still there was large nTies with sp. 5,7,20
+# But there were very few weird copula with those sp. or max. independent : that's why I don't care much
+```
+
+```{r ms_knz_spaceavg,echo=F, results="hide", cache=T, cache.extra=list(seed,knz_spaceavg,mtime("FittingCopula_ms.R"), mtime("vivj_matrix.R"),mtime("OurBiCopSelect.R"),mtime("MyBiCopGofTest.R"),mtime("preprocessors.R"))}
+source("./FittingCopula_ms.R") # top most hierarchy source file
+
+set.seed(seed)
+#-----------------------------Model selection approach for hays_spaceavg data -----------------------
+source("FittingCopula_ms.R") # top most hierarchy source file
+
+RES_knz_spaceavg<-RES_single_loc(loc=1,d_allsp=knz_spaceavg,
+                                  good_sp=c(1:length(knz_spaceavg[[1]])),
+                                  families=c(1,3:10,13,14,16:20),level=0.05,timeavg=F)
+
+saveRDS(RES_knz_spaceavg,"./Results/knz_results/RES_knz_spaceavg.RDS")
+```
+
+```{r plot_LTmUT_knz_spaceavg, echo=F,results="hide",message=F}
+set.seed(seed)
+source("./mycorrplot.R")
+
+pdf("./Results/knz_results/LTmUT_knz_spaceavg.pdf",height=15,width=16)
+z<-RES_knz_spaceavg$LTmUTdep
+spnm_short<-names(knz_spaceavg$avg.percent.cover)
+rownames(z)<-paste0(rownames(z)," : ",spnm_short,sep="")
+
+colnames(z)<-rownames(z)
+cmin<-min(RES_knz_spaceavg$LTmUTdep,na.rm=T)
+cmax<-max(RES_knz_spaceavg$LTmUTdep,na.rm=T)
+cr<-max(abs(cmin),abs(cmax))
+mycorrplot(z=z,
+           posnI_ind = RES_knz_spaceavg$posnI_ind,
+           posnN_ind = RES_knz_spaceavg$posnN_ind,
+           colrange = c(-cr,cr),
+           nsm=RES_knz_spaceavg$neg_sp_mat)
+nvar<-0
+dl2<-nrow(z)-nvar
+z1<-z
+z1[RES_knz_spaceavg$posnN_ind]<-NA
+z1<-z1[1:dl2,1:dl2]
+nL<-sum(z1>0,na.rm = T)
+nU<-sum(z1<0,na.rm = T)
+mtext(paste0("nL =",nL,", nU =",nU),cex=3,side=1,line=2.8)
+#segments(x0=c(0.5, 0.5), y0=c(0.5+nvar, 0.5+nrow(z)), x1=c(0.5+nrow(z), 0.5+nrow(z)), y1=c(0.5+nvar,0.5+nrow(z)), lwd=6,col="green")
+#segments(c(0.5,0.5+nrow(z)), rep(0.5+nvar,1), c(0.5,0.5+nrow(z)), rep(0.5+nrow(z),1), lwd=6, col="green")
+dev.off()
+```
+
+```{r npa_knz_spaceavg, echo=F, cache=T, cache.extra=list(seed,knz_spaceavg,mtime("NonParamStat.R"),mtime("vivj_matrix.R"),mtime("CopulaFunctions.R"), mtime("CopulaFunctions_flexible.R"))}
+
+set.seed(seed) 
+source("./NonParamStat.R")
+
+if(!dir.exists("./Results/knz_resultsknz_npa_results")){
+  dir.create("./Results/knz_results/knz_npa_results")
+}
+
+resloc<-"./Results/knz_results/knz_npa_results/"
+loc<-1
+
+stat_knz_npa_spaceavg<-vector("list",1)
+names(stat_knz_npa_spaceavg)<-"knz_spaceavg"
+
+if (!dir.exists(paste(resloc,names(stat_knz_npa_spaceavg),sep=""))){
+  dir.create(paste(resloc,names(stat_knz_npa_spaceavg),sep=""))
+}
+
+stat_knz_spaceavg<-multcall(d_allsp=knz_spaceavg,
+                             loc=1,
+                             pfname=paste(resloc,names(stat_knz_npa_spaceavg),"/",names(stat_knz_npa_spaceavg),sep=''),
+                             good_sp=c(1:length(knz_spaceavg[[1]])),
+                             nbin=2,timeavg=F)
+
+stat_knz_npa_spaceavg[[loc]]<-stat_knz_spaceavg
+
+saveRDS(stat_knz_npa_spaceavg,paste(resloc,names(stat_knz_npa_spaceavg),"/",file="stat_knz_npa_spaceavg.RDS",sep=''))
+```
+
+```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,stat_knz_npa_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
+set.seed(seed)
+source("./NonParamStat_matrixplot.R")
+r<-readRDS("./Results/knz_results/RES_knz_spaceavg.RDS")
+resloc<-"./Results/knz_results/knz_npa_results/"
+
+nvar<-0
+nvar_names<-NA
+
+npa_diff_knz_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_knz_npa_spaceavg,
+                                                posnI_list_ln_all = list(r$posnI_ind),
+                                                posnN_list_ln_all = list(r$posnN_ind),
+                                                resloc=paste(resloc,sep=""),
+                                                nvar=nvar,nvar_names=nvar_names,r=list(r),tagon=F)
+saveRDS(npa_diff_knz_spaceavg,paste(resloc,file="npa_diff_knz_spaceavg.RDS",sep=''))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```{r pedagog_fig, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,mtime("ExtremeTailDep.R"),mtime("ncsurrog.R"))}
 library(copula)
 library(e1071)
@@ -1310,9 +1054,6 @@ For an acceptable nearest positive semidefinite covariance matrix, this histogra
 should spread around 50\% probability with no extreme tail.
 
 # Data \label{Data} 
-
-
-<!--JRG data : Lauren will add this section and then I can write how I screened 15 species out of 42-->
 
 
 <!--Hays data-->
@@ -1596,51 +1337,13 @@ tail-dependence (due to smaller sample size)
 whereas model selection result was based on extreme regime.
 
 
-<!--Make a table with species list for jrg-->
-```{r make_tab_splist_for_jrg, echo=F, results="asis"}
-library(kableExtra)
-library(dplyr)
-tab_spinfo<-as.data.frame(matrix(NA,nrow=length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear),ncol=3))
-colnames(tab_spinfo)<-c("ID","Sp. code","Species name")
-tab_spinfo$ID<-c(1:length(data_jrg_spaceavg$jrg_spaceavg_cover_byyear))
-tab_spinfo$`Sp. code`<-names(data_jrg_spaceavg$jrg_spaceavg_cover_byyear)
-sp_jrg_full_des<-read.csv("./Data/jrg_data/datadescription_Lauren_Apr24_2019/JR_speciesnames.csv")
-splistfullnm<-c("Agoseris heterophylla","Minuartia douglasii","Astragalus gambellianus",
-                "Bare ground","Brodiaea sp.","Bromus hordeaceus","Bromus terrestris","Bromus berteroanus",
-                "Calandrinia ciliata","Calycadenia multiglandulosa","Chlorogalum pomeridianum","Clarkia rubicunda",
-                "Epilobium brachycarpum","Eschscholzia californica","Hesperevax sparsiflora","Gilia clivorum",
-                "Hemizonia congesta","Lasthenia californica","Layia platyglossa", "Lactuca serriola",
-                "Lepidium nitidum","Linanthus parviflorus","Lolium multiflorum","Lotus wrangelianus",
-                "Lomatium utriculatum","Melica californica","Micropus californicus","Microseris douglasii",
-                "Miscellaneous ?","Castilleja densiflora","Plantago erecta","Plagiobothrys nothofulvus","Poa secunda",
-                "Rock","Elymus multisetus","Stipa pulchra","Thatch",
-                "Crassula connata","Trifolium sp.","Vulpia microstachys"
-)
-
-
-#tab_spinfo$`Species name`<-c(splistfullnm,"Precipitation for growing season","Average temperature for growing season",
-#                             "Maximum temperature for growing season","Minimum temperature for growing season")
-
-tab_spinfo$`Species name`<-c(splistfullnm)
-
-#tab_spinfo[c(1:42),3]<- paste0("\\textit{", tab_spinfo[c(1:42),3], "}")
-#tab_spinfo[c(1:42),3]<-cell_spec(tab_spinfo[c(1:42),3],"latex",italic=T)
-knitr::kable(tab_spinfo, 
-             format="latex", align="c", linesep = "",
-             caption = "Information of the species considered for Jasper Ridge data; 23 most common species (highlighted) are selected based on the criterion that they were absent all over the 216 plots for not more than 6 years.\\label{tab_spinfo_jrg}", 
-             booktabs = T,col.names = NULL) %>%
-             row_spec(splist_jrg_spaceavg, bold = T, color = "blue")%>%
-             column_spec(3,italic=T)%>%
-             add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
-```
-
 ```{r make_tab_common_splist_for_hays, echo=F, results="asis"}
 library(kableExtra)
 library(dplyr)
-tab_spinfo<-as.data.frame(matrix(NA,nrow=20,ncol=3))
+tab_spinfo<-as.data.frame(matrix(NA,nrow=21,ncol=3))
 colnames(tab_spinfo)<-c("ID","Sp. code","Species name")
-tab_spinfo$ID<-c(1:20)
-tab_spinfo$`Sp. code`<-spinfo$PLANTS.Symbol[which(spinfo$species %in% names(hays_spaceavg$avg.basal.cover))]
+tab_spinfo$ID<-c(1:21)
+tab_spinfo$`Sp. code`<-c(spinfo$PLANTS.Symbol[which(spinfo$species %in% names(hays_spaceavg$avg.basal.cover))],"pseudo")
 splistfullnm<-names(hays_spaceavg$avg.basal.cover)
 
 tab_spinfo$`Species name`<-c(splistfullnm)
@@ -1652,52 +1355,6 @@ knitr::kable(tab_spinfo,
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
 
-<!--jrg : npa results plot -->
-\begin{figure}[!h]
-\begin{center}
-\textbf{ \hspace{0.5 cm} (A) \hspace{8 cm} (B)} \\
-\includegraphics[width=8.5 cm]{./Results/jrg_results/jrg_npa_results/jrg_spaceavg/jrg_spaceavg_Corl-Coru.pdf}
-\includegraphics[width=8.5 cm]{./Results/jrg_results/jrg_npa_results/jrg_spaceavg/jrg_spaceavg_Pl-Pu.pdf}\\
-\vspace{1 cm}
-\textbf{ \hspace{1 cm} (C) } \\
-\includegraphics[width=8.5 cm]{./Results/jrg_results/jrg_npa_results/jrg_spaceavg/jrg_spaceavg_D2u-D2l.pdf}\\
-\caption{ Non-parametric results for JRBP space average data for $(A)$ $\cor_l - \cor_u$, $(B)$ $\Ps_l - \Ps_u$ and
-$(C)$ $\Dsq_u-\Dsq_l$. $nL$ and $nU$ indicate the numbers of lower tail and upper tail dependent cells (with positive correlation), respectively.\label{fig_jrg_spaceavg_npa}}
-\end{center}
-\end{figure}
-
-<!--adding figues for example from jrg_spaceavg results-->
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=17 cm]{./Results/jrg_results/jrg_spaceavg_BRMO_PLER.pdf}
-\caption[Invasion-effect on native species \textit{Plantago}  
-by exotic species \textit{Bromus} over years.]
-{Invasion-effect on native species \textit{Plantago}  
-by exotic species \textit{Bromus} over 36 years (1983-2018): 
-abundance of native species \textit{Plantago erecta} (sp31 plotted along y-axis)
-and invasive species \textit{Bromus hordeaceus} (sp6 plotted along x-axis) were negatively 
-correlated over years (left plot) and certain years of \textit{Bromus}-invasion made \textit{Plantago}
-rare on those years which was reflected in the upper tail-dependence of the copula (right plot :
-\textit{Plantago} was plotted with negative abundance so that copula became positively correlated).
- \label{fig_jrg_spaceavg_invasion}}
-\end{center}
-\end{figure}
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=8.5 cm]{./Results/jrg_results/jrg_spaceavg_HELU_LOSU.pdf}\\
-\includegraphics[width=17 cm]{./Results/jrg_results/jrg_spaceavg_HELU_MIDO.pdf}\\
-\includegraphics[width=17 cm]{./Results/jrg_results/jrg_spaceavg_LOSU_MIDO.pdf}
-\caption[Inter-specific dynamics among native annuals over years]{spatially averaged inter-species 
-dynamics in JRBP throughout the years (1983-2018): upper panel showed upper tail dependence with 
-synchronous abundance between two native annuals \textit{Hemizonia congesta} (sp17: HELU)
-and \textit{Lotus wrangelianus} (sp24: LOSU), middle and lower pannel showed compensatory
-dynamics between those species with another native annual \textit{Microseris douglasii} (sp28: MIDO) 
-making MIDO rare in their good years (see upper tail-dependence in positively correlated species pair).  
-sp$_{-}$x and sp$_{-}$y are the id of species plotted along x- and y-axis, 
-respectively.\label{fig_jrg_spaceavg_competition}}
-\end{center}
-\end{figure}
 
 <!--hays : npa results plot -->
 \begin{figure}[!h]
@@ -1743,62 +1400,14 @@ in the maintext.\label{fig_hays_spaceavg_SCSC_interactions}}
 \begin{figure}[!h]
 \begin{center}
 \textbf{ \hspace{0.5 cm} (A) \hspace{5.5 cm} (B)} \\
-\includegraphics[width=6 cm]{./Results/jrg_results/skewness_results/total_timeseries.pdf}
+\includegraphics[width=6 cm]{./Results/hays_results/skewness_results/total_timeseries.pdf}
 \includegraphics[width=6 cm]{./Results/hays_results/skewness_results/total_timeseries.pdf}\\
-\caption[Timeseries plot for (A) Jasper Ridge and $(B)$ Hays data]{ Timeseries plot for (A) Jasper Ridge and $(B)$ Hays data; "common" species indicate the most abundant species
+\caption[Timeseries plot for (A) Jasper Ridge and $(B)$ Hays data]{ Timeseries plot for (A) Hays and $(B)$ Hays data; "common" species indicate the most abundant species
 throughout years averaging over quadrats and only absent maximum for $6$ years, whereas "rare" species refer to the species which 
 was present maximum for 2 years. The rest are classified into "intermediate" category.\label{fig_spaceavg_timeseries}}
 \end{center}
 \end{figure}
 
-<!--jrg : skewness results plot -->
-\begin{figure}[!h]
-\begin{center}
-\textbf{ \hspace{0.5 cm} (A) \hspace{3.5 cm} (B)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/skewness_jrg_spaceavg_spearman_sp_23.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/skewness_jrg_spaceavg_spearman_plotcheckon_sp_23.pdf}\\
-\textbf{ \hspace{0.5 cm} (C) \hspace{3.5 cm} (D)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_sp_24.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_plotcheckon_sp_24.pdf}\\
-\textbf{ \hspace{0.5 cm} (E) \hspace{3.5 cm} (F)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/skewness_jrg_spaceavg_spearman_sp_34.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/skewness_jrg_spaceavg_spearman_plotcheckon_sp_34.pdf}\\
-\textbf{ \hspace{0.5 cm} (G) \hspace{3.5 cm} (H)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/skewness_jrg_spaceavg_spearman_sp_35.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/skewness_jrg_spaceavg_spearman_plotcheckon_sp_35.pdf}\\
-\textbf{ \hspace{0.5 cm} (I) \hspace{3.5 cm} (J)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/skewness_jrg_spaceavg_spearman_sp_36.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/skewness_jrg_spaceavg_spearman_plotcheckon_sp_36.pdf}\\
-\caption[Skewness results for grassland community in Jasper ridge]{Skewness results for Jasper ridge; each row represents two histograms : one for comparing the position of skewness of data with its spearman preserving $10000$ surrogates having "Normal" copula structure, the other is for checking if the approximated positive semi-definite covariance matrix is acceptable or not (for details see \ref{skew_ncsurrog}). Figures are for $(A-B)$ 23 common species, $(C-D)$ 23 common sp. and rest aggregated into one pseudo sp., $(E-F)$ common and intermediate (total 34) sp., $(G-H)$ 35 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(I-J)$ all 36 species including rare ones.\label{fig_jrg_spaceavg_skewness}}
-\end{center}
-\end{figure}
-
-<!--jrg : skewness and cvsq results plot -->
-\begin{figure}[!h]
-\begin{center}
-\textbf{ \hspace{0.5 cm} (A) \hspace{3.5 cm} (B) \hspace{3.5 cm} (C)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/skewness_jrg_spaceavg_spearman_sp_23.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/skewness_jrg_spaceavg_spearman_plotcheckon_sp_23.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_sp_23/cvsq_jrg_spaceavg_spearman_sp_23.pdf}\\
-\textbf{ \hspace{0.5 cm} (D) \hspace{3.5 cm} (E) \hspace{3.5 cm} (F)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_sp_24.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/skewness_jrg_spaceavg_spearman_plotcheckon_sp_24.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_pseudo_sp_24/cvsq_jrg_spaceavg_spearman_sp_24.pdf}\\
-\textbf{ \hspace{0.5 cm} (G) \hspace{3.5 cm} (H) \hspace{3.5 cm} (I)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/skewness_jrg_spaceavg_spearman_sp_34.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/skewness_jrg_spaceavg_spearman_plotcheckon_sp_34.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_sp_34/cvsq_jrg_spaceavg_spearman_sp_34.pdf}\\
-\textbf{ \hspace{0.5 cm} (J) \hspace{3.5 cm} (K) \hspace{3.5 cm} (L)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/skewness_jrg_spaceavg_spearman_sp_35.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/skewness_jrg_spaceavg_spearman_plotcheckon_sp_35.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/common_and_normal_and_pseudo_sp_35/cvsq_jrg_spaceavg_spearman_sp_35.pdf}\\
-\textbf{ \hspace{0.5 cm} (M) \hspace{3.5 cm} (N) \hspace{3.5 cm} (O)} \\
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/skewness_jrg_spaceavg_spearman_sp_36.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/skewness_jrg_spaceavg_spearman_plotcheckon_sp_36.pdf}
-\includegraphics[width=4 cm]{./Results/jrg_results/skewness_results/all_sp_36/cvsq_jrg_spaceavg_spearman_sp_36.pdf}\\
-\caption[Skewness and $CV^2$ results for grassland community in Jasper ridge]{Skewness results for Jasper ridge; each row represents 3 histograms : first one is for comparing the position of skewness of data with its spearman preserving $10000$ surrogates having "Normal" copula structure, second one is for checking if the approximated positive semi-definite covariance matrix is acceptable or not (for details see \ref{skew_ncsurrog}) and the third is for comparing the value of $CV^2$ of data with its spearman preserving $10000$ surrogates having "Normal" copula structure. Figures are for $(A-C)$ 23 common species, $(D-F)$ 23 common sp. and rest aggregated into one pseudo sp., $(G-I)$ common and intermediate (total 35) sp., $(J-L)$ 35 (common and intermediate) sp. and rest aggragated into one pseudo sp., $(M-O)$ all 39 species including rare ones.\label{fig_jrg_spaceavg_skewness_cvsq}}
-\end{center}
-\end{figure}
 
 <!--hays : skewness results plot -->
 \begin{figure}[!h]
