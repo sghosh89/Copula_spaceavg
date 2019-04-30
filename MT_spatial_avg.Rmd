@@ -1,6 +1,6 @@
 ---
 title: "Estimating synchronous and compensatory dynamics in grassland communities using a novel “copula” approach"
-author: "Shyamolina Ghosh"
+author: "Shyamolina Ghosh, other authors, Daniel Reuman"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 #date: "October 12, 2018"
 geometry: "left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm"
@@ -112,7 +112,7 @@ Write significance here.
 2) leibig's law
 3) global climate change : ongoing invasion and sp. extinction : pollinators?
 -->
-The relevance of a copula with its unique tail-dependence feature is that it can be applied
+The benefit of using copula with its unique tail-dependence feature is that it can be applied
 to model synchronous (or compensatory) response between two or more ecological variables. 
 Spatial synchrony [@liebhold2004; @walter2017; @sheppard2016] between 
 metapopulations, is recently investigated using copula (BIVAN paper),
@@ -207,29 +207,15 @@ between any two species' time series.\label{fig_pedag_skewness}}
 <!--Why choose jasper ridge and hays as study system?-->
 In this paper, we will preach for the potential of using "copula" approach to analyze
 species' response within a community in understanding variation in species-richness
-over a temporal scale. We consider two grassland ecosystems for our study. First one 
-is Jasper Ridge Biological
-Preserve (JRBP), a biodiversity hotspot in californian serpentine grassland. 
-Long term observations in JRBP showed the serpentine grassland vary widely in its 
-species composition both in temporal and spatial scale [@hobbs2007; @zhu2016]. 
-Climate change and invasion by 
-exotic species in JRBP had detrimental effect on native species 
-shifting its dominance 
-from one species to another
-and thereby posing habitat loss of their
-dependent species leading to extinction [@stromberg2007]. 
-For example, bay-checkerspot butterfly 
-\textit{Euphydryas editha bayensis} is now locally extinct at Jasper Ridge 
-possibly due to declining abundance of its principal larval 
-host plant \textit{Plantago erecta}
-in competition with invasive species like \textit{Bromus hordeaceus}.
-The second dataset we choose to invetigate is long-term mapping of 
-individual herbaceous plants on permanent quadrats in a mixed grass 
-priarie of Hays, Kansas. Hays grassland also played major role in investigating 
-plants' demographic process, their co-existence and extreme climatic effect 
-on annual productivity 
-in the past studies [@fair1999demography; @adler2006climate; 
-@lauenroth2008demography; @heisler2009contingent].
+over a temporal scale. We consider two grassland ecosystems for our study. 
+
+<!--write about 2nd dataset : KNZ-->
+
+
+
+
+
+
 Both datasets (Appendix \ref{SI-Data}) have been served as experimental model system to 
 study ecological hypothesis since long and proved to be effective
 in decision making from conservation and management perspective. 
@@ -251,76 +237,18 @@ total biomass distribution over years using those two datasets.
 # Results\label{Results}
 
 As mentioned earlier, we here present the results from the study carried out with the
-spatio-temporal percent cover data (for 216 plots over 36 years, 1983-2018)
-of Jasper Ridge Biological Preserve (JRBP) and 41 years (1932-1972) long basal cover
-data from 51 quadrats of mixed grass priarie near Hays, KS (for details see
+spatio-temporal basal cover data (for 51 quadrats over 41 years, 1932-1972)
+of mixed grass priarie near Hays, KS (for details see
 Appendix \ref{SI-Data}). We here analyzed
 our findings from a model-selection based 
 copula approach, but we also verified the overall finding using
 alternative nonparametric analysis (Appendix \ref{SI-compare_methods}).
 
-<!--## Results from jrg spaceavg LT-UT matrix plot-->
-Tail-dependence analysis 
-(see Appendix \ref{SI-Methods} for details)
-was carried out with pairwise copula
-made of spatially averaged percent cover time-series (1983-2018)
-of 23 most common species found in JRBP (Table \ref{SI-tab_spinfo_jrg}).
-The multi-species interaction matrix in Fig. \ref{fig_LTmUT_spaceavg_jrg}
-showed tail-dependence difference (lower minus upper) plotted 
-for each pair-wise copula. 
-Spatially averaged data could only show a prominent
-tail-dependence results in
-our case when there is stronger correlation for some unusually 
-good or bad years for both species' percent-cover considered.
-
-We found considerable amount of interspecific competetion
-and co-existence with overall major lower tail-dependence in 
-the serpentine grassland community of JRBP.
-Here we will 
-discuss a few exemplary cases. For instance,
-when invasive species \textit{Bromus hordeaceus} were more abundant
-throughout the plots over certain years,
-native species \textit{Plantago Erecta} could not do well 
-and became rare from the
-system for those years, but when \textit{Bromus} was scarce in the
-system \textit{Plantago} showed a varied abundance. 
-This phenomenon indicated the causal relationship that
-\textit{Bromus} appeared to be a stronger competitor
-limiting \textit{Plantago}'s growth synchronously [represented in 
-Fig. \ref{fig_LTmUT_spaceavg_jrg}
-by the blue cell indicating 
-stronger upper tail-dependence between yearly percent cover of
-\textit{Bromus} (sp6 in row) and 
-\textit{Plantago} (sp31 in column, plotted as negative
-percent cover, so that the copula showed positive correlation,
-see Fig. \ref{SI-fig_jrg_spaceavg_invasion} for details].
-The interaction was conceptually same
-as shown by the red cell with lower tail-dependence in 
-Fig \ref{fig_LTmUT_spaceavg_jrg}(sp31 in row and
-sp6 in column). Strong co-existence with similar dynamics was 
-found (both abundant simultaneosly 
-in certain years) between two native annuals \textit{Hemizonia congesta}
-and \textit{Lotus wrangelianus} (Fig. \ref{fig_LTmUT_spaceavg_jrg}, blue cell
-with upper tail dependence between sp17, sp24). When \textit{Hemizonia} and 
-\textit{Lotus} were not dominantly prolific in the system, they did not 
-show a strong correlation 
-and another weak competitor \textit{Microseris douglasii} got a chance to flourish.
-When those two species (\textit{Hemizonia} and \textit{Lotus}) were both 
-abundant in their "good" years (specifically 3 successive years from 2016-2018,
-native annual \textit{Microseris} (sp28) became uncommon and appeared as a weak 
-competitor towards their joint
-competitive pressure (sp17 and sp24 in rows with sp28 in column, for details
-see Fig. \ref{SI-fig_jrg_spaceavg_competition}). If this trend continues, then it could be 
-a potential threat for existence of native species \textit{Microseris douglasii}. 
-This type of "diffuse competition" intrigued many experimental studies in the past 
-to better understand plant competition and facilitation in serpentine grassland 
-[@harrison2011] and in our study we showed tail-dependence could be a measure
-to understand inter-specific competition and mutualism in a multi-species metric. 
-
-On a similar note, we carried out the tail-dependence analysis with the basal cover time series of
-20 most common species found in prairie of Hays, Kansas (Table \ref{SI-tab_spinfo_hays}). We
-found similar trend as of 
-JRBP, showing lower tail-dependence (considering positively correlation in
+<!--Results from Hays-->
+We carried out the tail-dependence analysis with the basal cover time series of
+20 most common species and the rest of the species data aggregated into single pseudo-species
+found in prairie of Hays, Kansas (Table \ref{SI-tab_spinfo_hays}). We
+found lower tail-dependence (considering positively correlation in
 counting lower and upper tail dependent pairwise copula) were dominant, overall, in 
 the community (Fig. \ref{fig_LTmUT_spaceavg_hays}). We will discuss here few instances 
 of interspecific interactions which 
@@ -340,7 +268,10 @@ were found to be synchronously rare and lower tail-dependent within themselves (
 correlated red cells in Fig. \ref{fig_LTmUT_spaceavg_hays}).
 
 <!--Results from skewness as a measure of community variability-->
-Major lower tail dependence than upper, as observed in interspecific interactions 
+
+<!--Need to modify the following results-->
+
+<!--Major lower tail dependence than upper, as observed in interspecific interactions 
 in both grassland communities (Figs. \ref{fig_LTmUT_spaceavg_jrg}-\ref{fig_LTmUT_spaceavg_hays},
 $nL>NU$) could play a significant contributors in predicting their stabilities. Via skewness 
 measurement of total productivity through out the study period, one can assess an alternate measure 
@@ -361,30 +292,30 @@ all five combinations. Similar results with significant lower skewness
 because of dominant lower tail-dependence in the comminity was observed with Hays datasets (Fig. 
 \ref{SI-fig_hays_spaceavg_skewness}). As skewness is related to the "spikiness" of the time-series
 concerned, significantly lower skewness than its "Normal" analog scale means the community could have 
-a potential threat for some of its native species which could crash simultaneously below a threshold.
+a potential threat for some of its native species which could crash simultaneously below a threshold. -->
 
 \begin{figure*}[!h]
 \begin{center}
-\includegraphics[width=10cm]{./Results/jrg_results/LTmUT_jrg_spaceavg.pdf} 
-\caption{Model averaged lower tail - upper tail dependence matrix for 23 most common plant species 
-(Table \ref{SI-tab_spinfo_jrg}), 
+\includegraphics[width=9cm]{./Results/hays_results/LTmUT_hays_spaceavg.pdf} 
+\caption{Model averaged lower tail - upper tail dependence matrix for 20 most common plant species along with 
+other species merged into a pseudo species (Table \ref{SI-tab_spinfo_hays}) found in Hays priarie, 
 details were discussed in \nameref{Results}. 
 nL and nU are the count of cells (considered for positive correlation only)
 with positive and negative tail-dependence difference 
-values for 23$\times$23 matrix; 
+values for 21$\times$21 matrix; 
 nL$>$nU (majority of red cells) indicates major lower tail dependence
 in sp-sp interaction matrix.
 Yellow cells indicate independent relationship. Initially negatively correlated cells contain a number 
 indicating the id of the species (in column) that was taken reversed when constructing bivariate
-copula to make positively correlated (for details see Appendix \ref{SI-model_sel}).\label{fig_LTmUT_spaceavg_jrg}}
+copula to make positively correlated (for details see Appendix \ref{SI-model_sel}).\label{fig_LTmUT_spaceavg_hays}}
 \end{center}
 \end{figure*}
 
 \begin{figure*}[!h]
 \begin{center}
-\includegraphics[width=10cm]{./Results/hays_results/LTmUT_hays_spaceavg.pdf} 
-\caption{Similar model averaged lower tail - upper tail dependence matrix as of Fig. \ref{fig_LTmUT_spaceavg_jrg}
-but for 20 most common plant species (Table \ref{SI-tab_spinfo_hays}) found in Hays priarie.\label{fig_LTmUT_spaceavg_hays}}
+\includegraphics[width=10.8cm]{./Results/knz_results/LTmUT_knz_spaceavg.pdf} 
+\caption{Similar model averaged lower tail - upper tail dependence matrix as of Fig. \ref{fig_LTmUT_spaceavg_hays}
+but for 27 most common plant species (Table \ref{SI-tab_spinfo_hays}) found in Konza priarie.\label{fig_LTmUT_spaceavg_knz}}
 \end{center}
 \end{figure*}
 
