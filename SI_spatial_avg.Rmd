@@ -757,7 +757,7 @@ knz_spaceavg$avg.percent.cover<-append(knz_spaceavg$avg.percent.cover,pseudo_knz
 names(knz_spaceavg$avg.percent.cover)[[length(id_common_sp_knz)+1]]<-"pseudo_knz"
 
 ts_knz_CP<-cbind(ts_common_knz,pseudo_knz_IR)
-saveRDS(ts_knz_CP,"./Results/knz_results/ts_knz_CP.RDS") 
+saveRDS(ts_knz_CP,"./Results/knz_results/skewness_results/ts_knz_CP.RDS") 
 
 #--------------- time series plot for knz Common sp, Common + Normal(or Intermediate) sp., Common+Normal+Rare sp.-------------------
 
