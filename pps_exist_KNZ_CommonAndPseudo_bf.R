@@ -163,7 +163,7 @@ while (all(is.na(allposdef[numpd,])))
 
 #***
 
-save(allposdef,file=paste0(resloc,"PosDefMats.RData"))
+saveRDS(allposdef,file=paste0(resloc,"PosDefMats.RDS"))
 
 #Now find the one that is closest to hpre
 allposdef<-allposdef[1:sum(!is.na(allposdef[,1])),1:(dim(allposdef)[2]-1)]
@@ -224,7 +224,7 @@ hist(ltres)#very few of these should be outside the range 250-750,
 #and if they are not outside that range you have pretty 
 #good surrogates
 
-save(bestmat,file=paste0(resloc,"FinalParameterMatrix.RData"))
+saveRDS(bestmat,file=paste0(resloc,"FinalParameterMatrix.RDS"))
 #This is the final result. If you generate data from a normal copula
 #with this parameter matrix and then use alignranks, that will give 
 #ok Pearson-preserving surrogates.
@@ -241,7 +241,7 @@ for (counter in 1:numsp)
 }#need to sort the columns of d to use aligncall
 surrogs<-alignranks(sd,sims)
 
-save(surrogs,file=paste0(resloc,"SomeSurrogates.RData"))
+saveRDS(surrogs,file=paste0(resloc,"SomeSurrogates.RDS"))
 
 #***compute CV_com^2 for surrogs
 totpop<-apply(FUN=sum,X=surrogs,MARGIN=c(1,3))
@@ -255,5 +255,5 @@ lines(rep(CVd,2),c(1,1000),col="red")
 sum(allCVcomsq<CVd)/length(allCVcomsq)
 #really good!
 
-save.image(file=paste0(resloc,"WholeWorkspace.RData"))
+save.image(file=paste0(resloc,"WholeWorkspace.RDS"))
 
