@@ -443,7 +443,7 @@ hlo<-P2p(t(allparms[,,1]))
 hpre<-P2p(t(allparms[,,2]))
 hhi<-P2p(t(allparms[,,3]))
 hmid<-(hlo+hhi)/2
-bestmatNPD<-matrix(as.numeric(Matrix::nearPD(m2,corr=TRUE)$mat),numsp,numsp)
+bestmatNPD<-matrix(as.numeric(Matrix::nearPD(m1,corr=TRUE)$mat),numsp,numsp)
 bestmatNPDvect<-P2p(bestmatNPD)
 if (sum(bestmatNPDvect>hhi | bestmatNPDvect<hlo)==0)
 {
