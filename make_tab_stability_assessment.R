@@ -280,7 +280,7 @@ abline(v=ans$cvsq_indep,col="black")
 
 
 #--------------skw histogrm-------------------------------------
-xlm<-range(ans$skw_real,ans$skw_indep,jrg_CP$skw_surrogs)
+xlm<-range(ans$skw_real,ans$skw_indep,hays_CP$skw_surrogs)
 
 hist(hays_CP$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs Skewness",main="")
 axis(side=1, at=c(xlm[1],0,xlm[2]))
@@ -314,9 +314,83 @@ dev.off()
 #================================ FOR KNZ dataset =====================================
 
 d_knz<-readRDS("./Results/knz_results/ts_knz_CP.RDS")
-knz_CP<-make_tab_stability(m=d_knz,surrogs = NA,surrogs_given = F)
+#knz_CP<-make_tab_stability(m=d_knz,surrogs = NA,surrogs_given = F)
+
+load("./Results/knz_results/skewness_results/SomeSurrogates.RData")
+knz_surrogs_pp_CP<-surrogs
+dim(knz_surrogs_pp_CP)
+
+numsurrog<-10000
+#_________________________________________________________________
+set.seed(seed=101) # set seed to sample any surrogates randomly
+#_________________________________________________________________
+id_surrogs<-sample(c(1:dim(knz_surrogs_pp_CP)[3]),numsurrog,replace=F)
+
+knz_surrogs_pp_CP<-knz_surrogs_pp_CP[,,id_surrogs]
+
+knz_CP<-make_tab_stability(m=d_knz,surrogs = knz_surrogs_pp_CP,surrogs_given = T)
+ans<-(knz_CP$df_stability)
+rownames(ans)<-"C+P"
+class(ans)
+
+write.csv(ans,"./Results/knz_results/skewness_results/knz_stability_CP.csv")
+
+#----------------------------------------------------
+pdf("./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf")
+op<-par(mfrow=c(2,1))
+
+#--------------CVsq histogrm-------------------------------------
+xlm<-range(ans$cvsq_real,ans$cvsq_indep,knz_CP$cvsq_surrogs)
+
+hist(knz_CP$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs CVsq",main="")
+axis(side=1, at=c(xlm[1],0,xlm[2]))
+abline(v=ans$cvsq_real,col="red") # actual CVsq from real data
+
+#95% quantiles
+abline(v=ans$cvsq_ntd_0.025CI,col="blue") 
+abline(v=ans$cvsq_ntd_0.975CI,col="blue")
+
+#50% quantiles
+CI_cvsq_50<-quantile(knz_CP$cvsq_surrogs,probs=c(.25,.75))
+abline(v=CI_cvsq_50[1],col="green")
+abline(v=CI_cvsq_50[2],col="green")
+
+# Cvsq with no tail dep.
+abline(v=ans$cvsq_ntd_median,col="magenta")
+
+# Cvsq if indep.
+abline(v=ans$cvsq_indep,col="black")
 
 
+# add legend
+legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
+       horiz = F, bty="n",
+       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
+
+#--------------skw histogrm-------------------------------------
+xlm<-range(ans$skw_real,ans$skw_indep,knz_CP$skw_surrogs)
+
+hist(knz_CP$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs Skewness",main="")
+axis(side=1, at=c(xlm[1],0,xlm[2]))
+abline(v=ans$skw_real,col="red") # actual CVsq from real data
+
+#95% quantiles
+abline(v=ans$skw_ntd_0.025CI,col="blue") 
+abline(v=ans$skw_ntd_0.975CI,col="blue")
+
+#50% quantiles
+CI_skw_50<-quantile(knz_CP$skw_surrogs,probs=c(.25,.75))
+abline(v=CI_skw_50[1],col="green")
+abline(v=CI_skw_50[2],col="green")
+
+# Skewness with no tail dep.
+abline(v=ans$skw_ntd_median,col="magenta")
+
+# Skewness if indep.
+abline(v=ans$skw_indep,col="black")
+
+par(op)
+dev.off()
 
 
 
