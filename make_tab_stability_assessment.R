@@ -313,11 +313,10 @@ dev.off()
 
 #================================ FOR KNZ dataset =====================================
 
-d_knz<-readRDS("./Results/knz_results/ts_knz_CP.RDS")
+d_knz<-readRDS("./Results/knz_results/skewness_results/ts_knz_CP.RDS")
 #knz_CP<-make_tab_stability(m=d_knz,surrogs = NA,surrogs_given = F)
 
-load("./Results/knz_results/skewness_results/SomeSurrogates.RData")
-knz_surrogs_pp_CP<-surrogs
+knz_surrogs_pp_CP<-readRDS("./Results/Results_pps_exist_KNZ_CommonAndPseudo/SomeSurrogates.RDS")
 dim(knz_surrogs_pp_CP)
 
 numsurrog<-10000
