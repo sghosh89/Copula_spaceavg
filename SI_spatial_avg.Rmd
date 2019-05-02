@@ -347,26 +347,232 @@ npa_diff_hays_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_hays_npa_spac
 saveRDS(npa_diff_hays_spaceavg,paste(resloc,file="npa_diff_hays_spaceavg.RDS",sep=''))
 ```
 
-<!--DAN needs to fill in the following chunk to get pearson preserving surrogates for hays with common+pseudo sp.-->
+<!--get appropriate surrogates for hays with common+pseudo sp.-->
 ```{r make_surrogs_CP_hays, echo=F, results="hide", warning=F, cache=T, cache.extra=list(surrog_seed1,surrog_seed2,ts_mat_CP_hays,mtime("copmap.R"),mtime("getinv.R"),mtime("getinvrg.R"),mtime("alignranks.R"))}
 
-# you need to use set.seed(seed=....) with two seeds : surrog_seed1, surrog_seed2 (see setup chunk)
+#***setup for the chunk
 
+library(matrixcalc)
+library(mvtnorm)
 
+# functions needed
 source("copmap.R")
 source("getinv.R")
 source("getinvrg.R")
 source("alignranks.R")
 
-# result folder to save pearson preserving surrogates for hays with Common + Pseudo sp.
+# result folder to save surrogates 
 resloc_surrog_hays<-"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/"
-
 if (!dir.exists(resloc_surrog_hays)){
   dir.create(resloc_surrog_hays)
 }
 
+#***For each pair of species, find the preimage of the correlation 
+#under the map defined by copmap.R - this is to determine search bounds
+#for the subsequent optimization
 
-surrogs_CP_hays<-  # this is the pearson preserving surrogs as a large array for hays (Common+Pseudo sp.)
+set.seed(surrog_seed1)
+
+d<-ts_mat_CP_hays
+numsp<-dim(d)[2]
+p<-seq(from=-1,to=1,by=0.1)
+numreps<-250
+
+#receptacle for results, the preimage in allparms[,,2], the range
+#specified by the other values
+allparms<-array(NA,c(numsp,numsp,3))
+
+#loop through each pair of species
+for (c1 in 1:(numsp-1))
+{
+  print(paste0("c1: ",c1))
+  for (c2 in (c1+1):numsp)
+  {
+    #get the time series for these two species
+    x<-d[,c1]
+    y<-d[,c2]
+    
+    #get the (stochastic) map
+    thisres<-copmap(x,y,p,numreps,"cor")
+    
+    #find the iverse range
+    allparms[c1,c2,c(1,3)]<-getinvrg(p,thisres,cor(x,y))
+    
+    #find the actual preimage
+    allparms[c1,c2,2]<-getinv(p,thisres,cor(x,y),"median")
+    
+    #make and save a plot
+    mn<-apply(FUN=mean,MARGIN=2,X=thisres)
+    quants<-apply(FUN=quantile,MARGIN=2,X=thisres,probs=c(.25,.5,.75))
+    pdf(paste0(resloc_surrog_hays,"mapplot_",c1,"_",c2,".pdf"))
+    plot(p,mn,type='l',ylim=range(mn,quants))
+    lines(p,quants[2,],type='l',lty="dashed")
+    lines(p,quants[1,],type='l',lty="dotted")
+    lines(p,quants[3,],type='l',lty="dotted")
+    lines(range(p),rep(cor(x,y),2))
+    lines(rep(allparms[c1,c2,1],2),c(-1,1))
+    lines(rep(allparms[c1,c2,2],2),c(-1,1))
+    lines(rep(allparms[c1,c2,3],2),c(-1,1))
+    dev.off()
+  }
+}
+
+#make sure the preimage is within the preimage range in all cases,
+#and you got a sensible range and a single-point preimage in all cases
+if (sum(allparms[,,1]<allparms[,,2],na.rm=TRUE)!=(numsp^2-numsp)/2 ||
+    sum(allparms[,,2]<allparms[,,3],na.rm=TRUE)!=(numsp^2-numsp)/2)
+{
+  stop("Error in make_surrogs_CP_hays: error screening location 1")
+}
+
+#***Now look for positive definite in a couple simple ways
+
+#First check to see if we got lucky and the preimage itself is pos def
+m1<-allparms[,,2]
+m1[is.na(m1)]<-0
+m1<-m1+t(m1)
+diag(m1)<-1
+if (is.positive.semi.definite(m1))
+{
+  stop("We got lucky in make_surrogs_CP_hays, revisit code: lucky screening location 1") 
+} #If m1 is pos semi def, we can skip much of the rest of the chunk and
+#do things in a simpler way, so screen for that
+
+#now use nearPD and see if you can get a positive definite matrix between the bounds
+hlo<-P2p(t(allparms[,,1]))
+hpre<-P2p(t(allparms[,,2]))
+hhi<-P2p(t(allparms[,,3]))
+hmid<-(hlo+hhi)/2
+bestmatNPD<-matrix(as.numeric(Matrix::nearPD(m2,corr=TRUE)$mat),numsp,numsp)
+bestmatNPDvect<-P2p(bestmatNPD)
+if (sum(bestmatNPDvect>hhi | bestmatNPDvect<hlo)==0)
+{
+  stop("We got lucky in make_surrogs_CP_hays, revisit code: lucky screening location 2") 
+} #if we got a positive definite matrix here, then we may not have to search
+#for one below, so screen for that
+
+#***Now search for a positive definite matrix in the space of parameters 
+#desribed by allparms
+
+#prepare
+set.seed(surrog_seed2)
+numpd<-50000
+allposdefmats<-matrix(NA,2*numpd,length(hlo)+1)
+allposdefmats_rowcount<-1
+
+#the function to optimize which will lead us toward pos def mats, and will also
+#record any that are found
+fn<-function(h)
+{
+  res<-min(eigen(p2P(h))$values)
+  if (res>0)
+  {
+    allposdefmats[allposdefmats_rowcount,]<<-c(h,res)
+    allposdefmats_rowcount<<-allposdefmats_rowcount+1 #note the use of global variables, watch out!
+    print("Found one!")
+  }
+  return(res)
+}
+
+#do a search starting with the preimage itself
+optim(hpre,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
+      control=list(fnscale=-1)) 
+
+#do a search starting from the midpoint of the preimage range
+optim(hmid,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
+      control=list(fnscale=-1)) 
+
+#now do a bunch of searches from random start points
+while (allposdefmats_rowcount<=numpd)
+{
+  startvec<-(hhi-hlo)*runif(length(hlo))+hlo
+  optim(startvec,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
+        control=list(fnscale=-1)) 
+}
+
+allposdefmats<-allposdefmats[1:(allposdefmats_rowcount-1),]
+saveRDS(allposdefmats,file=paste0(resloc_surrog_hays,"PosDefMats.RDS"))
+
+#***Now find the result that is closest to hpre
+
+allposdefmats<-allposdefmats[,1:(dim(allposdefmats)[2]-1)]
+hpremat<-matrix(hpre,dim(allposdefmats)[1],length(hpre),byrow = TRUE)
+sizemat<-matrix((hhi-hlo)/2,dim(allposdefmats)[1],length(hlo),byrow = TRUE)
+dist<-apply(X=((allposdefmats-hpremat)/sizemat)^2,FUN=sum,MARGIN=1)
+besth<-allposdefmats[which(dist==min(dist)),]
+if (any(besth<hlo | besth>hhi))
+{
+  stop("Error in make_surrogs_CP_hays: error screening location 2")
+}#the result should be within the bounds - screen for it
+bestmat<-p2P(besth) #this is supposed to be my parameter matrix for a normal copula!
+if (!is.positive.semi.definite(bestmat))
+{
+  stop("Error in make_surrogs_CP_hays: error screening location 3")
+}#the result should be positive semi-definite - screen for it
+
+#***Now make a plot showing where in the ranges given by hlo to hhi 
+#the besth values sit
+
+inds<-order(besth)
+pdf(file=paste0(resloc_surrog_hays,"PDResultComparedToBounds.pdf"))
+plot(1:length(besth),besth[inds],type='l',ylim=range(besth,hlo,hhi))
+lines(1:length(besth),hlo[inds],type='l',lty="dashed")
+lines(1:length(besth),hhi[inds],type='l',lty="dashed")
+dev.off()
+
+#***Now assess whether you get reasonably pearson-preserving surrogates
+#using bestmat
+
+numsimsforcheck<-1000
+
+sims<-rmvnorm((dim(d)[1])*numsimsforcheck,sigma=bestmat)
+sims<-aperm(array(sims,c(dim(d)[1],numsimsforcheck,dim(d)[2])),c(1,3,2))
+dim(sims)
+sd<-d
+for (counter in 1:numsp)
+{
+  sd[,counter]<-sort(d[,counter])
+}#need to sort the columns of d to use alignranks
+remapd<-alignranks(sd,sims)
+holder<-apply(FUN=cor,MARGIN=3,X=remapd)
+allcors<-array(holder,c(numsp,numsp,numsimsforcheck))
+gtres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors>array(cor(d),c(numsp,numsp,numsimsforcheck))))
+diag(gtres)<-NA
+pdf(file=paste0(resloc_surrog_hays,"AssessIfSurrogsPreservePearson.pdf"))
+hist(gtres)#very few of these should be outside the range 250-750, 
+#and if they are not outside that range you have pretty 
+#good surrogates
+dev.off()
+
+saveRDS(bestmat,file=paste0(resloc_surrog_hays,"FinalPDParameterMatrix.RDS"))
+#This is the final parameter result. If you generate data from a normal copula
+#with this parameter matrix and then use alignranks, that should give ok 
+#Pearson-preserving surrogates (though I still need to check if CV_com^2
+#is preserved.
+
+#***Now produce 100000 surrogates and save for later use
+
+sims<-rmvnorm((dim(d)[1])*100000,sigma=bestmat)
+sims<-aperm(array(sims,c(dim(d)[1],100000,dim(d)[2])),c(1,3,2))
+surrogs<-alignranks(sd,sims)
+saveRDS(surrogs,file=paste0(resloc_surrog_hays,"Surrogates.RDS"))
+
+#***compute CV_com^2 for surrogs and compare to data value
+totpop<-apply(FUN=sum,X=surrogs,MARGIN=c(1,3))
+allvars<-apply(FUN=var,X=totpop,MARGIN=2)
+allmnsq<-apply(FUN=function(x){(mean(x))^2},X=totpop,MARGIN=2)
+allCVcomsq<-allvars/allmnsq
+totpop<-apply(FUN=sum,X=d,MARGIN=1)
+CVd<-var(totpop)/((mean(totpop))^2)
+pdf(paste0(resloc_surrog_hays,"HistogramPlotForCVcomsq.pdf"))
+hist(allCVcomsq,50)
+lines(rep(CVd,2),c(1,1000),col="red")
+dev.off()
+saveRDS(sum(allCVcomsq<CVd)/length(allCVcomsq),
+        paste0(resloc_surrog_hays,"FracSurrogCVcomsqLTactual.pdf"))
+
+surrogs_CP_hays<-surrogs  # this is the pearson preserving surrogs for 
+#use in subsequent chunks
 ```
 
 <!-- genarating stability based results and plots for hays-->
@@ -816,26 +1022,232 @@ npa_diff_knz_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_knz_npa_spacea
 saveRDS(npa_diff_knz_spaceavg,paste(resloc,file="npa_diff_knz_spaceavg.RDS",sep=''))
 ```
 
-<!--DAN needs to fill in the following chunk to get pearson preserving surrogates for hays with common+pseudo sp.-->
+<!--get appropriate surrogates for knz with common+pseudo sp.-->
 ```{r make_surrogs_CP_knz, echo=F, results="hide", warning=F, cache=T, cache.extra=list(surrog_seed1,surrog_seed2,ts_mat_CP_knz,mtime("copmap.R"),mtime("getinv.R"),mtime("getinvrg.R"),mtime("alignranks.R"))}
 
-# you need to use set.seed(seed=....) with two seeds : surrog_seed1, surrog_seed2 (see setup chunk)
+#***setup for the chunk
 
+library(matrixcalc)
+library(mvtnorm)
 
+# functions needed
 source("copmap.R")
 source("getinv.R")
 source("getinvrg.R")
 source("alignranks.R")
 
-# result folder to save pearson preserving surrogates for hays with Common + Pseudo sp.
-resloc_surrog_hays<-"./Results/knz_results/skewness_results/pp_surrogs_knz_CP/"
-
-if (!dir.exists(resloc_surrog_hays)){
-  dir.create(resloc_surrog_hays)
+# result folder to save surrogates 
+resloc_surrog_knz<-"./Results/knz_results/skewness_results/pp_surrogs_knz_CP/"
+if (!dir.exists(resloc_surrog_knz)){
+  dir.create(resloc_surrog_knz)
 }
 
+#***For each pair of species, find the preimage of the correlation 
+#under the map defined by copmap.R - this is to determine search bounds
+#for the subsequent optimization
 
-surrogs_CP_knz<-  # this is the pearson preserving surrogs as a large array for hays (Common+Pseudo sp.)
+set.seed(surrog_seed1)
+
+d<-ts_mat_CP_kns
+numsp<-dim(d)[2]
+p<-seq(from=-1,to=1,by=0.1)
+numreps<-250
+
+#receptacle for results, the preimage in allparms[,,2], the range
+#specified by the other values
+allparms<-array(NA,c(numsp,numsp,3))
+
+#loop through each pair of species
+for (c1 in 1:(numsp-1))
+{
+  print(paste0("c1: ",c1))
+  for (c2 in (c1+1):numsp)
+  {
+    #get the time series for these two species
+    x<-d[,c1]
+    y<-d[,c2]
+    
+    #get the (stochastic) map
+    thisres<-copmap(x,y,p,numreps,"cor")
+    
+    #find the iverse range
+    allparms[c1,c2,c(1,3)]<-getinvrg(p,thisres,cor(x,y))
+    
+    #find the actual preimage
+    allparms[c1,c2,2]<-getinv(p,thisres,cor(x,y),"median")
+    
+    #make and save a plot
+    mn<-apply(FUN=mean,MARGIN=2,X=thisres)
+    quants<-apply(FUN=quantile,MARGIN=2,X=thisres,probs=c(.25,.5,.75))
+    pdf(paste0(resloc_surrog_knz,"mapplot_",c1,"_",c2,".pdf"))
+    plot(p,mn,type='l',ylim=range(mn,quants))
+    lines(p,quants[2,],type='l',lty="dashed")
+    lines(p,quants[1,],type='l',lty="dotted")
+    lines(p,quants[3,],type='l',lty="dotted")
+    lines(range(p),rep(cor(x,y),2))
+    lines(rep(allparms[c1,c2,1],2),c(-1,1))
+    lines(rep(allparms[c1,c2,2],2),c(-1,1))
+    lines(rep(allparms[c1,c2,3],2),c(-1,1))
+    dev.off()
+  }
+}
+
+#make sure the preimage is within the preimage range in all cases,
+#and you got a sensible range and a single-point preimage in all cases
+if (sum(allparms[,,1]<allparms[,,2],na.rm=TRUE)!=(numsp^2-numsp)/2 ||
+    sum(allparms[,,2]<allparms[,,3],na.rm=TRUE)!=(numsp^2-numsp)/2)
+{
+  stop("Error in make_surrogs_CP_knz: error screening location 1")
+}
+
+#***Now look for positive definite in a couple simple ways
+
+#First check to see if we got lucky and the preimage itself is pos def
+m1<-allparms[,,2]
+m1[is.na(m1)]<-0
+m1<-m1+t(m1)
+diag(m1)<-1
+if (is.positive.semi.definite(m1))
+{
+  stop("We got lucky in make_surrogs_CP_knz, revisit code: lucky screening location 1") 
+} #If m1 is pos semi def, we can skip much of the rest of the chunk and
+#do things in a simpler way, so screen for that
+
+#now use nearPD and see if you can get a positive definite matrix between the bounds
+hlo<-P2p(t(allparms[,,1]))
+hpre<-P2p(t(allparms[,,2]))
+hhi<-P2p(t(allparms[,,3]))
+hmid<-(hlo+hhi)/2
+bestmatNPD<-matrix(as.numeric(Matrix::nearPD(m2,corr=TRUE)$mat),numsp,numsp)
+bestmatNPDvect<-P2p(bestmatNPD)
+if (sum(bestmatNPDvect>hhi | bestmatNPDvect<hlo)==0)
+{
+  stop("We got lucky in make_surrogs_CP_knz, revisit code: lucky screening location 2") 
+} #if we got a positive definite matrix here, then we may not have to search
+#for one below, so screen for that
+
+#***Now search for a positive definite matrix in the space of parameters 
+#desribed by allparms
+
+#prepare
+set.seed(surrog_seed2)
+numpd<-50000
+allposdefmats<-matrix(NA,2*numpd,length(hlo)+1)
+allposdefmats_rowcount<-1
+
+#the function to optimize which will lead us toward pos def mats, and will also
+#record any that are found
+fn<-function(h)
+{
+  res<-min(eigen(p2P(h))$values)
+  if (res>0)
+  {
+    allposdefmats[allposdefmats_rowcount,]<<-c(h,res)
+    allposdefmats_rowcount<<-allposdefmats_rowcount+1 #note the use of global variables, watch out!
+    print("Found one!")
+  }
+  return(res)
+}
+
+#do a search starting with the preimage itself
+optim(hpre,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
+      control=list(fnscale=-1)) 
+
+#do a search starting from the midpoint of the preimage range
+optim(hmid,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
+      control=list(fnscale=-1)) 
+
+#now do a bunch of searches from random start points
+while (allposdefmats_rowcount<=numpd)
+{
+  startvec<-(hhi-hlo)*runif(length(hlo))+hlo
+  optim(startvec,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
+        control=list(fnscale=-1)) 
+}
+
+allposdefmats<-allposdefmats[1:(allposdefmats_rowcount-1),]
+saveRDS(allposdefmats,file=paste0(resloc_surrog_knz,"PosDefMats.RDS"))
+
+#***Now find the result that is closest to hpre
+
+allposdefmats<-allposdefmats[,1:(dim(allposdefmats)[2]-1)]
+hpremat<-matrix(hpre,dim(allposdefmats)[1],length(hpre),byrow = TRUE)
+sizemat<-matrix((hhi-hlo)/2,dim(allposdefmats)[1],length(hlo),byrow = TRUE)
+dist<-apply(X=((allposdefmats-hpremat)/sizemat)^2,FUN=sum,MARGIN=1)
+besth<-allposdefmats[which(dist==min(dist)),]
+if (any(besth<hlo | besth>hhi))
+{
+  stop("Error in make_surrogs_CP_knz: error screening location 2")
+}#the result should be within the bounds - screen for it
+bestmat<-p2P(besth) #this is supposed to be my parameter matrix for a normal copula!
+if (!is.positive.semi.definite(bestmat))
+{
+  stop("Error in make_surrogs_CP_knz: error screening location 3")
+}#the result should be positive semi-definite - screen for it
+
+#***Now make a plot showing where in the ranges given by hlo to hhi 
+#the besth values sit
+
+inds<-order(besth)
+pdf(file=paste0(resloc_surrog_knz,"PDResultComparedToBounds.pdf"))
+plot(1:length(besth),besth[inds],type='l',ylim=range(besth,hlo,hhi))
+lines(1:length(besth),hlo[inds],type='l',lty="dashed")
+lines(1:length(besth),hhi[inds],type='l',lty="dashed")
+dev.off()
+
+#***Now assess whether you get reasonably pearson-preserving surrogates
+#using bestmat
+
+numsimsforcheck<-1000
+
+sims<-rmvnorm((dim(d)[1])*numsimsforcheck,sigma=bestmat)
+sims<-aperm(array(sims,c(dim(d)[1],numsimsforcheck,dim(d)[2])),c(1,3,2))
+dim(sims)
+sd<-d
+for (counter in 1:numsp)
+{
+  sd[,counter]<-sort(d[,counter])
+}#need to sort the columns of d to use alignranks
+remapd<-alignranks(sd,sims)
+holder<-apply(FUN=cor,MARGIN=3,X=remapd)
+allcors<-array(holder,c(numsp,numsp,numsimsforcheck))
+gtres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors>array(cor(d),c(numsp,numsp,numsimsforcheck))))
+diag(gtres)<-NA
+pdf(file=paste0(resloc_surrog_knz,"AssessIfSurrogsPreservePearson.pdf"))
+hist(gtres)#very few of these should be outside the range 250-750, 
+#and if they are not outside that range you have pretty 
+#good surrogates
+dev.off()
+
+saveRDS(bestmat,file=paste0(resloc_surrog_knz,"FinalPDParameterMatrix.RDS"))
+#This is the final parameter result. If you generate data from a normal copula
+#with this parameter matrix and then use alignranks, that should give ok 
+#Pearson-preserving surrogates (though I still need to check if CV_com^2
+#is preserved.
+
+#***Now produce 100000 surrogates and save for later use
+
+sims<-rmvnorm((dim(d)[1])*100000,sigma=bestmat)
+sims<-aperm(array(sims,c(dim(d)[1],100000,dim(d)[2])),c(1,3,2))
+surrogs<-alignranks(sd,sims)
+saveRDS(surrogs,file=paste0(resloc_surrog_knz,"Surrogates.RDS"))
+
+#***compute CV_com^2 for surrogs and compare to data value
+totpop<-apply(FUN=sum,X=surrogs,MARGIN=c(1,3))
+allvars<-apply(FUN=var,X=totpop,MARGIN=2)
+allmnsq<-apply(FUN=function(x){(mean(x))^2},X=totpop,MARGIN=2)
+allCVcomsq<-allvars/allmnsq
+totpop<-apply(FUN=sum,X=d,MARGIN=1)
+CVd<-var(totpop)/((mean(totpop))^2)
+pdf(paste0(resloc_surrog_knz,"HistogramPlotForCVcomsq.pdf"))
+hist(allCVcomsq,50)
+lines(rep(CVd,2),c(1,1000),col="red")
+dev.off()
+saveRDS(sum(allCVcomsq<CVd)/length(allCVcomsq),
+        paste0(resloc_surrog_knz,"FracSurrogCVcomsqLTactual.pdf"))
+
+surrogs_CP_knz<-surrogs  # this is the pearson preserving surrogs for 
+#use in subsequent chunks
 ```
 
 <!-- genarating stability based results and plots for knz-->
