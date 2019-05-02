@@ -33,7 +33,9 @@ bibliography: REF_CSS.bib
 <!--Basic setup-->
 ```{r setup, echo=F, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
-seed<-101
+seed<-101 # common seed 
+surrog_seed1<-103  # seed used to get pearson preserving surrogs
+surrog_seed2<-1001 # seed used to get pearson preserving surrogs
 library(dplyr)
 library(kableExtra)
 library(stringr)
@@ -42,6 +44,7 @@ library(rmarkdown)
 source("mtime.R") #A function needed for caching
 ```
 
+<!-- reading raw data for hays and creates results folder for hays-->
 ```{r read hays_rawdata,echo=F,results="hide"}
 # later add results="hide" , echo=F in chunk header
 set.seed(seed)
@@ -58,7 +61,7 @@ nonplant<-as.character(spinfo$species[which(spinfo$type=="remove")])
 #"Bare ground"    "Fragment"       "Mixed grass"    "Polygonum spp." "Unknown"
 spinfo[which(spinfo$type=="remove"),] # for details
 
-# creating results folder for hays data
+#-------creating results folder for hays data------------
 if(!dir.exists("./Results/hays_results")){
   dir.create("./Results/hays_results/")
 }
@@ -68,6 +71,7 @@ if(!dir.exists("./Results/hays_results/skewness_results")){
 }
 ```
 
+<!-- preparing hays spatial average data in usual format for common+pseudo sp.-->
 ```{r prepare_hays_spaceavg,results="hide",echo=F,cache=T, cache.extra=list(seed,cover,spinfo,nonplant)}
 # later add results="hide" , echo=F in chunk header
 set.seed(seed)
@@ -156,9 +160,10 @@ for(isp in c(1:length(splist))){
 }
 anyNA(avg_cover_over_plots_hays) #This should be FALSE
 
+#---------saving a big matrix 41yrs by 151 sp. which has each sp (including non-plant) timeseries along each column : hays data------
 saveRDS(avg_cover_over_plots_hays,"./Results/hays_results/timeseries_matrix_spatialavg_allsp_hays.RDS")
 
-# Now screen the species
+# Now screen the species for hays
 count0<-apply(avg_cover_over_plots_hays,2,function(x){sum(x==0)}) # This is the count of zero 
 count0_allsp<-as.data.frame(count0)
 
@@ -170,24 +175,23 @@ id_common_sp_hays<-setdiff(id_common_sp_hays,id_nonplant)
 id_rare_sp_hays<-which(count0_allsp$count0>=39)
 id_rare_sp_hays<-setdiff(id_rare_sp_hays,id_nonplant)
 
-id_normal_sp_hays<-which(count0_allsp$count0<39 & count0_allsp>6)
-id_normal_sp_hays<-setdiff(id_normal_sp_hays,id_nonplant)
+id_interm_sp_hays<-which(count0_allsp$count0<39 & count0_allsp>6)
+id_interm_sp_hays<-setdiff(id_interm_sp_hays,id_nonplant)
 
 # check
-tot_sp_hays<-length(id_common_sp_hays)+length(id_normal_sp_hays)+length(id_rare_sp_hays)+length(id_nonplant)
+tot_sp_hays<-length(id_common_sp_hays)+length(id_interm_sp_hays)+length(id_rare_sp_hays)+length(id_nonplant)
 tot_sp_hays==151
 
-sp_hays_category<-as.data.frame(matrix(NA,nrow=length(splist),ncol=3))
-colnames(sp_hays_category)<-c("id","sp","category")
-sp_hays_category$id<-c(1:length(splist))
-sp_hays_category$sp<-splist
-sp_hays_category$category[id_common_sp_hays]<-"C" #common sp. for Hays data
-sp_hays_category$category[id_normal_sp_hays]<-"I" # normal or Intermediate sp. for Hays data
-sp_hays_category$category[id_rare_sp_hays]<-"R" # rare sp. for Hays data
+sp_category_hays<-as.data.frame(matrix(NA,nrow=length(splist),ncol=3))
+colnames(sp_category_hays)<-c("id","sp","category")
+sp_category_hays$id<-c(1:length(splist))
+sp_category_hays$sp<-splist
+sp_category_hays$category[id_common_sp_hays]<-"C" #common sp. for Hays data
+sp_category_hays$category[id_interm_sp_hays]<-"I" # Intermediate sp. for Hays data
+sp_category_hays$category[id_rare_sp_hays]<-"R" # rare sp. for Hays data
 
-all_sp_146_hays_category<-na.omit(sp_hays_category)
-all_sp_146_hays_category<-all_sp_146_hays_category[,-1]
-saveRDS(all_sp_146_hays_category,"./Results/hays_results/skewness_results/all_sp_146_hays_category.RDS")
+#---------saving a 151sp by 2 matrix indicating C/I/R category for each hays-sp (for non-plant = NA)---------
+saveRDS(sp_category_hays,"./Results/hays_results/all_sp_category_spatialavg_hays.RDS")
 
 # Now make hays_spaceavg data in your format
 hays_spaceavg<-vector("list",1)
@@ -203,14 +207,19 @@ for(isp in 1:length(id_common_sp_hays)){
 hays_spaceavg$avg.basal.cover<-sp.screened.data
 
 # Append the pseudo species = merged sp. of I & R category
-pseudo_hays_IR<-apply(X=avg_cover_over_plots_hays[,which(sp_hays_category$category%in%c("I","R"))],MARGIN = 1,FUN = sum)
+pseudo_hays_IR<-apply(X=avg_cover_over_plots_hays[,which(sp_category_hays$category%in%c("I","R"))],MARGIN = 1,FUN = sum)
 pseudo_hays<-data.frame(Year=c(1932:1972),Dat=pseudo_hays_IR)
 pseudo_hays<-list(pseudo_hays)
 
 hays_spaceavg$avg.basal.cover<-append(hays_spaceavg$avg.basal.cover,pseudo_hays)
 names(hays_spaceavg$avg.basal.cover)[[length(id_common_sp_hays)+1]]<-"pseudo_hays"
 
-saveRDS(hays_spaceavg,"./Results/hays_results/hays_spaceavg_data_for_screened_plantsp.RDS")
+#---------saving the spatial avg. data for hays with whigh we will do taildep. analysis later----------------
+saveRDS(hays_spaceavg,"./Results/hays_results/hays_spaceavg_data_CP.RDS")
+
+#-----------saving a matrix with timeseries of common + 1 pseudo (all other merged into 1) sp. for hays------
+ts_mat_CP_hays<-cbind(avg_cover_over_plots_hays[,id_common_sp_hays],pseudo_hays_IR)
+saveRDS("./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS")
 
 #------plot hays_spaceavg data for all screened sp for all yearspan-------------------------------
 pdf("./Results/hays_results/hays_spaceavg_screenedsp_avgcover.pdf",height = 21,width=21)
@@ -242,6 +251,7 @@ par(op)
 dev.off()
 ```
 
+<!-- model selection analysis for tail dep. with common + pseudo sp. in hays-->
 ```{r ms_hays_spaceavg,echo=F, results="hide", cache=T, cache.extra=list(seed,hays_spaceavg,mtime("FittingCopula_ms.R"), mtime("vivj_matrix.R"),mtime("OurBiCopSelect.R"),mtime("MyBiCopGofTest.R"),mtime("preprocessors.R"))}
 source("./FittingCopula_ms.R") # top most hierarchy source file
 
@@ -256,6 +266,7 @@ RES_hays_spaceavg<-RES_single_loc(loc=1,d_allsp=hays_spaceavg,
 saveRDS(RES_hays_spaceavg,"./Results/hays_results/RES_hays_spaceavg.RDS")
 ```
 
+<!-- genarating LT-UT dep. plots from model selection analysis with common + pseudo sp. in hays-->
 ```{r plot_LTmUT_hays_spaceavg, echo=F,results="hide",message=F}
 set.seed(seed)
 source("./mycorrplot.R")
@@ -287,6 +298,7 @@ mtext(paste0("nL =",nL,", nU =",nU),cex=3,side=1,line=2.8)
 dev.off()
 ```
 
+<!-- non-parametric analysis for tail dep. with common + pseudo sp. in hays-->
 ```{r npa_hays_spaceavg, echo=F, cache=T, cache.extra=list(seed,hays_spaceavg,mtime("NonParamStat.R"),mtime("vivj_matrix.R"),mtime("CopulaFunctions.R"), mtime("CopulaFunctions_flexible.R"))}
 
 set.seed(seed) 
@@ -317,6 +329,7 @@ stat_hays_npa_spaceavg[[loc]]<-stat_hays_spaceavg
 saveRDS(stat_hays_npa_spaceavg,paste(resloc,names(stat_hays_npa_spaceavg),"/",file="stat_hays_npa_spaceavg.RDS",sep=''))
 ```
 
+<!-- genarating LT-UT dep. plots from non-parametric analysis with common + pseudo sp. in hays-->
 ```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,stat_hays_npa_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
@@ -334,230 +347,106 @@ npa_diff_hays_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_hays_npa_spac
 saveRDS(npa_diff_hays_spaceavg,paste(resloc,file="npa_diff_hays_spaceavg.RDS",sep=''))
 ```
 
-```{r skewness_hays_spaceavg, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,hays_array,avg_cover_over_plots_hays,mtime("skewness_cvsq_testing.R"),mtime("ncsurrog.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
+<!--DAN needs to fill in the following chunk to get pearson preserving surrogates for hays with common+pseudo sp.-->
+```{r make_surrogs_CP_hays, echo=F, results="hide", warning=F, cache=T, cache.extra=list(surrog_seed1,surrog_seed2,ts_mat_CP_hays,mtime("copmap.R"),mtime("getinv.R"),mtime("getinvrg.R"),mtime("alignranks.R"))}
 
-#we suppressed the warning coming from ncsurrog by using warning=F in chunk header 
-# Kendall does not handle ties so we didn't use that
+# you need to use set.seed(seed=....) with two seeds : surrog_seed1, surrog_seed2 (see setup chunk)
+
+
+source("copmap.R")
+source("getinv.R")
+source("getinvrg.R")
+source("alignranks.R")
+
+# result folder to save pearson preserving surrogates for hays with Common + Pseudo sp.
+resloc_surrog_hays<-"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/"
+
+if (!dir.exists(resloc_surrog_hays)){
+  dir.create(resloc_surrog_hays)
+}
+
+
+surrogs_CP_hays<-  # this is the pearson preserving surrogs as a large array for hays (Common+Pseudo sp.)
+```
+
+<!-- genarating stability based results and plots for hays-->
+```{r skewness_hays_spaceavg_PP, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,ts_mat_CP_hays,surrogs_CP_hays,mtime("make_tab_stability_assessment.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
+
 set.seed(seed)
-source("skewness_cvsq_testing.R")
+source("make_tab_stability_assessment.R")
 
-# This is the matrix which holds timeseries for all 151 species along each of 151 column : 41 by 151 matrix
-ts_mat<-avg_cover_over_plots_hays
+# randomly sample numsurrog surrogate matrices from Pearson preserving array
+numsurrog<-10000
+id_surrogs<-sample(c(1:dim(surrogs_CP_hays)[3]),numsurrog,replace=F)
+surrogs_CP_hays<-surrogs_CP_hays[,,id_surrogs]
 
-# Now see the total cover time-series with different species list
-#---------------------------------------------------------------------------------------------
-ts_mat_common_sp_hays<-ts_mat[,id_common_sp_hays]
-total_ts_common_sp_hays<-apply(ts_mat_common_sp_hays,MARGIN = 1,FUN = sum)
-#----------------------------------------------------------------------------------------
-id_common_and_normal_sp_hays<-sort(c(id_common_sp_hays,id_normal_sp_hays))
+stability_CP_hays<-make_tab_stability(m=ts_mat_CP_hays,surrogs = surrogs_CP_hays, surrogs_given = T)
+ans<-(stability_CP_hays$df_stability)
+rownames(ans)<-"C+P"
+class(ans)
 
-ts_mat_common_and_normal_sp_hays<-ts_mat[,id_common_and_normal_sp_hays]
-total_ts_common_and_normal_sp_hays<-apply(ts_mat_common_and_normal_sp_hays,MARGIN = 1,FUN = sum, na.rm=T)
+write.csv(ans,"./Results/hays_results/skewness_results/hays_stability_CP.csv")
 
-id_all_sp_hays<-sort(c(id_common_sp_hays,id_normal_sp_hays, id_rare_sp_hays))
-ts_mat_all_sp_hays<-ts_mat[,id_all_sp_hays]
-total_ts_all_sp_hays<-apply(ts_mat_all_sp_hays,MARGIN = 1,FUN = sum,na.rm=T)
-saveRDS(ts_mat_all_sp_hays,"./Results/hays_results/skewness_results/ts_mat_all_sp_146_hays.RDS")
+#--------------generate plots with hays stability results : CVsq and skewness-------------------------------
 
-total_ts<-cbind(total_ts_common_sp_hays,total_ts_common_and_normal_sp_hays,total_ts_all_sp_hays)
+pdf("./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf")
+op<-par(mfrow=c(2,1))
 
-pdf("./Results/hays_results/skewness_results/total_timeseries.pdf",height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-plot(c(1932:1972),total_ts[,1],ylim=range(total_ts),col=rgb(1,0,0,0.5),type="b",pch=16,xlab="Years",ylab="Total basal cover",xlim=c(1932,1972),cex.lab=2,cex.axis=2)
-lines(c(1932:1972),total_ts[,2],type="b",pch=16,col=rgb(0,1,0,0.5))
-lines(c(1932:1972),total_ts[,3],type="b",col="black",pch=1)
-legend("bottomright",c("common sp.","common + intermediate sp.","all sp. including rare"),lty=c(1,1,1),
-       col=c(rgb(1,0,0,0.5),rgb(0,1,0,0.5),"black"),pch=c(16,16,1),bty="n",cex=1.2)
-par(op)
-dev.off()
+#--------------CVsq histogrm-------------------------------------
+xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_hays$cvsq_surrogs)
+
+hist(stability_CP_hays$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs CVsq",main="")
+axis(side=1, at=c(xlm[1],0,xlm[2]))
+abline(v=ans$cvsq_real,col="red") # actual CVsq from real data
+
+#95% quantiles
+abline(v=ans$cvsq_ntd_0.025CI,col="blue") 
+abline(v=ans$cvsq_ntd_0.975CI,col="blue")
+
+#50% quantiles
+CI_cvsq_50<-quantile(stability_CP_hays$cvsq_surrogs,probs=c(.25,.75))
+abline(v=CI_cvsq_50[1],col="green")
+abline(v=CI_cvsq_50[2],col="green")
+
+# Cvsq with no tail dep.
+abline(v=ans$cvsq_ntd_median,col="magenta")
+
+# Cvsq if indep.
+abline(v=ans$cvsq_indep,col="black")
 
 
-#--------------matrices with psedospecies------------------------------
+#--------------skw histogrm-------------------------------------
+xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_hays$skw_surrogs)
 
-#common sp. with 1 aggregated pseudo-sp.
+hist(stability_CP_hays$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs Skewness",main="")
+axis(side=1, at=c(xlm[1],0,xlm[2]))
+abline(v=ans$skw_real,col="red") # actual CVsq from real data
 
-id_others<-setdiff(c(1:dim(hays_array)[3]),id_common_sp_hays)
-id_pseudo<-setdiff(id_others,id_nonplant)
-ts_mat_pseudo<-ts_mat[,id_pseudo]
-ts_pseudo<-apply(ts_mat_pseudo,MARGIN = 1,FUN = sum)
-ts_mat_common_pseudo_hays<-cbind(ts_mat_common_sp_hays,ts_pseudo)
+#95% quantiles
+abline(v=ans$skw_ntd_0.025CI,col="blue") 
+abline(v=ans$skw_ntd_0.975CI,col="blue")
 
-#common + normal sp. with 1 aggregated pseudo-sp.
+#50% quantiles
+CI_skw_50<-quantile(stability_CP_hays$skw_surrogs,probs=c(.25,.75))
+abline(v=CI_skw_50[1],col="green")
+abline(v=CI_skw_50[2],col="green")
 
-id_others<-setdiff(c(1:dim(hays_array)[3]),id_common_and_normal_sp_hays)
-id_pseudo<-setdiff(id_others,id_nonplant)
-ts_mat_pseudo<-ts_mat[,id_pseudo]
-ts_pseudo<-apply(ts_mat_pseudo,MARGIN = 1,FUN = sum)
-ts_mat_common_normal_pseudo_hays<-cbind(ts_mat_common_and_normal_sp_hays,ts_pseudo)
+# Skewness with no tail dep.
+abline(v=ans$skw_ntd_median,col="magenta")
 
-#--------------------------Now calculate skewness results with common species only----------------------------------------
-mymat<-ts_mat_common_sp_hays
-resloc<-"./Results/hays_results/skewness_results/"
-tempo<-paste(resloc,"common_sp_",ncol(mymat),sep="")
+# Skewness if indep.
+abline(v=ans$skw_indep,col="black")
 
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
+# add legend
+legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
+       horiz = F, bty="n",
+       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
 
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-#--------------------------Now calculate skewness results with common species + pseudo-sp.----------------------------------------
-mymat<-ts_mat_common_pseudo_hays
-resloc<-"./Results/hays_results/skewness_results/"
-tempo<-paste(resloc,"common_and_pseudo_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-#--------------------------Now calculate skewness results with common and normal species-------------------------
-mymat<-ts_mat_common_and_normal_sp_hays
-resloc<-"./Results/hays_results/skewness_results/"
-tempo<-paste(resloc,"common_and_normal_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-#--------------------------Now calculate skewness results with common + normal + pseudo-sp. ----------------------------------------
-mymat<-ts_mat_common_normal_pseudo_hays
-resloc<-"./Results/hays_results/skewness_results/"
-tempo<-paste(resloc,"common_and_normal_and_pseudo_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F, 
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-#----------------------Now calculate skewness results with all species---------------------------------
-mymat<-ts_mat_all_sp_hays
-resloc<-"./Results/hays_results/skewness_results/"
-tempo<-paste(resloc,"all_sp_",ncol(mymat),sep="")
-
-if (!dir.exists(tempo)){
-  dir.create(tempo)
-}
-resloc2<-paste(tempo,"/",sep="")
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_plotcheckon_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-ans<-skewness_cvsq_testing(ts_matrix = mymat,splist = c(1:ncol(mymat)),numsurrog = 10000, ploton=F,
-                      plotcheckon=T, corpres = "spearman",resloc=resloc2)
-# this histogram should have its peak ~0.5, with range nearly (0.47-0.52)
-dev.off()
-
-saveRDS(ans,paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".RDS",sep="")) 
-
-pdf(paste(resloc2,"skewness_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogskw,breaks = 100,main="",xlab="Surrogate skewness",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realskw,col="black")
-mtext(paste0("p = ",round(ans$p_left_skw,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
-par(op)
-dev.off()
-
-pdf(paste(resloc2,"cvsq_hays_spaceavg_spearman_sp_",ncol(mymat),".pdf",sep=""),height=6,width=6)
-op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
-hist(ans$surrogcvsq,breaks = 100,main="",xlab="Surrogate cvsq",ylab="Frequency",cex.lab=2,cex.axis=2,col="grey",border=F)
-abline(v=ans$realcvsq,col="black")
-mtext(paste0("p = ",round(ans$p_left_cvsq,4),sep=""), side = 3, line=-2, adj=0.7,cex=2)
 par(op)
 dev.off()
 ```
 
+<!--some additional fig for suppmat : hays-->
 ```{r hays_spaceavg_some_figs,echo=F,results="hide"}
 source("vivj_matrix.R")
 
@@ -648,6 +537,7 @@ par(op)
 dev.off()
 ```
 
+<!-- preparing spatial avg data in usual format with common+pseudo sp. for knz data-->
 ```{r read_and_prepare_knz_data,echo=F,results="hide"}
 set.seed(seed)
 
@@ -684,7 +574,7 @@ usp<-sort(unique(dat_knz$species))
 usp<-as.character(usp)
 lenusp<-length(usp)
 
-# creating results folder for knz data
+#--------creating results folder for knz data--------------------
 if(!dir.exists("./Results/knz_results")){
   dir.create("./Results/knz_results/")
 }
@@ -694,45 +584,50 @@ if(!dir.exists("./Results/knz_results/skewness_results")){
 }
 
 # Fill the following table with average cover from all plots for a given year with a given sp.
-ts_all_sp<-matrix(NA,nrow=lenyr,ncol=lenusp) # timeseries for each sp along each column
-colnames(ts_all_sp)<-usp
-rownames(ts_all_sp)<-uyr
-ts_all_sp<-as.data.frame(ts_all_sp)
+ts_all_sp_knz<-matrix(NA,nrow=lenyr,ncol=lenusp) # timeseries for each sp along each column
+colnames(ts_all_sp_knz)<-usp
+rownames(ts_all_sp_knz)<-uyr
+ts_all_sp_knz<-as.data.frame(ts_all_sp_knz)
 
 my_knz<-dat_knz[,c("year","species","abundance")]
 my_knz_eachsp<-split(my_knz,my_knz$species)
 
-all(names(my_knz_eachsp)==colnames(ts_all_sp))==T # It's a check
+all(names(my_knz_eachsp)==colnames(ts_all_sp_knz))==T # It's a check
 
 for(i in 1:length(my_knz_eachsp)){
   x1<-my_knz_eachsp[[i]]
-  ts_all_sp[,i]<-sapply(split(x=x1$abundance,f=x1$year), mean)
+  ts_all_sp_knz[,i]<-sapply(split(x=x1$abundance,f=x1$year), mean)
 }
-saveRDS(ts_all_sp,"./Results/knz_results/ts_all_sp.RDS")
 
-anyNA(ts_all_sp)
+#-------saving a big matrix 33yrs by 123 sp. which has each sp timeseries along each column : knz data-------
+saveRDS(ts_all_sp_knz,"./Results/knz_results/ts_all_sp_knz.RDS")
+
+anyNA(ts_all_sp_knz)
 
 # screen sp. for KNZ
-nyr_0_eachsp<-apply(ts_all_sp,MARGIN = 2,FUN = function(x){sum(x==0)})
+nyr_0_eachsp<-apply(ts_all_sp_knz,MARGIN = 2,FUN = function(x){sum(x==0)})
 nyr_0_eachsp<-as.data.frame(nyr_0_eachsp)
 
 # common sp. for KNZ : these sp present for all 33 years
 id_common_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp==0) 
-ts_common_knz<-ts_all_sp[,id_common_sp_knz]
+ts_common_knz<-ts_all_sp_knz[,id_common_sp_knz]
 
 # rare sp. for KNZ
 id_rare_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>=31)
-ts_rare_knz<-ts_all_sp[,id_rare_sp_knz]
+ts_rare_knz<-ts_all_sp_knz[,id_rare_sp_knz]
 
 # normal or intermediate sp. for KNZ
-id_normal_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>0 & nyr_0_eachsp$nyr_0_eachsp<31)
-ts_normal_knz<-ts_all_sp[,id_normal_sp_knz]
+id_interm_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>0 & nyr_0_eachsp$nyr_0_eachsp<31)
+ts_normal_knz<-ts_all_sp_knz[,id_interm_sp_knz]
 
 # sp. category for KNZ
 sp_category_knz<-data.frame(sp=rownames(nyr_0_eachsp),category=NA)
 sp_category_knz$category[id_common_sp_knz]<-"C"
-sp_category_knz$category[id_normal_sp_knz]<-"I"
+sp_category_knz$category[id_interm_sp_knz]<-"I"
 sp_category_knz$category[id_rare_sp_knz]<-"R"
+
+#---------saving a 123sp by 2 matrix indicating C/I/R category for each knz-sp---------
+saveRDS(sp_category_knz,"./Results/knz_results/all_sp_category_spatialavg_knz.RDS")
 
 # Now make the usual format for KNZ data (with common sp and all other merged into a pseudo species) to be used in model selection later
 
@@ -749,24 +644,28 @@ for(isp in 1:length(id_common_sp_knz)){
 knz_spaceavg$avg.percent.cover<-sp.screened.data
 
 # Append the pseudo species = merged sp. of I & R category
-pseudo_knz_IR<-apply(X=ts_all_sp[,which(sp_category_knz$category%in%c("I","R"))],MARGIN = 1,FUN = sum)
+pseudo_knz_IR<-apply(X=ts_all_sp_knz[,which(sp_category_knz$category%in%c("I","R"))],MARGIN = 1,FUN = sum)
 pseudo_knz<-data.frame(Year=c(1983:2015),Dat=pseudo_knz_IR)
 pseudo_knz<-list(pseudo_knz)
 
 knz_spaceavg$avg.percent.cover<-append(knz_spaceavg$avg.percent.cover,pseudo_knz)
 names(knz_spaceavg$avg.percent.cover)[[length(id_common_sp_knz)+1]]<-"pseudo_knz"
 
-ts_knz_CP<-cbind(ts_common_knz,pseudo_knz_IR)
-saveRDS(ts_knz_CP,"./Results/knz_results/skewness_results/ts_knz_CP.RDS") 
+#---------saving the spatial avg. data for knz with whigh we will do taildep. analysis later----------------
+saveRDS(knz_spaceavg,"./Results/knz_results/knz_spaceavg_data_CP.RDS")
+
+#-----------saving a matrix with timeseries of common + 1 pseudo (all other merged into 1) sp. for knz------
+ts_mat_CP_knz<-cbind(ts_common_knz,pseudo_knz_IR)
+saveRDS(ts_mat_CP_knz,"./Results/knz_results/skewness_results/ts_mat_CP_knz.RDS") 
 
 #--------------- time series plot for knz Common sp, Common + Normal(or Intermediate) sp., Common+Normal+Rare sp.-------------------
 
 pdf("./Results/knz_results/skewness_results/total_timeseries.pdf",height=6,width=6)
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 
-total_ts_C<-apply(X=ts_all_sp[,id_common_sp_knz],MARGIN = 1,FUN = sum)
-total_ts_CI<-apply(X=ts_all_sp[,sort(c(id_common_sp_knz,id_normal_sp_knz))],MARGIN = 1,FUN = sum)
-total_ts_CIR<-apply(X=ts_all_sp[,sort(c(id_common_sp_knz,id_normal_sp_knz,id_rare_sp_knz))],MARGIN = 1,FUN = sum)
+total_ts_C<-apply(X=ts_all_sp_knz[,id_common_sp_knz],MARGIN = 1,FUN = sum)
+total_ts_CI<-apply(X=ts_all_sp_knz[,sort(c(id_common_sp_knz,id_interm_sp_knz))],MARGIN = 1,FUN = sum)
+total_ts_CIR<-apply(X=ts_all_sp_knz[,sort(c(id_common_sp_knz,id_interm_sp_knz,id_rare_sp_knz))],MARGIN = 1,FUN = sum)
 total_ts<-cbind(total_ts_C,total_ts_CI,total_ts_CIR)
 plot(c(1983:2015),total_ts[,1],ylim=range(total_ts),col=rgb(1,0,0,0.5),type="b",pch=16,xlab="Years",ylab="Total percent cover",xlim=c(1983,2015),cex.lab=2,cex.axis=2)
 lines(c(1983:2015),total_ts[,2],type="b",pch=16,col=rgb(0,1,0,0.5))
@@ -775,7 +674,6 @@ legend("topright",c("common sp.","common + intermediate sp.","all sp. including 
        col=c(rgb(1,0,0,0.5),rgb(0,1,0,0.5),"black"),pch=c(16,16,1),bty="n",cex=1.2)
 par(op)
 dev.off()
-
 
 #------plot knz_spaceavg data for all common sp for all yearspan-------------------------------
 good_sp<-c(1:length(knz_spaceavg[[1]]))
@@ -822,6 +720,7 @@ dev.off()
 # But there were very few weird copula with those sp. or max. independent : that's why I don't care much
 ```
 
+<!-- model selection analysis for tail dep. with common + pseudo sp. in knz-->
 ```{r ms_knz_spaceavg,echo=F, results="hide", cache=T, cache.extra=list(seed,knz_spaceavg,mtime("FittingCopula_ms.R"), mtime("vivj_matrix.R"),mtime("OurBiCopSelect.R"),mtime("MyBiCopGofTest.R"),mtime("preprocessors.R"))}
 source("./FittingCopula_ms.R") # top most hierarchy source file
 
@@ -836,6 +735,7 @@ RES_knz_spaceavg<-RES_single_loc(loc=1,d_allsp=knz_spaceavg,
 saveRDS(RES_knz_spaceavg,"./Results/knz_results/RES_knz_spaceavg.RDS")
 ```
 
+<!-- genarating LT-UT dep. plots from model selection analysis with common + pseudo sp. in knz-->
 ```{r plot_LTmUT_knz_spaceavg, echo=F,results="hide",message=F}
 set.seed(seed)
 source("./mycorrplot.R")
@@ -867,6 +767,7 @@ mtext(paste0("nL =",nL,", nU =",nU),cex=3,side=1,line=2.8)
 dev.off()
 ```
 
+<!-- non-parametric analysis for tail dep. with common + pseudo sp. in knz-->
 ```{r npa_knz_spaceavg, echo=F, cache=T, cache.extra=list(seed,knz_spaceavg,mtime("NonParamStat.R"),mtime("vivj_matrix.R"),mtime("CopulaFunctions.R"), mtime("CopulaFunctions_flexible.R"))}
 
 set.seed(seed) 
@@ -897,6 +798,7 @@ stat_knz_npa_spaceavg[[loc]]<-stat_knz_spaceavg
 saveRDS(stat_knz_npa_spaceavg,paste(resloc,names(stat_knz_npa_spaceavg),"/",file="stat_knz_npa_spaceavg.RDS",sep=''))
 ```
 
+<!-- genarating LT-UT dep. plots from non-parametric analysis with common + pseudo sp. in knz-->
 ```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,stat_knz_npa_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
@@ -914,8 +816,104 @@ npa_diff_knz_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_knz_npa_spacea
 saveRDS(npa_diff_knz_spaceavg,paste(resloc,file="npa_diff_knz_spaceavg.RDS",sep=''))
 ```
 
+<!--DAN needs to fill in the following chunk to get pearson preserving surrogates for hays with common+pseudo sp.-->
+```{r make_surrogs_CP_knz, echo=F, results="hide", warning=F, cache=T, cache.extra=list(surrog_seed1,surrog_seed2,ts_mat_CP_knz,mtime("copmap.R"),mtime("getinv.R"),mtime("getinvrg.R"),mtime("alignranks.R"))}
+
+# you need to use set.seed(seed=....) with two seeds : surrog_seed1, surrog_seed2 (see setup chunk)
 
 
+source("copmap.R")
+source("getinv.R")
+source("getinvrg.R")
+source("alignranks.R")
+
+# result folder to save pearson preserving surrogates for hays with Common + Pseudo sp.
+resloc_surrog_hays<-"./Results/knz_results/skewness_results/pp_surrogs_knz_CP/"
+
+if (!dir.exists(resloc_surrog_hays)){
+  dir.create(resloc_surrog_hays)
+}
+
+
+surrogs_CP_knz<-  # this is the pearson preserving surrogs as a large array for hays (Common+Pseudo sp.)
+```
+
+<!-- genarating stability based results and plots for knz-->
+```{r skewness_knz_spaceavg_PP, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,ts_mat_CP_knz,surrogs_CP_knz,mtime("make_tab_stability_assessment.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
+
+set.seed(seed)
+source("make_tab_stability_assessment.R")
+
+# randomly sample numsurrog surrogate matrices from Pearson preserving array
+numsurrog<-10000
+id_surrogs<-sample(c(1:dim(surrogs_CP_knz)[3]),numsurrog,replace=F)
+surrogs_CP_knz<-surrogs_CP_knz[,,id_surrogs]
+
+stability_CP_knz<-make_tab_stability(m=ts_mat_CP_knz,surrogs = surrogs_CP_knz, surrogs_given = T)
+ans<-(stability_CP_knz$df_stability)
+rownames(ans)<-"C+P"
+class(ans)
+
+write.csv(ans,"./Results/knz_results/skewness_results/knz_stability_CP.csv")
+
+#--------------generate plots with knz stability results : CVsq and skewness-------------------------------
+
+pdf("./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf")
+op<-par(mfrow=c(2,1))
+
+#--------------CVsq histogrm-------------------------------------
+xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_knz$cvsq_surrogs)
+
+hist(stability_CP_knz$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs CVsq",main="")
+axis(side=1, at=c(xlm[1],0,xlm[2]))
+abline(v=ans$cvsq_real,col="red") # actual CVsq from real data
+
+#95% quantiles
+abline(v=ans$cvsq_ntd_0.025CI,col="blue") 
+abline(v=ans$cvsq_ntd_0.975CI,col="blue")
+
+#50% quantiles
+CI_cvsq_50<-quantile(stability_CP_knz$cvsq_surrogs,probs=c(.25,.75))
+abline(v=CI_cvsq_50[1],col="green")
+abline(v=CI_cvsq_50[2],col="green")
+
+# Cvsq with no tail dep.
+abline(v=ans$cvsq_ntd_median,col="magenta")
+
+# Cvsq if indep.
+abline(v=ans$cvsq_indep,col="black")
+
+
+#--------------skw histogrm-------------------------------------
+xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_knz$skw_surrogs)
+
+hist(stability_CP_knz$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs Skewness",main="")
+axis(side=1, at=c(xlm[1],0,xlm[2]))
+abline(v=ans$skw_real,col="red") # actual CVsq from real data
+
+#95% quantiles
+abline(v=ans$skw_ntd_0.025CI,col="blue") 
+abline(v=ans$skw_ntd_0.975CI,col="blue")
+
+#50% quantiles
+CI_skw_50<-quantile(stability_CP_knz$skw_surrogs,probs=c(.25,.75))
+abline(v=CI_skw_50[1],col="green")
+abline(v=CI_skw_50[2],col="green")
+
+# Skewness with no tail dep.
+abline(v=ans$skw_ntd_median,col="magenta")
+
+# Skewness if indep.
+abline(v=ans$skw_indep,col="black")
+
+# add legend
+legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
+       horiz = F, bty="n",
+       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
+
+par(op)
+dev.off()
+```
 
 ```{r pedagog_fig, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,mtime("ExtremeTailDep.R"),mtime("ncsurrog.R"))}
 library(copula)
