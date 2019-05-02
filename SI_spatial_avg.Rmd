@@ -219,7 +219,7 @@ saveRDS(hays_spaceavg,"./Results/hays_results/hays_spaceavg_data_CP.RDS")
 
 #-----------saving a matrix with timeseries of common + 1 pseudo (all other merged into 1) sp. for hays------
 ts_mat_CP_hays<-cbind(avg_cover_over_plots_hays[,id_common_sp_hays],pseudo_hays_IR)
-saveRDS("./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS")
+saveRDS(ts_mat_CP_hays,"./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS")
 
 #------plot hays_spaceavg data for all screened sp for all yearspan-------------------------------
 pdf("./Results/hays_results/hays_spaceavg_screenedsp_avgcover.pdf",height = 21,width=21)
