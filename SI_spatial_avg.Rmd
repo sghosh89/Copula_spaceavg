@@ -1295,6 +1295,10 @@ abline(v=ans$cvsq_ntd_median,col="magenta")
 # Cvsq if indep.
 abline(v=ans$cvsq_indep,col="black")
 
+# add legend
+legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
+       horiz = F, bty="n",
+       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
 
 #--------------skw histogrm-------------------------------------
 xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_knz$skw_surrogs)
@@ -1317,11 +1321,6 @@ abline(v=ans$skw_ntd_median,col="magenta")
 
 # Skewness if indep.
 abline(v=ans$skw_indep,col="black")
-
-# add legend
-legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
-       horiz = F, bty="n",
-       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
 
 par(op)
 dev.off()
