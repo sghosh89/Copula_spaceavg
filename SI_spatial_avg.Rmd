@@ -1048,7 +1048,7 @@ if (!dir.exists(resloc_surrog_knz)){
 
 set.seed(surrog_seed1)
 
-d<-ts_mat_CP_kns
+d<-ts_mat_CP_knz
 numsp<-dim(d)[2]
 p<-seq(from=-1,to=1,by=0.1)
 numreps<-250
