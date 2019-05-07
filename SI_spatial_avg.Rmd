@@ -569,7 +569,7 @@ hist(allCVcomsq,50)
 lines(rep(CVd,2),c(1,1000),col="red")
 dev.off()
 saveRDS(sum(allCVcomsq<CVd)/length(allCVcomsq),
-        paste0(resloc_surrog_hays,"FracSurrogCVcomsqLTactual.pdf"))
+        paste0(resloc_surrog_hays,"FracSurrogCVcomsqLTactual.RDS"))
 
 surrogs_CP_hays<-surrogs  # this is the pearson preserving surrogs for 
 #use in subsequent chunks
@@ -1048,7 +1048,7 @@ if (!dir.exists(resloc_surrog_knz)){
 
 set.seed(surrog_seed1)
 
-d<-ts_mat_CP_kns
+d<-ts_mat_CP_knz
 numsp<-dim(d)[2]
 p<-seq(from=-1,to=1,by=0.1)
 numreps<-250
@@ -1244,7 +1244,7 @@ hist(allCVcomsq,50)
 lines(rep(CVd,2),c(1,1000),col="red")
 dev.off()
 saveRDS(sum(allCVcomsq<CVd)/length(allCVcomsq),
-        paste0(resloc_surrog_knz,"FracSurrogCVcomsqLTactual.pdf"))
+        paste0(resloc_surrog_knz,"FracSurrogCVcomsqLTactual.RDS"))
 
 surrogs_CP_knz<-surrogs  # this is the pearson preserving surrogs for 
 #use in subsequent chunks
