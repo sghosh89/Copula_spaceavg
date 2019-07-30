@@ -244,107 +244,43 @@ for(i in c(1:lensp)){
   for(j in c(1:lensp)){
     vivj_matrix(d_allsp=hays_spaceavg,loc=1,
                 i=good_sp[i],j=good_sp[j],level=0.05,
-                ploton=T,timeavg=F,tagon=F)
+                ploton=T,onbounds=T,lb=0,ub=0.5)
   }
 }
 par(op)
 dev.off()
 ```
 
-<!-- model selection analysis for tail dep. with common + pseudo sp. in hays-->
-```{r ms_hays_spaceavg,echo=F, results="hide", cache=T, cache.extra=list(seed,hays_spaceavg,mtime("FittingCopula_ms.R"), mtime("vivj_matrix.R"),mtime("OurBiCopSelect.R"),mtime("MyBiCopGofTest.R"),mtime("preprocessors.R"))}
-source("./FittingCopula_ms.R") # top most hierarchy source file
-
-set.seed(seed)
-#-----------------------------Model selection approach for hays_spaceavg data -----------------------
-source("FittingCopula_ms.R") # top most hierarchy source file
-
-RES_hays_spaceavg<-RES_single_loc(loc=1,d_allsp=hays_spaceavg,
-                                good_sp=c(1:length(hays_spaceavg[[1]])),
-                                families=c(1,3:10,13,14,16:20),level=0.05,timeavg=F)
-
-saveRDS(RES_hays_spaceavg,"./Results/hays_results/RES_hays_spaceavg.RDS")
-```
-
-<!-- genarating LT-UT dep. plots from model selection analysis with common + pseudo sp. in hays-->
-```{r plot_LTmUT_hays_spaceavg, echo=F,results="hide",message=F}
-set.seed(seed)
-source("./mycorrplot.R")
-
-pdf("./Results/hays_results/LTmUT_hays_spaceavg.pdf",height=14,width=15)
-z<-RES_hays_spaceavg$LTmUTdep
-spnm_short<-c(as.character(spinfo$PLANTS.Symbol[which(spinfo$species %in% names(hays_spaceavg$avg.basal.cover))]),"pseudo_hays")
-rownames(z)<-paste0(rownames(z)," : ",spnm_short,sep="")
-
-colnames(z)<-rownames(z)
-cmin<-min(RES_hays_spaceavg$LTmUTdep,na.rm=T)
-cmax<-max(RES_hays_spaceavg$LTmUTdep,na.rm=T)
-cr<-max(abs(cmin),abs(cmax))
-mycorrplot(z=z,
-           posnI_ind = RES_hays_spaceavg$posnI_ind,
-           posnN_ind = RES_hays_spaceavg$posnN_ind,
-           colrange = c(-cr,cr),
-           nsm=RES_hays_spaceavg$neg_sp_mat)
-nvar<-0
-dl2<-nrow(z)-nvar
-z1<-z
-z1[RES_hays_spaceavg$posnN_ind]<-NA
-z1<-z1[1:dl2,1:dl2]
-nL<-sum(z1>0,na.rm = T)
-nU<-sum(z1<0,na.rm = T)
-mtext(paste0("nL =",nL,", nU =",nU),cex=3,side=1,line=2.8)
-#segments(x0=c(0.5, 0.5), y0=c(0.5+nvar, 0.5+nrow(z)), x1=c(0.5+nrow(z), 0.5+nrow(z)), y1=c(0.5+nvar,0.5+nrow(z)), lwd=6,col="green")
-#segments(c(0.5,0.5+nrow(z)), rep(0.5+nvar,1), c(0.5,0.5+nrow(z)), rep(0.5+nrow(z),1), lwd=6, col="green")
-dev.off()
-```
-
-<!-- non-parametric analysis for tail dep. with common + pseudo sp. in hays-->
+<!-- non-parametric analysis for cor stat with common + pseudo sp. in hays-->
 ```{r npa_hays_spaceavg, echo=F, cache=T, cache.extra=list(seed,hays_spaceavg,mtime("NonParamStat.R"),mtime("vivj_matrix.R"),mtime("CopulaFunctions.R"), mtime("CopulaFunctions_flexible.R"))}
 
 set.seed(seed) 
 source("./NonParamStat.R")
 
-if(!dir.exists("./Results/hays_results/hays_npa_results")){
-  dir.create("./Results/hays_results/hays_npa_results")
-}
+if(!dir.exists("./Results/hays_results/corstat_hays_spaceavg_results")){
+  dir.create("./Results/hays_results/corstat_hays_spaceavg_results")
+} 
 
-resloc<-"./Results/hays_results/hays_npa_results/"
-loc<-1
+resloc<-"./Results/hays_results/corstat_hays_spaceavg_results/"
 
-stat_hays_npa_spaceavg<-vector("list",1)
-names(stat_hays_npa_spaceavg)<-"hays_spaceavg"
-
-if (!dir.exists(paste(resloc,names(stat_hays_npa_spaceavg),sep=""))){
-  dir.create(paste(resloc,names(stat_hays_npa_spaceavg),sep=""))
-}
-
-stat_hays_spaceavg<-multcall(d_allsp=hays_spaceavg,
+corstat_hays_spaceavg<-multcall(d_allsp=hays_spaceavg,
                            loc=1,
-                           pfname=paste(resloc,names(stat_hays_npa_spaceavg),"/",names(stat_hays_npa_spaceavg),sep=''),
+                           resloc=resloc,
                            good_sp=c(1:length(hays_spaceavg[[1]])),
-                           nbin=2,timeavg=F)
+                           nbin=2)
 
-stat_hays_npa_spaceavg[[loc]]<-stat_hays_spaceavg
-
-saveRDS(stat_hays_npa_spaceavg,paste(resloc,names(stat_hays_npa_spaceavg),"/",file="stat_hays_npa_spaceavg.RDS",sep=''))
+saveRDS(corstat_hays_spaceavg,paste(resloc,file="corstat_hays_spaceavg.RDS",sep=''))
 ```
 
-<!-- genarating LT-UT dep. plots from non-parametric analysis with common + pseudo sp. in hays-->
-```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,stat_hays_npa_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
+<!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in hays-->
+```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_hays_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
-r<-readRDS("./Results/hays_results/RES_hays_spaceavg.RDS")
-resloc<-"./Results/hays_results/hays_npa_results/"
 
-nvar<-0
-nvar_names<-NA
+resloc<-"./Results/hays_results/corstat_hays_spaceavg_results/"
 
-npa_diff_hays_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_hays_npa_spaceavg,
-                                              posnI_list_ln_all = list(r$posnI_ind),
-                                              posnN_list_ln_all = list(r$posnN_ind),
-                                              resloc=paste(resloc,sep=""),
-                                              nvar=nvar,nvar_names=nvar_names,r=list(r),tagon=F)
-saveRDS(npa_diff_hays_spaceavg,paste(resloc,file="npa_diff_hays_spaceavg.RDS",sep=''))
+CorlmCoru_hays_spaceavg<-NonParamStat_matrixplot(data=corstat_hays_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13)
+saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg.RDS",sep='')) 
 ```
 
 <!--get appropriate surrogates for hays with common+pseudo sp.-->
@@ -662,7 +598,7 @@ op<-par(mfrow=c(1,3),mar=c(5,5,2,2))
 i<-2
 j<-11
 d_allsp<-hays_spaceavg
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
@@ -672,7 +608,7 @@ mtext(paste0("(sp_x, sp_y) = (",i," , ",j,")"),
 i<-2
 j<-13
 d_allsp<-hays_spaceavg
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
@@ -682,7 +618,7 @@ mtext(paste0("(sp_x, sp_y) = (",i," , ",j,")"),
 i<-11
 j<-13
 d_allsp<-hays_spaceavg
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
@@ -699,9 +635,9 @@ i<-5
 j<-14
 d_allsp<-hays_spaceavg
 
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA)
 
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
@@ -710,9 +646,9 @@ i<-12
 j<-14
 d_allsp<-hays_spaceavg
 
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA)
 
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
@@ -721,9 +657,9 @@ i<-17
 j<-14
 d_allsp<-hays_spaceavg
 
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA)
 
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
@@ -732,9 +668,9 @@ i<-18
 j<-14
 d_allsp<-hays_spaceavg
 
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,timeavg=F,tagon=T)
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA)
 
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,timeavg=F,tagon=T)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
@@ -916,7 +852,7 @@ for(i in c(1:lensp)){
   for(j in c(1:lensp)){
     vivj_matrix(d_allsp=knz_spaceavg,loc=1,
                 i=good_sp[i],j=good_sp[j],level=0.05,
-                ploton=T,timeavg=F,tagon=F)
+                ploton=T,onbounds=T,lb=0,ub=0.5)
   }
 }
 par(op)
@@ -926,100 +862,36 @@ dev.off()
 # But there were very few weird copula with those sp. or max. independent : that's why I don't care much
 ```
 
-<!-- model selection analysis for tail dep. with common + pseudo sp. in knz-->
-```{r ms_knz_spaceavg,echo=F, results="hide", cache=T, cache.extra=list(seed,knz_spaceavg,mtime("FittingCopula_ms.R"), mtime("vivj_matrix.R"),mtime("OurBiCopSelect.R"),mtime("MyBiCopGofTest.R"),mtime("preprocessors.R"))}
-source("./FittingCopula_ms.R") # top most hierarchy source file
-
-set.seed(seed)
-#-----------------------------Model selection approach for hays_spaceavg data -----------------------
-source("FittingCopula_ms.R") # top most hierarchy source file
-
-RES_knz_spaceavg<-RES_single_loc(loc=1,d_allsp=knz_spaceavg,
-                                  good_sp=c(1:length(knz_spaceavg[[1]])),
-                                  families=c(1,3:10,13,14,16:20),level=0.05,timeavg=F)
-
-saveRDS(RES_knz_spaceavg,"./Results/knz_results/RES_knz_spaceavg.RDS")
-```
-
-<!-- genarating LT-UT dep. plots from model selection analysis with common + pseudo sp. in knz-->
-```{r plot_LTmUT_knz_spaceavg, echo=F,results="hide",message=F}
-set.seed(seed)
-source("./mycorrplot.R")
-
-pdf("./Results/knz_results/LTmUT_knz_spaceavg.pdf",height=15,width=16)
-z<-RES_knz_spaceavg$LTmUTdep
-spnm_short<-names(knz_spaceavg$avg.percent.cover)
-rownames(z)<-paste0(rownames(z)," : ",spnm_short,sep="")
-
-colnames(z)<-rownames(z)
-cmin<-min(RES_knz_spaceavg$LTmUTdep,na.rm=T)
-cmax<-max(RES_knz_spaceavg$LTmUTdep,na.rm=T)
-cr<-max(abs(cmin),abs(cmax))
-mycorrplot(z=z,
-           posnI_ind = RES_knz_spaceavg$posnI_ind,
-           posnN_ind = RES_knz_spaceavg$posnN_ind,
-           colrange = c(-cr,cr),
-           nsm=RES_knz_spaceavg$neg_sp_mat)
-nvar<-0
-dl2<-nrow(z)-nvar
-z1<-z
-z1[RES_knz_spaceavg$posnN_ind]<-NA
-z1<-z1[1:dl2,1:dl2]
-nL<-sum(z1>0,na.rm = T)
-nU<-sum(z1<0,na.rm = T)
-mtext(paste0("nL =",nL,", nU =",nU),cex=3,side=1,line=2.8)
-#segments(x0=c(0.5, 0.5), y0=c(0.5+nvar, 0.5+nrow(z)), x1=c(0.5+nrow(z), 0.5+nrow(z)), y1=c(0.5+nvar,0.5+nrow(z)), lwd=6,col="green")
-#segments(c(0.5,0.5+nrow(z)), rep(0.5+nvar,1), c(0.5,0.5+nrow(z)), rep(0.5+nrow(z),1), lwd=6, col="green")
-dev.off()
-```
-
-<!-- non-parametric analysis for tail dep. with common + pseudo sp. in knz-->
+<!-- non-parametric analysis for cor stat with common + pseudo sp. in knz-->
 ```{r npa_knz_spaceavg, echo=F, cache=T, cache.extra=list(seed,knz_spaceavg,mtime("NonParamStat.R"),mtime("vivj_matrix.R"),mtime("CopulaFunctions.R"), mtime("CopulaFunctions_flexible.R"))}
 
 set.seed(seed) 
 source("./NonParamStat.R")
 
-if(!dir.exists("./Results/knz_results/knz_npa_results")){
-  dir.create("./Results/knz_results/knz_npa_results")
+if(!dir.exists("./Results/knz_results/corstat_knz_spaceavg_results")){
+  dir.create("./Results/knz_results/corstat_knz_spaceavg_results")
 }
 
-resloc<-"./Results/knz_results/knz_npa_results/"
-loc<-1
+resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
 
-stat_knz_npa_spaceavg<-vector("list",1)
-names(stat_knz_npa_spaceavg)<-"knz_spaceavg"
+corstat_knz_spaceavg<-multcall(d_allsp=knz_spaceavg,
+                           loc=1,
+                           resloc=resloc,
+                           good_sp=c(1:length(knz_spaceavg[[1]])),
+                           nbin=2)
 
-if (!dir.exists(paste(resloc,names(stat_knz_npa_spaceavg),sep=""))){
-  dir.create(paste(resloc,names(stat_knz_npa_spaceavg),sep=""))
-}
-
-stat_knz_spaceavg<-multcall(d_allsp=knz_spaceavg,
-                             loc=1,
-                             pfname=paste(resloc,names(stat_knz_npa_spaceavg),"/",names(stat_knz_npa_spaceavg),sep=''),
-                             good_sp=c(1:length(knz_spaceavg[[1]])),
-                             nbin=2,timeavg=F)
-
-stat_knz_npa_spaceavg[[loc]]<-stat_knz_spaceavg
-
-saveRDS(stat_knz_npa_spaceavg,paste(resloc,names(stat_knz_npa_spaceavg),"/",file="stat_knz_npa_spaceavg.RDS",sep=''))
+saveRDS(corstat_knz_spaceavg,paste(resloc,file="corstat_knz_spaceavg.RDS",sep=''))
 ```
 
-<!-- genarating LT-UT dep. plots from non-parametric analysis with common + pseudo sp. in knz-->
-```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,stat_knz_npa_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
+<!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in knz-->
+```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_knz_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
-r<-readRDS("./Results/knz_results/RES_knz_spaceavg.RDS")
-resloc<-"./Results/knz_results/knz_npa_results/"
 
-nvar<-0
-nvar_names<-NA
+resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
 
-npa_diff_knz_spaceavg<-NonParamStat_matrixplot(data_ln_all = stat_knz_npa_spaceavg,
-                                                posnI_list_ln_all = list(r$posnI_ind),
-                                                posnN_list_ln_all = list(r$posnN_ind),
-                                                resloc=paste(resloc,sep=""),
-                                                nvar=nvar,nvar_names=nvar_names,r=list(r),tagon=F)
-saveRDS(npa_diff_knz_spaceavg,paste(resloc,file="npa_diff_knz_spaceavg.RDS",sep=''))
+CorlmCoru_knz_spaceavg<-NonParamStat_matrixplot(data=corstat_knz_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13)
+saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg.RDS",sep=''))
 ```
 
 <!--get appropriate surrogates for knz with common+pseudo sp.-->
@@ -1534,123 +1406,10 @@ approaches (see Fig. \ref{fig_hays_spaceavg_skewness_cvsq}).
 
 # Methods \label{Methods} 
 
-<!--model selection approach : more or less similar with BIVAN paper-->
-## Model selection approach \label{model_sel}
-
-Model selection approach was used to measure tail-dependence for each bivariate copula 
-taken pairwise from a multivariate dataset.
-To see temporal dynamics in a community, a bivariate copula was 
-made of spatially averaged
-(over all quadrats) cover data of any two 
-species through out years. 
-Then the copula was fitted 
-via a model selection procedure to a variety of copulas, to be precise, 
-a set of 16 copula-family.
-Fits of the various copula models 
-were compared via the Akaike Information Criteria (AIC). 
-
-For our model selection procedure, we used 
-several one- and two-parameter families of copulas exhibiting 
-a wide variety of 
-positive lower-tail dependence values 
-(Clayton, survival-Gumbel, survival-Joe, survival-BB6, henceforth
-abbreviated, respectively, C, SG, SJ, SBB6) and upper-tail dependence values
-(survival-Clayton, Gumbel, Joe, BB6, henceforth abbreviated, respectively, 
-SC, G, J, BB6). We also considered families that could exhibit 
-positive upper- or lower-tail
-dependence, or both, depending on parameters (BB1, survival-BB1, BB7,
-survival-BB7, henceforth 
-abbreviated, respectively, BB1, SBB1, BB7, SBB7). 
-If LT and UT are used to denote 
-our two measures of tail dependence, their difference is a measure of asymmetry of 
-tail dependence. We also used two families that were asymmetric in their non-tail parts, 
-but that had zero tail dependence (BB8, survival-BB8, abbreviated BB8 and SBB8).
-Normal copula, having zero tail-dependence (both in lower and
-upper tail), served as a benchmark to measure tail depen-
-dence between any bivariate asymmetric copula considered.
-In addition to the normal copula, we used another symmetric copula,
-the Frank copula (abbreviated F). 
-Copulas are implemented in the `copula` and `VineCopula` packages for the 
-R statistical computing language.
-Additional details are in introductory texts 
-on copulas [@nelsen2006_copula ; @joe2014_dependence] 
-and in `VineCopula` documentation.
-
-For a bivariate dataset $(x_i,y_i)$ for $i=1,...,n$, 
-model selection involved several steps.
-First, we produced ranks 
-$(\tilde{u}_i,\tilde{v}_i)$ where $\tilde{u}_i$ is the rank of $x_i$ in the set 
-$\{x_i:i=1,...,n\}$ and $\tilde{v}_i$ is the rank of $y_i$ in the set $\{y_i:i=1,...,n\}$ and 
-we set $u_i=\tilde{u}_i/(n+1)$ and $v_i=\tilde{v}_i/(n+1)$; subsequent analysis used these 
-*normalized ranks* $u_i$ and $v_i$. Ranks were $1$ for the smallest element in a set. 
-Second, we did a test of the independence of the $u_i$ and $v_i$ 
-(implemented in `BiCopIndTest` in the `VineCopula` package). 
-Subsequent model selection algorithms are ineffective 
-if data could not be distinguished from independent data 
-since most or all bivariate copula families we considered 
-include the independent copula in the 
-family or as a boundary case. If independence could be rejected 
-($0.05$ significance level), model 
-selection proceeded. Third, we fit the bivariate copula families
-listed previously to the ranked data 
-$(u_i,v_i)$ via maximum likelihood, using the `BiCopEst` function
-in `VineCopula`, and 
-obtained AIC values and accompanying model weights, $\text{AIC}_{\text{w}}$
-[@burnham2003_modelselection]. The weight of a model represents the 
-relative support of data for the model; weights sum to 1 
-across models considered. The lower- and 
-upper-tail dependence of the best-fitting member of 
-each family was also provided by `BiCopEst`. 
-Fourth, $\text{AIC}_{\text{w}}$ values for all fitted models
-were used to get model-averaged lower- and upper-tail dependence
-values using standard model averaging 
-formulas [@burnham2003_modelselection].
-
-If initial data $(x_i,y_i)$ were negatively correlated,
-then we first transformed the second variable $(y_i)$ as $(- y_i)$, so that 
-$(x_i,-y_i)$ were positively correlated and then computed their 
-normalized rank and proceeded with the approach stated above. 
-This transformation was carried out to preserve the sense of lower- 
-or upper-tail dependence notation throughout the paper.
-
-Model selection methods will give the *relative* support of 
-several models, but will not,
-on their own, indicate whether any of the models selected is an
-objectively good fit: all 
-models considered might poorly describe the data. 
-To test this, and as the final step of
-our procedure, we tested the goodness of fit of our AIC-best copula family using a 
-bootstrapping procedure implemented in `BiCopGofTest` of `VineCopula`. 
-The method performed two tests, one based on a Cramer-von Mises statistic,
-and one based on a 
-Kolmogorov-Smirnov statistic. To keep computation times reasonable, 
-an initial run using $100$ bootstraps was performed, and if
-the $p$-value resulting from either test was less than $0.2$, tests were re-run with 
-$1000$ boostraps.
-
-For multivariate community datasets,
-we compared AIC weights and tail-dependence of 
-minimum-AIC copulas with that of the normal copula.
-Model averaged lower minus upper tail dependence as
-multi-species interaction matrix was presented pictorially
-to understand inter-species dynamics (e.g. 
-Fig. \ref{MT-fig_LTmUT_spaceavg_hays} in main text)
-We also counted the number of species pairs (only positively
-correlated plant-species pairs were considered)
-for which model-averaged lower-tail dependence was greater 
-than model-averaged upper-tail dependence ($nL$)
-or vice-versa ($nU$), and reported the percentage 
-of pairs showing stronger
-lower-tail dependence out of 
-the total number non-independent 
-species pairs considered (need to add a summary table???). 
-
 <!--non-parametric analysis  : more or less similar with BIVAN paper-->
 ## Nonparametric approach \label{nonparam}
 
-In addition to our model selection approach, we also used nonparametric approaches to 
-quantify lower- and upper-tail dependence. Using two approaches can provide greater confidence 
-that results are robust. We used three nonparametric
+We used three nonparametric
 statistics which can quantify the extent to which 
 two normalized ranks $u_i$ and $v_i$ are 
 related in any part of their distributions; we here describe the 
@@ -1819,7 +1578,7 @@ knitr::kable(tab_spinfo_knz,
 
 
 
-<!--hays : npa results plot -->
+<!--hays : npa results plot
 \begin{figure}[!h]
 \begin{center}
 \textbf{ \hspace{0.5 cm} (A) \hspace{8 cm} (B)} \\
@@ -1831,7 +1590,7 @@ knitr::kable(tab_spinfo_knz,
 \caption{ Non-parametric results for Hays space-averaged data for $(A)$ $\cor_l - \cor_u$, $(B)$ $\Ps_l - \Ps_u$ and
 $(C)$ $\Dsq_u-\Dsq_l$. $nL$ and $nU$ indicate the numbers of lower tail and upper tail dependent cells (with positive correlation), respectively.\label{fig_hays_spaceavg_npa}}
 \end{center}
-\end{figure}
+\end{figure} -->
 
 <!--hays : interspecific interaction : some plots-->
 
