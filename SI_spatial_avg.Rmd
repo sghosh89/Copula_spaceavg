@@ -18,7 +18,7 @@ tables: True
 link-citations: True
 urlcolor : blue
 indent : True
-csl: pnas.csl
+csl: ecology-letters.csl
 bibliography: REF_CSS.bib
 ---
 
