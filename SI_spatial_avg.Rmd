@@ -281,7 +281,7 @@ source("./NonParamStat_matrixplot.R")
 resloc<-"./Results/hays_results/corstat_hays_spaceavg_results/"
 
 ub<-1/nbin_hays
-numpts<-41 #for hays data 41years
+numpts<-length(hays_spaceavg$avg.basal.cover[[1]]$Year)  #for hays data 41years
 numsims<-10000
 CI<-c(0.025,0.975)
 sigtest<-TRUE
@@ -892,14 +892,14 @@ saveRDS(corstat_knz_spaceavg,paste(resloc,file="corstat_knz_spaceavg_nbin_",nbin
 ```
 
 <!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in knz-->
-```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_knz_spaceavg,nbin_knz,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
+```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,knz_spaceavg,corstat_knz_spaceavg,nbin_knz,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
 
 resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
 
 ub<-1/nbin_knz
-numpts<-33 #for knz data 33years
+numpts<-length(knz_spaceavg$avg.percent.cover[[1]]$Year) #for knz data 33years
 numsims<-10000
 CI<-c(0.025,0.975)
 sigtest<-TRUE

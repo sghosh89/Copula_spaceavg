@@ -7,8 +7,8 @@
 #   wd,ht : width and height of genarated plot
 
 #Output : a list of two:
-# A (Corl - Coru) matrix
-# A data frame having sig. test info
+#   1. A (Corl - Coru) matrix
+#   2. A list of two : A data frame having sig. test info and a matrix with significant marking
 #---------------------------
 source("mycorrplot_with_sig.R")
 #---------------------------
@@ -130,7 +130,7 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts
     colnames(z)<-rownames(z)
     
     if(sigtest==T){
-      mat_tab<-mycorrplot_with_sig(z=z,
+      res_sig<-mycorrplot_with_sig(z=z,
                           posnI_ind=data$posnI,
                           posnN_ind=data$posnN,
                           colrange=c(-cr,cr),type=type,
@@ -143,7 +143,7 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts
                           colrange=c(-cr,cr),type=type,
                           sigtest=F,spr=NA,realstat=NA,
                           ub=NA,numpts=NA,numsims=NA,CI=NA)
-      mat_tab<-NA
+      res_sig<-NA
     }
    
     z[data$posnN]<-NA # this line was added to exclude -vely correlated species pair from nL,nU
@@ -164,16 +164,19 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts
     dev.off()
     
     if(sigtest==T){
+      
+     mat_tab<-res_sig$mat_tab
+     
      # generate additional plot
      pdf(paste(resloc,"statistic_vs_spearman_ub_",ub,"_CI_",CI[1],"_",CI[2],".pdf",sep=""),width=8,height=8)
      plot(c(-1,1),c(0,0),ylim=c(-1,1),xlab="Spearman",ylab="Statistic",type='l',col='red')
      lines(c(0,0),c(-1,1),type="l",col="red")
      points(mat_tab$sprvals,mat_tab$realstat,pch=16,col=rgb(1,0,0,0.2))
-     lines(mat_tab$sprvals,mat_tab$lowCI,type='p',pch=16,col=rgb(0,0,0,0.2))
+     lines(mat_tab$sprvals[mat_tab$sprvals>0],mat_tab$lowCI[mat_tab$sprvals>0],type='p',pch=16,col=rgb(0,0,0,0.2))
      lines(mat_tab$sprvals,mat_tab$upCI,type='p',pch=16,col=rgb(0,0,0,0.2))
      dev.off()
   }
   
   return(list(CorlmCoru=CorlmCoru,
-              mat_tab=mat_tab))
+              res_sig=res_sig))
 }

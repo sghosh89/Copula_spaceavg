@@ -88,21 +88,52 @@ mycorrplot_with_sig<-function(z,posnI_ind,posnN_ind,colrange,type="lower",sigtes
     #dev.off()
     
     # crossmark the insignificant cells
-    insig_idposcor<-which(mat_tab$sprvals>0 & mat_tab$realstat>mat_tab$lowCI & mat_tab$realstat<mat_tab$upCI)
-    insig_idnegcor<-which(mat_tab$sprvals<0 & mat_tab$realstat<mat_tab$upCI)
+    insig_idposcor<-which(mat_tab$sprvals>0 & mat_tab$realstat>mat_tab$lowCI & mat_tab$realstat<mat_tab$upCI) # two-tailed : +ve correlation
+    insig_idnegcor<-which(mat_tab$sprvals<0 & mat_tab$realstat<mat_tab$upCI) # one-tailed for absolute values : -ve correlation
     
     insig_id<-c(insig_idposcor,insig_idnegcor)
     
-    Isg <- matrix(NA,nrow(z),ncol(z))
+    mat_tab$is_sig<-1 
+    mat_tab$is_sig[insig_id]<-0 # this cells are not significant
+    
     ir<-mat_tab$row[insig_id]
     ic<-mat_tab$col[insig_id]
+    
+    # creating a significance id matrix filled in with 1(for significance) and 0(for insignificance)
+    is_sigmat<-matrix(1,nrow(z),ncol(z))
+    diag(is_sigmat)<-NA #omit diagonal
+    is_sigmat[posnI_ind]<-NA  #omit independence
+    is_sigmat[cbind(ir,ic)]<-0
+    
+    Isg <- matrix(NA,nrow(z),ncol(z))
     Isg[cbind(ir,ic)]<- -1 
     
     corrplot(Isg, cl.pos = "n", na.label = " ", add = T,addgrid.col = "transparent",type=type,
              bg = "transparent", tl.col = "transparent",p.mat = Isg,sig.level = -2,col="transparent",
              pch=4,pch.col="black",pch.cex = 5,number.cex = 2)
     
-    return(mat_tab)
+    if(type=="lower"){
+      
+      xl<-lower.tri(is_sigmat)
+      id_xl<-which(xl==F,arr.ind=T)
+      is_sigmat[id_xl]<-NA
+      
+    }else if(type=="upper"){
+      
+      xu<-upper.tri(is_sigmat)
+      id_xu<-which(xu==F,arr.ind=T)
+      is_sigmat[id_xu]<-NA
+      
+    }else if(type=="full"){
+      
+      is_sigmat<-is_sigmat
+       
+    }else{
+      stop("Error in mycorrplot_with_sig.R: arg 'type' must be 'lower' or 'upper' or 'full'")
+    }
+    
+    return(list(mat_tab=mat_tab,
+                is_sigmat=is_sigmat))
   }
   
 }
