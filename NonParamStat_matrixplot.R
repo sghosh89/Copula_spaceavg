@@ -3,17 +3,17 @@
 #   data :  output from NonParamStat.R 
 #   resloc : location to save the results
 #   tagon : logical (argument for vivj_matrix fn call)
-#   type : type argument of function mycorrplot : "lower" or "upper" or "full"
+#   type : type argument of function mycorrplot_with_sig : "lower" or "upper" or "full"
 #   wd,ht : width and height of genarated plot
 
-#Output
+#Output : a list of two:
 # A (Corl - Coru) matrix
+# A data frame having sig. test info
 #---------------------------
-source("mycorrplot.R")
+source("mycorrplot_with_sig.R")
 #---------------------------
 
-NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht){
-  
+NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts,numsims=10000,CI=c(0.025,0.975)){
   
   #--------------------------Spearman plot---------------------------
   tempo<-data$spear
@@ -25,14 +25,16 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht){
   maxval<-max(tempo,na.rm=T)
   cr<-max(abs(minval),abs(maxval))
   
-  pdf(paste(resloc,file="Spearman.pdf",sep=''),width=wd, height=ht)
+  pdf(paste(resloc,file="Spearman_ub_",ub,".pdf",sep=''),width=wd, height=ht)
   z<-tempo
     
   colnames(z)<-rownames(z)
-  mycorrplot(z=z,
+  mycorrplot_with_sig(z=z,
              posnI_ind=data$posnI,
              posnN_ind=data$posnN,
-             colrange=c(0,cr),type=type)
+             colrange=c(0,cr),type=type,
+             sigtest=F,spr=NA,realstat=NA,
+             ub=NA,numpts=NA,numsims=NA,CI=NA)
    
   dev.off()
   
@@ -47,14 +49,16 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht){
   maxval<-max(tempo,na.rm=T)
   cr<-max(abs(minval),abs(maxval))
   
-  pdf(paste(resloc,file="Kendall.pdf",sep=''),width=wd, height=ht)
+  pdf(paste(resloc,file="Kendall_ub_",ub,".pdf",sep=''),width=wd, height=ht)
   z<-tempo
   
   colnames(z)<-rownames(z)
-  mycorrplot(z=z,
+  mycorrplot_with_sig(z=z,
              posnI_ind=data$posnI,
              posnN_ind=data$posnN,
-             colrange=c(0,cr))
+             colrange=c(0,cr),type=type,
+             sigtest=F,spr=NA,realstat=NA,
+             ub=NA,numpts=NA,numsims=NA,CI=NA)
   
   dev.off()
   
@@ -71,14 +75,16 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht){
     maxval<-max(tempo,na.rm=T)
     cr<-max(abs(minval),abs(maxval))
     
-    pdf(paste(resloc,file="Corl.pdf",sep=''),width=wd, height=ht)
+    pdf(paste(resloc,file="Corl_ub_",ub,".pdf",sep=''),width=wd, height=ht)
     z<-tempo
     
     colnames(z)<-rownames(z)
-    mycorrplot(z=z,
+    mycorrplot_with_sig(z=z,
                posnI_ind=data$posnI,
                posnN_ind=data$posnN,
-               colrange=c(0,cr))
+               colrange=c(0,cr),type=type,
+               sigtest=F,spr=NA,realstat=NA,
+               ub=NA,numpts=NA,numsims=NA,CI=NA)
     
     dev.off()
     
@@ -92,14 +98,16 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht){
     maxval<-max(tempo,na.rm=T)
     cr<-max(abs(minval),abs(maxval))
     
-    pdf(paste(resloc,file="Coru.pdf",sep=''),width=wd, height=ht)
+    pdf(paste(resloc,file="Coru_ub_",ub,".pdf",sep=''),width=wd, height=ht)
     z<-tempo
     
     colnames(z)<-rownames(z)
-    mycorrplot(z=z,
+    mycorrplot_with_sig(z=z,
                posnI_ind=data$posnI,
                posnN_ind=data$posnN,
-               colrange=c(0,cr))
+               colrange=c(0,cr),type=type,
+               sigtest=F,spr=NA,realstat=NA,
+               ub=NA,numpts=NA,numsims=NA,CI=NA)
     
     dev.off()
     
@@ -116,15 +124,28 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht){
     maxval<-max(tempo,na.rm=T)
     cr<-max(abs(minval),abs(maxval))
     
-    pdf(paste(resloc,file="Corl-Coru.pdf",sep=''),width=wd, height=ht)
+    pdf(paste(resloc,file="Corl-Coru_ub_",ub,".pdf",sep=''),width=wd, height=ht)
     z<-tempo
     
     colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=data$posnI,
-               posnN_ind=data$posnN,
-               colrange=c(-cr,cr),type=type)
     
+    if(sigtest==T){
+      mat_tab<-mycorrplot_with_sig(z=z,
+                          posnI_ind=data$posnI,
+                          posnN_ind=data$posnN,
+                          colrange=c(-cr,cr),type=type,
+                          sigtest=T,spr=data$spear,realstat=CorlmCoru,
+                          ub=ub,numpts=numpts,numsims=numsims,CI=CI)
+    }else{
+      mycorrplot_with_sig(z=z,
+                          posnI_ind=data$posnI,
+                          posnN_ind=data$posnN,
+                          colrange=c(-cr,cr),type=type,
+                          sigtest=F,spr=NA,realstat=NA,
+                          ub=NA,numpts=NA,numsims=NA,CI=NA)
+      mat_tab<-NA
+    }
+   
     z[data$posnN]<-NA # this line was added to exclude -vely correlated species pair from nL,nU
                                     # calculation, but it does not matter as for -vely correlated cells [sp_i,sp_j] and 
                                                   # [sp_j,sp_i] nL,nU both will increase by same number
@@ -141,7 +162,18 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht){
     }
     
     dev.off()
- # }
+    
+    if(sigtest==T){
+     # generate additional plot
+     pdf(paste(resloc,"statistic_vs_spearman_ub_",ub,"_CI_",CI[1],"_",CI[2],".pdf",sep=""),width=8,height=8)
+     plot(c(-1,1),c(0,0),ylim=c(-1,1),xlab="Spearman",ylab="Statistic",type='l',col='red')
+     lines(c(0,0),c(-1,1),type="l",col="red")
+     points(mat_tab$sprvals,mat_tab$realstat,pch=16,col=rgb(1,0,0,0.2))
+     lines(mat_tab$sprvals,mat_tab$lowCI,type='p',pch=16,col=rgb(0,0,0,0.2))
+     lines(mat_tab$sprvals,mat_tab$upCI,type='p',pch=16,col=rgb(0,0,0,0.2))
+     dev.off()
+  }
   
-  return(CorlmCoru)
+  return(list(CorlmCoru=CorlmCoru,
+              mat_tab=mat_tab))
 }

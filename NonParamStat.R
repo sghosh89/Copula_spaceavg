@@ -106,7 +106,7 @@ multcall<-function(d_allsp,loc,resloc,good_sp,nbin){
   pval_BiCopIndep<-spear
   
   #------------------- PLOT :  copula_for_all_sp pair ----------------
-  pdf(paste(resloc,"AllCops.pdf",sep=""),width=6*lensp, height=6*lensp)
+  pdf(paste(resloc,"AllCops_nbin_",nbin,".pdf",sep=""),width=6*lensp, height=6*lensp)
   op<-par(mfrow=c(lensp,lensp),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
   
   for (ii in c(1:lensp)){

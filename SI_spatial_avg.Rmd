@@ -273,13 +273,19 @@ saveRDS(corstat_hays_spaceavg,paste(resloc,file="corstat_hays_spaceavg.RDS",sep=
 ```
 
 <!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in hays-->
-```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_hays_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
+```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_hays_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
 
 resloc<-"./Results/hays_results/corstat_hays_spaceavg_results/"
-
-CorlmCoru_hays_spaceavg<-NonParamStat_matrixplot(data=corstat_hays_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13)
+nbin<-2
+ub<-1/nbin
+numpts<-41 #for hays data 41years
+numsims<-10000
+CI<-c(0.025,0.975)
+sigtest<-TRUE
+CorlmCoru_hays_spaceavg<-NonParamStat_matrixplot(data=corstat_hays_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13,
+                                                 sigtest=sigtest,ub=ub,numpts=numpts,numsims=numsims,CI=CI)
 saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg.RDS",sep='')) 
 ```
 
@@ -884,13 +890,19 @@ saveRDS(corstat_knz_spaceavg,paste(resloc,file="corstat_knz_spaceavg.RDS",sep=''
 ```
 
 <!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in knz-->
-```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_knz_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot.R"))}
+```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_knz_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
 
 resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
-
-CorlmCoru_knz_spaceavg<-NonParamStat_matrixplot(data=corstat_knz_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13)
+nbin<-2
+ub<-1/nbin
+numpts<-33 #for knz data 33years
+numsims<-10000
+CI<-c(0.025,0.975)
+sigtest<-TRUE
+CorlmCoru_knz_spaceavg<-NonParamStat_matrixplot(data=corstat_knz_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13,
+                                                 sigtest=sigtest,ub=ub,numpts=numpts,numsims=numsims,CI=CI)
 saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg.RDS",sep=''))
 ```
 
