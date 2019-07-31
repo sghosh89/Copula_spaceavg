@@ -274,7 +274,7 @@ saveRDS(corstat_hays_spaceavg,paste(resloc,file="corstat_hays_spaceavg_nbin_",nb
 ```
 
 <!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in hays-->
-```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_hays_spaceavg,nbin_hays,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
+```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,hays_spaceavg,corstat_hays_spaceavg,nbin_hays,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
 
