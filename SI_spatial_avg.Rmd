@@ -262,7 +262,7 @@ if(!dir.exists("./Results/hays_results/corstat_hays_spaceavg_results")){
 } 
 
 resloc<-"./Results/hays_results/corstat_hays_spaceavg_results/"
-nbin_hays<-4
+nbin_hays<-2
 
 corstat_hays_spaceavg<-multcall(d_allsp=hays_spaceavg,
                            loc=1,
@@ -880,7 +880,7 @@ if(!dir.exists("./Results/knz_results/corstat_knz_spaceavg_results")){
 }
 
 resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
-nbin_knz<-4
+nbin_knz<-2
 
 corstat_knz_spaceavg<-multcall(d_allsp=knz_spaceavg,
                            loc=1,
