@@ -262,31 +262,32 @@ if(!dir.exists("./Results/hays_results/corstat_hays_spaceavg_results")){
 } 
 
 resloc<-"./Results/hays_results/corstat_hays_spaceavg_results/"
+nbin_hays<-4
 
 corstat_hays_spaceavg<-multcall(d_allsp=hays_spaceavg,
                            loc=1,
                            resloc=resloc,
                            good_sp=c(1:length(hays_spaceavg[[1]])),
-                           nbin=2)
+                           nbin=nbin_hays)
 
-saveRDS(corstat_hays_spaceavg,paste(resloc,file="corstat_hays_spaceavg.RDS",sep=''))
+saveRDS(corstat_hays_spaceavg,paste(resloc,file="corstat_hays_spaceavg_nbin_",nbin_hays,".RDS",sep=''))
 ```
 
 <!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in hays-->
-```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_hays_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
+```{r plot_res_hays_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_hays_spaceavg,nbin_hays,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
 
 resloc<-"./Results/hays_results/corstat_hays_spaceavg_results/"
-nbin<-2
-ub<-1/nbin
+
+ub<-1/nbin_hays
 numpts<-41 #for hays data 41years
 numsims<-10000
 CI<-c(0.025,0.975)
 sigtest<-TRUE
 CorlmCoru_hays_spaceavg<-NonParamStat_matrixplot(data=corstat_hays_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13,
                                                  sigtest=sigtest,ub=ub,numpts=numpts,numsims=numsims,CI=CI)
-saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg.RDS",sep='')) 
+saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg_nbin_",nbin_hays,".RDS",sep='')) 
 ```
 
 <!--get appropriate surrogates for hays with common+pseudo sp.-->
@@ -879,31 +880,32 @@ if(!dir.exists("./Results/knz_results/corstat_knz_spaceavg_results")){
 }
 
 resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
+nbin_knz<-4
 
 corstat_knz_spaceavg<-multcall(d_allsp=knz_spaceavg,
                            loc=1,
                            resloc=resloc,
                            good_sp=c(1:length(knz_spaceavg[[1]])),
-                           nbin=2)
+                           nbin=nbin_knz)
 
-saveRDS(corstat_knz_spaceavg,paste(resloc,file="corstat_knz_spaceavg.RDS",sep=''))
+saveRDS(corstat_knz_spaceavg,paste(resloc,file="corstat_knz_spaceavg_nbin_",nbin_knz,".RDS",sep=''))
 ```
 
 <!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in knz-->
-```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_knz_spaceavg,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
+```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,corstat_knz_spaceavg,nbin_knz,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
 
 resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
-nbin<-2
-ub<-1/nbin
+
+ub<-1/nbin_knz
 numpts<-33 #for knz data 33years
 numsims<-10000
 CI<-c(0.025,0.975)
 sigtest<-TRUE
 CorlmCoru_knz_spaceavg<-NonParamStat_matrixplot(data=corstat_knz_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13,
                                                  sigtest=sigtest,ub=ub,numpts=numpts,numsims=numsims,CI=CI)
-saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg.RDS",sep=''))
+saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg_nbin_",nbin_knz,".RDS",sep=''))
 ```
 
 <!--get appropriate surrogates for knz with common+pseudo sp.-->
