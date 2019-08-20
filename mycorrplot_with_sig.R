@@ -74,7 +74,7 @@ mycorrplot_with_sig<-function(z,posnI_ind,posnN_ind,colrange,type="lower",sigtes
     mat_tab<-as.data.frame(mat_tab)
     
     spcors<-mat_tab$sprvals
-    qtl<-tailsignif(ub=ub,numpts=numpts,spcors=spcors,numsims=numsims,sigploton=F,CI=CI,resloc=NA)
+    qtl<-tailsignif(ub=ub,numpts=numpts,spcors=spcors,numsims=numsims,CI=CI,resloc=NA)
     mat_tab$lowCI<-qtl[1,]
     mat_tab$upCI<-qtl[2,]
     

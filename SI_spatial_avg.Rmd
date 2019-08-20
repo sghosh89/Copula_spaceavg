@@ -538,60 +538,72 @@ write.csv(ans,"./Results/hays_results/skewness_results/hays_stability_CP.csv")
 
 #--------------generate plots with hays stability results : CVsq and skewness-------------------------------
 
-pdf("./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf")
-op<-par(mfrow=c(2,1))
+pdf("./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf",height=5,width=10)
+
+op<-par(mfrow=c(1,2),mar=c(6,5,0.1,2),mgp=c(3,1,0))
 
 #--------------CVsq histogrm-------------------------------------
 xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_hays$cvsq_surrogs)
 
-hist(stability_CP_hays$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs CVsq",main="")
+hist(stability_CP_hays$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
+     xlab="CVsq. of Surrogates",main="",cex.lab=1.5)
 axis(side=1, at=c(xlm[1],0,xlm[2]))
-abline(v=ans$cvsq_real,col="red") # actual CVsq from real data
+abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
 
 #95% quantiles
-abline(v=ans$cvsq_ntd_0.025CI,col="blue") 
-abline(v=ans$cvsq_ntd_0.975CI,col="blue")
+abline(v=ans$cvsq_ntd_0.025CI,col="black",lty="dotted") 
+abline(v=ans$cvsq_ntd_0.975CI,col="black",lty="dotted")
 
 #50% quantiles
-CI_cvsq_50<-quantile(stability_CP_hays$cvsq_surrogs,probs=c(.25,.75))
-abline(v=CI_cvsq_50[1],col="green")
-abline(v=CI_cvsq_50[2],col="green")
+#CI_cvsq_50<-quantile(stability_CP_hays$cvsq_surrogs,probs=c(.25,.75))
+#abline(v=CI_cvsq_50[1],col="green")
+#abline(v=CI_cvsq_50[2],col="green")
 
 # Cvsq with no tail dep.
-abline(v=ans$cvsq_ntd_median,col="magenta")
+points(x=ans$cvsq_ntd_median,y=0,col="black",pch=1,cex=1.5)
 
 # Cvsq if indep.
-abline(v=ans$cvsq_indep,col="black")
+abline(v=ans$cvsq_indep,col="black",lty="dashed")
 
 
 #--------------skw histogrm-------------------------------------
 xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_hays$skw_surrogs)
 
-hist(stability_CP_hays$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs Skewness",main="")
+hist(stability_CP_hays$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
+     xlab="Skewness of Surrogates",main="",cex.lab=1.5)
 axis(side=1, at=c(xlm[1],0,xlm[2]))
-abline(v=ans$skw_real,col="red") # actual CVsq from real data
+abline(v=ans$skw_real,col="black") # actual skw from real data
 
 #95% quantiles
-abline(v=ans$skw_ntd_0.025CI,col="blue") 
-abline(v=ans$skw_ntd_0.975CI,col="blue")
+abline(v=ans$skw_ntd_0.025CI,col="black",lty="dotted") 
+abline(v=ans$skw_ntd_0.975CI,col="black",lty="dotted")
 
 #50% quantiles
-CI_skw_50<-quantile(stability_CP_hays$skw_surrogs,probs=c(.25,.75))
-abline(v=CI_skw_50[1],col="green")
-abline(v=CI_skw_50[2],col="green")
+#CI_skw_50<-quantile(stability_CP_hays$skw_surrogs,probs=c(.25,.75))
+#abline(v=CI_skw_50[1],col="green")
+#abline(v=CI_skw_50[2],col="green")
 
 # Skewness with no tail dep.
-abline(v=ans$skw_ntd_median,col="magenta")
+points(x=ans$skw_ntd_median,y=0,col="black",pch=1,cex=1.5)
 
 # Skewness if indep.
-abline(v=ans$skw_indep,col="black")
+abline(v=ans$skw_indep,col="black",lty="dashed")
 
 # add legend
-legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
-       horiz = F, bty="n",
-       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
-
+#legend("topright",lty=c(1,NA,2,3),pch=c(NA,1,NA,NA),
+#       horiz = F, bty="n",
+#       legend=c("real value","no Tail-dep. (median)","95%CI","Indep."))
 par(op)
+dev.off()
+
+pdf("./Results/hays_results/skewness_results/legend_plot.pdf",height=0.5,width=11)
+op<-par(mar=c(0.1,0.1,0.1,0.1),mgp=c(1,1,0))
+
+plot.new()
+legend("topright",lty=c(1,NA,3,2),pch=c(NA,1,NA,NA),
+       horiz = T, bty="n",
+       legend=c("real value,","no Tail-dep. (median),       ","95%CI,","Indep."),x.intersp=0.2)
+#par(op)
 dev.off()
 ```
 
@@ -1156,59 +1168,71 @@ write.csv(ans,"./Results/knz_results/skewness_results/knz_stability_CP.csv")
 
 #--------------generate plots with knz stability results : CVsq and skewness-------------------------------
 
-pdf("./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf")
-op<-par(mfrow=c(2,1))
+pdf("./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf",height=5,width=10)
+op<-par(mfrow=c(1,2),mar=c(6,5,0.1,2),mgp=c(3,1,0))
 
 #--------------CVsq histogrm-------------------------------------
 xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_knz$cvsq_surrogs)
 
-hist(stability_CP_knz$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs CVsq",main="")
+hist(stability_CP_knz$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
+     xlab="CVsq. of Surrogates",main="",cex.lab=1.5)
 axis(side=1, at=c(xlm[1],0,xlm[2]))
-abline(v=ans$cvsq_real,col="red") # actual CVsq from real data
+abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
 
 #95% quantiles
-abline(v=ans$cvsq_ntd_0.025CI,col="blue") 
-abline(v=ans$cvsq_ntd_0.975CI,col="blue")
+abline(v=ans$cvsq_ntd_0.025CI,col="black",lty="dotted") 
+abline(v=ans$cvsq_ntd_0.975CI,col="black",lty="dotted")
 
 #50% quantiles
-CI_cvsq_50<-quantile(stability_CP_knz$cvsq_surrogs,probs=c(.25,.75))
-abline(v=CI_cvsq_50[1],col="green")
-abline(v=CI_cvsq_50[2],col="green")
+#CI_cvsq_50<-quantile(stability_CP_knz$cvsq_surrogs,probs=c(.25,.75))
+#abline(v=CI_cvsq_50[1],col="green")
+#abline(v=CI_cvsq_50[2],col="green")
 
 # Cvsq with no tail dep.
-abline(v=ans$cvsq_ntd_median,col="magenta")
+points(x=ans$cvsq_ntd_median,y=0,col="black",pch=1,cex=1.5)
 
 # Cvsq if indep.
-abline(v=ans$cvsq_indep,col="black")
+abline(v=ans$cvsq_indep,col="black",lty="dashed")
 
-# add legend
-legend("topright",col=c("red","magenta","blue","green","black"),lty=c(1,1,1,1),
-       horiz = F, bty="n",
-       legend=c("real value","no Tail-dep. (median)","95%CI","50%CI","Indep."))
 
 #--------------skw histogrm-------------------------------------
 xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_knz$skw_surrogs)
 
-hist(stability_CP_knz$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,xlab="10000 PP Surrogs Skewness",main="")
+hist(stability_CP_knz$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
+     xlab="Skewness of Surrogates",main="",cex.lab=1.5)
 axis(side=1, at=c(xlm[1],0,xlm[2]))
-abline(v=ans$skw_real,col="red") # actual CVsq from real data
+abline(v=ans$skw_real,col="black") # actual skw from real data
 
 #95% quantiles
-abline(v=ans$skw_ntd_0.025CI,col="blue") 
-abline(v=ans$skw_ntd_0.975CI,col="blue")
+abline(v=ans$skw_ntd_0.025CI,col="black",lty="dotted") 
+abline(v=ans$skw_ntd_0.975CI,col="black",lty="dotted")
 
 #50% quantiles
-CI_skw_50<-quantile(stability_CP_knz$skw_surrogs,probs=c(.25,.75))
-abline(v=CI_skw_50[1],col="green")
-abline(v=CI_skw_50[2],col="green")
+#CI_skw_50<-quantile(stability_CP_knz$skw_surrogs,probs=c(.25,.75))
+#abline(v=CI_skw_50[1],col="green")
+#abline(v=CI_skw_50[2],col="green")
 
 # Skewness with no tail dep.
-abline(v=ans$skw_ntd_median,col="magenta")
+points(x=ans$skw_ntd_median,y=0,col="black",pch=1,cex=1.5)
 
 # Skewness if indep.
-abline(v=ans$skw_indep,col="black")
+abline(v=ans$skw_indep,col="black",lty="dashed")
 
+# add legend
+#legend("topright",lty=c(1,NA,2,3),pch=c(NA,1,NA,NA),
+#       horiz = F, bty="n",
+#       legend=c("real value","no Tail-dep. (median)","95%CI","Indep."))
 par(op)
+dev.off()
+
+pdf("./Results/knz_results/skewness_results/legend_plot.pdf",height=0.5,width=11)
+op<-par(mar=c(0.1,0.1,0.1,0.1),mgp=c(1,1,0))
+
+plot.new()
+legend("topright",lty=c(1,NA,3,2),pch=c(NA,1,NA,NA),
+       horiz = T, bty="n",
+       legend=c("real value,","no Tail-dep. (median),       ","95%CI,","Indep."),x.intersp=0.2)
+#par(op)
 dev.off()
 ```
 

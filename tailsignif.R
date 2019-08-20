@@ -16,14 +16,11 @@ source("CopulaFunctions_flexible.R")
 #' @param spcors The distribution of the statistic for these values of
 #' the Spearman correlation is computed
 #' @param numsims For each value of spcors, this many runs done
-#' @param sigploton TRUE if you want a plot on the default plotting device,
-#' a character string if you want to save a pdf with that name, FALSE
-#' for no plot
 #' @param CI  a vector of lower and upper bounds for confidence interval used in significance testing, 95%CI as default
 #' @param sigplton logical to have optional plot
 #' @param resloc location folder path to save the plot
 
-tailsignif<-function(ub,numpts,spcors,numsims,sigploton,CI=c(0.025,0.975),resloc){
+tailsignif<-function(ub,numpts,spcors,numsims,CI=c(0.025,0.975),resloc){
   #a small amount of error checking
   if (!is.numeric(ub) || length(ub)!=1 || ub>.5 || ub<=0){
     stop("Error in tailsignif: bad value for ub")  
@@ -59,10 +56,6 @@ tailsignif<-function(ub,numpts,spcors,numsims,sigploton,CI=c(0.025,0.975),resloc
   }
   
   qtl<-apply(FUN=quantile,X=allres,MARGIN=2,prob=CI)
-  
-  if(sigploton==T){
-    plot_tailsignif(spcors,qtl,resloc)
-  }
   
   return(qtl)
 }
