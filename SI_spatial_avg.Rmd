@@ -1,5 +1,5 @@
 ---
-title: "Supporting Information : Estimating synchronous and compensatory dynamics in grassland community using a novel “copula” approach"
+title: "Supporting Information : Asymmetric tail association affects community stability"
 author: "Shyamolina Ghosh, other authors, Daniel Reuman"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 geometry: "left=1.5cm,right=1.5cm,top=1cm,bottom=1.8cm"
@@ -1442,7 +1442,7 @@ them to verify the consistency between different
 approaches (see Fig. \ref{fig_hays_spaceavg_skewness_cvsq}).
 
 
-# Methods \label{Methods} 
+<!--# Methods \label{Methods}-->
 
 <!--non-parametric analysis  : more or less similar with BIVAN paper-->
 ## Nonparametric approach \label{nonparam}

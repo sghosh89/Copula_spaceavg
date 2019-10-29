@@ -1,9 +1,9 @@
 ---
-title: "Estimating synchronous and compensatory dynamics in grassland communities using a novel “copula” approach"
+title: "Asymmetric tail association affects community stability"
 author: "Shyamolina Ghosh, other authors, Daniel Reuman"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 #date: "October 12, 2018"
-geometry: "left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm"
+geometry: "left=1 in,right=1 in,top=1 in,bottom=1 in"
 
 output: 
   pdf_document:
@@ -25,7 +25,7 @@ bibliography: REF_CSS.bib
 
 <!--***DAN: store alternative titles here, decide on one closer to the end
 1) A complete description of synchrony and compensatory dynamics yields a better understanding of community stability
-2) 
+2) Asymmetric tail association, skewness and community stability
 -->
 
 ```{r setup_Paper, echo=F}
@@ -34,22 +34,30 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 ```
 
 <!--Abstract-->
-\noindent
-\textbf{write abstract here.}
-\linebreak
+\newpage
+
+\noindent \textbf{ABSTRACT} 
 
 <!--keywords-->
-\noindent
-Synchrony | Tail-dependence | grassland | community variability
-\linebreak
+\textbf{\textit{Keywords:}} Synchrony, tail-association, grassland, community variability, skewness
 
-<!--# Introduction\label{Intro}-->
-<!--Q1 : is there asymmetric tail dependence in a grassland community? what is the interpretation for any individual sp. pair?, 
-Q2: How it could affect the productivity? (connection to skewness)
-Skewness change due to asymmetric taildep. as a new estimate of community variability?-->
+
+\newpage
+
+# Introduction\label{Intro}
+<!--Q1 : Do syncronous/ compensatory pop. dynamics in communities commonly show asymmetric tail association?, 
+Q2: If so, what are the consequences of these patterns for the stability of aggregated community properties?-->
+
+<!--
+NOTE: I need to rewrite the intro:
+1. Don't say anything about copula (keep it for suppmat), but introduce the concept of tail association (see ERC paper)
+2. Motivate Q2 with aphid/plankton paper
+3. present logically how asymmetric tail association should influence skewness - can be considered as a new measure of community stability. Also states may be it's not significant on individual interaction level but could be significant on aggregate level.
+-->
+
 
 <!--grassland and earlier work : Here I deliberately exclude the ref. for environmental variable effect on species-->
-\lettrine{U}{}nderstanding the mechanisms behind spatial and temporal 
+Understanding the mechanisms behind spatial and temporal 
 dynamics has been a long-standing focus in community ecology [@gibson2009; @turner1989].
 Interspecies interaction in a grassland 
 community could be advantageous or
@@ -101,11 +109,10 @@ associated than smaller ones (Fig. \ref{fig_pedag_taildep}B). A copula might hav
 (with zero tail-dependence in both tail) or asymmetric (finite tail-dependence in either
 or both tail) feature depending on its family and parameters [@nelsen2006_copula].
 
-\begin{tcolorbox}[width=\columnwidth,colback={blue!20},arc=0mm,colframe=blue!50!black,coltext=blue!50!black]
+<!--\begin{tcolorbox}[width=\columnwidth,colback={blue!20},arc=0mm,colframe=blue!50!black,coltext=blue!50!black]
 Significance
-
 Write significance here.
-\end{tcolorbox}  
+\end{tcolorbox}-->  
 
 <!--why copula (and tail-dep.) is important in ecology, specially on grassland? : 
 1) direction of competetion
@@ -234,7 +241,31 @@ asymmetric tail-dependence? We also suggest an alternative measure of
 community variability (henceforth stability) in terms of quantifying skewness of 
 total biomass distribution over years using those two datasets.
 
+# Theory and methods \label{Methods} 
+
+<!--NOTE: if you can, just separate theory and methods section.
+
+
+1. For Q1:
+      - introduce partial Spearman correlation to measure tail asymmetry corl - coru (need schematic diagram)
+      - corl - coru in community context, count on L, U (+ve correlation only)
+      - binomial and significance testing
+2. For Q2:
+      - skewness ratio in analogy with variance ratio
+      - separate the contributions from tail association and usual correlation (Pearson) 
+      - need schematic diagram to show the relation (this diagram will again help to interpret results for Q2)
+-->
+
+
 # Results\label{Results}
+
+<!--
+For Q1: plot with hays and knz corl-coru (2 panels a,b)
+For Q2: multipanel plot with figs:
+            - same schematic diagram as of method section but now with corresponding numerical value
+            - histogram for hays and knz
+-->
+
 
 As mentioned earlier, we here present the results from the study carried out with the
 spatio-temporal basal cover data (for 51 quadrats over 41 years, 1932-1972)
