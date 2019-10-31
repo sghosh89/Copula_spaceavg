@@ -181,10 +181,8 @@ in their extreme values. <!-- am I right for this last sentence?-->
 
 <!--Pedagogical figure for copula with asym. taildep.-->
 \begin{figure}[!h]
-\textbf{ \hspace{2 cm} (A) \hspace{3.7 cm} (B)}
-\vspace{-0.8 cm}
 \begin{center}
-\includegraphics[width=\columnwidth]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
+\includegraphics[width=12 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
 \caption{ Pedagogical figure showing asymmetric tail dependence between $500$ observations of 
 two positively correlated variables $(u,v)$ with same Spearman correlation $\rho = 0.8$;
 $(A)$ lower or left tail dependence indicates stronger association in extreme lower values, whereas $(B)$ upper 
@@ -195,10 +193,7 @@ or right tail dependence indicates stronger association in their extreme higher 
 <!--Pedagogical figure for skewness & taildep.-->
 \begin{figure}[!h]
 \begin{center}
-\textbf{ \hspace{-6 cm} (A)} \\
-\includegraphics[width=\columnwidth]{./Results/pedagog_figs/extremeLT_tot_ts.pdf}\\
-\textbf{ \hspace{-6 cm} (B)} \\
-\includegraphics[width=\columnwidth]{./Results/pedagog_figs/extremeRT_tot_ts.pdf}
+\includegraphics[width=17cm]{./Results/pedagog_figs/pedagog_ts.pdf}
 \caption{Pedagogical figure showing how skewness of total biomass distribution of a community 
 is affected by extreme asymmetric tail-dependence (Appendix \ref{SI-extreme_taildep_mat}) in individual 
 species biomass-distribution throughout years. Major lower tail dependence in 
@@ -327,30 +322,26 @@ a potential threat for some of its native species which could crash simultaneous
 
 \begin{figure*}[!h]
 \begin{center}
-\includegraphics[width=9cm]{./Results/hays_results/LTmUT_hays_spaceavg.pdf} 
-\caption{Model averaged lower tail - upper tail dependence matrix for 20 most common plant species along with 
-other species merged into a pseudo species (Table \ref{SI-tab_spinfo_hays}) found in Hays priarie, 
+\textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
+\includegraphics[width=8.2cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
+\includegraphics[width=8.2cm]{./Results/knz_results/corstat_knz_spaceavg_results/Corl-Coru_ub_0.5.pdf} 
+\caption{Measure of tail-asymmetry for most common plant species along with 
+other species merged into a pseudo species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
+found in (A) Hays and (B) Konza priarie, 
 details were discussed in \nameref{Results}. 
 nL and nU are the count of cells (considered for positive correlation only)
-with positive and negative tail-dependence difference 
-values for 21$\times$21 matrix; 
-nL$>$nU (majority of red cells) indicates major lower tail dependence
+with positive and negative tail-asymmetry  
+values; 
+nL$>$nU (majority of red cells) indicates major lower tail association
 in sp-sp interaction matrix.
-Yellow cells indicate independent relationship. Initially negatively correlated cells contain a number 
-indicating the id of the species (in column) that was taken reversed when constructing bivariate
-copula to make positively correlated (for details see Appendix \ref{SI-model_sel}).\label{fig_LTmUT_spaceavg_hays}}
+Yellow cells indicate independent relationship. For initially negatively correlated 
+cells (indicated by green dots), we measured the tail asymmetry by taking negative of the 
+timeseries of species shown in column, so the sign (or color) of the cells do not matter but 
+the absolute values. Cross sign in the cells indicate the inter-specific tal-asymmetry is not 
+significant (95\% CI) when considered individually, but on an aggregate level 
+pose significant contribution. (for details see text).\label{fig_CorlmCoru_spaceavg_hays}}
 \end{center}
 \end{figure*}
-
-\begin{figure*}[!h]
-\begin{center}
-\includegraphics[width=10.8cm]{./Results/knz_results/LTmUT_knz_spaceavg.pdf} 
-\caption{Similar model averaged lower tail - upper tail dependence matrix as of Fig. \ref{fig_LTmUT_spaceavg_hays}
-but for 27 most common plant species (Table \ref{SI-tab_spinfo_hays}) found in Konza priarie.\label{fig_LTmUT_spaceavg_knz}}
-\end{center}
-\end{figure*}
-
-
 
 
 # Discussion
