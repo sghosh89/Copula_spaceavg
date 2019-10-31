@@ -58,19 +58,19 @@ par(mar=c(0.5, 0.5, 0.1, 4), mfcol=c(4,2), oma = c(3.5,3.5, 0.1, 0.1))
 # first column for individual biomass of each sp.
 
 s_rg<-round(range(skw_surrogl_each),3)
-plot.ts(surrog_mat_l,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(0,10))
+plot.ts(surrog_mat_l,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(1,10))
 legend("topleft",paste("(A) No tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
 
 s_rg<-round(range(skw_real_l_each),3)
-plot.ts(clmat,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(0,10))
+plot.ts(clmat,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(1,10))
 legend("topleft",paste("(B) Left tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
 
 s_rg<-round(range(skw_surrogr_each),3)
-plot.ts(surrog_mat_r,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(0,10))
+plot.ts(surrog_mat_r,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(1,10))
 legend("topleft",paste("(C) No tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
 
 s_rg<-round(range(skw_real_r_each),3)
-plot.ts(crmat,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",plot.type = "single",ylim=c(0,10))
+plot.ts(crmat,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",plot.type = "single",ylim=c(1,10))
 legend("topleft",paste("(D) Right tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
 
 mtext(paste("Biomass for each ",nsp," species in the community",sep=""),side=2,line=2.2, adj = 0)
