@@ -13,6 +13,9 @@
 #     ub : 0.5 as default, see tailsignif function argument
 #     numpts : see tailsignif function argument (length of timeseries without NA)
 #     numsims : see tailsignif function argument
+#     CI: a vector for confidence interval to be used in tailsignif function argument
+
+# returns a list of two matrices (info with significance test)
 
 source("./tailsignif.R")
 library(corrplot)

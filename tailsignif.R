@@ -19,6 +19,9 @@ source("CopulaFunctions_flexible.R")
 #' @param CI  a vector of lower and upper bounds for confidence interval used in significance testing, 95%CI as default
 #' @param sigplton logical to have optional plot
 #' @param resloc location folder path to save the plot
+#' 
+
+# return a matrix with two rows for lower and upper quantiles
 
 tailsignif<-function(ub,numpts,spcors,numsims,CI=c(0.025,0.975),resloc){
   #a small amount of error checking

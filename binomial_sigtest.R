@@ -42,16 +42,16 @@ binomial_sigtest<-function(ylist,binom_sig){
 #================================================================
 
 # test code for hays
-set.seed(seed=101)
-ylist<-readRDS("./Results/hays_results/corstat_hays_spaceavg_results/CorlmCoru_hays_spaceavg_nbin_2.RDS")
-res<-binomial_sigtest(ylist=ylist,binom_sig="LT") 
-res
+#set.seed(seed=101)
+#ylist<-readRDS("./Results/hays_results/corstat_hays_spaceavg_results/CorlmCoru_hays_spaceavg_nbin_2.RDS")
+#res<-binomial_sigtest(ylist=ylist,binom_sig="LT") 
+#res
 
 # test code for knz
-set.seed(seed=101)
-ylist<-readRDS("./Results/knz_results/corstat_knz_spaceavg_results/CorlmCoru_knz_spaceavg_nbin_2.RDS")
-res<-binomial_sigtest(ylist=ylist,binom_sig="UT") 
-res
+#set.seed(seed=101)
+#ylist<-readRDS("./Results/knz_results/corstat_knz_spaceavg_results/CorlmCoru_knz_spaceavg_nbin_2.RDS")
+#res<-binomial_sigtest(ylist=ylist,binom_sig="UT") 
+#res
 
 
 

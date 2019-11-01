@@ -290,6 +290,12 @@ CorlmCoru_hays_spaceavg<-NonParamStat_matrixplot(data=corstat_hays_spaceavg,resl
 saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg_nbin_",nbin_hays,".RDS",sep='')) 
 ```
 
+```{r binom_sigtest_hays, echo=F}
+source("./binomial_sigtest.R")
+set.seed(seed=101)
+sigtest_hays<-binomial_sigtest(ylist=CorlmCoru_hays_spaceavg,binom_sig="LT") 
+```
+
 <!--get appropriate surrogates for hays with common+pseudo sp.-->
 ```{r make_surrogs_CP_hays, echo=F, results="hide", warning=F, cache=T, cache.extra=list(surrog_seed1,surrog_seed2,ts_mat_CP_hays,mtime("copmap.R"),mtime("getinv.R"),mtime("getinvrg.R"),mtime("alignranks.R"))}
 
@@ -920,6 +926,12 @@ CorlmCoru_knz_spaceavg<-NonParamStat_matrixplot(data=corstat_knz_spaceavg,resloc
 saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg_nbin_",nbin_knz,".RDS",sep=''))
 ```
 
+```{r binom_sigtest_knz, echo=F}
+source("./binomial_sigtest.R")
+set.seed(seed=101)
+sigtest_knz<-binomial_sigtest(ylist=CorlmCoru_knz_spaceavg,binom_sig="UT") 
+```
+
 <!--get appropriate surrogates for knz with common+pseudo sp.-->
 ```{r make_surrogs_CP_knz, echo=F, results="hide", warning=F, cache=T, cache.extra=list(surrog_seed1,surrog_seed2,ts_mat_CP_knz,mtime("copmap.R"),mtime("getinv.R"),mtime("getinvrg.R"),mtime("alignranks.R"))}
 
@@ -1399,132 +1411,6 @@ a single pseudo species category. For skewness
 analysis we used all three categories along with some combinations of 
 them to verify the consistency between different 
 approaches (see Fig. \ref{fig_hays_spaceavg_skewness_cvsq}).
-
-
-<!--# Methods \label{Methods}-->
-
-<!--non-parametric analysis  : more or less similar with BIVAN paper-->
-## Nonparametric approach \label{nonparam}
-
-We used three nonparametric
-statistics which can quantify the extent to which 
-two normalized ranks $u_i$ and $v_i$ are 
-related in any part of their distributions; we here describe the 
-statistics. The statistics were formulated with positively associated
-variables in mind. So definitions and associated 
-diagrams will assume positive associations, though generalizations are 
-straightforward. Given two bounds 
-$0 \leq l_b < u_b \leq 1$, we define the parallel lines $u+v=2l_b$ and 
-$u+v=2u_b$, which intersect the unit square (Fig. \ref{fig_stat_image}). 
-Our statistics quantify the dependence
-between $u_i$ and $v_i$ in the region bounded by these lines.
-Using $l_b=0$ and some value $u_b\leq 0.5$ can give information about 
-dependence in the left parts of the distributions of $u$ and $v$, and 
-using $u_b=1$ and $l_b \geq 0.5$ can give information about dependence in 
-the right parts of the distributions. 
-The first statistic, denoted $\cor_{l_b,u_b}(u,v)$, is the portion of the Spearman 
-correlation of $u_i$ and $v_i$ that is attributable to the points 
-lying in the region given by the bounds $u+v=2l_b$ and $u+v=2u_b$:
-\begin{equation}\label{eq.Cor}
-   \cor_{l_b,u_b}(u,v) = \frac{\sum 
-   (u_i-\mean(u)) (v_i-\mean(v))}{(n-1)\sqrt{\var(u)\var(v)}}.
-\end{equation}
-\noindent Here means and sample variances are computed using all $n$ data 
-points, but the
-sum is over only the indices $i$ for which $u_i+v_i > 2l_b$ and 
-$u_i+v_i < 2u_b$. 
-Larger values of $\cor_{l_b,u_b}$ indicate stronger positive association
-between $u$ and $v$ in the region given by the bounds. The sum of 
-$\cor_{0,0.5}(u,v)$ and $\cor_{0.5,1}(u,v)$ (or some other choice of 
-$\cor_{l_{b_k},u_{b_k}}(u,v)$ for bounds $l_{b_k},u_{b_k}$ that partition the
-interval $(0,1)$) equals the standard Spearman correlation. 
-
-We also defined a statistic $\Ps_{l_b,u_b}$, 
-which has a similar 
-interpretation to $\cor_{l_{b_k},u_{b_k}}(u,v)$; we use both statistics 
-because $\cor_{l_{b_k},u_{b_k}}(u,v)$ is more familiar, but 
-in some instances $\Ps_{l_b,u_b}$ appears to have more power to
-reveal tail dependence than does $\cor_{l_{b_k},u_{b_k}}(u,v)$. 
-We define $\Ps_{l_b,u_b}$, using the bounds
-$u+v=2l_b$ and $u+v=2u_b$, as follows. For a distance $h$, we define
-$S(h)$ to be the number of points $(u_i,v_i)$ within the bounds 
-and a distance less than $h$ from the line $v=u$, divided by the 
-total number of points within the bounds. This function is
-defined for $h$ going from $0$ to a distance $h_{\text{max}}$ which
-is half the longer of the two segments obtained by intersecting the
-bounds with the unit square. It is easy to see $S(0)=0$ and 
-$S(h_{\text{max}})=1$. We define $S_i(h)$, also for $h$ going from $0$
-to $h_{\text{max}}$, to be the area within the bounds and the unit square
-and within distance $h$ of the line $v=u$, divided by the area
-within the bounds and the unit square. This is the expected value of
-$S(h)$ for independent data. We then define
-\begin{equation}\label{eq.P}
-   P_{l_b,u_b} = \int_0^{h_{\text{max}}} ( S(h) - S_i(h) ) dh.
-\end{equation}
-\noindent As for $\cor_{l_b,u_b}$, larger values of $\Ps_{l_b,u_b}$ 
-indicate stronger positive association
-between $u$ and $v$ in the region given by the bounds.
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=6 cm,height=6 cm]{./stat_image.jpg} 
-\caption[For definitions of non-parametric statistics]{Schematic diagram supporting definitions
-of non-parametric tail dependence statistics. The blue and red lines are, 
-respectively, $u+v=2l_b$ and $u+v=2u_b$.\label{fig_stat_image}}
-\end{center}
-\end{figure}
-
-Our third statistic, $\Dsq_{l_b,u_b}(u,v)$, is the average squared 
-distance between points satisfying $u_i+v_i>2l_b$ and 
-$u_i+v_i<2u_b$ and the line $v=u$. Unlike $\cor_{l_b,u_b}$ and 
-$\Ps_{l_b,u_b}$, which are large when points satisfying $u_i+v_i>2l_b$ and 
-$u_i+v_i<2u_b$ cluster close to the line $v=u$, $\Dsq_{l_b,u_b}$ is 
-small in that case. 
-Thus large values of $\cor_{l_b,u_b}$ and $\Ps_{l_b,u_b}$ indicate strong 
-dependence in the portions of the distributions of $u$ and $v$ given by 
-the bounds, whereas small values of 
-$\Dsq_{l_b,u_b}$ indicate strong dependence. 
-
-For large data sets (large $n$),
-we could use $l_b$ and $u_b$ close together without incurring undue
-sampling variation in our statistics, and we could consider 
-several different bands $(l_b,u_b)$ to understand how dependence
-varies in different parts of the distributions. But for data sets with 
-smaller $n$ we considered only $l_b=0$, $u_b=0.5$ and $l_b=0.5$, $u_b=1$ to see 
-the dependence in lower and upper tail of the copula.
-We use the shorthand $\cor_l=\cor_{0,0.5}$ ($l$ is for "lower") 
-and $\cor_u=\cor_{0.5,1}$ ($u$ is for "upper"); likewise $\Ps_l=\Ps_{0,.5}$,
-$\Ps_u=\Ps_{0.5,1}$, $\Dsq_l=\Dsq_{0,0.5}$, and $\Dsq_u=\Dsq_{0.5,1}$. 
-
-To test for asymmetry of dependence in upper and lower portions of distributions,
-we used differences of lower and upper statistics.
-The difference $\cor_l-\cor_u$ is expected to be positive if 
-dependence in the left halves of the distributions is stronger 
-than dependence in their right halves; likewise for $\Ps_l-\Ps_u$.
-The difference $\Dsq_u-\Dsq_l$ (note the opposite order), is also expected to be 
-positive under the same conditions. These statistics were used for smaller data sets.
-
-# Comparing results from two approaches \label{compare_methods} 
-
-From model selection approach, we got results of more lower tail-dependence when we 
-considered pairwise copula for most common species cover data 
-for both data sets (Hays and Konza). To ensure our 
-finding we also used alternative methods,
-i. e., non-parametric analysis to implement 3 statistics 
-($\cor_l -\cor_u$, $\Ps_l-\Ps_u$ and $\Dsq_u-\Dsq_l$).
-Using each statistics we got similar interaction matrix 
-(Figs. \ref{fig_hays_spaceavg_npa} and \ref{fig_knz_spaceavg_npa}) as of
-Figs. \ref{MT-fig_LTmUT_spaceavg_hays}  and \ref{MT-fig_LTmUT_spaceavg_knz} 
-in the main text, respectively, 
-and counted the number of lower and upper tail dependent cells 
-which were positively correlated. Result showed major 
-lower tail dependence in 
-Hays (i.e. $nL > nU$) and stronger upper 
-tail dependence (i.e. $nU > nL$)
-in Konza dataset. The mere discrepancy arises due to the fact for 
-non-parametric analysis used a much wider boundary to see 
-tail-dependence (due to smaller sample size)
-whereas model selection result was based on extreme regime.
 
 
 ```{r make_tab_common_splist_for_hays, echo=F, results="asis"}

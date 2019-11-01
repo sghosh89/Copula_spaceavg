@@ -247,11 +247,13 @@ total biomass distribution over years using those two datasets.
 
 <!--Defining partial Spearman correlation: measure of tail-asymmetry-->
 To answer Q1 from \nameref{Introduction}, we need a tool to measure the tail asymmetry between 
-interacting species over years in a grassland community that is intended to study. We used the *partial Spearman 
-correlation* approach (first introduced in @Ghosh_copula) to estimate association between a pair of 
-interacting species' time-series - whether they are strongly correlated in their common good/ bad years or 
-one species abundance in certain 'good' years limits the growth for the other. First, we define the *partial 
-Spearman correlaion* for a given species pair time series ($u(t), v(t)$) as follows;
+interacting species over years in a grassland community that is intended to study. We used 
+the *partial Spearman correlation* approach (first introduced in @Ghosh_copula) to 
+estimate the association between a pair of interacting species' time-series - whether 
+they are strongly correlated in their common good/ bad years or 
+one species abundance in certain 'good' years limits the growth for the 
+other. First, we define the *partial Spearman correlaion* for a given 
+species pair time series ($u(t), v(t)$) as follows;
 
 \begin{equation}
 \cor_{l_b,u_b}(u,v) = \frac{\sum (x(t)-\mean(x))(y(t)-\mean(y))}{(n-1)\sqrt{\var(x) \var(y)}},\label{PartialSpearmanEq}
@@ -262,59 +264,59 @@ and variances are computed using all the data but the sum is computed only
 over the $t$ such that $x(t)+y(t) > 2l_b$ and $x(t)+y(t)<2u_b$ (i.e. colored data points lying in 
 between two bounds as in Fig. \ref{fig_pedag_taildep}). The partial Spearman correlation, 
 attributed by those colored data points between bounds, is the contribution in the Spearman
-correlation of $u$ and $v$. For an asymmetric relationship between a species-pair, correlation in any part 
-of their joint distribution of corresponding normalized ranks could be stronger than the other part. For example, 
-Fig. \ref{fig_pedag_taildep}A has stronger partial Spearman correlation between the red points in the lower portion 
-than the blue points in the upper part, while Fig. \ref{fig_pedag_taildep}B shows the opposite trend. 
+correlation of $u$ and $v$. For an asymmetric relationship 
+between a species-pair, correlation in any part 
+of their joint distribution of corresponding normalized ranks could 
+be stronger than the other part. For example, Fig. \ref{fig_pedag_taildep}A has a 
+stronger partial Spearman correlation between the red points in the lower portion 
+than the blue points in the upper part, while Fig. \ref{fig_pedag_taildep}B shows 
+the opposite trend. 
 
 
 The quantity $\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ is a way to measure asymmetry of tail associations between $u$ and $v$. It 
-represents the amount by which partial spearman correlation is stronger for the points lying in the lower half (i.e. 
+represents the amount by which partial Spearman correlation is stronger for the points lying in the lower half (i.e. 
 below the diagonal dashed line $x+y=1$ in Fig. \ref{fig_pedag_taildep}) of the unit 
 square than in the upper half. We will represent 
 $\cor_{l}-\cor_{u}$ for the shorthand of $\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ here 
-afterwards. A non-zero value of $\cor_{l}-\cor_{u}$ means tail-asymmetry between time series of
+afterwards. A non-zero value of $\cor_{l}-\cor_{u}$ means tail-asymmetry between the time series of
 two species - whether they are synchronizing over years or competing with each other. For synchronized 
 species-pair, a positive $\cor_{l}-\cor_{u}$ value signifies stronger lower 
 tail association (Fig. \ref{fig_pedag_taildep}A) of two 
 positively correlated species, whereas a negative value means stronger
 upper tail association (Fig. \ref{fig_pedag_taildep}B). Though the aforementioned notion of 
 tail-asymmetry measure is constructed for positively correlated species pair keeping in mind, it 
-is possible to extend the idea for negatively correlated species. When the species are competing, we can take 
-any one species time series as negative (so that now species are positively correlated) and 
+is possible to extend the idea for negatively correlated species. When the species are competing, we can take any one species time series as negative (so that now species are positively correlated) and 
 make a similar plot as in Fig. \ref{fig_pedag_taildep}A or B (depending on which species we are reversing). 
 Species for reversal can be chosen arbitrarily, hence only the magnitude, not the sign of tail-asymmetry 
-$\cor_{l}-\cor_{u}$ is considered for competing species. <!--Q. Should I tell about direction of competition?-->
+$\cor_{l}-\cor_{u}$ is considered for competing species. <!--Q. Should I tell about the direction of competition?-->
+
+<!--corl - coru in community context, count on L, U (+ve correlation only)-->
+From a community perspective, it is possible to determine if the community as a whole
+shows asymmetric tail association and if yes then what is its underlying 
+nature - overall lower tail or upper-tail asymmetry. To explore this, consider a grassland 
+community with $n$ number of species - so that there are $n(n-1)/2$ number of unique 
+pair-wise inter-specific interactions possible. First, for each of these species-pairs, we
+construct the scatter plots with the normalized rank of corresponding time-series and test their 
+independence using `BiCopIndTest` function from `VineCopula` package implemented in `R`. If 
+independence is rejected ($0.05$ significance level), then we proceed to estimate 
+tail-asymmetry ($\cor_{l}-\cor_{u}$) as described above. For positively 
+correlated species-pair, we count how many are with the stronger 
+lower-tail (or upper-tail) association, $nL$ (or $nU$). These 
+numbers can give us an idea about the overall nature of 
+tail-asymmetry within the community.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!--Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R-->
+Tail-asymmetry could be weaker on individual species-pair, but on an aggregate level can make 
+the community strongly tail-asymmetric. To test significantly stronger 
+association in one of its extreme tail for a given species-pair, we simulate $10000$ made-up 
+species pair with same Spearman correlation but removing their tail-asymmetry. If 
+estimated tail-asymmetry $\cor_{l}-\cor_{u}$ on given data lies outside 
+the $95\%$ confidence interval of the ones estimated with $10000$ surrogated data, then 
+we consider the tail-asymmetric relationship is significant for that species-pair. 
+On a community level, we calculated the fraction of significant species-pair among all correlated 
+pairs considered (overall significance on the community level, $C_s$). We also perform a binomial 
+test to check whether the community shows significantly stronger lower-tail (or upper-tail) association.
 
 <!--2. For Q2:
       - skewness ratio in analogy with variance ratio
