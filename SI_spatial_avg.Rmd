@@ -292,7 +292,7 @@ saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg_nbin_
 
 ```{r binom_sigtest_hays, echo=F}
 source("./binomial_sigtest.R")
-set.seed(seed=101)
+# set.seed(seed=101) # not needed as binom test uses pbinom function, needed if it would use rbinom
 sigtest_hays<-binomial_sigtest(ylist=CorlmCoru_hays_spaceavg,binom_sig="LT") 
 ```
 
@@ -928,7 +928,7 @@ saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg_nbin_",
 
 ```{r binom_sigtest_knz, echo=F}
 source("./binomial_sigtest.R")
-set.seed(seed=101)
+# set.seed(seed=101) # not needed as binom test uses pbinom function, needed if it would use rbinom
 sigtest_knz<-binomial_sigtest(ylist=CorlmCoru_knz_spaceavg,binom_sig="UT") 
 ```
 

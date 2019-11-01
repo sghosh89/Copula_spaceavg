@@ -73,7 +73,7 @@ s_rg<-round(range(skw_real_r_each),3)
 plot.ts(crmat,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",plot.type = "single",ylim=c(1,10))
 legend("topleft",paste("(D) Right tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
 
-mtext(paste("Biomass for each ",nsp," species in the community",sep=""),side=2,line=2.2, adj = 0)
+mtext(paste("Biomass for each of ",nsp," species in the community",sep=""),side=2,line=2.2, adj = 0.05)
 mtext("Year",side=1,line=2.2, adj = 0.5)
 
 

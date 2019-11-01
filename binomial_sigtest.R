@@ -24,12 +24,20 @@ binomial_sigtest<-function(ylist,binom_sig){
   sU<-s[cbind(y2$row,y2$col)]
   nU<-sum(is.finite(sU)) # number of positively correlated upper tail dep. cells
   nLU<-nL+nU
-  x<-rbinom(10000,nLU,0.5)
+ 
+  #x<-rbinom(10000,nLU,0.5)
+  #if(binom_sig=="LT"){
+  #  p<-sum(x>nL)/10000 # note the use of ">" not ">="
+  #}else if(binom_sig=="UT"){
+  #  p<-sum(x>nU)/10000
+  #}else{
+  #  stop("Error in summary_taildep_sig: binom_sig must be 'LT' or 'UT'")  
+  #}
   
   if(binom_sig=="LT"){
-    p<-sum(x>=nL)/10000
+    p<-pbinom(nL,size=nLU,prob=0.5,lower.tail=F) #look up P(X >= nL) when X has the Bin(nLU, 0.5) distribution. 
   }else if(binom_sig=="UT"){
-    p<-sum(x>=nU)/10000
+    p<-pbinom(nU,size=nLU,prob=0.5,lower.tail=F) #look up P(X >= nU) when X has the Bin(nLU, 0.5) distribution.
   }else{
     stop("Error in summary_taildep_sig: binom_sig must be 'LT' or 'UT'")  
   }
@@ -41,17 +49,48 @@ binomial_sigtest<-function(ylist,binom_sig){
 
 #================================================================
 
+#-------------- using rbinom function ----------------
+
 # test code for hays
 #set.seed(seed=101)
 #ylist<-readRDS("./Results/hays_results/corstat_hays_spaceavg_results/CorlmCoru_hays_spaceavg_nbin_2.RDS")
 #res<-binomial_sigtest(ylist=ylist,binom_sig="LT") 
-#res
+#res$pval_binom #0.0963
 
 # test code for knz
 #set.seed(seed=101)
 #ylist<-readRDS("./Results/knz_results/corstat_knz_spaceavg_results/CorlmCoru_knz_spaceavg_nbin_2.RDS")
 #res<-binomial_sigtest(ylist=ylist,binom_sig="UT") 
-#res
+#res$pval_binom #0.008
+
+#------------- using pbinom function ----------------
+
+#ylist<-readRDS("./Results/hays_results/corstat_hays_spaceavg_results/CorlmCoru_hays_spaceavg_nbin_2.RDS")
+#res<-binomial_sigtest(ylist=ylist,binom_sig="LT")
+#res$pval_binom #0.0962
+
+#ylist<-readRDS("./Results/knz_results/corstat_knz_spaceavg_results/CorlmCoru_knz_spaceavg_nbin_2.RDS")
+#res<-binomial_sigtest(ylist=ylist,binom_sig="UT")
+#res$pval_binom #0.0073
+
+#--------------- can also check similar conclusion with this binom.test() -----------------------------------------
+#binom.test(x=34,n=59,p=0.5,alternative=c("g"), conf.level=0.95) #nL=34, nLU=59 for hays data
+                                                # gives p-value = 0.1488
+
+#binom.test(x=65,n=106,p=0.5,alternative=c("g"), conf.level=0.95) #nU=65, nLU=106 for knz data
+                                                # gives p-value = 0.01251
+
+# if we use ">=" sign in rbinom call, it would give the same results as of binom.test() p-value
+
+#--------------------- summary -----------------------------
+# hays data shows dominance of LT dep. cells in the community
+# could be by chance (as p>0.05), whereas for knz data UT dep. 
+# cells in the community is significantly dominant (as p<0.05).
+
+#------------- web-help-----------------------------------
+# https://www.stat.umn.edu/geyer/old/5101/rlook.html
+# http://www.endmemo.com/program/R/binomial.php
+
 
 
 
