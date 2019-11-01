@@ -34,13 +34,16 @@ binomial_sigtest<-function(ylist,binom_sig){
   #  stop("Error in summary_taildep_sig: binom_sig must be 'LT' or 'UT'")  
   #}
   
-  if(binom_sig=="LT"){
-    p<-pbinom(nL,size=nLU,prob=0.5,lower.tail=F) #look up P(X >= nL) when X has the Bin(nLU, 0.5) distribution. 
-  }else if(binom_sig=="UT"){
-    p<-pbinom(nU,size=nLU,prob=0.5,lower.tail=F) #look up P(X >= nU) when X has the Bin(nLU, 0.5) distribution.
-  }else{
-    stop("Error in summary_taildep_sig: binom_sig must be 'LT' or 'UT'")  
-  }
+  #if(binom_sig=="LT"){
+  #  p<-pbinom(nL,size=nLU,prob=0.5,lower.tail=F) #look up P(X >= nL) when X has the Bin(nLU, 0.5) distribution. 
+  #}else if(binom_sig=="UT"){
+  #  p<-pbinom(nU,size=nLU,prob=0.5,lower.tail=F) #look up P(X >= nU) when X has the Bin(nLU, 0.5) distribution.
+  #}else{
+  #  stop("Error in summary_taildep_sig: binom_sig must be 'LT' or 'UT'")  
+  #}
+  
+  bt<-binom.test(x=nL,n=nLU,p=0.5,alternative=c("t"), conf.level=0.95) 
+  p<-bt$p.value
   
   res<-list(overall_sig=overall_sig,pval_binom=p)
   
@@ -81,6 +84,11 @@ binomial_sigtest<-function(ylist,binom_sig){
                                                 # gives p-value = 0.01251
 
 # if we use ">=" sign in rbinom call, it would give the same results as of binom.test() p-value
+
+#------ so, what to use? ----------------------
+# It is reasonable to use a two.tailed binom.test because 
+# we should not use a priori reason to get stronger LT or stronger UT
+# dep. cells in majority.
 
 #--------------------- summary -----------------------------
 # hays data shows dominance of LT dep. cells in the community
