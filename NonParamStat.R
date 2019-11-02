@@ -72,7 +72,9 @@ copsync<-function(m,nbin){
 
 #----------Output - A list of length 1 with these elements-----------------
 
-# spear            A matrix of spearman results, length(d) by length(d)
+# spear            A matrix of spearman results, length(d) by length(d) (significantly -ve correlated cells had +ve correlation, 
+#                     as we take one of timeseries reversed but can track with posnN indices)
+
 # kend             A matrix of kendall results, length(d) by length(d)
 
 # Corl             A matrix of Cl results, length(d) by length(d)
@@ -80,6 +82,10 @@ copsync<-function(m,nbin){
 
 #posnI             A matrix for indices of indep. sp. pair
 #posnN             A matrix for indices of negatively correlated sp. pair
+
+#corval           A matrix of spearman results but differ with spear in the sense that it contains all +ve or -ve Spearman
+#                 correlation values, whether significant or not. And also the true correlation. (same as 'corval' output 
+#                                 from vivj_matrix.R)
 
 multcall<-function(d_allsp,loc,resloc,good_sp,nbin){
   
@@ -151,7 +157,8 @@ multcall<-function(d_allsp,loc,resloc,good_sp,nbin){
     res<-list(spear=spear,kend=kend,
               Corl=Corl,Coru=Coru,
               posnI=posnI,
-              posnN=posnN)
+              posnN=posnN,
+              corval=corval)
   #}
   
   return(res)
