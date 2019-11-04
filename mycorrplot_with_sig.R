@@ -14,6 +14,7 @@
 #     numpts : see tailsignif function argument (length of timeseries without NA)
 #     numsims : see tailsignif function argument
 #     CI: a vector for confidence interval to be used in tailsignif function argument
+#     include_indep : logical (T/ F), whether to mark out the independent cells or not
 
 # returns a list of two matrices (info with significance test)
 
@@ -21,7 +22,7 @@ source("./tailsignif.R")
 library(corrplot)
 
 mycorrplot_with_sig<-function(z,posnI_ind,posnN_ind,colrange,type="lower",sigtest=F,spr,realstat,
-                     ub=0.5,numpts,numsims,CI=c(0.025,0.975)){
+                     ub=0.5,numpts,numsims,CI=c(0.025,0.975),include_indep){
   
   col1 <- colorRampPalette(c("blue","white","red")) 
   
@@ -41,15 +42,19 @@ mycorrplot_with_sig<-function(z,posnI_ind,posnN_ind,colrange,type="lower",sigtes
   corrplot(Dg, cl.pos = "n", na.label = " ", add = T,addgrid.col = "black",type=type,
            bg = "transparent", tl.col = "transparent",col="black",method="color")
   
-  #colorize as yellow for indep posn indices
-  if(dim(posnI_ind)[1]!=0){
-    
-    I <- matrix(NA,nrow(z),ncol(z))
-    I[posnI_ind]<- 1 
-    
-    corrplot(I, cl.pos = "n", na.label = " ", add = T,addgrid.col = "black",type=type,
-             bg = "transparent", tl.col = "transparent",col="yellow",method="color")
-  } 
+  
+  if(include_indep==T){
+    #colorize as yellow for indep posn indices
+    if(dim(posnI_ind)[1]!=0){
+      
+      I <- matrix(NA,nrow(z),ncol(z))
+      I[posnI_ind]<- 1 
+      
+      corrplot(I, cl.pos = "n", na.label = " ", add = T,addgrid.col = "black",type=type,
+               bg = "transparent", tl.col = "transparent",col="yellow",method="color")
+    } 
+  }
+  
   
   #colorize as green for -ve correlated (siginificantly) posn indices
   if(dim(posnN_ind)[1]!=0){

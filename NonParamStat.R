@@ -69,10 +69,12 @@ copsync<-function(m,nbin){
 # pfname   :    Filename (without extension) prepended to plot files saved.
 # good_sp  :    a vector of chosen species
 # nbin : number of bins used to compute npa stats
+# include_indep : logical (T/ F), whether to carry out independence test or not
 
 #----------Output - A list of length 1 with these elements-----------------
 
-# spear            A matrix of spearman results, length(d) by length(d) (significantly -ve correlated cells had +ve correlation, 
+# spear            A matrix of spearman results, length(d) by length(d) (significantly -ve correlated cells 
+#                    had +ve correlation, 
 #                     as we take one of timeseries reversed but can track with posnN indices)
 
 # kend             A matrix of kendall results, length(d) by length(d)
@@ -87,7 +89,7 @@ copsync<-function(m,nbin){
 #                 correlation values, whether significant or not. And also the true correlation. (same as 'corval' output 
 #                                 from vivj_matrix.R)
 
-multcall<-function(d_allsp,loc,resloc,good_sp,nbin){
+multcall<-function(d_allsp,loc,resloc,good_sp,nbin,include_indep){
   
   lensp<-length(good_sp)
   
@@ -123,7 +125,7 @@ multcall<-function(d_allsp,loc,resloc,good_sp,nbin){
       #cat("i,j",i,j,"\n")
       
       #if(i!=j){
-      ms<-vivj_matrix(d_allsp=d_allsp,loc=loc,i=i,j=j,level=0.05,ploton=F,onbounds=F,lb=NA,ub=NA)
+      ms<-vivj_matrix(d_allsp=d_allsp,loc=loc,i=i,j=j,level=0.05,ploton=T,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
       m<-ms$mat
       
       corval[ii,jj]<-ms$corval
@@ -149,10 +151,15 @@ multcall<-function(d_allsp,loc,resloc,good_sp,nbin){
   
   #-------------------------------------------------------------------------
   
-  level<-0.05
-  posnI<-which(pval_BiCopIndep>=level, arr.ind = T) #indices of indep. pair
-  posnN<-which(pval_BiCopIndep<level & corval <0, arr.ind = T) #indices of significantly neg. correlated pair
-  
+  if(include_indep==T){
+    level<-0.05
+    posnI<-which(pval_BiCopIndep>=level, arr.ind = T) #indices of indep. pair
+    posnN<-which(pval_BiCopIndep<level & corval <0, arr.ind = T) #indices of significantly neg. correlated pair
+  }else{
+    posnI<-NA
+    posnN<- which(corval <0, arr.ind = T)
+  }
+ 
   #if(npa_stats=="cor"){
     res<-list(spear=spear,kend=kend,
               Corl=Corl,Coru=Coru,

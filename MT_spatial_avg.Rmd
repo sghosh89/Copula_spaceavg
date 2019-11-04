@@ -273,7 +273,8 @@ than the blue points in the upper part, while Fig. \ref{fig_pedag_taildep}B show
 the opposite trend. 
 
 
-The quantity $\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ is a way to measure asymmetry of tail associations between $u$ and $v$. It 
+The quantity $\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ is a way to measure asymmetry of tail
+associations between $u$ and $v$. It 
 represents the amount by which partial Spearman correlation is stronger for the points lying in the lower half (i.e. 
 below the diagonal dashed line $x+y=1$ in Fig. \ref{fig_pedag_taildep}) of the unit 
 square than in the upper half. We will represent 
@@ -304,7 +305,6 @@ correlated species-pair, we count how many are with the stronger
 lower-tail (or upper-tail) association, $nL$ (or $nU$). These 
 numbers can give us an idea about the overall nature of 
 tail-asymmetry within the community.
-
 
 <!--Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R-->
 Tail-asymmetry could be weaker on individual species-pair, but on an aggregate level can make 

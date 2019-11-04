@@ -236,6 +236,7 @@ dev.off()
 
 # ---------------------generate copula plots for all selected splist_hays_spaceavg--------------------
 source("./vivj_matrix.R")
+include_indep<-FALSE
 good_sp<-c(1:length(hays_spaceavg[[1]]))
 lensp<-length(good_sp)
 pdf("./Results/hays_results/copula_hays_spaceavg.pdf",height=2*lensp,width = 2*lensp)
@@ -244,7 +245,7 @@ for(i in c(1:lensp)){
   for(j in c(1:lensp)){
     vivj_matrix(d_allsp=hays_spaceavg,loc=1,
                 i=good_sp[i],j=good_sp[j],level=0.05,
-                ploton=T,onbounds=T,lb=0,ub=0.5)
+                ploton=T,onbounds=T,lb=0,ub=0.5,include_indep=include_indep)
   }
 }
 par(op)
@@ -263,12 +264,13 @@ if(!dir.exists("./Results/hays_results/corstat_hays_spaceavg_results")){
 
 resloc<-"./Results/hays_results/corstat_hays_spaceavg_results/"
 nbin_hays<-2
+include_indep<-FALSE 
 
 corstat_hays_spaceavg<-multcall(d_allsp=hays_spaceavg,
                            loc=1,
                            resloc=resloc,
                            good_sp=c(1:length(hays_spaceavg[[1]])),
-                           nbin=nbin_hays)
+                           nbin=nbin_hays,include_indep=include_indep)
 
 saveRDS(corstat_hays_spaceavg,paste(resloc,file="corstat_hays_spaceavg_nbin_",nbin_hays,".RDS",sep=''))
 ```
@@ -284,17 +286,22 @@ ub<-1/nbin_hays
 numpts<-length(hays_spaceavg$avg.basal.cover[[1]]$Year)  #for hays data 41years
 numsims<-10000
 CI<-c(0.025,0.975)
-sigtest<-TRUE
-CorlmCoru_hays_spaceavg<-NonParamStat_matrixplot(data=corstat_hays_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13,
-                                                 sigtest=sigtest,ub=ub,numpts=numpts,numsims=numsims,CI=CI)
+sigtest<-FALSE
+include_indep<-FALSE 
+
+CorlmCoru_hays_spaceavg<-NonParamStat_matrixplot(data=corstat_hays_spaceavg,resloc=resloc,tagon=T,
+                                                 type="lower",wd=13,ht=13,
+                                                 sigtest=sigtest,ub=ub,numpts=numpts,
+                                                 numsims=numsims,CI=CI,include_indep=include_indep)
 saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg_nbin_",nbin_hays,".RDS",sep='')) 
 ```
 
 ```{r binom_sigtest_hays, echo=F}
-source("./binomial_sigtest.R")
+# only run this chunk if sigtest=TRUE in previous chunks
+#source("./binomial_sigtest.R")
 # set.seed(seed=101) # not needed as binom test uses two-sided binom.test function 
 # also it does not matter here binom_sig="LT" or binom_sig="UT"
-sigtest_hays<-binomial_sigtest(ylist=CorlmCoru_hays_spaceavg,binom_sig="LT") 
+#sigtest_hays<-binomial_sigtest(ylist=CorlmCoru_hays_spaceavg,binom_sig="LT") 
 ```
 
 <!--get appropriate surrogates for hays with common+pseudo sp.-->
@@ -617,6 +624,7 @@ dev.off()
 <!--some additional fig for suppmat : hays-->
 ```{r hays_spaceavg_some_figs,echo=F,results="hide"}
 source("vivj_matrix.R")
+include_indep<-FALSE
 
 #UT dep. among all dry seasoned deep rooted grasses
 pdf("./Results/hays_results/hays_spaceavg_ANGE_PAVI2_PSTE5.pdf",height=3,width=10)
@@ -624,7 +632,7 @@ op<-par(mfrow=c(1,3),mar=c(5,5,2,2))
 i<-2
 j<-11
 d_allsp<-hays_spaceavg
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
@@ -634,7 +642,7 @@ mtext(paste0("(sp_x, sp_y) = (",i," , ",j,")"),
 i<-2
 j<-13
 d_allsp<-hays_spaceavg
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
@@ -644,7 +652,7 @@ mtext(paste0("(sp_x, sp_y) = (",i," , ",j,")"),
 i<-11
 j<-13
 d_allsp<-hays_spaceavg
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=names(d_allsp[[1]])[j],cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.6,col="blue")
@@ -661,9 +669,9 @@ i<-5
 j<-14
 d_allsp<-hays_spaceavg
 
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA)
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
@@ -672,9 +680,9 @@ i<-12
 j<-14
 d_allsp<-hays_spaceavg
 
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA)
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
@@ -683,9 +691,9 @@ i<-17
 j<-14
 d_allsp<-hays_spaceavg
 
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA)
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
@@ -694,9 +702,9 @@ i<-18
 j<-14
 d_allsp<-hays_spaceavg
 
-vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA)
+vivj_matrix(d_allsp = d_allsp,loc=1,i=i,j=j,ploton=T,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 
-s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA)
+s1<-vivj_matrix(d_allsp=d_allsp,loc=1,i=i,j=j,ploton=F,onbounds=F,lb=NA,ub=NA,include_indep=include_indep)
 plot(s1$mat[,1],s1$mat[,2],col=rgb(0,0,0,0),pch=19,xlab=names(d_allsp[[1]])[i],
      ylab=paste("-",names(d_allsp[[1]])[j],sep=""),cex.lab=1.5)
 text(s1$mat[,1],s1$mat[,2],labels = c(1932:1972),cex=0.5,col="blue")
@@ -878,7 +886,7 @@ for(i in c(1:lensp)){
   for(j in c(1:lensp)){
     vivj_matrix(d_allsp=knz_spaceavg,loc=1,
                 i=good_sp[i],j=good_sp[j],level=0.05,
-                ploton=T,onbounds=T,lb=0,ub=0.5)
+                ploton=T,onbounds=T,lb=0,ub=0.5,include_indep=include_indep)
   }
 }
 par(op)
@@ -900,12 +908,13 @@ if(!dir.exists("./Results/knz_results/corstat_knz_spaceavg_results")){
 
 resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
 nbin_knz<-2
+include_indep<-FALSE 
 
 corstat_knz_spaceavg<-multcall(d_allsp=knz_spaceavg,
                            loc=1,
                            resloc=resloc,
                            good_sp=c(1:length(knz_spaceavg[[1]])),
-                           nbin=nbin_knz)
+                           nbin=nbin_knz,include_indep=include_indep)
 
 saveRDS(corstat_knz_spaceavg,paste(resloc,file="corstat_knz_spaceavg_nbin_",nbin_knz,".RDS",sep=''))
 ```
@@ -921,17 +930,23 @@ ub<-1/nbin_knz
 numpts<-length(knz_spaceavg$avg.percent.cover[[1]]$Year) #for knz data 33years
 numsims<-10000
 CI<-c(0.025,0.975)
-sigtest<-TRUE
-CorlmCoru_knz_spaceavg<-NonParamStat_matrixplot(data=corstat_knz_spaceavg,resloc=resloc,tagon=T,type="lower",wd=13,ht=13,
-                                                 sigtest=sigtest,ub=ub,numpts=numpts,numsims=numsims,CI=CI)
+sigtest<-FALSE
+include_indep<-FALSE
+
+CorlmCoru_knz_spaceavg<-NonParamStat_matrixplot(data=corstat_knz_spaceavg,
+                                                resloc=resloc,tagon=T,
+                                                type="lower",wd=13,ht=13,
+                                                sigtest=sigtest,ub=ub,numpts=numpts,numsims=numsims,CI=CI,
+                                                include_indep=include_indep)
 saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg_nbin_",nbin_knz,".RDS",sep=''))
 ```
 
 ```{r binom_sigtest_knz, echo=F}
-source("./binomial_sigtest.R")
+# only run this chunk if sigtest=TRUE in previous chunks
+#source("./binomial_sigtest.R")
 # set.seed(seed=101) # not needed as binom test uses two-sided binom.test function 
 # also it does not matter here binom_sig="LT" or binom_sig="UT"
-sigtest_knz<-binomial_sigtest(ylist=CorlmCoru_knz_spaceavg,binom_sig="LT") 
+#sigtest_knz<-binomial_sigtest(ylist=CorlmCoru_knz_spaceavg,binom_sig="LT") 
 ```
 
 <!--get appropriate surrogates for knz with common+pseudo sp.-->
