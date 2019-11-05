@@ -177,11 +177,15 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts
         nL<-nL/2 
         nU<-nU/2
         total_CorlmCoru<-total_CorlmCoru/2
+        total_CorlmCoru<-round(total_CorlmCoru,4) #print upto 4th rounded digits
       }
     }
     
     if(tagon == T){
-      mtext(paste0("nL = ",nL,", nU = ",nU, ", Total asym. = ",round(total_CorlmCoru,4)),cex=3,side=1,adj=0.6,line=2)
+      #mtext(paste0("nL = ",nL,", nU = ",nU, ", Total asym. = ",round(total_CorlmCoru,4)),
+      #      cex=3,side=1,adj=0.6,line=2)
+      mtext((as.expression(bquote('n'['L']*' = '*.(nL)*', '*'n'['U']*' = '*.(nU)*', '*'T'['A']*' = '*.(total_CorlmCoru)))),
+            cex=3,side=1,adj=0.6,line=2)
     }
     
     dev.off()
