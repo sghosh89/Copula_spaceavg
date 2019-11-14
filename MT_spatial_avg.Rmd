@@ -195,10 +195,10 @@ or right tail dependence indicates stronger association in their extreme higher 
 \begin{center}
 \includegraphics[width=17cm]{./Results/pedagog_figs/pedagog_ts.pdf}
 \caption{Pedagogical figure showing how skewness of total biomass distribution of a community 
-is affected by extreme asymmetric tail-dependence (Appendix \ref{SI-extreme_taildep_mat}) in individual 
-species biomass-distribution throughout years. Major lower tail dependence in 
+is affected by extreme asymmetric tail-association (Appendix \ref{SI-extreme_taildep_mat}) in individual 
+species biomass-distribution throughout years. Major lower tail association in 
 a community makes its total biomass more negatively skewed $(A)$, whereas
-major upper tail dependence in a community makes 
+major upper tail association in a community makes 
 its total biomass more positively skewed $(B)$, compared to a
 community which is generated via a resampling method (Appendix \ref{SI-skew_ncsurrog})
 to have no tail-dependence but preserving pairwise Spearman correlation
@@ -294,7 +294,7 @@ $\cor_{l}-\cor_{u}$ is considered for competing species pair.
 <!--corl - coru in community context, count on L, U (+ve correlation only)-->
 From a community perspective, it is possible to determine if the community as a whole
 shows asymmetric tail association and if yes then what is its underlying 
-nature - overall lower tail or upper-tail asymmetry. To explore this, consider a grassland 
+nature - overall lower tail or upper-tail asymmetry. To explore this, consider a 
 community with $n$ number of species - so that there are $n(n-1)/2$ number of unique 
 pair-wise inter-specific interactions possible. First, for each of these species-pairs, we
 construct the scatter plots with the normalized rank of corresponding time-series 
@@ -336,12 +336,12 @@ of tail-asymmetry between species-pairs on the stability of
 community level, which was not accounted for general variance ratio approach. Variability 
 through time, be it for individual or for total community biomass, is a key component to
 measure the stability [@ives1999stability]. Following we
-will briefly discuss about the classic variance ratio metric which is generally 
+briefly discuss about the classic variance ratio metric which is generally 
 used to predict the community-stability [@schluter1984variance]. 
 
 
 <!--short theoretical background to calculate phi_cv with variance ratio method, and its interpretation-->
-Consider a community with $n$ number of species where indidual species biomass 
+Consider a community with $n$ number of species where individual species biomass 
 or productivity ($x_i(t); i = 1, 2, \ldots, n$) being monitored 
 through $t = 1, 2, \ldots, T$ years. Mean of $i^{th}$ individual species 
 time series is denoted as $\mu_i = \bar{x_i}$ whereas its interaction with other species $(j)$ is
@@ -356,17 +356,38 @@ respect to a community made of independent species
 is considered as less stable. In mathematical natation, this stability index is represented as
 the classic variance ratio, $\phi_{cv}$ ($= CV_{com}^2/CV_{ind}^2 =  \sum_{i,j}v_{ij}/ \sum_{i} v_{ii}$). 
 When $\phi_{cv}>1$, community is highly variable compared to a community where species are fluctuating 
-independently and randomly. Synchronized fluctuation results this higher $\phi_{CV}$ and makes community 
+independently and randomly. Synchronized fluctuation results this higher $\phi_{cv}$ and makes community 
 less stable towards environmental perturbation compared to an independent community 
 whereas species with compensatory dynamics (fluctuating time-series in anti-phase) makes 
 a community more stable (i.e., $\phi_{cv}<1$) due to different 
-functional responses from different species within the community. 
+functional responses from different functional group of species within the community. 
+
+<!--alternative measure of stability: based on skewness-->
+We here propose an alternative measure of 
+stability for a $n$-species community. Accounting for the effect due to 
+extreme environmental perturbation, it
+is reasonable to consider how skewness of total 
+biomass of the community changes through time compared to that of a community 
+of $n$ independent species. We can consider the skewness as an indicator 
+that how much the mean and the median differ for a temporal distribution 
+of total community-biomass. In such case, we represent the skewness for a community as
+$S_{com}=\sum_{i,j,k}m_{ijk}/\sum_{i,j,k}v_{ijk}^{3/2} = m_{tot}/v_{tot}^{3/2}$, where 
+$m_{tot}$ is the 3$^{rd}$ central moment of the temporal distribution 
+for total biomass of the community. If all the species within 
+that community behave as independent entities, then the skewness 
+for an independent community would be 
+$S_{ind} = \sum_{i}m_{iii}/\sum_{i}v_{i}^{3/2}$. Therefore, we define the 
+skewness-based stability index $\phi_{s} = S_{com}/ S_{ind}$ similar to that 
+of the variance ratio metric, $\phi_{cv}$. It is trivial to show the relationship
+between these two stability indices as $\phi_s = (m_{tot}/\sum_im_{iii})(1/\phi_{cv}^{3/2})$.
+
+<!--interpretation for phi_s and stability-->
 
 
+<!--how phi_s and phi_cv are different?-->
 
 
-
-
+<!--partition between correlation and tail association effect in phi_s, phi_cv-->
 
 
 
