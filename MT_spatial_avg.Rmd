@@ -243,13 +243,13 @@ total biomass distribution over years using those two datasets.
 <!--1. For Q1:
       - introduce partial Spearman correlation to measure tail asymmetry corl - coru (need schematic diagram)
       - corl - coru in community context, count on L, U (+ve correlation only)
-      - binomial and significance testing-->
+      - binomial and significance testing: at present not shown-->
 
 <!--Defining partial Spearman correlation: measure of tail-asymmetry-->
 To answer Q1 from \nameref{Introduction}, we need a tool to measure the tail asymmetry between 
 interacting species over years in a grassland community that is intended to study. We used 
 the *partial Spearman correlation* approach (first introduced in @Ghosh_copula) to 
-estimate the association between a pair of interacting species' time-series - whether 
+estimate the association between a pair of interacting species' time-series, i.e., whether 
 they are strongly correlated in their common good/ bad years or 
 one species abundance in certain 'good' years limits the growth for the 
 other. First, we define the *partial Spearman correlaion* for a given 
@@ -265,7 +265,7 @@ over the $t$ such that $x(t)+y(t) > 2l_b$ and $x(t)+y(t)<2u_b$ (i.e. colored dat
 between two bounds as in Fig. \ref{fig_pedag_taildep}). The partial Spearman correlation, 
 attributed by those colored data points between bounds, is the contribution in the Spearman
 correlation of $u$ and $v$. For an asymmetric relationship 
-between a species-pair, correlation in any part 
+between a species-pair, association in any part 
 of their joint distribution of corresponding normalized ranks could 
 be stronger than the other part. For example, Fig. \ref{fig_pedag_taildep}A has a 
 stronger partial Spearman correlation between the red points in the lower portion 
@@ -289,7 +289,7 @@ tail-asymmetry measure is constructed for positively correlated species pair kee
 is possible to extend the idea for negatively correlated species. When the species are competing, we can take any one species time series as negative (so that now species are positively correlated) and 
 make a similar plot as in Fig. \ref{fig_pedag_taildep}A or B (depending on which species we are reversing). 
 Species for reversal can be chosen arbitrarily, hence only the magnitude, not the sign of tail-asymmetry 
-$\cor_{l}-\cor_{u}$ is considered for competing species. <!--Q. Should I tell about the direction of competition?-->
+$\cor_{l}-\cor_{u}$ is considered for competing species pair. 
 
 <!--corl - coru in community context, count on L, U (+ve correlation only)-->
 From a community perspective, it is possible to determine if the community as a whole
@@ -297,16 +297,20 @@ shows asymmetric tail association and if yes then what is its underlying
 nature - overall lower tail or upper-tail asymmetry. To explore this, consider a grassland 
 community with $n$ number of species - so that there are $n(n-1)/2$ number of unique 
 pair-wise inter-specific interactions possible. First, for each of these species-pairs, we
-construct the scatter plots with the normalized rank of corresponding time-series and test their 
+construct the scatter plots with the normalized rank of corresponding time-series 
+<!-- omitted as of now: 
+and test their 
 independence using `BiCopIndTest` function from `VineCopula` package implemented in `R`. If 
-independence is rejected ($0.05$ significance level), then we proceed to estimate 
-tail-asymmetry ($\cor_{l}-\cor_{u}$) as described above. For positively 
+independence is rejected ($0.05$ significance level), then we proceed to estimate--> 
+and measured tail-asymmetry ($\cor_{l}-\cor_{u}$) as described above. For positively 
 correlated species-pair, we count how many are with the stronger 
 lower-tail (or upper-tail) association, $nL$ (or $nU$). These 
-numbers can give us an idea about the overall nature of 
-tail-asymmetry within the community.
+numbers along with the sum of tail-asymmetry values, $T_A (= \sum \cor_{l}-\cor_{u})$ for those species-pair 
+can give us an idea about the overall nature of tail-asymmetry within the community.
 
-<!--Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R-->
+<!--omitted as of now: Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R
+At present not shown, because we want to consider all interactions: weekest to strongest.
+
 Tail-asymmetry could be weaker on individual species-pair, but on an aggregate level can make 
 the community strongly tail-asymmetric. To test significantly stronger 
 association in one of its extreme tail for a given species-pair, we simulate $10000$ made-up 
@@ -317,15 +321,46 @@ we consider the tail-asymmetric relationship is significant for that species-pai
 On a community level, we calculated the fraction of significant species-pair among all correlated 
 pairs considered (overall significance on the community level, $C_s$). We also perform a binomial 
 test to check whether the community shows significantly stronger lower-tail (or upper-tail) association.
-
-<!--2. For Q2:
-      - skewness ratio in analogy with variance ratio
-      - separate the contributions from tail association and usual correlation (Pearson) 
-      - need schematic diagram to show the relation (this diagram will again help to interpret results for Q2)
 -->
 
+<!--2. For Q2:
+      - brief intro about the usual way to measure community variability (variance ratio method)
+      - then introduce skewness ratio in analogy with variance ratio
+      - separate the contributions from tail association and usual correlation (Pearson) 
+      - need schematic diagram to show the relation (this diagram will again help to interpret results for Q2 later)
+      - somewhere, in results or in discussion we should talk about the aggregated effect of weak interactions
+-->
+
+To answer Q2 from \nameref{Introduction}, our approach was to assess the effect 
+of tail-asymmetry between species-pairs on the stability of 
+community level, which was not accounted for general variance ratio approach. Variability 
+through time, be it for individual or for total community biomass, is a key component to
+measure the stability [@ives1999stability]. Following we
+will briefly discuss about the classic variance ratio metric which is generally 
+used to predict the community-stability [@schluter1984variance]. 
 
 
+<!--short theoretical background to calculate phi_cv with variance ratio method, and its interpretation-->
+Consider a community with $n$ number of species where indidual species biomass 
+or productivity ($x_i(t); i = 1, 2, \ldots, n$) being monitored 
+through $t = 1, 2, \ldots, T$ years. Mean of $i^{th}$ individual species 
+time series is denoted as $\mu_i = \bar{x_i}$ whereas its interaction with other species $(j)$ is
+represented by the covariance $v_{ij} = \cov(x_i,x_j)$ with $v_{ij}$ being $0$ implying
+independent fluctuation. On an aggregated scale, the total productivity, mean and the variance 
+are represented as $x_{tot} = \sum_{i} x_i$, $\mu_{tot} = \sum_{i} \mu_i$ 
+and $v_{tot} = \sum_{i,j}v_{ij}$, respectively. These quantities quantify
+squared coefficient of variation ($CV_{com}^2 = v_{tot}/\mu_{tot}^2$) that measures 
+the variability of the said community [@pimm1984complexity]. Usual notion to link 
+stability with variability is that more variable community with 
+respect to a community made of independent species 
+is considered as less stable. In mathematical natation, this stability index is represented as
+the classic variance ratio, $\phi_{cv}$ ($= CV_{com}^2/CV_{ind}^2 =  \sum_{i,j}v_{ij}/ \sum_{i} v_{ii}$). 
+When $\phi_{cv}>1$, community is highly variable compared to a community where species are fluctuating 
+independently and randomly. Synchronized fluctuation results this higher $\phi_{CV}$ and makes community 
+less stable towards environmental perturbation compared to an independent community 
+whereas species with compensatory dynamics (fluctuating time-series in anti-phase) makes 
+a community more stable (i.e., $\phi_{cv}<1$) due to different 
+functional responses from different species within the community. 
 
 
 
