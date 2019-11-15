@@ -63,7 +63,7 @@ legend("topleft",paste("(A) No tail association: range of s[i] = (",s_rg[1],",",
 
 s_rg<-round(range(skw_real_l_each),3)
 plot.ts(clmat,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(1,10))
-legend("topleft",paste("(B) Left tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
+legend("topleft",paste("(B) Lower tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
 
 s_rg<-round(range(skw_surrogr_each),3)
 plot.ts(surrog_mat_r,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(1,10))
@@ -71,7 +71,7 @@ legend("topleft",paste("(C) No tail association: range of s[i] = (",s_rg[1],",",
 
 s_rg<-round(range(skw_real_r_each),3)
 plot.ts(crmat,col=rainbow(nsp,alpha=0.3),ylab="",xlab="",plot.type = "single",ylim=c(1,10))
-legend("topleft",paste("(D) Right tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
+legend("topleft",paste("(D) Upper tail association: range of s[i] = (",s_rg[1],",",s_rg[2],")",sep=""),bty="n",cex=1)
 
 mtext(paste("Biomass for each of ",nsp," species in the community",sep=""),side=2,line=2.2, adj = 0.05)
 mtext("Year",side=1,line=2.2, adj = 0.5)
@@ -83,13 +83,13 @@ plot(c(1:nyr),tot_ts_surrogl,type="l",ylim=ylm,col="grey",ylab="",xlab="",xaxt="
 legend("topleft",paste("(E) No tail association: s = ",round(skw_surrogl,3)),bty="n",cex=1)
 
 plot(c(1:nyr),tot_ts_l,type="l",ylim=ylm,col="black",ylab="",xaxt="n",xlab="")
-legend("topleft",paste("(F) Left tail association: s = ",round(skw_real_l,3)),bty="n",cex=1)
+legend("topleft",paste("(F) Lower tail association: s = ",round(skw_real_l,3)),bty="n",cex=1)
 
 plot(c(1:nyr),tot_ts_surrogr,type="l",ylim=ylm,col="grey",ylab="",xaxt="n",xlab="")
 legend("topleft",paste("(G) No tail association: s = ",round(skw_surrogr,3)),bty="n",cex=1)
 
 plot(c(1:nyr),tot_ts_r,type="l",ylim=ylm,col="black",xlab="",ylab="")
-legend("topleft",paste("(H) Right tail association: s = ",round(skw_real_r,3)),bty="n",cex=1)
+legend("topleft",paste("(H) Upper tail association: s = ",round(skw_real_r,3)),bty="n",cex=1)
 
 mtext("Total community biomass",side=2,line=2.2, adj = -0.5)
 mtext("Year",side=1,line=2.2, adj = 0.5)

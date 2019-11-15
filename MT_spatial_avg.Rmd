@@ -304,8 +304,8 @@ independence using `BiCopIndTest` function from `VineCopula` package implemented
 independence is rejected ($0.05$ significance level), then we proceed to estimate--> 
 and measured tail-asymmetry ($\cor_{l}-\cor_{u}$) as described above. For positively 
 correlated species-pair, we count how many are with the stronger 
-lower-tail (or upper-tail) association, $nL$ (or $nU$). These 
-numbers along with the sum of tail-asymmetry values, $T_A (= \sum \cor_{l}-\cor_{u})$ for those species-pair 
+lower-tail (or upper-tail) association, $n_L$ (or $n_U$). These 
+numbers along with the sum of tail-asymmetry values, $A_{tot} (= \sum \cor_{l}-\cor_{u})$ for those species-pair 
 can give us an idea about the overall nature of tail-asymmetry within the community.
 
 <!--omitted as of now: Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R
@@ -382,9 +382,49 @@ of the variance ratio metric, $\phi_{cv}$. It is trivial to show the relationshi
 between these two stability indices as $\phi_s = (m_{tot}/\sum_im_{iii})(1/\phi_{cv}^{3/2})$.
 
 <!--interpretation for phi_s and stability-->
+Unlike $\phi_{cv}$, $\phi_s$ can be positive, $0$ or negative depending on the 
+signs of the skewnesses from the concerned community and its 
+independent analog. $\phi_s >1$ indicates that
+the community biomass is more positively (or more negatively) skewed
+than it would have been if the species have no interactions with each other.
+The opposite scenario - i.e., when the community with interacting species shows less positive
+or less negative skewness than would be expected if there was no interactions - represents 
+$\phi_s$ to be within the range $(0,1)$. $\phi_s \approx 0$ means skewness is eliminated by the 
+interactions of the species within the community, i.e., high productivity of some species 
+for some years are balanced by its proportional drop in productivity 
+for other years or by other species for those same years. <!--***Shya:please review this line, am I right here? 
+is this similar as of phi_cv < 1 for compensatory dynamics?--> A negative $\phi_s$ indicates 
+interspefic interactions alter the skewness (i.e. changing its sign) of a community-biomass 
+distribution over years than it would have been without any interactions. 
 
+<!--Episodic species may 
+cause this scenario by its occasional but high abundance. 
+***Shya:please review this line, am I right here?
+Don't say about episodic species, rather give intuitively the example about left tail dep. community with slightly right skewed marginals will produce phi_s<0.
+-->
 
 <!--how phi_s and phi_cv are different?-->
+We recommend to use both these indices ($\phi_{cv}$ and $\phi_s$) to get 
+a complete picture to predict the stability of the community. It is possible
+to underestimate the stability status of the community if we only
+depend on the $\phi_{cv}$, which is a correlation 
+(i.e. normalized covariance) based measure. $\phi_s$, on the other hand, takes  
+the extreme values or tail asymmetry between interspecific 
+response into account to assess the change in community structure
+over time. Therefore, two communities with similar $\phi_{cv}$ could have two drastically 
+different $\phi_s$ and interpretation of stability if we consider the change of skewness as an indicator 
+of community-change (examples with real data are shown in \nameref{Results}). For example, consider 
+two communities $C_A$ and $C_B$ with equal number of species. It is 
+possible that the species in $C_A$ show very low productivity for some 
+years whereas those in $C_B$ are extremely abundant for some years, though
+their overall pairwise correlation remains same. In such case, $C_A$ and $C_B$ 
+should show more or less same $\phi_{cv}$ but 
+different $\phi_s$, particularly $\phi_s$ for community $C_A$ 
+should be less than that for community $C_B$, i.e., $0<\phi_{s,C_A}<1 < \phi_{s,C_B}$. To 
+explain the theoretical basis of such difference 
+between $\phi_{cv}$ and $\phi_s$, we partition the overall contribution 
+in stability metric into two distict parts - due to correlation and
+due to tail association between interspecific response, as follows. 
 
 
 <!--partition between correlation and tail association effect in phi_s, phi_cv-->
@@ -470,10 +510,10 @@ a potential threat for some of its native species which could crash simultaneous
 other species merged into a pseudo species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
 found in (A) Hays and (B) Konza priarie, 
 details were discussed in \nameref{Results}. 
-nL and nU are the count of cells (considered for positive correlation only)
+$n_L$ and $n_U$ are the count of cells (considered for positive correlation only)
 with positive and negative tail-asymmetry  
 values; 
-nL$>$nU (majority of red cells) indicates major lower tail association
+$n_L>n_U$ (majority of red cells) indicates major lower tail association
 in sp-sp interaction matrix.
 Yellow cells indicate independent relationship. For initially negatively correlated 
 cells (indicated by green dots), we measured the tail asymmetry by taking negative of the 

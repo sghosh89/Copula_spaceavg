@@ -184,7 +184,7 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts
     if(tagon == T){
       #mtext(paste0("nL = ",nL,", nU = ",nU, ", Total asym. = ",round(total_CorlmCoru,4)),
       #      cex=3,side=1,adj=0.6,line=2)
-      mtext((as.expression(bquote('n'['L']*' = '*.(nL)*', '*'n'['U']*' = '*.(nU)*', '*'T'['A']*' = '*.(total_CorlmCoru)))),
+      mtext((as.expression(bquote('n'['L']*' = '*.(nL)*', '*'n'['U']*' = '*.(nU)*', '*'A'['tot']*' = '*.(total_CorlmCoru)))),
             cex=3,side=1,adj=0.6,line=2)
     }
     
