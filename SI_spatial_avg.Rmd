@@ -56,6 +56,13 @@ cover<-read.csv("./Data/HaysData/allrecords.csv") # this is basal cover
 # quadrat sampling ? Yes or not
 quadsamp<-read.csv("./Data/HaysData/quadrat_inventory.csv")
 
+quad_info<-read.csv("./Data/HaysData/quadrat_info.csv")
+count_quad_grazed<-table(quad_info$Grazing) #36 No grazing, 15 Yes grazed
+quad_grazing<-quad_info$quadrat[which(quad_info$Grazing=="Yes")]
+quad_grazing<-as.character(quad_grazing) # we plan to exclude these 15 plots later 
+                                           # when calculating averaged basal cover for each species
+
+
 # Information on species list
 spinfo<-read.csv("./Data/HaysData/species_list.csv")
 nonplant<-as.character(spinfo$species[which(spinfo$type=="remove")]) 
@@ -74,7 +81,7 @@ if(!dir.exists("./Results/hays_results/skewness_results")){
 ```
 
 <!-- preparing hays spatial average data in usual format for common+pseudo sp.-->
-```{r prepare_hays_spaceavg,results="hide",echo=F,cache=T, cache.extra=list(seed,cover,spinfo,nonplant)}
+```{r prepare_hays_spaceavg,results="hide",echo=F,cache=T, cache.extra=list(seed,cover,spinfo,quad_grazing,nonplant)}
 # later add results="hide" , echo=F in chunk header
 set.seed(seed)
 library(stringr)
@@ -133,7 +140,7 @@ any(s==0,na.rm = T)  #There should not be any zeros
 
 saveRDS(hays_array,"./Results/hays_results/hays_array_41yr_51plot_151sp.RDS")
 
-# Now calculate average basal cover over all plots for any given year for all species
+# Now calculate average basal cover over all plots (except 15 grazed) for any given year for all species
 avg_cover_over_plots_hays<-matrix(Inf,nrow=length(uyr),ncol=length(splist))
 rownames(avg_cover_over_plots_hays)<-c(1932:1972)
 colnames(avg_cover_over_plots_hays)<-splist
@@ -152,6 +159,10 @@ all((plotsurveyed==numplot_surveyed_by_year)==T) #They are same.
 
 for(isp in c(1:length(splist))){
   m<-hays_array[,,isp]
+  
+  id_grz<-which(colnames(m)%in%quad_grazing) 
+  m<-m[,-id_grz] #these grazed plots should be excluded 
+
   idNA<-which(apply(m, 1, function(x) all(is.na(x)))) #This should be empty : means should not be all NA's along any row
   if(length(idNA)==0){
     cs<-apply(m,FUN = mean,MARGIN = 1,na.rm=T)
@@ -535,6 +546,7 @@ surrogs_CP_hays<-surrogs  # this is the pearson preserving surrogs for
 ```
 
 <!-- genarating stability based results and plots for hays-->
+
 ```{r skewness_hays_spaceavg_PP, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,ts_mat_CP_hays,surrogs_CP_hays,mtime("make_tab_stability_assessment.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
 
 set.seed(seed)
@@ -622,6 +634,7 @@ legend("topright",lty=c(1,NA,3,2),pch=c(NA,1,NA,NA),
 #par(op)
 dev.off()
 ```
+
 
 <!--some additional fig for suppmat : hays-->
 ```{r hays_spaceavg_some_figs,echo=F,results="hide"}
@@ -1354,8 +1367,6 @@ were stored in `species_list.csv` file with categories like `type`, `PLANTS.Symb
 `PLANTS.Synonym` (for explanation see [`metadata file`](http://esapubs.org/archive/ecol/E088/161/metadata.htm)). 
 5 of 151 species were classified in `'remove'` category as mentioned in `type` column of `species_list.csv`. They were non-plant species
 like `Bare ground`, `Fragment` and other unidentified sp. like `Mixed grass`, `Polygonum spp.` (only occurred once), `Unknown`.
-For our purpose, we calculated average basal cover over the quadrats surveyed for each year for 
-each 146 species (excluding the `remove` category from 151 species list). 
 
 Among 51 quadrats, 36 permanent quadrats were arranged along a gradient of soil depth and located in two livestock exclosures
 ("e1" and "e2"). Rest 15 quadrats were located in grazed areas outside the exclosures, mostly in the 
@@ -1365,6 +1376,8 @@ of exclosure "e1" (see `quadrat_info.csv`). Each quadrat have some polygons with
 in GIS tracking position for individual plants. 
 Each polygon location was recorded as centroid co-ordinate (x $cm$, y $cm$) of 
 corresponding polygon (see `allrecords.csv`). 
+
+For our purpose, we calculated average basal cover over the 36 quadrats within the exclosure surveyed for each year for each 146 species (excluding the `remove` category from 151 species list). 
 
 <!--add description about KNZ data-->
 

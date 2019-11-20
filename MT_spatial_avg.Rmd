@@ -298,9 +298,15 @@ $\cor_{l}-\cor_{u}$ is considered for competing species pair.
 From a community perspective, it is possible to determine if the community as a whole
 shows asymmetric tail association and if yes then what is its underlying 
 nature - overall lower tail or upper-tail asymmetry. To explore this, consider a 
-community with $n$ number of species - so that there are $n(n-1)/2$ number of unique 
-pair-wise interspecific interactions possible. First, for each of these species-pairs, we
-construct the scatter plots with the normalized rank of corresponding time-series 
+community with $n$ number of species subdivided 
+into three categories: *common* species (present for most of the years), *rare* 
+species (only occurs once or twice) and the rest as *intermediate* ones. Throughout our study, 
+we assume a $n$-species-community comprised of $T$-years long observations for $(n-1)$ *common* species 
+and one *pseudo*-species (aggregated time-series of *rare* and *intermediate* categories). For
+such community, there are $n(n-1)/2$ number of unique 
+pair-wise interspecific interactions possible. First, for 
+each of these species-pairs, we construct the scatter plots with 
+the normalized rank of corresponding time-series 
 <!-- omitted as of now: 
 and test their 
 independence using `BiCopIndTest` function from `VineCopula` package implemented in `R`. If 
@@ -459,24 +465,27 @@ species-time series (i.e. $A_{tot}<0$), skewness should change in
 reverse order, i.e., $S_{com} > S_{nta} > S_{ind}$.
 This anticipitation is consistent with the fact that upper tail 
 association tends to increase the skewness (Fig. \ref{fig_pedag_taildep}G-H). The stronger the 
-tail-asymmetry for the interspecific response within the community, the larger would be 
-the difference between $\phi_{s,cor}$ and $\phi_{s,ta}$. Following we will present the results 
-from the analyses with two examplary long-term community data. The complete reproducible workflow 
-for this project is available at https://github.com/sghosh89/Copula_spaceavg.
+tail-asymmetry for the interspecific response within the community (i.e. higher $|A_{tot}|$), the larger would be 
+the difference between $\phi_{s,cor}$ and $\phi_{s,ta}$. The complete reproducible workflow 
+for this project is available at https://github.com/sghosh89/Copula_spaceavg. Following we will present
+the results from the analyses with two examplary long-term community data.
 
 # Results\label{Results}
 
 <!--
+Q1 : Do syncronous/ compensatory pop. dynamics in communities commonly show asymmetric tail association? 
 For Q1: plot with hays and knz corl-coru (2 panels a,b)
+
+Q2: If so, what are the consequences of these patterns for the stability of aggregated community properties?
 For Q2: multipanel plot with figs:
             - same schematic diagram as of method section but now with corresponding numerical value
             - histogram for hays and knz
 -->
 
 
-As mentioned earlier, we here present the results from the study carried out with the
-spatio-temporal basal cover data (for 51 quadrats over 41 years, 1932-1972)
-of mixed grass priarie near Hays, KS (for details see
+We here present the results from the study carried out with two long-term
+spatio-temporal data sets: basal cover data (for 51 quadrats over 41 years, 1932-1972)
+of mixed grass priarie near Hays, KS and (for details see
 Appendix \ref{SI-Data}). We here analyzed
 our findings from a model-selection based 
 copula approach, but we also verified the overall finding using
