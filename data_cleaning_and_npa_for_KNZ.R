@@ -135,7 +135,7 @@ my_knz <- my_knz%>%
                  plot,
                  soiltype,
                  cover_class,
-                 midpoint_percent_cover=midpoint_percent_cover)
+                 midpoint_percent_cover)
 
 # check complete: see now they are same 
 
@@ -222,7 +222,7 @@ sp_category_knz$category[id_interm_sp_knz]<-"I"
 sp_category_knz$category[id_rare_sp_knz]<-"R"
 
 #---------saving a 125sp by 2 matrix indicating C/I/R category for each knz-sp---------
-saveRDS(sp_category_knz,paste(resloc_knz,"all_sp_category_spatialavg_knz.RDS",sep=""))
+saveRDS(sp_category_knz,paste(resloc_knz,"all_sp_category_spatialavg_knz_soiltype_",knz_soiltype,".RDS",sep=""))
 
 #===========================Formatting data for tail-asymmetry analysis========================
 
@@ -250,15 +250,15 @@ knz_spaceavg$avg.percent.cover<-append(knz_spaceavg$avg.percent.cover,pseudo_knz
 names(knz_spaceavg$avg.percent.cover)[[length(id_common_sp_knz)+1]]<-"pseudo_knz"
 
 #---------saving the spatial avg. data for knz with whigh we will do taildep. analysis later----------------
-saveRDS(knz_spaceavg,paste(resloc_knz,"knz_spaceavg_data_CP.RDS",sep=""))
+saveRDS(knz_spaceavg,paste(resloc_knz,"knz_spaceavg_data_CP_soiltype_",knz_soiltype,".RDS",sep=""))
 
 #-----------saving a dataframe with timeseries of common + 1 pseudo (all other merged into 1) sp. for knz------
 ts_CP_knz<-cbind(ts_common_knz,pseudo_knz_IR)
-saveRDS(ts_CP_knz,paste(resloc_knz_skw,"ts_CP_knz.RDS",sep="")) 
+saveRDS(ts_CP_knz,paste(resloc_knz_skw,"ts_CP_knz_soiltype_",knz_soiltype,".RDS",sep="")) 
 
 #--------------- time series plot for knz Common sp, Common + Normal(or Intermediate) sp., Common+Normal+Rare sp.-------------------
 
-pdf(paste(resloc_knz_skw,"total_timeseries.pdf",sep=""),height=6,width=6)
+pdf(paste(resloc_knz_skw,"total_timeseries_soiltype_",knz_soiltype,".pdf",sep=""),height=6,width=6)
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 
 total_ts_C<-apply(X=ts_all_sp_knz[,id_common_sp_knz],MARGIN = 1,FUN = sum)
@@ -278,7 +278,7 @@ good_sp<-c(1:length(knz_spaceavg[[1]]))
 lensp<-length(good_sp)
 
 summary_knz_commonsp<-data.frame(sp=names(knz_spaceavg$avg.percent.cover),n0=NA,nTies=NA)
-pdf(paste(resloc_knz,"rawplot_knz_spaceavg_commonsp_with_pseudosp_avgcover.pdf",sep=""),height = 0.5*lensp,width=0.5*lensp)
+pdf(paste(resloc_knz,"rawplot_knz_spaceavg_commonsp_with_pseudosp_avgcover_soiltype_",knz_soiltype,".pdf",sep=""),height = 0.5*lensp,width=0.5*lensp)
 op<-par(mfrow=c(6,5),mar=c(5,5,3,3))
 for (i in good_sp){
   n0<-sum(knz_spaceavg$avg.percent.cover[[i]]$Dat==0)
@@ -302,7 +302,9 @@ dev.off()
 # ---------------------generate copula plots for all common sp for knz_spaceavg--------------------
 source("./vivj_matrix.R")
 
-pdf(paste(resloc_knz,"copulaplot_knz_spaceavg_commonsp_with_pseudosp_avgcover.pdf",sep=""),height=2*lensp,width = 2*lensp)
+include_indep<-FALSE
+
+pdf(paste(resloc_knz,"copulaplot_knz_spaceavg_commonsp_with_pseudosp_avgcover_soiltype_",knz_soiltype,".pdf",sep=""),height=2*lensp,width = 2*lensp)
 op<-par(mfrow=c(lensp,lensp),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
 for(i in c(1:lensp)){
   for(j in c(1:lensp)){
@@ -325,7 +327,12 @@ if(!dir.exists(resloc_knz_npa)){
   dir.create(resloc_knz_npa)
 }
 
-resloc<-resloc_knz_npa
+resloc2<-paste(resloc_knz_npa,"soiltype_",knz_soiltype,"/",sep="")
+if(!dir.exists(resloc2)){
+  dir.create(resloc2)
+}
+
+resloc<-resloc2
 nbin_knz<-2
 include_indep<-FALSE 
 
@@ -342,7 +349,7 @@ saveRDS(corstat_knz_spaceavg,paste(resloc,file="corstat_knz_spaceavg_nbin_",nbin
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
 
-resloc<-resloc_knz_npa
+resloc<-resloc2
 
 ub<-1/nbin_knz
 numpts<-length(knz_spaceavg$avg.percent.cover[[1]]$Year) #for knz data 33years
