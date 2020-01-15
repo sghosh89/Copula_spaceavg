@@ -353,9 +353,15 @@ for (c1 in 1:(numsp-1))
     thisres<-copmap(x,y,p,numreps)
     
     #find the actual preimage
-    medinvs[c1,c2,2]<-getinv(p,thisres,cor(x,y),"median")
+    medinvs[c1,c2]<-getinv(p,thisres,cor(x,y),"median")
   }
 }
+oldmedinvs<-medinvs
+medinvs[is.na(medinvs)]<-0
+medinvs<-medinvs+t(medinvs)
+diag(medinvs)<-1
+eigen(medinvs)$values
+
 
 
 save.image(file=paste0(resloc,"WholeWorkspace.RData"))
