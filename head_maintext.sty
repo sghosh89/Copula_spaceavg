@@ -1,19 +1,29 @@
-%\usepackage{setspace}
-%\doublespacing
+\usepackage{setspace}
+\doublespacing
 %\usepackage{siunitx}
-\twocolumn
+%\twocolumn
 
 %\usepackage{indentfirst}
 \usepackage{lettrine}
 \usepackage{hyperref}
-\usepackage[switch]{lineno}
+%\usepackage[switch]{lineno} % for two column option
+\usepackage{lineno}
 \linenumbers
 
 \hypersetup{linkcolor=red}
 
+\usepackage{caption}
+\captionsetup[figure]{width=16cm}
+\captionsetup[figure]{font={stretch=1.5}} 
+\captionsetup[table]{width=16cm}
+\captionsetup[table]{font={stretch=1.5}} 
+
+\usepackage[nomarkers,nolists]{endfloat} % to push figure and table at the end
+
 \usepackage{tcolorbox} %for significance highlighter
 
 \newcommand{\mean}{\operatorname{mean}}
+\newcommand{\cov}{\operatorname{cov}}
 \newcommand{\var}{\operatorname{var}}
 \newcommand{\cor}{\operatorname{cor}}
 \newcommand{\Ps}{\operatorname{P}}  

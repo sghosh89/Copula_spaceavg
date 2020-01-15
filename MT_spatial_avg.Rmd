@@ -1,9 +1,10 @@
 ---
-title: "Estimating synchronous and compensatory dynamics in grassland communities using a novel “copula” approach"
+title: "Asymmetric tail association affects community stability"
 author: "Shyamolina Ghosh, other authors, Daniel Reuman"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 #date: "October 12, 2018"
-geometry: "left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm"
+fontsize: 12pt
+geometry: "left=1 in,right=1 in,top=1 in,bottom=1 in"
 
 output: 
   pdf_document:
@@ -15,17 +16,19 @@ header-includes:
       - \usepackage{xr} \externaldocument[SI-]{SI_spatial_avg}
       - \input{head_maintext.sty}
 
+mainfont: Times New Roman 
 tables: True
 link-citations: True
 urlcolor : blue
 indent : True
-csl: pnas.csl
+csl: ecology-letters.csl
 bibliography: REF_CSS.bib
 ---
 
 <!--***DAN: store alternative titles here, decide on one closer to the end
 1) A complete description of synchrony and compensatory dynamics yields a better understanding of community stability
-2) 
+2) Asymmetric tail association, skewness and community stability
+3) Asymmetric tail association, skewness and community variability (Shya: I prefer this)
 -->
 
 ```{r setup_Paper, echo=F}
@@ -34,22 +37,30 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 ```
 
 <!--Abstract-->
-\noindent
-\textbf{write abstract here.}
-\linebreak
+\newpage
+
+\noindent \textbf{ABSTRACT} 
 
 <!--keywords-->
-\noindent
-Synchrony | Tail-dependence | grassland | community variability
-\linebreak
+\textbf{\textit{Keywords:}} Synchrony, tail-association, grassland, community variability, skewness
 
-<!--# Introduction\label{Intro}-->
-<!--Q1 : is there asymmetric tail dependence in a grassland community? what is the interpretation for any individual sp. pair?, 
-Q2: How it could affect the productivity? (connection to skewness)
-Skewness change due to asymmetric taildep. as a new estimate of community variability?-->
+
+\newpage
+
+# Introduction\label{Introduction}
+<!--Q1 : Do syncronous/ compensatory pop. dynamics in communities commonly show asymmetric tail association?, 
+Q2: If so, what are the consequences of these patterns for the stability of aggregated community properties?-->
+
+<!--
+NOTE: I need to rewrite the intro:
+1. Don't say anything about copula (keep it for suppmat), but introduce the concept of tail association (see ERC paper)
+2. Motivate Q2 with aphid/plankton paper
+3. present logically how asymmetric tail association should influence skewness - can be considered as a new measure of community stability. Also states may be it's not significant on individual interaction level but could be significant on aggregate level.
+-->
+
 
 <!--grassland and earlier work : Here I deliberately exclude the ref. for environmental variable effect on species-->
-\lettrine{U}{}nderstanding the mechanisms behind spatial and temporal 
+Understanding the mechanisms behind spatial and temporal 
 dynamics has been a long-standing focus in community ecology [@gibson2009; @turner1989].
 Interspecies interaction in a grassland 
 community could be advantageous or
@@ -101,11 +112,10 @@ associated than smaller ones (Fig. \ref{fig_pedag_taildep}B). A copula might hav
 (with zero tail-dependence in both tail) or asymmetric (finite tail-dependence in either
 or both tail) feature depending on its family and parameters [@nelsen2006_copula].
 
-\begin{tcolorbox}[width=\columnwidth,colback={blue!20},arc=0mm,colframe=blue!50!black,coltext=blue!50!black]
+<!--\begin{tcolorbox}[width=\columnwidth,colback={blue!20},arc=0mm,colframe=blue!50!black,coltext=blue!50!black]
 Significance
-
 Write significance here.
-\end{tcolorbox}  
+\end{tcolorbox}-->  
 
 <!--why copula (and tail-dep.) is important in ecology, specially on grassland? : 
 1) direction of competetion
@@ -174,11 +184,9 @@ in their extreme values. <!-- am I right for this last sentence?-->
 
 <!--Pedagogical figure for copula with asym. taildep.-->
 \begin{figure}[!h]
-\textbf{ \hspace{2 cm} (A) \hspace{3.7 cm} (B)}
-\vspace{-0.8 cm}
 \begin{center}
-\includegraphics[width=\columnwidth]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
-\caption{ Pedagogical figure showing asymmetric tail dependence between $500$ observations of 
+\includegraphics[width=12 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
+\caption{ Pedagogical figure showing asymmetric tail dependence between $200$ observations of 
 two positively correlated variables $(u,v)$ with same Spearman correlation $\rho = 0.8$;
 $(A)$ lower or left tail dependence indicates stronger association in extreme lower values, whereas $(B)$ upper 
 or right tail dependence indicates stronger association in their extreme higher values.\label{fig_pedag_taildep}}
@@ -188,15 +196,12 @@ or right tail dependence indicates stronger association in their extreme higher 
 <!--Pedagogical figure for skewness & taildep.-->
 \begin{figure}[!h]
 \begin{center}
-\textbf{ \hspace{-6 cm} (A)} \\
-\includegraphics[width=\columnwidth]{./Results/pedagog_figs/extremeLT_tot_ts.pdf}\\
-\textbf{ \hspace{-6 cm} (B)} \\
-\includegraphics[width=\columnwidth]{./Results/pedagog_figs/extremeRT_tot_ts.pdf}
+\includegraphics[width=17cm]{./Results/pedagog_figs/pedagog_ts.pdf}
 \caption{Pedagogical figure showing how skewness of total biomass distribution of a community 
-is affected by extreme asymmetric tail-dependence (Appendix \ref{SI-extreme_taildep_mat}) in individual 
-species biomass-distribution throughout years. Major lower tail dependence in 
+is affected by extreme asymmetric tail-association (Appendix \ref{SI-extreme_taildep_mat}) in individual 
+species biomass-distribution throughout years. Major lower tail association in 
 a community makes its total biomass more negatively skewed $(A)$, whereas
-major upper tail dependence in a community makes 
+major upper tail association in a community makes 
 its total biomass more positively skewed $(B)$, compared to a
 community which is generated via a resampling method (Appendix \ref{SI-skew_ncsurrog})
 to have no tail-dependence but preserving pairwise Spearman correlation
@@ -229,16 +234,258 @@ using "tail-dependence" feature of copula.
 Implementing a model selection approach (Appendix \ref{SI-model_sel}) as well as nonparametric 
 analysis (Appendix \ref{SI-nonparam}), we 
 try to find is there any overall major asymmetric tail-dependence in those grassland community and
-if there is, then what could we interpret about inter-species response from this
+if there is, then what could we interpret about interspecific response from this
 asymmetric tail-dependence? We also suggest an alternative measure of 
 community variability (henceforth stability) in terms of quantifying skewness of 
 total biomass distribution over years using those two datasets.
 
+# Methods\label{Methods} 
+
+<!--NOTE: if you can, just separate theory and methods section.-->
+
+<!--1. For Q1:
+      - introduce partial Spearman correlation to measure tail asymmetry corl - coru (need schematic diagram)
+      - corl - coru in community context, count on L, U (+ve correlation only)
+      - binomial and significance testing: at present not shown-->
+
+<!--Defining partial Spearman correlation: measure of tail-asymmetry-->
+To answer Q1 from \nameref{Introduction}, we need a tool to measure the tail asymmetry between 
+interacting species over years in a grassland community that is intended to study. We used 
+the *partial Spearman correlation* approach (first introduced in @Ghosh_copula) to 
+estimate the association between a pair of interacting species' time-series, i.e., whether 
+they are strongly correlated in their common good/ bad years or 
+one species abundance in certain 'good' years limits the growth for the 
+other. First, we define the *partial Spearman correlaion* for a given 
+species pair time series ($u(t), v(t)$) as follows;
+
+\begin{equation}
+\cor_{l_b,u_b}(u,v) = \frac{\sum (x(t)-\mean(x))(y(t)-\mean(y))}{(n-1)\sqrt{\var(x) \var(y)}},\label{PartialSpearmanEq}
+\end{equation}
+\noindent where $x$ and $y$ are the normalized ranks of 
+$u$ and $v$, respectlively (see \nameref{Introduction}). Sample means 
+and variances are computed using all the data but the sum is computed only
+over the $t$ such that $x(t)+y(t) > 2l_b$ and $x(t)+y(t)<2u_b$ (i.e. colored data points lying in 
+between two bounds as in Fig. \ref{fig_pedag_taildep}). The partial Spearman correlation, 
+attributed by those colored data points between bounds, is the contribution in the Spearman
+correlation of $u$ and $v$. For an asymmetric relationship 
+between a species-pair, association in any part 
+of their joint distribution of corresponding normalized ranks could 
+be stronger than the other part. For example, Fig. \ref{fig_pedag_taildep}A has a 
+stronger partial Spearman correlation between the red points in the lower portion 
+than the blue points in the upper part, while Fig. \ref{fig_pedag_taildep}B shows 
+the opposite trend. 
+
+
+The quantity $\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ is a way to measure asymmetry of tail
+associations between $u$ and $v$. It 
+represents the amount by which partial Spearman correlation is stronger for the points lying in the lower half (i.e. 
+below the diagonal dashed line $x+y=1$ in Fig. \ref{fig_pedag_taildep}) of the unit 
+square than in the upper half. We will represent 
+$\cor_{l}-\cor_{u}$ for the shorthand of $\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ here 
+afterwards. A non-zero value of $\cor_{l}-\cor_{u}$ means tail-asymmetry between the time series of
+two species - whether they are synchronizing over years or competing with each other. For synchronized 
+species-pair, a positive $\cor_{l}-\cor_{u}$ value signifies stronger lower 
+tail association (Fig. \ref{fig_pedag_taildep}A) of two 
+positively correlated species, whereas a negative value means stronger
+upper tail association (Fig. \ref{fig_pedag_taildep}B). Though the aforementioned notion of 
+tail-asymmetry measure is constructed for positively correlated species pair keeping in mind, it 
+is possible to extend the idea for negatively correlated species. When the species are competing, we can take any one species time series as negative (so that now species are positively correlated) and 
+make a similar plot as in Fig. \ref{fig_pedag_taildep}A or B (depending on which species we are reversing). 
+Species for reversal can be chosen arbitrarily, hence only the magnitude, not the sign of tail-asymmetry 
+$\cor_{l}-\cor_{u}$ is considered for competing species pair. 
+
+<!--corl - coru in community context, count on L, U (+ve correlation only)-->
+From a community perspective, it is possible to determine if the community as a whole
+shows asymmetric tail association and if yes then what is its underlying 
+nature - overall lower tail or upper-tail asymmetry. To explore this, consider a 
+community with $n$ number of species subdivided 
+into three categories: *common* species (present for most of the years), *rare* 
+species (only occurs once or twice) and the rest as *intermediate* ones. Throughout our study, 
+we assume a $n$-species-community comprised of $T$-years long observations for $(n-1)$ *common* species 
+and one *pseudo*-species (aggregated time-series of *rare* and *intermediate* categories). For
+such community, there are $n(n-1)/2$ number of unique 
+pair-wise interspecific interactions possible. First, for 
+each of these species-pairs, we construct the scatter plots with 
+the normalized rank of corresponding time-series 
+<!-- omitted as of now: 
+and test their 
+independence using `BiCopIndTest` function from `VineCopula` package implemented in `R`. If 
+independence is rejected ($0.05$ significance level), then we proceed to estimate--> 
+and measured tail-asymmetry ($\cor_{l}-\cor_{u}$) as described above. For positively 
+correlated species-pair, we count how many are with the stronger 
+lower-tail (or upper-tail) association, $n_L$ (or $n_U$). These 
+numbers along with the sum of tail-asymmetry values, $A_{tot} (= \sum \cor_{l}-\cor_{u})$ for those species-pair 
+can give us an idea about the overall nature of tail-asymmetry within the community.
+
+<!--omitted as of now: Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R
+At present not shown, because we want to consider all interactions: weekest to strongest.
+
+Tail-asymmetry could be weaker on individual species-pair, but on an aggregate level can make 
+the community strongly tail-asymmetric. To test significantly stronger 
+association in one of its extreme tail for a given species-pair, we simulate $10000$ made-up 
+species pair with same Spearman correlation but removing their tail-asymmetry. If 
+estimated tail-asymmetry $\cor_{l}-\cor_{u}$ on given data lies outside 
+the $95\%$ confidence interval of the ones estimated with $10000$ surrogated data, then 
+we consider the tail-asymmetric relationship is significant for that species-pair. 
+On a community level, we calculated the fraction of significant species-pair among all correlated 
+pairs considered (overall significance on the community level, $C_s$). We also perform a binomial 
+test to check whether the community shows significantly stronger lower-tail (or upper-tail) association.
+-->
+
+<!--2. For Q2:
+      - brief intro about the usual way to measure community variability (variance ratio method)
+      - then introduce skewness ratio in analogy with variance ratio
+      - separate the contributions from tail association and usual correlation (Pearson) 
+      - need schematic diagram to show the relation (this diagram will again help to interpret results for Q2 later)
+      - somewhere, in results or in discussion we should talk about the aggregated effect of weak interactions
+-->
+
+To answer Q2 from \nameref{Introduction}, our approach was to assess the effect 
+of tail-asymmetry between species-pairs on the stability of 
+community level, which was not accounted for general variance ratio approach. Variability 
+through time, be it for individual or for total community biomass, is a key component to
+measure the stability [@ives1999stability]. Following we
+briefly discuss about the classic variance ratio metric which is generally 
+used to predict the community-stability [@schluter1984variance]. 
+
+
+<!--short theoretical background to calculate phi_cv with variance ratio method, and its interpretation-->
+Consider a community with $n$ number of species where individual species biomass 
+or productivity ($x_i(t); i = 1, 2, \ldots, n$) being monitored 
+through $t = 1, 2, \ldots, T$ years. Mean of $i^{th}$ individual species 
+time series is denoted as $\mu_i = \bar{x_i}$ whereas its interaction with other species $(j)$ is
+represented by the covariance $v_{ij} = \cov(x_i,x_j)$ with $v_{ij}$ being $0$ implying
+independent fluctuation. On an aggregated scale, the total productivity, mean and the variance 
+are represented as $x_{tot} = \sum_{i} x_i$, $\mu_{tot} = \sum_{i} \mu_i$ 
+and $v_{tot} = \sum_{i,j}v_{ij}$, respectively. These quantities quantify
+squared coefficient of variation ($CV_{com}^2 = v_{tot}/\mu_{tot}^2$) that measures 
+the variability of the said community [@pimm1984complexity]. Usual notion to link 
+stability with variability is that more variable community with 
+respect to a community made of independent species 
+is considered as less stable. In mathematical natation, this stability index is represented as
+the classic variance ratio, $\phi_{cv}$ ($= CV_{com}^2/CV_{ind}^2 =  \sum_{i,j}v_{ij}/ \sum_{i} v_{ii}$). 
+When $\phi_{cv}>1$, community is highly variable compared to a community where species are fluctuating 
+independently and randomly. Synchronized fluctuation results this higher $\phi_{cv}$ and makes community 
+less stable towards environmental perturbation compared to an independent community 
+whereas species with compensatory dynamics (fluctuating time-series in anti-phase) makes 
+a community more stable (i.e., $\phi_{cv}<1$) due to different 
+functional responses from different functional group of species within the community. 
+
+<!--alternative measure of stability: based on skewness-->
+We here propose an alternative measure of 
+stability for a $n$-species community. Accounting for the effect due to 
+extreme environmental perturbation, it
+is reasonable to consider how skewness of total 
+biomass of the community changes through time compared to that of a community 
+of $n$ independent species. We can consider the skewness as an indicator 
+that how much the mean and the median differ for a temporal distribution 
+of total community-biomass. In such case, we represent the skewness for a community as
+$S_{com}=\sum_{i,j,k}m_{ijk}/\sum_{i,j,k}v_{ijk}^{3/2} = m_{tot}/v_{tot}^{3/2}$, where 
+$m_{tot}$ is the 3$^{rd}$ central moment of the temporal distribution 
+for total biomass of the community. If all the species within 
+that community behave as independent entities, then the skewness 
+for an independent community would be 
+$S_{ind} = \sum_{i}m_{iii}/\sum_{i}v_{i}^{3/2}$. Therefore, we define the index for
+skewness-based change in a community $\phi_{s} = S_{com}/ S_{ind}$ similar to that 
+of the variance ratio metric, $\phi_{cv}$. It is trivial to show the relationship
+between these two stability indices as $\phi_s = (m_{tot}/\sum_im_{iii})(1/\phi_{cv}^{3/2})$.
+
+<!--interpretation for phi_s and stability-->
+Unlike $\phi_{cv}$, $\phi_s$ can be positive, $0$ or negative depending on the 
+signs of the skewnesses from the concerned community and its 
+independent analog. $\phi_s >1$ indicates that
+the community biomass is more positively (or more negatively) skewed
+than it would have been if the species have no interactions with each other.
+The opposite scenario - i.e., when the community with interacting species shows less positive
+or less negative skewness than would be expected if there was no interactions - represents 
+$\phi_s$ to be within the range $(0,1)$. $\phi_s \approx 0$ means skewness is eliminated by the 
+interactions of the species within the community, i.e., high productivity of some species 
+for some years are balanced by its proportional drop in productivity 
+for other years or by other species for those same years. <!--***Shya:please review this line, am I right here? 
+is this similar as of phi_cv < 1 for compensatory dynamics?--> A negative $\phi_s$ indicates 
+interspefic interactions at the extreme values can alter the skewness (i.e. changing its sign) of a 
+community-biomass distribution over years than it would have been expected without any interactions. 
+<!--for example, see explore_phis.R where a left-tail dep. community 
+with slightly right skewed marginals make phi_s -ve.-->
+
+
+<!--how phi_s and phi_cv are different?-->
+We recommend to use both these indices ($\phi_{cv}$ and $\phi_s$) to get 
+a complete picture to predict the stability of the community. It is possible
+to underestimate the stability status of the community if we only
+depend on the $\phi_{cv}$, which is a correlation 
+(i.e. normalized covariance) based measure. $\phi_s$, on the other hand, takes 
+the extreme values or tail asymmetry between interspecific 
+response into account to assess the change in community structure
+over time. Therefore, two communities with similar $\phi_{cv}$ could have two drastically 
+different $\phi_s$ and interpretation of stability if we consider the change of skewness as an indicator 
+of community-change (examples with real data are shown in \nameref{Results}). For example, consider 
+two communities $C_A$ and $C_B$ with equal number of species. It is 
+possible that the species in $C_A$ show very low productivity for some 
+years whereas those in $C_B$ are extremely abundant for some years, though
+their overall pairwise correlation remains same. In such case, $C_A$ and $C_B$ 
+should show more or less same $\phi_{cv}$ but 
+different $\phi_s$, particularly $\phi_s$ for community $C_A$ 
+should be less than that for community $C_B$, i.e., $0<\phi_{s,C_A}<1 < \phi_{s,C_B}$. To 
+explain the theoretical basis of such difference 
+between $\phi_{cv}$ and $\phi_s$, we partition the overall contribution 
+in stability metric into two distict parts - due to correlation and
+due to tail association for extreme values between interspecific response, as follows. 
+
+<!--partition between correlation and tail association effect in phi_s, phi_cv-->
+As we have mentioned earlier, the skewness of a community ($S_{com}$) is related 
+with its independent analog ($S_{ind}$) by the scaling factor $\phi_s$ that can be considered 
+as a measure of community-change over time. This $\phi_s$ can have two distinct 
+contributions: $\phi_{s,cor}$ (due to only correlation) 
+and $\phi_{s,ta}$ (due to tail-asymmetry), i.e., $\phi_s = \phi_{s,cor} \times \phi_{s,ta}$. 
+One can consider $\phi_{s,cor}$ as a factor by which skewness of an independent-community 
+($S_{ind}$, skewness for species without any interactions) changes to the skewness of 
+the community when species show correlated fluctuations but no asymmetric tail-association ($S_{nta}$), 
+i.e., $S_{ind} = \phi_{s,cor} \times S_{nta}$. From now on, we will mention the later type of community 
+as 'tail-symmetric' community where interspecific response showed no 
+stronger correlation in either tail. Theoretically, one can make this tail-symmetric community 
+from the given community matrix by removing the asymmetric tail-association 
+among species but keeping the pairwise Pearson correlation same (upto sampling variation) via 
+algorithm stated in Appendix \ref{SI-alg_pp_com}. Now, if the interspecific response 
+are more correlated in their lower or higher values (i.e., asymmetric 
+tail-association) over years, then the skewness for the tail-symmetric community 
+would change by a factor $\phi_{s,ta}$ such that $S_{com} = \phi_{s,ta} \times S_{nta}$.
+We can also consider the corresponding analog for variance ratio metric, i.e., 
+$\phi_{cv} = \phi_{cv,cor} \times \phi_{cv,ta}$ but as co-variance does not incorporate the effect
+for extreme values, $\phi_{cv,ta}$ would be $\approx 1$. The relations between independent, tail-symmetric 
+and the given community with all these metrics are shown as a schematic diagram in Fig. \ref{fig_schematic_box}. 
+<!--What to expect for the values of $\phi_s$'s with two different kinds of tail-asymmetry?-->
+For a given community where most of the species showed stronger correlation in 
+lower values (i.e. stronger lower tail association with $A_{tot}>0$), one can 
+expect the change in skewness would be in the order $S_{com} < S_{nta} < S_{ind}$ where 
+$\phi_s$ and $\phi_{s,ta}$ would be of similar values and $\phi_{s,ta} < \phi_{s,cor}$ as 
+lower tail association tends to suppress the skewness (Fig. \ref{fig_pedag_taildep}E-F). If the 
+community showed stronger tail-association for the higher values of 
+species-time series (i.e. $A_{tot}<0$), skewness should change in 
+reverse order, i.e., $S_{com} > S_{nta} > S_{ind}$.
+This anticipitation is consistent with the fact that upper tail 
+association tends to increase the skewness (Fig. \ref{fig_pedag_taildep}G-H). The stronger the 
+tail-asymmetry for the interspecific response within the community (i.e. higher $|A_{tot}|$), the larger would be 
+the difference between $\phi_{s,cor}$ and $\phi_{s,ta}$. The complete reproducible workflow 
+for this project is available at https://github.com/sghosh89/Copula_spaceavg. Following we will present
+the results from the analyses with two examplary long-term community data.
+
 # Results\label{Results}
 
-As mentioned earlier, we here present the results from the study carried out with the
-spatio-temporal basal cover data (for 51 quadrats over 41 years, 1932-1972)
-of mixed grass priarie near Hays, KS (for details see
+<!--
+Q1 : Do syncronous/ compensatory pop. dynamics in communities commonly show asymmetric tail association? 
+For Q1: plot with hays and knz corl-coru (2 panels a,b)
+
+Q2: If so, what are the consequences of these patterns for the stability of aggregated community properties?
+For Q2: multipanel plot with figs:
+            - same schematic diagram as of method section but now with corresponding numerical value
+            - histogram for hays and knz
+-->
+
+
+We here present the results from the study carried out with two long-term
+spatio-temporal data sets: basal cover data (for 51 quadrats over 41 years, 1932-1972)
+of mixed grass priarie near Hays, KS and (for details see
 Appendix \ref{SI-Data}). We here analyzed
 our findings from a model-selection based 
 copula approach, but we also verified the overall finding using
@@ -296,37 +543,33 @@ a potential threat for some of its native species which could crash simultaneous
 
 \begin{figure*}[!h]
 \begin{center}
-\includegraphics[width=9cm]{./Results/hays_results/LTmUT_hays_spaceavg.pdf} 
-\caption{Model averaged lower tail - upper tail dependence matrix for 20 most common plant species along with 
-other species merged into a pseudo species (Table \ref{SI-tab_spinfo_hays}) found in Hays priarie, 
+\textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
+\includegraphics[width=8cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
+\includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/Corl-Coru_ub_0.5.pdf} 
+\caption{Measure of tail-asymmetry for most common plant species along with 
+other species merged into a pseudo species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
+found in (A) Hays and (B) Konza priarie, 
 details were discussed in \nameref{Results}. 
-nL and nU are the count of cells (considered for positive correlation only)
-with positive and negative tail-dependence difference 
-values for 21$\times$21 matrix; 
-nL$>$nU (majority of red cells) indicates major lower tail dependence
+$n_L$ and $n_U$ are the count of cells (considered for positive correlation only)
+with positive and negative tail-asymmetry  
+values; 
+$n_L>n_U$ (majority of red cells) indicates major lower tail association
 in sp-sp interaction matrix.
-Yellow cells indicate independent relationship. Initially negatively correlated cells contain a number 
-indicating the id of the species (in column) that was taken reversed when constructing bivariate
-copula to make positively correlated (for details see Appendix \ref{SI-model_sel}).\label{fig_LTmUT_spaceavg_hays}}
-\end{center}
-\end{figure*}
-
-\begin{figure*}[!h]
-\begin{center}
-\includegraphics[width=10.8cm]{./Results/knz_results/LTmUT_knz_spaceavg.pdf} 
-\caption{Similar model averaged lower tail - upper tail dependence matrix as of Fig. \ref{fig_LTmUT_spaceavg_hays}
-but for 27 most common plant species (Table \ref{SI-tab_spinfo_hays}) found in Konza priarie.\label{fig_LTmUT_spaceavg_knz}}
+Yellow cells indicate independent relationship. For initially negatively correlated 
+cells (indicated by green dots), we measured the tail asymmetry by taking negative of the 
+timeseries of species shown in column, so the sign (or color) of the cells do not matter but 
+the absolute values. Cross sign in the cells indicate the interspecific tail-asymmetry is not 
+significant (95\% CI) when considered individually, but on an aggregate level 
+pose significant contribution. (for details see text).\label{fig_CorlmCoru_spaceavg_hays}}
 \end{center}
 \end{figure*}
 
 
-
-
-# Discussion
+# Discussion\label{Discussion}
 
 
 
-### \textbf{For Data and Methods, see Appendix \ref{SI-Data} and \ref{SI-Methods} in Supporting material, respectively.}
+### \textbf{For Data, see Appendix \ref{SI-Data} and \ref{SI-Methods} in Supporting material, respectively.}
 
 
 
