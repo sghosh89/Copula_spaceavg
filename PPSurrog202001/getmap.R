@@ -53,43 +53,22 @@ getmap<-function(d,numpts,numsims,plotnm=NA)
     numcres[,counter]<-apply(FUN=mycorfun,X=mapres,MARGIN=3)
   }
   
-  #***carry out fitting to establish the mathematical version of the map,
-  #and its inverse
+  #***now get the piecewise linear map
   mnnumcres<-apply(FUN=mean,X=numcres,MARGIN=2)
   quantres<-apply(FUN=quantile,X=numcres,MARGIN=2,probs=c(.025,.25,.5,.75,.975))
+  fitparms<-data.frame(x=parmvals,y=mnnumcres)  
   
-  x<-parmvals
-  x<-(x+1)/2 #transform so x goes from 0 to 1
-  y<-numcres
-  ytop<-mnnumcres[length(mnnumcres)]
-  ybot<-mnnumcres[1]
-  y<-(y-ybot)/(ytop-ybot) #transform so the mean values of y go from 0 to 1
-  x<-x[2:(length(x)-1)] #throw out the endpoint because you only want to fit on what's left
-  y<-y[,2:(dim(y)[2]-1)]
-  x<-matrix(rep(x,each=numsims),numsims,numpts-2)
-  myfitfun<-function(expon,x,y)
-  {
-    return(sum((y-x^expon)^2))
-  }
-  optres<-optimize(myfitfun,c(.1,10),x=x,y=y)
-  expon<-optres$minimum
-  prefactor<-0.5^expon*(ytop-ybot)
-  intercept<-ybot
-  fitparms<-c(expon=expon,prefactor=prefactor,intercept=intercept)
-
   #***make a plot, if required
   if (!is.na(plotnm))
   {
     pdf(file=paste0(plotnm,".pdf"))
-    plot(parmvals,mnnumcres,type='l',ylim=range(mnnumcres,quantres),
-         xlab="Normal-copula parameter",ylab="Output Pearson")
+    plot(parmvals,mnnumcres,type='b',ylim=range(mnnumcres,quantres),
+         xlab="Normal-copula parameter",ylab="Output Pearson",col="red")
     lines(parmvals,quantres[1,],type="l",lty="dotted")
     lines(parmvals,quantres[2,],type="l",lty="dashed")
     lines(parmvals,quantres[3,],type="l",lty="dashed")
     lines(parmvals,quantres[4,],type="l",lty="dashed")
     lines(parmvals,quantres[5,],type="l",lty="dotted")
-    newparmvals<-seq(from=parmvals[1],to=parmvals[length(parmvals)],length.out=1000)
-    lines(newparmvals,prefactor*(newparmvals+1)^expon+intercept,type='l',col="red")
     dev.off()
   }
   
