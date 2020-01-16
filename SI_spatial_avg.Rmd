@@ -425,7 +425,7 @@ surrogs<-alignranks(dsort,sims)
 totpops<-apply(FUN=sum,MARGIN=c(1,3),X=surrogs)
 survars<-apply(FUN=var,X=totpops,MARGIN=2)
 surmns<-apply(FUN=mean,X=totpops,MARGIN=2)
-CVcom2_sur<-suvars/(surmns^2)
+CVcom2_sur<-survars/(surmns^2)
 
 totd<-apply(FUN=sum,X=d,MARGIN=1)
 dvar<-var(totd)
