@@ -1,4 +1,4 @@
-#Rarranges data so the ranks match with simulations.
+#Rearranges data so the ranks match with simulations.
 #
 #This is part of various copula surrogate algorithms.
 #For each column j of each simulation sims[,,k], the 

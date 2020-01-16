@@ -72,19 +72,48 @@ ui<-rbind(ui1,ui2,ui34)
 ci<-c(ci1,ci2,ci34)
 
 #now do the optimization
-res<-constrOptim(theta=pijstart,f=PPSurrogObj,grad=NULL,ui=ui,ci=ci,
+res<-NA
+tryCatch(res<-constrOptim(theta=pijstart,f=PPSurrogObj,grad=NULL,ui=ui,ci=ci,
                  sumvij=sumvij,mapx=mapx,mapy=mapy,
-                 control=list(fnscale=-1,trace=1000,maxit=10000))
+                 control=list(fnscale=-1,trace=0,maxit=10000)))
 
 #now if it succeeded, then it saved a result, and can pull the result back 
 #in from the disk and examine them
-pijmat<-readRDS("FirstSuccess_pijmat.RDS")
-nijmat<-readRDS("FirstSuccess_nijmat.RDS")
-library(matrixcalc)
-is.positive.definite(nijmat)
-pij<-pijmat[upper.tri(pijmat)]
-plot(vij,pij,type='p')
-cor(vij,pij)
+if (!is.na(res))
+{
+  stop("Error: optimization failed")
+}else
+{
+  pijmat<-readRDS("FirstSuccess_pijmat.RDS")
+  nijmat<-readRDS("FirstSuccess_nijmat.RDS")
+  library(matrixcalc)
+  is.positive.definite(nijmat)
+  pij<-pijmat[upper.tri(pijmat)]
+  plot(vij,pij,type='p')
+  cor(vij,pij)
+}
 
 #next step: make surrogates using nijmat, and compute their CVcom^2 and 
 #compare to the actual CVcom2 of the real data 
+
+library(mvtnorm)
+
+numsurrog<-10000
+sims<-rmvnorm(numsurrog*(dim(d)[1]),sigma=nijmat)
+dim(sims)<-c(dim(d)[1],numsurrog,dim(d)[2])
+sims<-aperm(sims,c(1,3,2))
+
+dsort<-apply(FUN=sort,X=d,MARGIN=2)
+
+surrogs<-alignranks(dsort,sims)
+
+sum(sort(surrogs[,2,2])==dsort[,2])
+
+totpops<-apply(FUN=sum,MARGIN=c(1,3),X=surrogs)
+survars<-apply(FUN=var,X=totpops,MARGIN=2)
+
+totd<-apply(FUN=sum,X=d,MARGIN=1)
+
+hist(survars)
+points(var(totd),0,col="red")
+sum(survars<var(totd))/10000
