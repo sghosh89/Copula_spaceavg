@@ -2,7 +2,7 @@ The overall
 1) given a datase (T by N matrix, time series in columns), for each pair of locations, i, j,
 consider the map from 2D N-copula parameter space (i.e., [-1,1]) to [-1,1] that goes like this: 
 take the parameter, generate data from a 2D N-copula with that parameter, map ranks with data, 
-and then take Pearson. Take expectation of that process (or maybe median?)
+and then take Pearson. Take expectation of that process (or maybe median? decided expectation)
 2) You can do this a bunch of times for a bunch of values of the parameter and then fit a flexible 
 function and then have an actual mathematically defined map for each i, j. Hopefully this can be 
 strightforwardly and analytically inverted.
@@ -11,7 +11,7 @@ strightforwardly and analytically inverted.
 close to the actual Pearson correlation for the data for that pair, i,j, and so that you get the
 same community variance and variance ratio (in expectation; enough to make the sum of the covariances
 be the same in expectation). And you need these to make a pos semi def matrix.
-5) So let vij be the covariance of the data in locations i and j, and define parameters
+5) So let vij be the correlation of the data in locations i and j, and define parameters
 pij for all j>i except for i=N-1 and j=N. Define pij for i=N-1 and j=N so that the sum of the
 pij for all j>i equals the sum of the vij over the same indices. Then map these back using the
 inverses of the maps from 2. Use the results to form a matrix. Compute the eigenvalues to judge
