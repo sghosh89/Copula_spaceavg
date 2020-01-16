@@ -1,471 +1,209 @@
-# This function is written to generate matrix plot for non-parametric stat results for all locations
+# This function is written to generate matrix plot for non-parametric stat (Cor stat only) results for each locations
 # Input : 
-#   data_ln_all :        a list of length of all locations (output from NonParamStat.R for all locations)
-#   posnI_list_ln_all :  A list of matrices for all locations
-#                        each containing the position indices of independent
-#   posnN_list_ln_all  : A list of matrices for all locations
-#                        each containing the position indices of negatively correlated
-#                        vi, vj based on FittingCopula_ms.R code (model selection) results
+#   data :  output from NonParamStat.R 
 #   resloc : location to save the results
-#   nvar : an integer : number of factors which influence css between considered species
-#   nvar_names : a vector of characters containing names of n-variables
-#   r : output from FittingCopula_ms.R which will give "nsm" to be used as input in mycorrplot fn call
-#   tagon : logical 
+#   tagon : logical (argument for vivj_matrix fn call)
+#   type : type argument of function mycorrplot_with_sig : "lower" or "upper" or "full"
+#   wd,ht : width and height of genarated plot
+#   for these following arguments: see  arguments from mycorrplot_with_sig.R 
+#   sigtest,ub,numpts,numsims=10000,CI=c(0.025,0.975),include_indep
+
+#Output : a list of two:
+#   1. A (Corl - Coru) matrix
+#   2. A list of two : A data frame having sig. test info and a matrix with significant marking
 #---------------------------
-source("mycorrplot.R")
+source("mycorrplot_with_sig.R")
 #---------------------------
 
-NonParamStat_matrixplot<-function(data_ln_all,posnI_list_ln_all,posnN_list_ln_all,resloc,nvar,nvar_names,r,tagon){
-  
-  numloc<-length(data_ln_all)
-  selected_loc<-names(data_ln_all)
-  
+NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts,numsims=10000,CI=c(0.025,0.975),include_indep){
   
   #--------------------------Spearman plot---------------------------
+  tempo<-data$spear
+  indI<-data$posnI
+  tempo[indI]<-NA
+  diag(tempo)<-NA
   
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$spear
-    indI<-posnI_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-  }
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
+  minval<-min(tempo,na.rm=T)
+  maxval<-max(tempo,na.rm=T)
   cr<-max(abs(minval),abs(maxval))
   
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_Spearman.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
+  pdf(paste(resloc,file="Spearman_ub_",ub,".pdf",sep=''),width=wd, height=ht)
+  z<-tempo
     
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
-    
-    colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    #mtext(paste0(selected_loc[loc],", #nI =",nI),cex=2,side=1)
-    dev.off()
-  }
+  colnames(z)<-rownames(z)
+  mycorrplot_with_sig(z=z,
+             posnI_ind=data$posnI,
+             posnN_ind=data$posnN,
+             colrange=c(0,cr),type=type,
+             sigtest=F,spr=NA,realstat=NA,
+             ub=NA,numpts=NA,numsims=NA,CI=NA,include_indep=include_indep)
+   
+  dev.off()
   
   #--------------------------Kendall plot---------------------------
   
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$kend
-    indI<-posnI_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-  }
+  # NOTE: for very week -ve spearman correlated cell can be +vely kendall correlated, however, 
+  # on significance test they will show independence relationship.
   
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
+  #tempo<-data$kend
+  #indI<-data$posnI
+  #tempo[indI]<-NA
+  #diag(tempo)<-NA
   
-  cr<-max(abs(minval),abs(maxval))
+  #minval<-min(tempo,na.rm=T)
+  #maxval<-max(tempo,na.rm=T)
+  #cr<-max(abs(minval),abs(maxval))
   
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_Kendall.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
+  #pdf(paste(resloc,file="Kendall_ub_",ub,".pdf",sep=''),width=wd, height=ht)
+  #z<-tempo
+  
+  #colnames(z)<-rownames(z)
+  #mycorrplot_with_sig(z=z,
+  #           posnI_ind=data$posnI,
+  #           posnN_ind=data$posnN,
+  #           colrange=c(0,cr),type=type,
+  #          sigtest=F,spr=NA,realstat=NA,
+  #          ub=NA,numpts=NA,numsims=NA,CI=NA,include_indep=include_indep)
+  
+  #dev.off()
+  
+  #========================================= For cor npa stats ===============================================
+  
+  #if(npa_stats=="cor"){
+    #--------------------------Corl plot---------------------------
+    tempo<-data$Corl
+    indI<-data$posnI
+    tempo[indI]<-NA
+    diag(tempo)<-NA
+    
+    minval<-min(tempo,na.rm=T)
+    maxval<-max(tempo,na.rm=T)
+    cr<-max(abs(minval),abs(maxval))
+    
+    pdf(paste(resloc,file="Corl_ub_",ub,".pdf",sep=''),width=wd, height=ht)
+    z<-tempo
+    
     colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    #mtext(paste0(selected_loc[loc],", #nI =",nI),cex=2,side=1)
+    
+    if(include_indep==T){
+      colrange<-c(0,cr)
+    }else{
+      colrange<-c(-cr,cr)
+    }
+    
+    mycorrplot_with_sig(z=z,
+               posnI_ind=data$posnI,
+               posnN_ind=data$posnN,
+               colrange=colrange,type=type,
+               sigtest=F,spr=NA,realstat=NA,
+               ub=NA,numpts=NA,numsims=NA,CI=NA,include_indep=include_indep)
+    
     dev.off()
-  }
-  
-  #--------------------------Corl plot---------------------------
-  
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$Corl
-    indI<-posnI_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-  }
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_Corl.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
+    
+    #--------------------------Coru plot---------------------------
+    tempo<-data$Coru
+    indI<-data$posnI
+    tempo[indI]<-NA
+    diag(tempo)<-NA
+    
+    minval<-min(tempo,na.rm=T)
+    maxval<-max(tempo,na.rm=T)
+    cr<-max(abs(minval),abs(maxval))
+    
+    pdf(paste(resloc,file="Coru_ub_",ub,".pdf",sep=''),width=wd, height=ht)
+    z<-tempo
+    
     colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    #mtext(paste0(selected_loc[loc],", #nI =",nI),cex=2,side=1)
+    
+    if(include_indep==T){
+      colrange<-c(0,cr)
+    }else{
+      colrange<-c(-cr,cr)
+    }
+    
+    mycorrplot_with_sig(z=z,
+               posnI_ind=data$posnI,
+               posnN_ind=data$posnN,
+               colrange=colrange,type=type,
+               sigtest=F,spr=NA,realstat=NA,
+               ub=NA,numpts=NA,numsims=NA,CI=NA,include_indep=include_indep)
+    
     dev.off()
-  }
-  
-  #--------------------------Coru plot---------------------------
-  
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$Coru
-    indI<-posnI_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-  }
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_Coru.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
+    
+    #--------------------------Corl-Coru plot---------------------------
+    tempo<-data$Corl-data$Coru
+    indI<-data$posnI
+    indN<-data$posnN
+    tempo[indI]<-NA
+    diag(tempo)<-NA
+    
+    CorlmCoru<-tempo
+    
+    minval<-min(tempo,na.rm=T)
+    maxval<-max(tempo,na.rm=T)
+    cr<-max(abs(minval),abs(maxval))
+    
+    pdf(paste(resloc,file="Corl-Coru_ub_",ub,".pdf",sep=''),width=wd, height=ht)
+    z<-tempo
+    
     colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    #mtext(paste0(selected_loc[loc],", #nI =",nI),cex=2,side=1)
-    dev.off()
-  }
-  
-  #--------------------------Corl-Coru plot---------------------------
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$Corl-data_ln_all[[i]]$Coru
-    indI<-posnI_list_ln_all[[i]]
-    indN<-posnN_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-    #tempo[[i]][indN]<-abs(tempo[[i]][indN])
-    diag(tempo[[i]])<-NA
-  }
-  
-  CorlmCoru<-tempo
-  names(CorlmCoru)<-selected_loc
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  summary_nLU_CorlmCoru<-matrix(NA,2,numloc) # to keep total count on CorlmCoru for +ve or -ve numbers
-  colnames(summary_nLU_CorlmCoru)<-selected_loc
-  rownames(summary_nLU_CorlmCoru)<-c("nL","nU")
-  
-  summary_LU_CorlmCoru<- summary_nLU_CorlmCoru  # to keep sum on CorlmCoru values only for +ve or -ve numbers
-  rownames(summary_LU_CorlmCoru)<-c("L","U")
-  
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_Corl-Coru.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
+    
+    if(sigtest==T){
+      res_sig<-mycorrplot_with_sig(z=z,
+                          posnI_ind=data$posnI,
+                          posnN_ind=data$posnN,
+                          colrange=c(-cr,cr),type=type,
+                          sigtest=T,spr=data$spear,realstat=CorlmCoru,
+                          ub=ub,numpts=numpts,numsims=numsims,CI=CI,include_indep=include_indep)
+    }else{
+      mycorrplot_with_sig(z=z,
+                          posnI_ind=data$posnI,
+                          posnN_ind=data$posnN,
+                          colrange=c(-cr,cr),type=type,
+                          sigtest=F,spr=NA,realstat=NA,
+                          ub=NA,numpts=NA,numsims=NA,CI=NA,include_indep=include_indep)
+      res_sig<-NA
     }
-    colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    z[posnN_list_ln_all[[loc]]]<-NA
-    dl2<-nrow(z)-nvar
-    z1<-z[1:dl2,1:dl2]
-    nL<-sum(z1>0,na.rm = T)
-    nU<-sum(z1<0,na.rm = T)
-    L<-sum(z1[which(z1>0,arr.ind=T)])
-    U<-sum(z1[which(z1<0,arr.ind=T)])
-    summary_nLU_CorlmCoru[1,loc]<-nL
-    summary_nLU_CorlmCoru[2,loc]<-nU
-    summary_LU_CorlmCoru[1,loc]<-L
-    summary_LU_CorlmCoru[2,loc]<-U
+   
+    z[data$posnN]<-NA # this line was added to exclude -vely correlated species pair from nL,nU
+                                    # calculation, but it does not matter as for -vely correlated cells [sp_i,sp_j] and 
+                                                  # [sp_j,sp_i] nL,nU both will increase by same number
+    nL<-sum(z>0,na.rm = T)
+    nU<-sum(z<0,na.rm = T)
+    total_CorlmCoru<-sum(z,na.rm=T) # for positively correlated cells only
+    
+    if(isSymmetric(z)==T){ #it's a check
+      if(type=="lower" | type=="upper"){
+        nL<-nL/2 
+        nU<-nU/2
+        total_CorlmCoru<-total_CorlmCoru/2
+        total_CorlmCoru<-round(total_CorlmCoru,4) #print upto 4th rounded digits
+      }
+    }
+    
     if(tagon == T){
-      mtext(paste0(selected_loc[loc],"  "),cex=5,side=1,col="red",adj=0.3)
+      #mtext(paste0("nL = ",nL,", nU = ",nU, ", Total asym. = ",round(total_CorlmCoru,4)),
+      #      cex=3,side=1,adj=0.6,line=2)
+      mtext((as.expression(bquote('n'['L']*' = '*.(nL)*', '*'n'['U']*' = '*.(nU)*', '*'A'['tot']*' = '*.(total_CorlmCoru)))),
+            cex=3,side=1,adj=0.6,line=2)
     }
-    mtext(paste0("nL =",nL,", nU =",nU),cex=5,side=1,adj=0.7)
+    
     dev.off()
+    
+    if(sigtest==T){
+      
+     mat_tab<-res_sig$mat_tab
+     
+     # generate additional plot
+     pdf(paste(resloc,"statistic_vs_spearman_ub_",ub,"_CI_",CI[1],"_",CI[2],".pdf",sep=""),width=8,height=8)
+     plot(c(-1,1),c(0,0),ylim=c(-1,1),xlab="Spearman",ylab="Statistic",type='l',col='red')
+     lines(c(0,0),c(-1,1),type="l",col="red")
+     points(mat_tab$sprvals,mat_tab$realstat,pch=16,col=rgb(1,0,0,0.2))
+     lines(mat_tab$sprvals[mat_tab$sprvals>0],mat_tab$lowCI[mat_tab$sprvals>0],type='p',pch=16,col=rgb(0,0,0,0.2))
+     lines(mat_tab$sprvals,mat_tab$upCI,type='p',pch=16,col=rgb(0,0,0,0.2))
+     dev.off()
   }
   
-  #--------------------------Pl plot---------------------------
-  
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$Pl
-    indI<-posnI_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-  }
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_Pl.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
-    colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    #mtext(paste0(selected_loc[loc],", #nI =",nI),cex=2,side=1)
-    dev.off()
-  }
-  
-  
-  #--------------------------Pu plot---------------------------
-  
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$Pu
-    indI<-posnI_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-  }
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_Pu.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
-    colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    #mtext(paste0(selected_loc[loc],", #nI =",nI),cex=2,side=1)
-    dev.off()
-  }
-  
-  
-  #--------------------------Pl-Pu plot---------------------------
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$Pl-data_ln_all[[i]]$Pu
-    indI<-posnI_list_ln_all[[i]]
-    indN<-posnN_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-    #tempo[[i]][indN]<-abs(tempo[[i]][indN])
-    diag(tempo[[i]])<-NA
-  }
-  
-  PlmPu<-tempo
-  names(PlmPu)<-selected_loc
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  summary_nLU_PlmPu<-matrix(NA,2,numloc)
-  colnames(summary_nLU_PlmPu)<-selected_loc
-  rownames(summary_nLU_PlmPu)<-c("nL","nU")
-  
-  summary_LU_PlmPu<- summary_nLU_PlmPu  # to keep sum on PlmPu values only for +ve or -ve numbers
-  rownames(summary_LU_PlmPu)<-c("L","U")
-  
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_Pl-Pu.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
-    colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    z[posnN_list_ln_all[[loc]]]<-NA
-    dl2<-nrow(z)-nvar
-    z1<-z[1:dl2,1:dl2]
-    nL<-sum(z1>0,na.rm = T)
-    nU<-sum(z1<0,na.rm = T)
-    L<-sum(z1[which(z1>0,arr.ind=T)])
-    U<-sum(z1[which(z1<0,arr.ind=T)])
-    summary_nLU_PlmPu[1,loc]<-nL
-    summary_nLU_PlmPu[2,loc]<-nU
-    summary_LU_PlmPu[1,loc]<-L
-    summary_LU_PlmPu[2,loc]<-U
-    if(tagon == T){
-     mtext(paste0(selected_loc[loc],"  "),cex=5,side=1,col="red",adj=0.3)
-    }
-    mtext(paste0("nL =",nL,", nU =",nU),cex=5,side=1,adj=0.7)
-    dev.off()
-  }
-  
-  
-  #--------------------------D2l plot---------------------------
-  
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$D2l
-    indI<-posnI_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-  }
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_D2l.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
-    colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    #mtext(paste0(selected_loc[loc],", #nI =",nI),cex=2,side=1)
-    dev.off()
-  }
-  
-  #--------------------------D2u plot---------------------------
-  
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$D2u
-    indI<-posnI_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-  }
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_D2u.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
-    colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    #mtext(paste0(selected_loc[loc],", #nI =",nI),cex=2,side=1)
-    dev.off()
-  }
-  
-  #--------------------------D2u-D2l plot---------------------------
-  tempo<-vector("list",numloc)
-  for(i in 1:numloc){
-    tempo[[i]]<-data_ln_all[[i]]$D2u-data_ln_all[[i]]$D2l
-    indI<-posnI_list_ln_all[[i]]
-    indN<-posnN_list_ln_all[[i]]
-    tempo[[i]][indI]<-NA
-    #tempo[[i]][indN]<-abs(tempo[[i]][indN])
-    diag(tempo[[i]])<-NA
-  }
-  
-  D2umD2l<-tempo
-  names(D2umD2l)<-selected_loc
-  
-  minval<-min(unlist(lapply(tempo,min,na.rm=T)))
-  maxval<-max(unlist(lapply(tempo,max,na.rm=T)))
-  
-  cr<-max(abs(minval),abs(maxval))
-  
-  summary_nLU_D2umD2l<-matrix(NA,2,numloc)
-  colnames(summary_nLU_D2umD2l)<-selected_loc
-  rownames(summary_nLU_D2umD2l)<-c("nL","nU")
-  
-  summary_LU_D2umD2l<- summary_nLU_D2umD2l  # to keep sum on D2umD2l values only for +ve or -ve numbers
-  rownames(summary_LU_D2umD2l)<-c("L","U")
-  
-  for(loc in 1:numloc){
-    resloc2<-paste(resloc,selected_loc[loc],"/",sep="")
-    pdf(paste(resloc2,selected_loc[loc],file="_D2u-D2l.pdf",sep=''),width=20, height=20)
-    z<-tempo[[loc]]
-    if(nvar!=0){
-      dl<-nrow(z)-nvar+1
-      rownames(z)[c(dl:nrow(z))]<-nvar_names
-    }
-    colnames(z)<-rownames(z)
-    mycorrplot(z=z,
-               posnI_ind=posnI_list_ln_all[[loc]],
-               posnN_ind=posnN_list_ln_all[[loc]],
-               colrange=c(-cr,cr),nsm=r[[loc]]$neg_sp_mat)
-    #nI<-dim(posnI_list_ln_all[[loc]])[1]
-    z[posnN_list_ln_all[[loc]]]<-NA
-    dl2<-nrow(z)-nvar
-    z1<-z[1:dl2,1:dl2]
-    nL<-sum(z1>0,na.rm = T)
-    nU<-sum(z1<0,na.rm = T)
-    L<-sum(z1[which(z1>0,arr.ind=T)])
-    U<-sum(z1[which(z1<0,arr.ind=T)])
-    summary_nLU_D2umD2l[1,loc]<-nL
-    summary_nLU_D2umD2l[2,loc]<-nU
-    summary_LU_D2umD2l[1,loc]<-L
-    summary_LU_D2umD2l[2,loc]<-U
-    if(tagon == T){
-     mtext(paste0(selected_loc[loc],"  "),cex=5,side=1,col="red",adj=0.3)
-    }
-     mtext(paste0("nL =",nL,", nU =",nU),cex=5,side=1,adj=0.7)
-    dev.off()
-  }
-  
-  return(list(CorlmCoru_all_ln_list=CorlmCoru,
-              PlmPu_all_ln_list=PlmPu,
-              D2umD2l_all_ln_list=D2umD2l,
-              summary_nLU_CorlmCoru=summary_nLU_CorlmCoru,
-              summary_nLU_PlmPu=summary_nLU_PlmPu,
-              summary_nLU_D2umD2l=summary_nLU_D2umD2l,
-              summary_LU_CorlmCoru=summary_LU_CorlmCoru,
-              summary_LU_PlmPu=summary_LU_PlmPu,
-              summary_LU_D2umD2l=summary_LU_D2umD2l))
+  return(list(CorlmCoru=CorlmCoru,
+              res_sig=res_sig))
 }
-
