@@ -408,6 +408,7 @@ if (!is.na(res))
   pij<-pijmat[upper.tri(pijmat)]
   pdf(file=paste0(resloc_surrog_hays,"ActualVsOptimizedSurrogatePearsons.pdf"))
   plot(vij,pij,type='p',xlab="vij",ylab="pij",xlim=c(-1,1),ylim=c(-1,1))
+  lines(c(-1,1),c(-1,1))
   text(1,1,cor(vij,pij),adj=c(1,1))
   dev.off()
 }
@@ -421,6 +422,7 @@ dim(sims)<-c(dim(d)[1],numsurrog,dim(d)[2])
 sims<-aperm(sims,c(1,3,2))
 dsort<-apply(FUN=sort,X=d,MARGIN=2)
 surrogs<-alignranks(dsort,sims)
+saveRDS(surrogs,file=paste0(resloc_surrog_hays,"HaysSurrogates.Rds"))
 
 totpops<-apply(FUN=sum,MARGIN=c(1,3),X=surrogs)
 survars<-apply(FUN=var,X=totpops,MARGIN=2)
@@ -432,7 +434,7 @@ dvar<-var(totd)
 dmn<-mean(totd)
 CVcom2_d<-dvar/(dmn^2)
 
-pdf(file=paste0(resloc_surrog_hays,"CVcom2_For_Surr_AndDat.pdf"))
+pdf(file=paste0(resloc_surrog_hays,"CVcom2_For_Surr_And_Dat.pdf"))
 hist(CVcom2_sur,main=sum(survars<var(totd))/10000)
 points(CVcom2_d,0,col="red")
 dev.off()
@@ -1295,22 +1297,22 @@ approaches (see Fig. \ref{fig_hays_spaceavg_skewness_cvsq}).
 
 
 ```{r make_tab_common_splist_for_hays, echo=F, results="asis"}
-library(kableExtra)
-library(dplyr)
-tab_spinfo_hays<-as.data.frame(matrix(NA,nrow=21,ncol=3))
-colnames(tab_spinfo_hays)<-c("ID","Sp. code","Species name")
-tab_spinfo_hays$ID<-c(1:21)
-tab_spinfo_hays$`Sp. code`<-c(as.character(spinfo$PLANTS.Symbol[which(spinfo$species %in% names(hays_spaceavg$avg.basal.cover))]),
-                         "pseudo_hays")
-splistfullnm<-c(names(hays_spaceavg$avg.basal.cover)[1:20],"This is a pseudo sp. = (intermediate + rare ones)")
-
-tab_spinfo_hays$`Species name`<-c(splistfullnm)
-knitr::kable(tab_spinfo_hays, 
-             format="latex", align="c", linesep = "",
-             caption = "Information of the most common species considered for Hays data; 20 most common species are selected based on the criterion that they had atleast 35 years of finite spatial averaged basal cover, for full list of all the species, including rare ones see Appendix \\ref{Data}.\\label{tab_spinfo_hays}", 
-             booktabs = T,col.names = NULL) %>%
-             column_spec(3,italic=T)%>%
-             add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
+#library(kableExtra)
+#library(dplyr)
+#tab_spinfo_hays<-as.data.frame(matrix(NA,nrow=21,ncol=3))
+#colnames(tab_spinfo_hays)<-c("ID","Sp. code","Species name")
+#tab_spinfo_hays$ID<-c(1:21)
+#tab_spinfo_hays$`Sp. code`<-c(as.character(spinfo$PLANTS.Symbol[which(spinfo$species %in% #names(hays_spaceavg$avg.basal.cover))]),
+#                         "pseudo_hays")
+#splistfullnm<-c(names(hays_spaceavg$avg.basal.cover)[1:20],"This is a pseudo sp. = (intermediate + rare #ones)")
+#
+#tab_spinfo_hays$`Species name`<-c(splistfullnm)
+#knitr::kable(tab_spinfo_hays, 
+#             format="latex", align="c", linesep = "",
+#             caption = "Information of the most common species considered for Hays data; 20 most common #species are selected based on the criterion that they had atleast 35 years of finite spatial averaged #basal cover, for full list of all the species, including rare ones see Appendix #\\ref{Data}.\\label{tab_spinfo_hays}", 
+#             booktabs = T,col.names = NULL) %>%
+#             column_spec(3,italic=T)%>%
+#             add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
 
 ```{r make_tab_common_splist_for_knz, echo=F, results="asis"}
