@@ -401,17 +401,16 @@ try(res<-constrOptim(theta=pijstart,f=PPSurrogObj,grad=NULL,ui=ui,ci=ci,
 if (!is.na(res))
 {
   stop("Error in make_surrogs_CP_hays: optimization to find good Pearson preserving surrogates failed")
-}else
-{
-  pijmat<-readRDS(paste0(resloc_surrog_hays,"FirstSuccess_pijmat.RDS"))
-  nijmat<-readRDS(paste0(resloc_surrog_hays,"FirstSuccess_nijmat.RDS"))
-  pij<-pijmat[upper.tri(pijmat)]
-  pdf(file=paste0(resloc_surrog_hays,"ActualVsOptimizedSurrogatePearsons.pdf"))
-  plot(vij,pij,type='p',xlab="vij",ylab="pij",xlim=c(-1,1),ylim=c(-1,1))
-  lines(c(-1,1),c(-1,1))
-  text(1,1,cor(vij,pij),adj=c(1,1))
-  dev.off()
 }
+
+pijmat<-readRDS(paste0(resloc_surrog_hays,"FirstSuccess_pijmat.RDS"))
+nijmat<-readRDS(paste0(resloc_surrog_hays,"FirstSuccess_nijmat.RDS"))
+pij<-pijmat[upper.tri(pijmat)]
+pdf(file=paste0(resloc_surrog_hays,"ActualVsOptimizedSurrogatePearsons.pdf"))
+plot(vij,pij,type='p',xlab="vij",ylab="pij",xlim=c(-1,1),ylim=c(-1,1))
+lines(c(-1,1),c(-1,1))
+text(1,1,cor(vij,pij),adj=c(1,1))
+dev.off()
 
 #make surrogates using nijmat, and compute their CV_com^2 and 
 #compare to the actual CV_com^2 of the real data 
@@ -435,7 +434,7 @@ dmn<-mean(totd)
 CVcom2_d<-dvar/(dmn^2)
 
 pdf(file=paste0(resloc_surrog_hays,"CVcom2_For_Surr_And_Dat.pdf"))
-hist(CVcom2_sur,main=sum(survars<var(totd))/10000)
+hist(CVcom2_sur,main=sum(survars<var(totd))/numsurrog)
 points(CVcom2_d,0,col="red")
 dev.off()
 
