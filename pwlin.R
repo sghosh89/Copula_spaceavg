@@ -20,18 +20,29 @@ pwlin<-function(x,xbp,ybp)
   #receptacle for results
   res<-NA*numeric(length(x))
   
+  #now map each of the values of x that can be mapped
   inds<-which(x>=xbp[1] & x<=xbp[length(xbp)])
-  for (counter in 1:length(inds))
+  if (length(inds)>0)
   {
-    thisx<-x[inds[counter]]
-    ilo<-max(which(xbp<=thisx))
-    ihi<-min(which(xbp>=thisx))
-    if (ilo==ihi)
+    for (counter in 1:length(inds))
     {
-      res[inds[counter]]<-ybp[ilo]
-    }else
-    {
-      res[inds[counter]]<-((thisx-xbp[ilo])/(xbp[ihi]-xbp[ilo]))*(ybp[ihi]-ybp[ilo])+ybp[ilo]
+      thisx<-x[inds[counter]]
+      #wind1<-which(xbp<=thisx)
+      #wind2<-which(xbp>=thisx)
+      #if (length(wind1)==0 || length(wind2)==0)
+      #{
+      #  save(x,xbp,ybp,file="ErrorChecker.RData")
+      #  stop("Error in pwlin, file saved for debugging")
+      #}
+      ilo<-max(which(xbp<=thisx))
+      ihi<-min(which(xbp>=thisx))
+      if (ilo==ihi)
+      {
+        res[inds[counter]]<-ybp[ilo]
+      }else
+      {
+        res[inds[counter]]<-((thisx-xbp[ilo])/(xbp[ihi]-xbp[ilo]))*(ybp[ihi]-ybp[ilo])+ybp[ilo]
+      }
     }
   }
   

@@ -8,10 +8,9 @@ source("alignranks.R")
 #d          A L by 2 matrix of real numbers
 #numpts     The normal-copula parameters 
 #             seq(from=-1,to=1,length.out=numpts) are used
-#numsims    This many evaluations of the map per value of numpts
+#numsims    This many evaluations of the map per value of normal cop params
 #plotnm     NA (default) for no plot, otherwise the file name (without 
-#             extension) for a pdf plot to be saved in the working
-#             directory
+#             extension) for a pdf plot to be saved 
 #
 #Output is a list consisting of these elements:
 #numeric_result     A numsims by numpts matrix, the results (numsims
@@ -20,7 +19,8 @@ source("alignranks.R")
 #fit_parameters     A data frame with first column the values 
 #                     seq(from=-1,to=1,length.out=numpts) and second column
 #                     the mean of the function values over that input. These
-#                     specify a piecewise-linear function.
+#                     specify a piecewise-linear function which approximates
+#                     the map.
 #
 #Details
 #No error checking of inputs at present
