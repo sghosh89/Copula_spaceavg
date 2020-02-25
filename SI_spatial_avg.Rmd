@@ -335,9 +335,10 @@ saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg_nbin_
 ```
 
 <!--get appropriate surrogates for hays with common+pseudo sp.-->
-```{r make_surrogs_CP_hays, echo=F, results="hide", warning=F, cache=T, cache.extra=list(mtime("./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS"),mtime("PPSurrogObjFun.R"),mtime("pwlin.R"),mtime("getmap.R"),mtime("alignranks.R"))}
+```{r make_surrogs_CP_hays, echo=F, results="hide", warning=F, cache=T, cache.extra=list(mtime("./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS"),mtime("PPSurrogObjFun.R"),mtime("pwlin.R"),mtime("getmap.R"),mtime("alignranks.R"),mtime("SurrogsForHays.R"))}
 
 source("SurrogsForHays.R")
+#after this script runs the surrogates will be in the variable surrogs_CP_hays
 ```
 
 <!-- genarating stability based results and plots for hays-->

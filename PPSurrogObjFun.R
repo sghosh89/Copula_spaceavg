@@ -15,20 +15,16 @@
 
 PPSurrogObj<-function(pij,cijmatd,mapx,mapy,saveloc)
 {
-  #get plast
+  #make pij into an appropriate matrix
   n<-dim(mapy)[1] #number of species
   pijmat<-matrix(NA,n,n)
-  pijmat[upper.tri(pijmat)]<-c(pij,NA)
-  cijmat<-pijmat*sqrt(outer(diag(cijmatd),diag(cijmatd)))
-  cijmatd_ut<-cijmatd
-  cijmatd_ut[!upper.tri(cijmatd_ut)]<-NA
-  plast<-(sum(cijmatd_ut,na.rm=TRUE)-sum(cijmat,na.rm=TRUE))/(sqrt(cijmatd[n-1,n-1]*cijmatd[n,n]))
-  
-  #insert plast into its place in pijmat
-  pijmat[n-1,n]<-plast
+  pijmat[upper.tri(pijmat)]<-pij
+  #cijmat<-pijmat*sqrt(outer(diag(cijmatd),diag(cijmatd)))
+
   #The constraints passed to constOptim will be chosen so
-  #that all entries of pij, including this newly added one, are within the range that 
-  #can be mapped back with the inverse of the relevant map described in mapx and mapy. 
+  #that all entries of pij are within the range that can be 
+  #mapped back with the inverse of the relevant map described 
+  #in mapx and mapy. 
 
   #map it back from Pearson space to N-copula parameter space
   nijmat<-matrix(NA,n,n)
@@ -56,5 +52,6 @@ PPSurrogObj<-function(pij,cijmatd,mapx,mapy,saveloc)
     saveRDS(nijmat,file=paste0(saveloc,"FirstSuccess_nijmat.RDS"))
     stop("Success!")
   }
+  print(min(res))
   return(min(res))
 }
