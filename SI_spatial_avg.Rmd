@@ -341,6 +341,15 @@ source("SurrogsForHays.R")
 #after this script runs the surrogates will be in the variable surrogs_CP_hays
 ```
 
+<!--get appropriate surrogates for knz t with common+pseudo sp.-->
+```{r make_surrogs_CP_knz_t, echo=F, results="hide", warning=F, cache=T, cache.extra=list(mtime("<data location in repo>"),mtime("PPSurrogObjFun.R"),mtime("pwlin.R"),mtime("getmap.R"),mtime("alignranks.R"),mtime("SurrogsForKonza_t.R"))}
+
+source("SurrogsForKonza_t.R")
+#after this script runs the surrogates will be in the variable surrogs_CP_KNZ_t
+```
+
+<!--could not get Pearson preserving surrogates for Konza f-->
+
 <!-- genarating stability based results and plots for hays-->
 
 ```{r skewness_hays_spaceavg_PP, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,ts_mat_CP_hays,surrogs_CP_hays,mtime("make_tab_stability_assessment.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
