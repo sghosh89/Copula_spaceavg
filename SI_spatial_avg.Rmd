@@ -370,7 +370,8 @@ xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_hays$cvsq_surrogs)
 hist(stability_CP_hays$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
      xlab="CVsq. of Surrogates",main="",cex.lab=1.5)
 axis(side=1, at=c(xlm[1],0,xlm[2]))
-abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
+points(x=ans$cvsq_real,y=0,col="black",pch=20,cex=1) # actual CVsq from real data
+#abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
 
 #95% quantiles
 abline(v=ans$cvsq_ntd_0.025CI,col="black",lty="dotted") 
@@ -382,7 +383,7 @@ abline(v=ans$cvsq_ntd_0.975CI,col="black",lty="dotted")
 #abline(v=CI_cvsq_50[2],col="green")
 
 # Cvsq with no tail dep.
-points(x=ans$cvsq_ntd_median,y=0,col="black",pch=1,cex=1.5)
+points(x=ans$cvsq_ntd_median,y=0,col="black",pch=2,cex=1.5)
 
 # Cvsq if indep.
 abline(v=ans$cvsq_indep,col="black",lty="dashed")
@@ -394,7 +395,7 @@ xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_hays$skw_surrogs)
 hist(stability_CP_hays$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
      xlab="Skewness of Surrogates",main="",cex.lab=1.5)
 axis(side=1, at=c(xlm[1],0,xlm[2]))
-abline(v=ans$skw_real,col="black") # actual skw from real data
+points(x=ans$skw_real,y=0,col="black",pch=20,cex=1) # actual skw from real data
 
 #95% quantiles
 abline(v=ans$skw_ntd_0.025CI,col="black",lty="dotted") 
@@ -406,7 +407,7 @@ abline(v=ans$skw_ntd_0.975CI,col="black",lty="dotted")
 #abline(v=CI_skw_50[2],col="green")
 
 # Skewness with no tail dep.
-points(x=ans$skw_ntd_median,y=0,col="black",pch=1,cex=1.5)
+points(x=ans$skw_ntd_median,y=0,col="black",pch=2,cex=1.5)
 
 # Skewness if indep.
 abline(v=ans$skw_indep,col="black",lty="dashed")
@@ -422,7 +423,7 @@ pdf("./Results/hays_results/skewness_results/legend_plot.pdf",height=0.5,width=1
 op<-par(mar=c(0.1,0.1,0.1,0.1),mgp=c(1,1,0))
 
 plot.new()
-legend("topright",lty=c(1,NA,3,2),pch=c(NA,1,NA,NA),
+legend("topright",lty=c(NA,NA,3,2),pch=c(20,2,NA,NA),
        horiz = T, bty="n",
        legend=c("real value,","no Tail-dep. (median),","95%CI,","Indep."),x.intersp=0, text.width = 0.22)
 #par(op)
@@ -523,86 +524,35 @@ dev.off()
 ```
 
 <!-- preparing spatial avg data in usual format with common+pseudo sp. for knz data-->
-```{r read_and_prepare_knz_data,echo=F,results="hide"}
+```{r read_and_prepare_knz_data,echo=F,results="hide",cache=T, cache.extra=list(seed,mtime("./Data/KnzData/KNZ_Data_downloaded/knb-lter-knz.69.15/PVC021.csv"),mtime("./Data/KnzData/KNZ_Data_downloaded/KFH011.csv"))}
 set.seed(seed)
+source("./data_cleaning_for_KNZ.R")
+```
 
-dat<-read.csv("./Data/KnzData/Grassland_group1_master.csv")
-dat_sitewise<-split(dat,dat$site)
+```{r screen_sp_for_knz_data,echo=F,results="hide",cache=T,cache.extra=list(seed,mtime("data_cleaning_for_KNZ.R"))}
+set.seed(seed)
+# knz_soiltype<-"t" # given variable for soil type in ./data_cleaning_for_KNZ.R
 
-dat_knz<-dat_sitewise$knz
+# the data cleaning file saves ts_all_sp_knz matrix as "./Results/knz_results/ts_all_sp_knz_soiltype_t.RDS"
 
-# convert factor class into character class
-dat_knz$site<-as.character(dat_knz$site)
-dat_knz$plot<-as.character(dat_knz$plot)
-dat_knz$subplot<-as.character(dat_knz$subplot)
-dat_knz$uniqueID<-as.character(dat_knz$uniqueID)
-dat_knz$unitAbund<-as.character(dat_knz$unitAbund)
-dat_knz$scaleAbund<-as.character(dat_knz$scaleAbund)
-dat_knz$species<-as.character(dat_knz$species)
+#================ screening for common-intermediate-rare species category ================
 
-# unique years?
-uyr<-sort(unique(dat_knz$year))
-lenyr<-length(uyr)
+ts_all_sp_knz<-readRDS(paste(resloc_knz,"ts_all_sp_knz_soiltype_",knz_soiltype,".RDS",sep=""))
 
-# unique plots ? 
-uplot<-sort(unique(dat_knz$plot))
-uplot
-length(uplot)
-
-# unique subplots ?
-usplot<-sort(unique(dat_knz$subplot))
-usplot
-length(usplot)
-
-# unique species ?
-usp<-sort(unique(dat_knz$species))
-usp<-as.character(usp)
-lenusp<-length(usp)
-
-#--------creating results folder for knz data--------------------
-if(!dir.exists("./Results/knz_results")){
-  dir.create("./Results/knz_results/")
-}
-
-if(!dir.exists("./Results/knz_results/skewness_results")){
-  dir.create("./Results/knz_results/skewness_results/")
-}
-
-# Fill the following table with average cover from all plots for a given year with a given sp.
-ts_all_sp_knz<-matrix(NA,nrow=lenyr,ncol=lenusp) # timeseries for each sp along each column
-colnames(ts_all_sp_knz)<-usp
-rownames(ts_all_sp_knz)<-uyr
-ts_all_sp_knz<-as.data.frame(ts_all_sp_knz)
-
-my_knz<-dat_knz[,c("year","species","abundance")]
-my_knz_eachsp<-split(my_knz,my_knz$species)
-
-all(names(my_knz_eachsp)==colnames(ts_all_sp_knz))==T # It's a check
-
-for(i in 1:length(my_knz_eachsp)){
-  x1<-my_knz_eachsp[[i]]
-  ts_all_sp_knz[,i]<-sapply(split(x=x1$abundance,f=x1$year), mean)
-}
-
-#-------saving a big matrix 33yrs by 123 sp. which has each sp timeseries along each column : knz data-------
-saveRDS(ts_all_sp_knz,"./Results/knz_results/ts_all_sp_knz.RDS")
-
-anyNA(ts_all_sp_knz)
-
-# screen sp. for KNZ
+# count on zero values for cover for each species
 nyr_0_eachsp<-apply(ts_all_sp_knz,MARGIN = 2,FUN = function(x){sum(x==0)})
 nyr_0_eachsp<-as.data.frame(nyr_0_eachsp)
 
-# common sp. for KNZ : these sp present for all 33 years
-id_common_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp==0) 
+# common sp. for KNZ : these sp present for atleast 35 years, i.e., absent for max 1 years
+id_common_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp<=1) 
 ts_common_knz<-ts_all_sp_knz[,id_common_sp_knz]
 
-# rare sp. for KNZ
-id_rare_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>=31)
+# rare sp. for KNZ : absent for atleast 34 years, i.e. present max only for 2 years
+id_rare_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>=34)
 ts_rare_knz<-ts_all_sp_knz[,id_rare_sp_knz]
 
 # normal or intermediate sp. for KNZ
-id_interm_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>0 & nyr_0_eachsp$nyr_0_eachsp<31)
+id_interm_sp_knz<-which(nyr_0_eachsp$nyr_0_eachsp>1 & nyr_0_eachsp$nyr_0_eachsp<34)
 ts_normal_knz<-ts_all_sp_knz[,id_interm_sp_knz]
 
 # sp. category for KNZ
@@ -611,10 +561,13 @@ sp_category_knz$category[id_common_sp_knz]<-"C"
 sp_category_knz$category[id_interm_sp_knz]<-"I"
 sp_category_knz$category[id_rare_sp_knz]<-"R"
 
-#---------saving a 123sp by 2 matrix indicating C/I/R category for each knz-sp---------
-saveRDS(sp_category_knz,"./Results/knz_results/all_sp_category_spatialavg_knz.RDS")
+#---------saving a 125sp by 2 matrix indicating C/I/R category for each knz-sp---------
+saveRDS(sp_category_knz,paste(resloc_knz,"all_sp_category_spatialavg_knz_soiltype_",knz_soiltype,".RDS",sep=""))
 
-# Now make the usual format for KNZ data (with common sp and all other merged into a pseudo species) to be used in model selection later
+#===========================Formatting data for tail-asymmetry analysis========================
+
+# Now make the usual format for KNZ data (with common sp and all other merged into a pseudo species) to 
+# be used in tail-asymmetry analysis later
 
 knz_spaceavg<-vector("list",1)
 names(knz_spaceavg)<-"avg.percent.cover"
@@ -623,38 +576,38 @@ sp.screened.data<-vector("list",length(id_common_sp_knz))
 names(sp.screened.data)<-rownames(nyr_0_eachsp)[id_common_sp_knz]
 
 for(isp in 1:length(id_common_sp_knz)){
-  sp.screened.data[[isp]]<-data.frame(Year=c(1983:2015),Dat=ts_common_knz[,isp])
+  sp.screened.data[[isp]]<-data.frame(Year=c(1983:2018),Dat=ts_common_knz[,isp])
 }
 
 knz_spaceavg$avg.percent.cover<-sp.screened.data
 
 # Append the pseudo species = merged sp. of I & R category
 pseudo_knz_IR<-apply(X=ts_all_sp_knz[,which(sp_category_knz$category%in%c("I","R"))],MARGIN = 1,FUN = sum)
-pseudo_knz<-data.frame(Year=c(1983:2015),Dat=pseudo_knz_IR)
+pseudo_knz<-data.frame(Year=c(1983:2018),Dat=pseudo_knz_IR)
 pseudo_knz<-list(pseudo_knz)
 
 knz_spaceavg$avg.percent.cover<-append(knz_spaceavg$avg.percent.cover,pseudo_knz)
 names(knz_spaceavg$avg.percent.cover)[[length(id_common_sp_knz)+1]]<-"pseudo_knz"
 
 #---------saving the spatial avg. data for knz with whigh we will do taildep. analysis later----------------
-saveRDS(knz_spaceavg,"./Results/knz_results/knz_spaceavg_data_CP.RDS")
+saveRDS(knz_spaceavg,paste(resloc_knz,"knz_spaceavg_data_CP_soiltype_",knz_soiltype,".RDS",sep=""))
 
-#-----------saving a matrix with timeseries of common + 1 pseudo (all other merged into 1) sp. for knz------
-ts_mat_CP_knz<-cbind(ts_common_knz,pseudo_knz_IR)
-saveRDS(ts_mat_CP_knz,"./Results/knz_results/skewness_results/ts_mat_CP_knz.RDS") 
+#-----------saving a dataframe with timeseries of common + 1 pseudo (all other merged into 1) sp. for knz------
+ts_CP_knz<-cbind(ts_common_knz,pseudo_knz_IR)
+saveRDS(ts_CP_knz,paste(resloc_knz_skw,"ts_CP_knz_soiltype_",knz_soiltype,".RDS",sep="")) 
 
-#--------------- time series plot for knz Common sp, Common + Normal(or Intermediate) sp., Common+Normal+Rare sp.-------------------
+#-------- time series plot for knz Common sp, Common + Normal(or Intermediate) sp., Common+Normal+Rare sp.----------
 
-pdf("./Results/knz_results/skewness_results/total_timeseries.pdf",height=6,width=6)
+pdf(paste(resloc_knz_skw,"total_timeseries_soiltype_",knz_soiltype,".pdf",sep=""),height=6,width=6)
 op<-par(mar=c(5.1, 5.1, 1.1, 2.1))
 
 total_ts_C<-apply(X=ts_all_sp_knz[,id_common_sp_knz],MARGIN = 1,FUN = sum)
 total_ts_CI<-apply(X=ts_all_sp_knz[,sort(c(id_common_sp_knz,id_interm_sp_knz))],MARGIN = 1,FUN = sum)
 total_ts_CIR<-apply(X=ts_all_sp_knz[,sort(c(id_common_sp_knz,id_interm_sp_knz,id_rare_sp_knz))],MARGIN = 1,FUN = sum)
 total_ts<-cbind(total_ts_C,total_ts_CI,total_ts_CIR)
-plot(c(1983:2015),total_ts[,1],ylim=range(total_ts),col=rgb(1,0,0,0.5),type="b",pch=16,xlab="Years",ylab="Total percent cover",xlim=c(1983,2015),cex.lab=2,cex.axis=2)
-lines(c(1983:2015),total_ts[,2],type="b",pch=16,col=rgb(0,1,0,0.5))
-lines(c(1983:2015),total_ts[,3],type="b",col="black",pch=1)
+plot(c(1983:2018),total_ts[,1],ylim=range(total_ts),col=rgb(1,0,0,0.5),type="b",pch=16,xlab="Years",ylab="Total percent cover",xlim=c(1983,2018),cex.lab=2,cex.axis=2)
+lines(c(1983:2018),total_ts[,2],type="b",pch=16,col=rgb(0,1,0,0.5))
+lines(c(1983:2018),total_ts[,3],type="b",col="black",pch=1)
 legend("topright",c("common sp.","common + intermediate sp.","all sp. including rare"),lty=c(1,1,1),
        col=c(rgb(1,0,0,0.5),rgb(0,1,0,0.5),"black"),pch=c(16,16,1),bty="n",cex=1.2)
 par(op)
@@ -665,7 +618,7 @@ good_sp<-c(1:length(knz_spaceavg[[1]]))
 lensp<-length(good_sp)
 
 summary_knz_commonsp<-data.frame(sp=names(knz_spaceavg$avg.percent.cover),n0=NA,nTies=NA)
-pdf("./Results/knz_results/rawplot_knz_spaceavg_commonsp_with_pseudosp_avgcover.pdf",height = 0.5*lensp,width=0.5*lensp)
+pdf(paste(resloc_knz,"rawplot_knz_spaceavg_commonsp_with_pseudosp_avgcover_soiltype_",knz_soiltype,".pdf",sep=""),height = 0.5*lensp,width=0.5*lensp)
 op<-par(mfrow=c(6,5),mar=c(5,5,3,3))
 for (i in good_sp){
   n0<-sum(knz_spaceavg$avg.percent.cover[[i]]$Dat==0)
@@ -673,12 +626,12 @@ for (i in good_sp){
   summary_knz_commonsp$n0[i]<-n0
   summary_knz_commonsp$nTies[i]<-nTies
   if(n0==0){
-    col1<-rgb(1,0,0,0.3) # these are the sp. present for all years : total 27 sp. + 1 pseudo sp.
+    col1<-rgb(1,0,0,0.3) # these are the sp. present for all years 
   }else{
     col1<-rgb(0,0,1,0.3)
   }
   plot(knz_spaceavg$avg.percent.cover[[i]]$Year,knz_spaceavg$avg.percent.cover[[i]]$Dat,col=col1,pch=19,
-       ylim=c(0,max(knz_spaceavg$avg.percent.cover[[i]]$Dat)),xlab="Year (1983-2015)",type="b",ylab="avg. % cover")
+       ylim=c(0,max(knz_spaceavg$avg.percent.cover[[i]]$Dat)),xlab="Year (1983-2018)",type="b",ylab="avg. % cover")
   abline(h=0)
   
   mtext(paste0("sp = ",i," : ",names(knz_spaceavg$avg.percent.cover)[i]," ,nT=",nTies,sep=""))
@@ -689,7 +642,9 @@ dev.off()
 # ---------------------generate copula plots for all common sp for knz_spaceavg--------------------
 source("./vivj_matrix.R")
 
-pdf("./Results/knz_results/copulaplot_knz_spaceavg_commonsp_with_pseudosp_avgcover.pdf",height=2*lensp,width = 2*lensp)
+include_indep<-FALSE
+
+pdf(paste(resloc_knz,"copulaplot_knz_spaceavg_commonsp_with_pseudosp_avgcover_soiltype_",knz_soiltype,".pdf",sep=""),height=2*lensp,width = 2*lensp)
 op<-par(mfrow=c(lensp,lensp),mar=c(3,3,3,3), mgp=c(1.5,0.5,0))
 for(i in c(1:lensp)){
   for(j in c(1:lensp)){
@@ -700,9 +655,6 @@ for(i in c(1:lensp)){
 }
 par(op)
 dev.off()
-
-# !!!!!!!!!!!!!!!!!!!!!! NOTE : even I consider the species which were present every year still there was large nTies with sp. 5,7,20
-# But there were very few weird copula with those sp. or max. independent : that's why I don't care much
 ```
 
 <!-- non-parametric analysis for cor stat with common + pseudo sp. in knz-->
@@ -711,29 +663,36 @@ dev.off()
 set.seed(seed) 
 source("./NonParamStat.R")
 
-if(!dir.exists("./Results/knz_results/corstat_knz_spaceavg_results")){
-  dir.create("./Results/knz_results/corstat_knz_spaceavg_results")
+resloc_knz_npa<-paste(resloc_knz,"corstat_knz_spaceavg_results/",sep="")
+
+if(!dir.exists(resloc_knz_npa)){
+  dir.create(resloc_knz_npa)
 }
 
-resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
+resloc2<-paste(resloc_knz_npa,"soiltype_",knz_soiltype,"/",sep="")
+if(!dir.exists(resloc2)){
+  dir.create(resloc2)
+}
+
+resloc<-resloc2
 nbin_knz<-2
 include_indep<-FALSE 
 
 corstat_knz_spaceavg<-multcall(d_allsp=knz_spaceavg,
-                           loc=1,
-                           resloc=resloc,
-                           good_sp=c(1:length(knz_spaceavg[[1]])),
-                           nbin=nbin_knz,include_indep=include_indep)
+                               loc=1,
+                               resloc=resloc,
+                               good_sp=c(1:length(knz_spaceavg[[1]])),
+                               nbin=nbin_knz,include_indep=include_indep)
 
 saveRDS(corstat_knz_spaceavg,paste(resloc,file="corstat_knz_spaceavg_nbin_",nbin_knz,".RDS",sep=''))
 ```
 
 <!-- genarating Corl - Coru plots from non-parametric analysis with common + pseudo sp. in knz-->
-```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,knz_spaceavg,corstat_knz_spaceavg,nbin_knz,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
+```{r plot_res_knz_npa_spaceavg, echo=F, results="hide",cache=T,warning=F, cache.extra=list(seed,knz_spaceavg,resloc2,corstat_knz_spaceavg,nbin_knz,mtime("NonParamStat_matrixplot.R"),mtime("mycorrplot_with_sig.R"),mtime("tailsignif.R"),mtime("CopulaFunctions_flexible.R"))}
 set.seed(seed)
 source("./NonParamStat_matrixplot.R")
 
-resloc<-"./Results/knz_results/corstat_knz_spaceavg_results/"
+resloc<-resloc2
 
 ub<-1/nbin_knz
 numpts<-length(knz_spaceavg$avg.percent.cover[[1]]$Year) #for knz data 33years
@@ -744,7 +703,7 @@ include_indep<-FALSE
 
 CorlmCoru_knz_spaceavg<-NonParamStat_matrixplot(data=corstat_knz_spaceavg,
                                                 resloc=resloc,tagon=T,
-                                                type="lower",wd=13,ht=13,
+                                                type="lower",wd=15,ht=15,
                                                 sigtest=sigtest,ub=ub,numpts=numpts,numsims=numsims,CI=CI,
                                                 include_indep=include_indep)
 saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg_nbin_",nbin_knz,".RDS",sep=''))
@@ -759,238 +718,20 @@ saveRDS(CorlmCoru_knz_spaceavg,paste(resloc,file="CorlmCoru_knz_spaceavg_nbin_",
 ```
 
 <!--get appropriate surrogates for knz with common+pseudo sp.-->
-```{r make_surrogs_CP_knz, echo=F, results="hide", warning=F, cache=T, cache.extra=list(surrog_seed1,surrog_seed2,ts_mat_CP_knz,mtime("copmap.R"),mtime("getinv.R"),mtime("getinvrg.R"),mtime("alignranks.R"))}
+```{r make_surrogs_CP_knz_t, echo=F, results="hide", warning=F, cache=T,cache.extra=list(mtime("./Results/knz_results/skewness_results/ts_CP_knz_soiltype_t.RDS"),mtime("PPSurrogObjFun.R"),mtime("pwlin.R"),mtime("getmap.R"),mtime("alignranks.R"),mtime("SurrogsForKonza_t.R"))}
 
-#***setup for the chunk
-
-library(matrixcalc)
-library(mvtnorm)
-
-# functions needed
-source("copmap.R")
-source("getinv.R")
-source("getinvrg.R")
-source("alignranks.R")
-
-# result folder to save surrogates 
-resloc_surrog_knz<-"./Results/knz_results/skewness_results/pp_surrogs_knz_CP/"
-if (!dir.exists(resloc_surrog_knz)){
-  dir.create(resloc_surrog_knz)
-}
-
-#***For each pair of species, find the preimage of the correlation 
-#under the map defined by copmap.R - this is to determine search bounds
-#for the subsequent optimization
-
-set.seed(surrog_seed1)
-
-d<-ts_mat_CP_knz
-numsp<-dim(d)[2]
-p<-seq(from=-1,to=1,by=0.1)
-numreps<-250
-
-#receptacle for results, the preimage in allparms[,,2], the range
-#specified by the other values
-allparms<-array(NA,c(numsp,numsp,3))
-
-#loop through each pair of species
-for (c1 in 1:(numsp-1))
-{
-  print(paste0("c1: ",c1))
-  for (c2 in (c1+1):numsp)
-  {
-    #get the time series for these two species
-    x<-d[,c1]
-    y<-d[,c2]
-    
-    #get the (stochastic) map
-    thisres<-copmap(x,y,p,numreps,"cor")
-    
-    #find the iverse range
-    allparms[c1,c2,c(1,3)]<-getinvrg(p,thisres,cor(x,y))
-    
-    #find the actual preimage
-    allparms[c1,c2,2]<-getinv(p,thisres,cor(x,y),"median")
-    
-    #make and save a plot
-    mn<-apply(FUN=mean,MARGIN=2,X=thisres)
-    quants<-apply(FUN=quantile,MARGIN=2,X=thisres,probs=c(.25,.5,.75))
-    pdf(paste0(resloc_surrog_knz,"mapplot_",c1,"_",c2,".pdf"))
-    plot(p,mn,type='l',ylim=range(mn,quants))
-    lines(p,quants[2,],type='l',lty="dashed")
-    lines(p,quants[1,],type='l',lty="dotted")
-    lines(p,quants[3,],type='l',lty="dotted")
-    lines(range(p),rep(cor(x,y),2))
-    lines(rep(allparms[c1,c2,1],2),c(-1,1))
-    lines(rep(allparms[c1,c2,2],2),c(-1,1))
-    lines(rep(allparms[c1,c2,3],2),c(-1,1))
-    dev.off()
-  }
-}
-
-#make sure the preimage is within the preimage range in all cases,
-#and you got a sensible range and a single-point preimage in all cases
-if (sum(allparms[,,1]<allparms[,,2],na.rm=TRUE)!=(numsp^2-numsp)/2 ||
-    sum(allparms[,,2]<allparms[,,3],na.rm=TRUE)!=(numsp^2-numsp)/2)
-{
-  stop("Error in make_surrogs_CP_knz: error screening location 1")
-}
-
-#***Now look for positive definite in a couple simple ways
-
-#First check to see if we got lucky and the preimage itself is pos def
-m1<-allparms[,,2]
-m1[is.na(m1)]<-0
-m1<-m1+t(m1)
-diag(m1)<-1
-if (is.positive.semi.definite(m1))
-{
-  stop("We got lucky in make_surrogs_CP_knz, revisit code: lucky screening location 1") 
-} #If m1 is pos semi def, we can skip much of the rest of the chunk and
-#do things in a simpler way, so screen for that
-
-#now use nearPD and see if you can get a positive definite matrix between the bounds
-hlo<-P2p(t(allparms[,,1]))
-hpre<-P2p(t(allparms[,,2]))
-hhi<-P2p(t(allparms[,,3]))
-hmid<-(hlo+hhi)/2
-bestmatNPD<-matrix(as.numeric(Matrix::nearPD(m1,corr=TRUE)$mat),numsp,numsp)
-bestmatNPDvect<-P2p(bestmatNPD)
-if (sum(bestmatNPDvect>hhi | bestmatNPDvect<hlo)==0)
-{
-  stop("We got lucky in make_surrogs_CP_knz, revisit code: lucky screening location 2") 
-} #if we got a positive definite matrix here, then we may not have to search
-#for one below, so screen for that
-
-#***Now search for a positive definite matrix in the space of parameters 
-#desribed by allparms
-
-#prepare
-set.seed(surrog_seed2)
-numpd<-50000
-allposdefmats<-matrix(NA,2*numpd,length(hlo)+1)
-allposdefmats_rowcount<-1
-
-#the function to optimize which will lead us toward pos def mats, and will also
-#record any that are found
-fn<-function(h)
-{
-  res<-min(eigen(p2P(h))$values)
-  if (res>0)
-  {
-    allposdefmats[allposdefmats_rowcount,]<<-c(h,res)
-    allposdefmats_rowcount<<-allposdefmats_rowcount+1 #note the use of global variables, watch out!
-    print("Found one!")
-  }
-  return(res)
-}
-
-#do a search starting with the preimage itself
-optim(hpre,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
-      control=list(fnscale=-1)) 
-
-#do a search starting from the midpoint of the preimage range
-optim(hmid,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
-      control=list(fnscale=-1)) 
-
-#now do a bunch of searches from random start points
-while (allposdefmats_rowcount<=numpd)
-{
-  startvec<-(hhi-hlo)*runif(length(hlo))+hlo
-  optim(startvec,fn,method="L-BFGS-B",lower=hlo,upper=hhi,
-        control=list(fnscale=-1)) 
-}
-
-allposdefmats<-allposdefmats[1:(allposdefmats_rowcount-1),]
-saveRDS(allposdefmats,file=paste0(resloc_surrog_knz,"PosDefMats.RDS"))
-
-#***Now find the result that is closest to hpre
-
-allposdefmats<-allposdefmats[,1:(dim(allposdefmats)[2]-1)]
-hpremat<-matrix(hpre,dim(allposdefmats)[1],length(hpre),byrow = TRUE)
-sizemat<-matrix((hhi-hlo)/2,dim(allposdefmats)[1],length(hlo),byrow = TRUE)
-dist<-apply(X=((allposdefmats-hpremat)/sizemat)^2,FUN=sum,MARGIN=1)
-besth<-allposdefmats[which(dist==min(dist)),]
-if (any(besth<hlo | besth>hhi))
-{
-  stop("Error in make_surrogs_CP_knz: error screening location 2")
-}#the result should be within the bounds - screen for it
-bestmat<-p2P(besth) #this is supposed to be my parameter matrix for a normal copula!
-if (!is.positive.semi.definite(bestmat))
-{
-  stop("Error in make_surrogs_CP_knz: error screening location 3")
-}#the result should be positive semi-definite - screen for it
-
-#***Now make a plot showing where in the ranges given by hlo to hhi 
-#the besth values sit
-
-inds<-order(besth)
-pdf(file=paste0(resloc_surrog_knz,"PDResultComparedToBounds.pdf"))
-plot(1:length(besth),besth[inds],type='l',ylim=range(besth,hlo,hhi))
-lines(1:length(besth),hlo[inds],type='l',lty="dashed")
-lines(1:length(besth),hhi[inds],type='l',lty="dashed")
-dev.off()
-
-#***Now assess whether you get reasonably pearson-preserving surrogates
-#using bestmat
-
-numsimsforcheck<-1000
-
-sims<-rmvnorm((dim(d)[1])*numsimsforcheck,sigma=bestmat)
-sims<-aperm(array(sims,c(dim(d)[1],numsimsforcheck,dim(d)[2])),c(1,3,2))
-dim(sims)
-sd<-d
-for (counter in 1:numsp)
-{
-  sd[,counter]<-sort(d[,counter])
-}#need to sort the columns of d to use alignranks
-remapd<-alignranks(sd,sims)
-holder<-apply(FUN=cor,MARGIN=3,X=remapd)
-allcors<-array(holder,c(numsp,numsp,numsimsforcheck))
-gtres<-apply(FUN=sum,MARGIN=c(1,2),X=(allcors>array(cor(d),c(numsp,numsp,numsimsforcheck))))
-diag(gtres)<-NA
-pdf(file=paste0(resloc_surrog_knz,"AssessIfSurrogsPreservePearson.pdf"))
-hist(gtres)#very few of these should be outside the range 250-750, 
-#and if they are not outside that range you have pretty 
-#good surrogates
-dev.off()
-
-saveRDS(bestmat,file=paste0(resloc_surrog_knz,"FinalPDParameterMatrix.RDS"))
-#This is the final parameter result. If you generate data from a normal copula
-#with this parameter matrix and then use alignranks, that should give ok 
-#Pearson-preserving surrogates (though I still need to check if CV_com^2
-#is preserved.
-
-#***Now produce 100000 surrogates and save for later use
-
-sims<-rmvnorm((dim(d)[1])*100000,sigma=bestmat)
-sims<-aperm(array(sims,c(dim(d)[1],100000,dim(d)[2])),c(1,3,2))
-surrogs<-alignranks(sd,sims)
-saveRDS(surrogs,file=paste0(resloc_surrog_knz,"Surrogates.RDS"))
-
-#***compute CV_com^2 for surrogs and compare to data value
-totpop<-apply(FUN=sum,X=surrogs,MARGIN=c(1,3))
-allvars<-apply(FUN=var,X=totpop,MARGIN=2)
-allmnsq<-apply(FUN=function(x){(mean(x))^2},X=totpop,MARGIN=2)
-allCVcomsq<-allvars/allmnsq
-totpop<-apply(FUN=sum,X=d,MARGIN=1)
-CVd<-var(totpop)/((mean(totpop))^2)
-pdf(paste0(resloc_surrog_knz,"HistogramPlotForCVcomsq.pdf"))
-hist(allCVcomsq,50)
-lines(rep(CVd,2),c(1,1000),col="red")
-dev.off()
-saveRDS(sum(allCVcomsq<CVd)/length(allCVcomsq),
-        paste0(resloc_surrog_knz,"FracSurrogCVcomsqLTactual.RDS"))
-
-surrogs_CP_knz<-surrogs  # this is the pearson preserving surrogs for 
-#use in subsequent chunks
+source("./SurrogsForKonza_t.R")
+#after this script runs the surrogates will be in the variable surrogs_CP_KNZ_t
 ```
 
 <!-- genarating stability based results and plots for knz-->
-```{r skewness_knz_spaceavg_PP, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,ts_mat_CP_knz,surrogs_CP_knz,mtime("make_tab_stability_assessment.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
+```{r skewness_knz_spaceavg_PP, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,surrogs_CP_KNZ_t,mtime("./Results/knz_results/skewness_results/ts_CP_knz_soiltype_t.RDS"),mtime("make_tab_stability_assessment.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
 
 set.seed(seed)
 source("make_tab_stability_assessment.R")
+
+ts_mat_CP_knz<-readRDS("./Results/knz_results/skewness_results/ts_CP_knz_soiltype_t.RDS")
+surrogs_CP_knz<-surrogs_CP_KNZ_t
 
 # randomly sample numsurrog surrogate matrices from Pearson preserving array
 numsurrog<-10000
@@ -1015,7 +756,8 @@ xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_knz$cvsq_surrogs)
 hist(stability_CP_knz$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
      xlab="CVsq. of Surrogates",main="",cex.lab=1.5)
 axis(side=1, at=c(xlm[1],0,xlm[2]))
-abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
+points(x=ans$cvsq_real,y=0,col="black",pch=20,cex=1)  # actual CVsq from real data
+#abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
 
 #95% quantiles
 abline(v=ans$cvsq_ntd_0.025CI,col="black",lty="dotted") 
@@ -1027,7 +769,7 @@ abline(v=ans$cvsq_ntd_0.975CI,col="black",lty="dotted")
 #abline(v=CI_cvsq_50[2],col="green")
 
 # Cvsq with no tail dep.
-points(x=ans$cvsq_ntd_median,y=0,col="black",pch=1,cex=1.5)
+points(x=ans$cvsq_ntd_median,y=0,col="black",pch=2,cex=1.5)
 
 # Cvsq if indep.
 abline(v=ans$cvsq_indep,col="black",lty="dashed")
@@ -1039,7 +781,8 @@ xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_knz$skw_surrogs)
 hist(stability_CP_knz$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
      xlab="Skewness of Surrogates",main="",cex.lab=1.5)
 axis(side=1, at=c(xlm[1],0,xlm[2]))
-abline(v=ans$skw_real,col="black") # actual skw from real data
+points(x=ans$skw_real,y=0,col="black",pch=20,cex=1) # actual skw from real data
+#abline(v=ans$skw_real,col="black") # actual skw from real data
 
 #95% quantiles
 abline(v=ans$skw_ntd_0.025CI,col="black",lty="dotted") 
@@ -1051,7 +794,7 @@ abline(v=ans$skw_ntd_0.975CI,col="black",lty="dotted")
 #abline(v=CI_skw_50[2],col="green")
 
 # Skewness with no tail dep.
-points(x=ans$skw_ntd_median,y=0,col="black",pch=1,cex=1.5)
+points(x=ans$skw_ntd_median,y=0,col="black",pch=2,cex=1.5)
 
 # Skewness if indep.
 abline(v=ans$skw_indep,col="black",lty="dashed")
@@ -1067,9 +810,9 @@ pdf("./Results/knz_results/skewness_results/legend_plot.pdf",height=0.5,width=11
 op<-par(mar=c(0.1,0.1,0.1,0.1),mgp=c(1,1,0))
 
 plot.new()
-legend("topright",lty=c(1,NA,3,2),pch=c(NA,1,NA,NA),
+legend("topright",lty=c(NA,NA,3,2),pch=c(20,2,NA,NA),
        horiz = T, bty="n",
-       legend=c("real value,","no Tail-dep. (median),       ","95%CI,","Indep."),x.intersp=0.2)
+       legend=c("real value,","no Tail-dep. (median),","95%CI,","Indep."),x.intersp=0, text.width = 0.22)
 #par(op)
 dev.off()
 ```
@@ -1212,18 +955,20 @@ knitr::kable(tab_spinfo_hays,
 ```
 
 ```{r make_tab_common_splist_for_knz, echo=F, results="asis"}
+# species list for knz (PPS01) is downloadable from: http://lter.konza.ksu.edu/content/pps01-konza-prairie-plant-species-list
 library(kableExtra)
 library(dplyr)
-tab_spinfo_knz<-as.data.frame(matrix(NA,nrow=28,ncol=3))
+tab_spinfo_knz<-as.data.frame(matrix(NA,nrow=22,ncol=3))
 colnames(tab_spinfo_knz)<-c("ID","Sp. code","Species name")
-tab_spinfo_knz$ID<-c(1:28)
+tab_spinfo_knz$ID<-c(1:22)
 tab_spinfo_knz$`Sp. code`<-names(knz_spaceavg$avg.percent.cover)
-splistfullnm<-c("Ambrosia psilostachya", "Amorpha canescens", "Andropogon gerardii", "Artemisia ludoviciana", 
-                "Asclepias stenophylla", "Asclepias verticillata","Asclepias viridiflora", "Asclepias viridis",
-                "Baptisia bracteata", "Bouteloua curtipendula", "Brickellia eupatorioides","Cirsium undulatum",
-                "Dalea purpurea","Dichanthelium acuminatum", "Dichanthelium oligosanthes", "Lespedeza capitata",
-                "Mimosa nuttallii", "Panicum virgatum", "Physalis pumila", "Ratibida columnifera",
-                "Ruellia humilis", "Salvia azurea", "Schizachyrium scoparium", "Sorghastrum nutans",
+splistfullnm<-c("Ambrosia psilostachya", "Andropogon gerardii", "Asclepias verticillata","Asclepias viridis",
+                "Baptisia bracteata", "Bouteloua curtipendula", "Brickellia eupatorioides",
+                "Dalea candida","Dichanthelium oligosanthes", "Dichanthelium	ovale",
+                "Lespedeza capitata",
+                "Mimosa quadrivalvis", "Panicum virgatum", 
+                "Ruellia humilis", "Salvia azurea", "Schizachyrium scoparium", "solidago	altissima", 
+                "Sorghastrum nutans",
                 "Sporobolus compositus", "Symphyotrichum ericoides", "Vernonia baldwinii", "This is a pseudo sp.
                 = (intermediate + rare ones)"
                 )
@@ -1231,7 +976,7 @@ splistfullnm<-c("Ambrosia psilostachya", "Amorpha canescens", "Andropogon gerard
 tab_spinfo_knz$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_knz, 
              format="latex", align="c", linesep = "",
-             caption = "Information of the most common species considered for KNZ data; 27 most common species are selected based on the criterion that they had 33 years of spatial averaged percent cover, for full list of all the species, including rare ones see Appendix \\ref{Data}.\\label{tab_spinfo_knz}", 
+             caption = "Information of the most common species considered for KNZ data; 21 most common species are selected based on the criterion that they had 36 years of spatial averaged percent cover, for full list of all the species, including rare ones see Appendix \\ref{Data}.\\label{tab_spinfo_knz}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
@@ -1285,7 +1030,7 @@ in the maintext.\label{fig_hays_spaceavg_SCSC_interactions}}
 \begin{center}
 \textbf{ \hspace{0.5 cm} (A) \hspace{5.5 cm} (B)} \\
 \includegraphics[width=6 cm]{./Results/hays_results/skewness_results/total_timeseries.pdf}
-\includegraphics[width=6 cm]{./Results/knz_results/skewness_results/total_timeseries.pdf}\\
+\includegraphics[width=6 cm]{./Results/knz_results/skewness_results/total_timeseries_soiltype_t.pdf}\\
 \caption[Timeseries plot for (A) Hays and $(B)$ KNZ data]{Timeseries plot for (A) Hays and $(B)$ KNZ data; "common" species indicate the most abundant species throughout years averaging over quadrats and present minimum for $35$ years. "Rare" species refer to the species which was present maximum for 2 years in both datasets. The rest are classified into "intermediate" category.\label{fig_spaceavg_timeseries}}
 \end{center}
 \end{figure}

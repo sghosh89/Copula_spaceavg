@@ -545,7 +545,7 @@ a potential threat for some of its native species which could crash simultaneous
 \begin{center}
 \textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
 \includegraphics[width=8cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
-\includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/Corl-Coru_ub_0.5.pdf} 
+\includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/soiltype_t/Corl-Coru_ub_0.5.pdf} 
 \caption{Measure of tail-asymmetry for most common plant species along with 
 other species merged into a pseudo species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
 found in (A) Hays and (B) Konza priarie, 
