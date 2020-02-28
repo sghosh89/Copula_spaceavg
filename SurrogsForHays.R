@@ -166,7 +166,7 @@ dim(sims)<-c(dim(d)[1],numsurrog,dim(d)[2])
 sims<-aperm(sims,c(1,3,2))
 dsort<-apply(FUN=sort,X=d,MARGIN=2)
 surrogs<-alignranks(dsort,sims)
-saveRDS(surrogs,file=paste0(resloc_surrog_hays,"HaysSurrogates.Rds"))
+saveRDS(surrogs,file=paste0(resloc_surrog_hays,"HaysSurrogates.RDS"))
 
 totpops<-apply(FUN=sum,MARGIN=c(1,3),X=surrogs)
 survars<-apply(FUN=var,X=totpops,MARGIN=2)

@@ -36,8 +36,6 @@ bibliography: REF_CSS.bib
 ```{r setup, echo=F, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
 seed<-101 # common seed 
-surrog_seed1<-103  # seed used to get pearson preserving surrogs
-surrog_seed2<-1001 # seed used to get pearson preserving surrogs
 library(dplyr)
 library(kableExtra)
 library(stringr)
@@ -339,19 +337,10 @@ saveRDS(CorlmCoru_hays_spaceavg,paste(resloc,file="CorlmCoru_hays_spaceavg_nbin_
 
 source("SurrogsForHays.R")
 #after this script runs the surrogates will be in the variable surrogs_CP_hays
+# and saved as ./Results/hays_results/skewness_results/pp_surrogs_hays_CP/HaysSurrogates.RDS
 ```
-
-<!--get appropriate surrogates for knz t with common+pseudo sp.-->
-```{r make_surrogs_CP_knz_t, echo=F, results="hide", warning=F, cache=T, cache.extra=list(mtime("<data location in repo>"),mtime("PPSurrogObjFun.R"),mtime("pwlin.R"),mtime("getmap.R"),mtime("alignranks.R"),mtime("SurrogsForKonza_t.R"))}
-
-source("SurrogsForKonza_t.R")
-#after this script runs the surrogates will be in the variable surrogs_CP_KNZ_t
-```
-
-<!--could not get Pearson preserving surrogates for Konza f-->
 
 <!-- genarating stability based results and plots for hays-->
-
 ```{r skewness_hays_spaceavg_PP, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,ts_mat_CP_hays,surrogs_CP_hays,mtime("make_tab_stability_assessment.R"),mtime("mycvsq.R"),mtime("SkewnessAnd3CentMom.R"))}
 
 set.seed(seed)
@@ -435,7 +424,7 @@ op<-par(mar=c(0.1,0.1,0.1,0.1),mgp=c(1,1,0))
 plot.new()
 legend("topright",lty=c(1,NA,3,2),pch=c(NA,1,NA,NA),
        horiz = T, bty="n",
-       legend=c("real value,","no Tail-dep. (median),       ","95%CI,","Indep."),x.intersp=0.2)
+       legend=c("real value,","no Tail-dep. (median),","95%CI,","Indep."),x.intersp=0, text.width = 0.22)
 #par(op)
 dev.off()
 ```
