@@ -369,7 +369,7 @@ xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_hays$cvsq_surrogs)
 
 hist(stability_CP_hays$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
      xlab="CVsq. of Surrogates",main="",cex.lab=1.5)
-axis(side=1, at=c(xlm[1],0,xlm[2]))
+axis(side=1, at=round(c(xlm[1],xlm[2]),3))
 points(x=ans$cvsq_real,y=0,col="black",pch=20,cex=1) # actual CVsq from real data
 #abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
 
@@ -394,7 +394,7 @@ xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_hays$skw_surrogs)
 
 hist(stability_CP_hays$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
      xlab="Skewness of Surrogates",main="",cex.lab=1.5)
-axis(side=1, at=c(xlm[1],0,xlm[2]))
+axis(side=1, at=round(c(xlm[1],0,xlm[2]),3))
 points(x=ans$skw_real,y=0,col="black",pch=20,cex=1) # actual skw from real data
 
 #95% quantiles
@@ -755,7 +755,7 @@ xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_knz$cvsq_surrogs)
 
 hist(stability_CP_knz$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
      xlab="CVsq. of Surrogates",main="",cex.lab=1.5)
-axis(side=1, at=c(xlm[1],0,xlm[2]))
+axis(side=1, at=round(c(xlm[1],xlm[2]),3))
 points(x=ans$cvsq_real,y=0,col="black",pch=20,cex=1)  # actual CVsq from real data
 #abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
 
@@ -780,7 +780,7 @@ xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_knz$skw_surrogs)
 
 hist(stability_CP_knz$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
      xlab="Skewness of Surrogates",main="",cex.lab=1.5)
-axis(side=1, at=c(xlm[1],0,xlm[2]))
+axis(side=1, at=round(c(xlm[1],0,xlm[2]),3))
 points(x=ans$skw_real,y=0,col="black",pch=20,cex=1) # actual skw from real data
 #abline(v=ans$skw_real,col="black") # actual skw from real data
 
