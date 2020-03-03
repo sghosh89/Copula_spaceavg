@@ -1,0 +1,110 @@
+\documentclass[letterpaper,12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{natbib}
+
+\newcommand{\mean}{\operatorname{mean}}
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\var}{\operatorname{var}}
+\newcommand{\cor}{\operatorname{cor}}
+\newcommand{\Ps}{\operatorname{P}}  
+\newcommand{\Dsq}{\operatorname{D}^2}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\cov}{\operatorname{cov}}
+
+\begin{document}
+
+\title{Pearson-preserving surrogates, materials for eventual inclusion in a methods section}
+\author{Daniel C Reuman}
+\maketitle
+
+%What are some of the things that have to be included here?
+%1) a description of what you are going for - surrogates with what properties?
+%2) A description of the map for one pair of species. For that you are going to first have to describe the %alignranks algorithm, probably best to do that separately first, and give it a name like "aligning ranks"
+%3) Given two species, we could use this map to get surrogates just for them (right?). Maybe want to %describe the bivariate version of the algorithm, first, as a warmup
+
+
+\noindent In order to start simply, we first describe the Pearson-preserving surrogates 
+algorithm for bivariate data. Then we move on to describing the algorithm
+for multivariate data. 
+
+Given data $(x(t),y(t))$ for $t=1,\ldots,T$, the bivariate
+Pearson-preserving surrogates algorithm will provide surrogate datasets
+$(x^{(n)}(t),y^{(n)}(t))$ for $t=1,\ldots,T$ with the following properties.
+First, for each $n$,
+the sets $\{x(t) : t=1,\ldots,T\}$ and $\{x^{(n)}(t) : t=1,\ldots,T\}$
+are identical, as unordered sets, as are the sets 
+$\{y(t) : t=1,\ldots,T\}$ and $\{y^{(n)}(t) : t=1,\ldots,T\}$. Thus,
+in particular, $\mean_t(x(t))=\mean_t(x^{(n)}(t))$ and 
+$\mean_t(y(t))=\mean_t(y^{(n)}(t))$ for all $n$. Likewise
+$\var_t(x(t))=\var_t(x^{(n)}(t))$ and 
+$\var_t(y(t))=\var_t(y^{(n)}(t))$ for all $n$. Similarly for
+higher moments or other quantities that depend only on the time series
+univariate marginal distributions.
+Second, the Pearson correlations $\cor_t(x(t),y(t))$
+and $\cor_t(x^{(n)}(t),y^{(n)}(t))$ are approximately equal (differing 
+only due to a type of sampling variation). Finally, the copula 
+structure of the $(x^{(n)}(t),y^{(n)}(t))$ for $t=1,\ldots,T$
+will be normal.
+
+To construct surrogates, we begin by defining a stochastic map
+$$\varphi:[-1,1]\rightarrow[-1,1]$$ as follows. Given $p \in [-1,1]$,
+consider $p$ to be the covariance of a bivariate normal distribution
+with standard normal univariate marginals. Generate data 
+$(a(t),b(t))$ for $t=1,\ldots,T$ via independent draws 
+from this distribution. Permute the ordered set $(x(1),\ldots,x(T))$
+so that, for all $k$, the time series position of the $k$th-largest element
+in the permuted set is the same as the time series position of the 
+$k$th-largest element of the ordered set $(a(1),\ldots,a(T))$. We refer to
+such a permutation operation as \emph{aligning the ranks} of the $x$
+to match those of the $a$. Likewise align the ranks of the $y$
+to match those of the $b$. Another way to describe the rank alignment 
+step for $x$ is to select a permutation $\sigma_x$
+of the indices $1,\dots,T$ such that the time series
+$(x(\sigma_x(1)),\ldots,x(\sigma_x(T)))$ has 
+$\rank(x(\sigma_x(t)))=\rank(a(t))$ for all $t$, where $\rank(x(\sigma_x(t)))$ is
+the rank of $x(\sigma_x(t))$ in the set $\{x(1),\ldots,x(T)\}$ and 
+$\rank(a(t))$ is the rank of $a(t)$ in the set $\{a(1),\ldots,a(T)\}$.
+We consider the smallest element of a set of size $T$ to have rank $1$ and
+the largest to have rank $T$. We likewise select a permutation $\sigma_y$
+such that $(y(\sigma_y(1)),\ldots,y(\sigma_y(T)))$ has 
+$\rank(y(\sigma_y(t)))=\rank(b(t))$ for all $t$. We then define $\varphi(p)$
+to be the Pearson correlation of the permuted time series, 
+$\cor_t(x(\sigma_x(t)),y(\sigma_y(t)))$. This is a 
+stochastic quantity, because it is based on the stochastically generated
+time series $(a(t),b(t))$. We also define the expected value map
+$\E\varphi(p)$. In practice, this is computed numerically by computing
+the stocastic map $\varphi(p)$ many times and taking the mean. Thus
+$\E\varphi(p)$ can be determined with error that can be reduced 
+arbitrarily by using additional stochastic evaluations of the $\varphi(p)$.
+
+Having defined $\varphi$, let $c=\cor_t(x(t),y(t))$ be the Pearson 
+correlation of the data and select $\hat{p} \in [-1,1]$ such that $\E\varphi(\hat{p})=c$ 
+to within the desired precision. See below on how to do this, and our experience with
+when it is possible, and whether and when $\hat{p}$ is unique. Then Pearson-preserving 
+surrogates are constructed for
+the dataset $(x(t),y(t))$, $t=1,\ldots,T$, as follows. First, generate data 
+$(a(t),b(t))$ for $t=1,\ldots,T$ via independent draws from the bivariate normal
+distribution with standard normal marginals and covariance $\hat{p}$.
+Then align the ranks of $x$ to match those of $a$, and align the ranks
+of $y$ to match those of $b$. These permutations of $x$ and $y$ are the surrogates.
+Numerous surrogate datasets can be generated by repeating this process.
+The first two desired properties of the surrogates listed above are 
+satisfied, by construction. The final desired property of the surrogates
+(normal copula structure) is satisfied because the ranks of the surrogates
+are the same as the ranks of $a$ and $b$.
+
+Given data $(x(t),y(t))$ for $t=1,\ldots,T$ and given $c \in [-1,1]$,
+we now discuss what we know about whether and when there exists $\hat{p} \in [-1,1]$ such 
+that $\E\varphi(\hat{p})=c$, and whether $\hat{p}$ is unique when it 
+exists; we simultaneously discuss how we obtained $\hat{p}$ for our data.
+Above we used $c=\cor_t(x(t),y(t))$, but here we consider general $c$. 
+Given $(x(t),y(t))$, we evaluated $\varphi$ $500$ times for $p$ equal to each
+of $18$ values evenly spaced from $-1$ to $1$. 
+
+
+
+
+\end{document}
