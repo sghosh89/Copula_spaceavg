@@ -1,9 +1,10 @@
-\documentclass[letterpaper,12pt]{article}
+\documentclass[letterpaper,11pt]{article}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
 \usepackage{natbib}
+\usepackage[margin=0.75in]{geometry}
 
 \newcommand{\mean}{\operatorname{mean}}
 \newcommand{\E}{\operatorname{E}}
@@ -32,22 +33,27 @@ for multivariate data.
 
 Given data $(x(t),y(t))$ for $t=1,\ldots,T$, the bivariate
 Pearson-preserving surrogates algorithm will provide surrogate datasets
-$(x^{(n)}(t),y^{(n)}(t))$ for $t=1,\ldots,T$ with the following properties.
-First, for each $n$,
-the sets $\{x(t) : t=1,\ldots,T\}$ and $\{x^{(n)}(t) : t=1,\ldots,T\}$
+$(x^{(m)}(t),y^{(m)}(t))$ for $t=1,\ldots,T$ with the following properties.
+First, for each $m$,
+the sets $\{x(t) : t=1,\ldots,T\}$ and $\{x^{(m)}(t) : t=1,\ldots,T\}$
 are identical, as unordered sets, as are the sets 
-$\{y(t) : t=1,\ldots,T\}$ and $\{y^{(n)}(t) : t=1,\ldots,T\}$. Thus,
-in particular, $\mean_t(x(t))=\mean_t(x^{(n)}(t))$ and 
-$\mean_t(y(t))=\mean_t(y^{(n)}(t))$ for all $n$. Likewise
-$\var_t(x(t))=\var_t(x^{(n)}(t))$ and 
-$\var_t(y(t))=\var_t(y^{(n)}(t))$ for all $n$. Similarly for
+$\{y(t) : t=1,\ldots,T\}$ and $\{y^{(m)}(t) : t=1,\ldots,T\}$. Thus,
+in particular, $\mean_t(x(t))=\mean_t(x^{(m)}(t))$ and 
+$\mean_t(y(t))=\mean_t(y^{(m)}(t))$ for all $m$. Likewise
+$\var_t(x(t))=\var_t(x^{(m)}(t))$ and 
+$\var_t(y(t))=\var_t(y^{(m)}(t))$ for all $m$. Similarly for
 higher moments or other quantities that depend only on the time series
 univariate marginal distributions.
 Second, the Pearson correlations $\cor_t(x(t),y(t))$
-and $\cor_t(x^{(n)}(t),y^{(n)}(t))$ are approximately equal (differing 
+and $\cor_t(x^{(m)}(t),y^{(m)}(t))$ are approximately equal (differing 
 only due to a type of sampling variation). Finally, the copula 
-structure of the $(x^{(n)}(t),y^{(n)}(t))$ for $t=1,\ldots,T$
-will be normal.
+structure of the $(x^{(m)}(t),y^{(m)}(t))$ for $t=1,\ldots,T$
+will be normal. Note that the covariance
+$\cov_t(x^{(m)}(t),y^{(m)}(t))$ will be approximately equal to the covariance
+$\cov_t(x(t),y(t))$ (up to sampling variation), because 
+$\cor_t(x^{(m)}(t),y^{(m)}(t))$ is approximately equal to 
+$\cor_t(x(t),y(t))$ and $\var_t(x(t))=\var_t(x^{(m)}(t))$ and 
+$\var_t(y(t))=\var_t(y^{(m)}(t))$.
 
 To construct surrogates, we begin by defining a stochastic map
 $$\varphi:[-1,1]\rightarrow[-1,1]$$ as follows. Given $p \in [-1,1]$,
@@ -60,7 +66,7 @@ in the permuted set is the same as the time series position of the
 $k$th-largest element of the ordered set $(a(1),\ldots,a(T))$. We refer to
 such a permutation operation as \emph{aligning the ranks} of the $x$
 to match those of the $a$. Likewise align the ranks of the $y$
-to match those of the $b$. Another way to describe the rank alignment 
+to match those of the $b$. Another way to describe this rank alignment 
 step for $x$ is to select a permutation $\sigma_x$
 of the indices $1,\dots,T$ such that the time series
 $(x(\sigma_x(1)),\ldots,x(\sigma_x(T)))$ has 
@@ -68,17 +74,17 @@ $\rank(x(\sigma_x(t)))=\rank(a(t))$ for all $t$, where $\rank(x(\sigma_x(t)))$ i
 the rank of $x(\sigma_x(t))$ in the set $\{x(1),\ldots,x(T)\}$ and 
 $\rank(a(t))$ is the rank of $a(t)$ in the set $\{a(1),\ldots,a(T)\}$.
 We consider the smallest element of a set of size $T$ to have rank $1$ and
-the largest to have rank $T$. We likewise select a permutation $\sigma_y$
-such that $(y(\sigma_y(1)),\ldots,y(\sigma_y(T)))$ has 
+the largest element to have rank $T$. We likewise select a permutation $\sigma_y$
+such that the time series $(y(\sigma_y(1)),\ldots,y(\sigma_y(T)))$ has 
 $\rank(y(\sigma_y(t)))=\rank(b(t))$ for all $t$. We then define $\varphi(p)$
-to be the Pearson correlation of the permuted time series, 
+to be the Pearson correlation of the permuted time series, i.e.,
 $\cor_t(x(\sigma_x(t)),y(\sigma_y(t)))$. This is a 
 stochastic quantity, because it is based on the stochastically generated
 time series $(a(t),b(t))$. We also define the expected value map
 $\E\varphi(p)$. In practice, this is computed numerically by computing
 the stocastic map $\varphi(p)$ many times and taking the mean. Thus
 $\E\varphi(p)$ can be determined with error that can be reduced 
-arbitrarily by using additional stochastic evaluations of the $\varphi(p)$.
+arbitrarily through additional stochastic evaluations of $\varphi(p)$.
 
 Having defined $\varphi$, let $c=\cor_t(x(t),y(t))$ be the Pearson 
 correlation of the data and select $\hat{p} \in [-1,1]$ such that $\E\varphi(\hat{p})=c$ 
@@ -88,21 +94,168 @@ surrogates are constructed for
 the dataset $(x(t),y(t))$, $t=1,\ldots,T$, as follows. First, generate data 
 $(a(t),b(t))$ for $t=1,\ldots,T$ via independent draws from the bivariate normal
 distribution with standard normal marginals and covariance $\hat{p}$.
-Then align the ranks of $x$ to match those of $a$, and align the ranks
-of $y$ to match those of $b$. These permutations of $x$ and $y$ are the surrogates.
+Then align the ranks of $x(t)$ to match those of $a(t)$, and align the ranks
+of $y(t)$ to match those of $b(t)$. These permutations of $x(t)$ and $y(t)$, together, 
+form the surrogates.
 Numerous surrogate datasets can be generated by repeating this process.
 The first two desired properties of the surrogates listed above are 
 satisfied, by construction. The final desired property of the surrogates
 (normal copula structure) is satisfied because the ranks of the surrogates
-are the same as the ranks of $a$ and $b$.
+are the same as the ranks of $a$ and $b$. 
 
 Given data $(x(t),y(t))$ for $t=1,\ldots,T$ and given $c \in [-1,1]$,
 we now discuss what we know about whether and when there exists $\hat{p} \in [-1,1]$ such 
 that $\E\varphi(\hat{p})=c$, and whether $\hat{p}$ is unique when it 
 exists; we simultaneously discuss how we obtained $\hat{p}$ for our data.
-Above we used $c=\cor_t(x(t),y(t))$, but here we consider general $c$. 
+Above we used $c=\cor_t(x(t),y(t))$, but here we consider general $c \in [-1,1]$. 
 Given $(x(t),y(t))$, we evaluated $\varphi$ $500$ times for $p$ equal to each
-of $18$ values evenly spaced from $-1$ to $1$. 
+of $18$ values evenly spaced from $-1$ to $1$, and plotted the results (e.g., Fig. 
+\ref{fig:varphiexample} shows an example plot). We generated such a plot
+whenever we made use of the map $\varphi$ for a dataset $(x(t),y(t))$.
+In every case we checked whether the piecewise-linear approximation 
+to the expected-value map $\E\varphi$ (depicted on Fig. \ref{fig:varphiexample} 
+for this example) was monotonic, finding that in every case it was. We then
+used this piecewise-linear approximation as a standin for the map
+$\E\varphi$ in subsequent computations. Whenever $c$ was between the values
+$\E\varphi(-1)$ and $\E\varphi(1)$, depicted on Fig. \ref{fig:varphiexample}
+as the extreme y-axis values obtained, the conditions checked above meant we could
+find a single unique pre-image of $c$ under the map $\E\varphi$. This was 
+an approximate preimage because we used the piecewise-linear approximation for 
+$\E\varphi$, but was likely to be a good approximation because we used $500$
+evaluations of $\varphi$ for each value of $p$.
+Henceforth we will denote by $\E\varphi^{-1}$ the inverse of the piecewise-linear
+approximation of $\E\varphi$; this piecewise-linear approximation was always invertible
+thanks to the checks performed above. The extreme value 
+$\E\varphi(1)$ can be straightforwardly
+computed by sorting both $x$ and $y$ into ascending order and computing the Pearson correlation.
+The extreme value $\E\varphi(1)$ can be straightforwardly
+computed by sorting $x$ into ascending order and $y$ into descending order, and
+then computing the Pearson correlation.
+
+Given multivariate data, $(x_1(t),\ldots,x_N(t))$ for $t=1,\ldots,T$,
+we now move on to describing Pearson-preserving surrogates, 
+$(x_1^{(m)}(t),\ldots,x_N^{(m)}(t))$ for $t=1,\ldots,T$. Multivariate Pearson-preserving surrogates 
+have the following properties, the second of which is slightly weaker than the 
+corresponding property for the bivariate case.
+First, for each $m$ and $n$, the sets $\{x_n(t) : t=1,\ldots,T\}$ and 
+$\{x_n^{(m)}(t) : t=1,\ldots,T\}$ are identical, as unordered sets. 
+Second, the expected value of the sum $\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$
+is within $\pm 10\%$ of the sum $\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$;
+AND for any $n_1$ and $n_2$, the expected value of
+$\cor_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ is as close as possible to
+$\cor_t(x_{n_1}(t),x_{n_2}(t))$ (below, we will make precise
+the degree to which these quantities agreed for our datasets).
+Finally, the copula structure of $(x_1^{(m)}(t),\ldots,x_N^{(m)}(t))$
+for $t=1,\ldots,T$ will be multivariate normal. Because
+$\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$
+is within $\pm 10\%$ of $\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$,
+the total community variance $\var_t(\sum_n x_n^{(m)}(t))= \sum_{n_1, n_2} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$
+for a surrogate dataset should be similar to the total community variance,
+$\var_t(\sum_n x_n(t))= \sum_{n_1, n_2} \cov_t(x_{n_1}(t),x_{n_2}(t))$, for the real data.
+Likewise,
+the variance ratios $\frac{\sum_{n_1, n_2} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))}
+{\sum_{n} \var_t(x_n^{(m)}(t))}$ and 
+$\frac{\sum_{n_1, n_2} \cov_t(x_{n_1}(t),x_{n_2}(t))}
+{\sum_{n} \var_t(x_n(t))}$ should be similar.
+
+We begin by defining the map $\varphi_{n_1 n_2}:[-1,1]\rightarrow[-1,1]$
+for each pair of taxa $n_1<n_2$, using the data $(x_{n_1}(t),x_{n_2}(t))$ for $t=1,\ldots,T$.
+We then construct $\hat{p}_{n_1 n_2} = \E\varphi_{n_1 n_2}^{-1}(c_{n_1 n_2})$ for 
+$c_{n_1 n_2} = \cor_t(x_{n_1}(t),x_{n_2}(t))$.
+For the datasets we considered, this was uniquely defined for all $n_1$ and $n_2$.
+We then construct a symmetric, $N \times N$ matrix, $\hat{P}$, with $1$s on the diagonal, based on the 
+values $\hat{p}_{n_1 n_2}$. If this were a positive-definite matrix, a surrogate 
+dataset $(x_1^{(m)}(t),\ldots,x_N^{(m)}(t))$ for $t=1,\ldots,T$ would 
+then be obtained by the following steps. First, generate data 
+$(a_1(t),\ldots,a_N(t))$ for $t=1,\ldots,T$ via independent draws from the multivariate normal
+distribution with standard normal marginals and covariance matrix $\hat{P}$
+(covariance matrices must be positive definite, so this is where postive definiteness is needed).
+Then, for each $n$, align the ranks of $x_n(t)$ to match those of $a_n(t)$.
+These permutations of the time series $x_n(t)$, together, form the surrogate dataset.
+Numerous surrogate datasets can be generated by repeating this process.
+Following reasoning similar to the bivariate case, it is straightforward
+to see that the desired properties of the surrogate dataset, listed above, are
+satisfied. In fact, the Pearson correlations 
+$\cor_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ should be approximately equal
+to the values $\cor_t(x_{n_1}(t),x_{n_2}(t))$ (up to sampling variation) 
+instead of merely being close. And  
+the expected value of the sum $\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$
+should therefore also approximately equal the sum $\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$,
+rather than merely being within $10\%$. However, the matrix $\hat{P}$ was not 
+positive definite for our datasets, 
+so we proceeded instead as follows. 
+
+We defined an objective function $f(c)$, where $c$ is a vector consisting of 
+values between $-1$ and $1$ indexed by
+$n_1$ and $n_2$ where $1 \leq n_1 < n_2 \leq N$. For a given $c$, $f$ was
+computed by first computing $p_{n_1 n_2}=\E\varphi_{n_1 n_2}^{-1}(c_{n_1 n_2})$
+for all $1 \leq n_1 < n_2 \leq N$; then by forming an $N \times N$ symmetric 
+matrix $P$, with ones on the diagonal, from the $p_{n_1 n_2}$; then by computing
+the minimum eigenvalue of that matrix. Using the Nelder-Mead simplex algorithm, the 
+objective function $f$ was maximized subject to the constraints that: 
+$c_{n_1 n_2}$ must be in the domain of $\E\varphi_{n_1 n_2}^{-1}$; and
+$\sum_{n_2>n_1} c_{n_1 n_2} \sqrt{\var_t(x_{n_1}(t)) \var_t(x_{n_2}(t))}$ must be 
+within $10\%$ of $\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$.
+The Nelder-Mead algorithm was not run to completion, but rather was terminated 
+after the first value of $c$ was dicovered for which $f(c)$ was greater than $0$;
+we denote that first value of $c$ by $\hat{c}$. We then defined 
+$\hat{p}_{n_1 n_2}=\E\varphi_{n_1 n_2}^{-1}(\hat{c}_{n_1 n_2})$
+for all $1 \leq n_1 < n_2 \leq N$ and we formed the $N \times N$ symmetric matrix 
+$\hat{P}$ from these values, putting $1$s on the diagonal. This was a 
+positive definite matrix by construction. Surrogates were constructed as 
+described in the previous paragraph but using this matrix $\hat{P}$.
+
+
+
+%To do
+%You probably also ought to include some results here which are testing our specific surrogates
+%For instance, show a series of histograms (or similar) showing the range of correlation
+%values a pair of species for surrogates, and the actual value for that pair. Do it for all
+%pairs of species. Also show the distribution of variance ratio values for the surrogates 
+%and for the real data.
+
+
+%***First thing for Shya to do and include a description of here as well as the resulting figures:
+%A) Using the actual surrogates I produced and saved to the disk, make a histogram of 
+%the quantities $\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ and put on it
+%a line or red dot or something at the location corresponding to 
+%$\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$. The line or red dot should be close to the
+%middle of the histogram.
+%B) Using the actual surrogates I produced and saved to disk, make a histogram of all the
+%quantities $\var_t(\sum_n x_n^{(m)}(t))$ and put on it a line or red dot or something
+%at the location corresponding to $\var_t(\sum_n x_n(t))$. The red dot should again be close
+%to the middle of the histogram.
+%C) Using the actual surrogates I produced and saved to disk, make a histogram of all the
+%values of the variance ratio for the surrogates, and put on it a red dot or line or something at
+%the location corresponding to the variance ratio for the actual data.
+
+%***Do all the above for the Hays data/surrogates, and again for the KNZ data/surrogates.
+
+%***Some of the above has already been done, but I think not all of it.
+
+%***Next, for each $n_2>n_1$, compute $alpha=cor_t(x_{n_1}(t),x_{n_2}(t))$ and compute all
+%the values $beta(m)=cor_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$. For each n_2 and n_1,
+%figure out how to display this information. One way to do it might be to make a scatter
+%plot where the alpha values are on the x axis and the mean (over m) beta values are on the
+%axis and then each point on that plot has error bars showing the extent of the variation
+%in beta across surrogates, m. But this plot may end up being too full, so you may need
+%to come up with another way. The point is to check the idea that the alphas are "close
+%to" the betas, at least in general (though this may not be true for all n_1 and n_2).
+
+
+
+\begin{figure}
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_1_2.pdf} 
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_2_8.pdf} \\
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_15_18.pdf}
+\caption{Approximation of the $\varphi$ map for species 1 and 2 (A, top left), 2 and 8 (B, top right), and 15 and 18 (C, bottom left) 
+of the Hays dataset. Dashed lines are $0.25$th, $25$th, $50$th, $75$th, and $97.5$th percentiles 
+of stochastic realizations of the map, and
+the red line and points show the expected value. The horizontal-axis values of the red 
+points show the values of the
+parameter for which the map $\varphi$ was evaluated, with $500$ evaluations used for
+each parameter value.}\label{fig:varphiexample}
+\end{figure}
 
 
 
