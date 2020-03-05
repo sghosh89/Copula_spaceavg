@@ -435,11 +435,12 @@ set.seed(seed)
 source("./PPsurrogs_tests.R")
 
 # randomly sample numsurrog surrogate matrices from Pearson preserving array
-numsurrog<-10000
-id_surrogs<-sample(c(1:dim(surrogs_CP_hays)[3]),numsurrog,replace=F)
-surrogs_CP_hays_sampled<-surrogs_CP_hays[,,id_surrogs]
+#numsurrog<-10000
+#id_surrogs<-sample(c(1:dim(surrogs_CP_hays)[3]),numsurrog,replace=F)
+#surrogs_CP_hays_sampled<-surrogs_CP_hays[,,id_surrogs]
 
-ans<-PPsurrogs_tests(m=ts_mat_CP_hays, surrogs=surrogs_CP_hays_sampled)
+#ans<-PPsurrogs_tests(m=ts_mat_CP_hays, surrogs=surrogs_CP_hays_sampled)
+ans<-PPsurrogs_tests(m=ts_mat_CP_hays, surrogs=surrogs_CP_hays)
 saveRDS(ans,"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/PPsurrogs_tests_with_HaysSurrogates.RDS")
 ```
 
@@ -834,11 +835,12 @@ set.seed(seed)
 source("./PPsurrogs_tests.R")
 
 # randomly sample numsurrog surrogate matrices from Pearson preserving array
-numsurrog<-10000
-id_surrogs<-sample(c(1:dim(surrogs_CP_KNZ_t)[3]),numsurrog,replace=F)
-surrogs_CP_KNZ_t_sampled<-surrogs_CP_KNZ_t[,,id_surrogs]
+#numsurrog<-10000
+#id_surrogs<-sample(c(1:dim(surrogs_CP_KNZ_t)[3]),numsurrog,replace=F)
+#surrogs_CP_KNZ_t_sampled<-surrogs_CP_KNZ_t[,,id_surrogs]
 
-ans<-PPsurrogs_tests(m=ts_mat_CP_knz, surrogs=surrogs_CP_KNZ_t_sampled)
+#ans<-PPsurrogs_tests(m=ts_mat_CP_knz, surrogs=surrogs_CP_KNZ_t_sampled)
+ans<-PPsurrogs_tests(m=ts_mat_CP_knz, surrogs=surrogs_CP_KNZ_t)
 saveRDS(ans,"./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/PPsurrogs_tests_with_KNZtSurrogates.RDS")
 ```
 
