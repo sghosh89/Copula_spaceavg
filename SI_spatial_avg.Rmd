@@ -444,6 +444,18 @@ ans<-PPsurrogs_tests(m=ts_mat_CP_hays, surrogs=surrogs_CP_hays)
 saveRDS(ans,"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/PPsurrogs_tests_with_HaysSurrogates.RDS")
 ```
 
+```{r plotter_PPsurrogs_check_hays, echo=F, results="hide", cache=T, cache.extra=list(seed,ts_mat_CP_hays,mtime("./Results/hays_results/skewness_results/pp_surrogs_hays_CP/PPsurrogs_tests_with_HaysSurrogates.RDS"),mtime("Plotter_PPsurrogs_tests.R"))}
+
+set.seed(seed)
+source("./Plotter_PPsurrogs_tests.R")
+
+m<-ts_mat_CP_hays
+ans<-readRDS("./Results/hays_results/skewness_results/pp_surrogs_hays_CP/PPsurrogs_tests_with_HaysSurrogates.RDS")
+resloc<-"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/"
+
+Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,ht=15,wd=15)
+```
+
 <!--some additional fig for suppmat : hays-->
 ```{r hays_spaceavg_some_figs,echo=F,results="hide"}
 source("vivj_matrix.R")
@@ -842,6 +854,18 @@ source("./PPsurrogs_tests.R")
 #ans<-PPsurrogs_tests(m=ts_mat_CP_knz, surrogs=surrogs_CP_KNZ_t_sampled)
 ans<-PPsurrogs_tests(m=ts_mat_CP_knz, surrogs=surrogs_CP_KNZ_t)
 saveRDS(ans,"./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/PPsurrogs_tests_with_KNZtSurrogates.RDS")
+```
+
+```{r plotter_PPsurrogs_check_knz, echo=F, results="hide", cache=T, cache.extra=list(seed,ts_mat_CP_knz,mtime("./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/PPsurrogs_tests_with_KNZtSurrogates.RDS"),mtime("Plotter_PPsurrogs_tests.R"))}
+
+set.seed(seed)
+source("./Plotter_PPsurrogs_tests.R")
+
+m<-ts_mat_CP_knz
+ans<-readRDS("./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/PPsurrogs_tests_with_KNZtSurrogates.RDS")
+resloc<-"./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/"
+
+Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,ht=18,wd=18)
 ```
 
 ```{r pedagog_fig, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,mtime("ExtremeTailDep.R"),mtime("ncsurrog.R"),mtime("pedagog_ts.R"))}

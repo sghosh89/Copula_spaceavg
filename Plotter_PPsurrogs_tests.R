@@ -9,6 +9,13 @@ getqs<-function(x){
   return(c(ql,qh))
 }
 
+
+# Args:
+# m: a matrix with common and pseudo sp time series along each column
+# ans: a list which is the output from PPsurrogs_tests function
+# resloc: folder path to save the plots
+# ht, wd: height and width of correlation comparing plot
+
 Plotter_PPsurrogs_tests<-function(m,ans,resloc,wd=15,ht=15){
   
   cm<-cor(m)
@@ -54,26 +61,26 @@ Plotter_PPsurrogs_tests<-function(m,ans,resloc,wd=15,ht=15){
   dev.off()
   
   
-  pdf(paste(resloc,"./comparison_histplot_PPsurrogs.pdf",sep=""),height=2.5,width=18)
-  op<-par(mfrow=c(1,3),mar=c(5.5,5.5,0.8,0.5),mgp=c(4,0.5,0))
+  pdf(paste(resloc,"./comparison_histplot_PPsurrogs.pdf",sep=""),height=7,width=9)
+  op<-par(mfrow=c(3,1),mar=c(9,9,3,4),mgp=c(5,1,0))
   
   xlm<-sort(c(range(ans$tot_cov_surrogs),ans$tot_cov_real,0))
-  hist(ans$tot_cov_surrogs,col="grey",border=F,breaks=1000,xaxt="n",cex.axis=1.1,
-       xlab="Total pairwise-covariance \n from surrogates",main="",cex.lab=1.5)
-  axis(side=1, at=round(xlm,2),cex.axis=1.1)
+  hist(ans$tot_cov_surrogs,col="grey",border=F,breaks=1000,xaxt="n",cex.axis=1.6,
+       xlab="Total pairwise-covariance from surrogates",main="",cex.lab=2.4)
+  axis(side=1, at=round(xlm,2),cex.axis=1.6)
   abline(v=ans$tot_cov_real,col="black") # actual skw from real data
   
   
   xlm<-sort(c(range(ans$var_aggr_sp_surrogs),ans$var_aggr_sp_real))
-  hist(ans$var_aggr_sp_surrogs,col="grey",border=F,breaks=1000,cex.axis=1.1,xaxt="n",
-       xlab="Variance of aggregated species time-series \n from surrogates",main="",cex.lab=1.5)
-  axis(side=1, at=xlm,cex.axis=1.1)
+  hist(ans$var_aggr_sp_surrogs,col="grey",border=F,breaks=1000,xaxt="n",cex.axis=1.6,
+       xlab="Variance of aggregated species time-series from surrogates",main="",cex.lab=2.4)
+  axis(side=1, at=round(xlm,2),cex.axis=1.6)
   abline(v=ans$var_aggr_sp_real,col="black") # actual skw from real data
   
   xlm<-sort(c(range(ans$vr_surrogs),ans$vr_real,1))
-  hist(ans$vr_surrogs,col="grey",border=F,breaks=1000,cex.axis=1.1,xaxt="n",
-       xlab="Variance ratio \n from surrogates",main="",cex.lab=1.5)
-  axis(side=1, at=round(xlm,2),cex.axis=1.1)
+  hist(ans$vr_surrogs,col="grey",border=F,breaks=1000,xaxt="n",cex.axis=1.6,
+       xlab="Variance ratio from surrogates",main="",cex.lab=2.4)
+  axis(side=1, at=round(xlm,2),cex.axis=1.6)
   abline(v=ans$vr_real,col="black") # actual skw from real data
   
   par(op)
