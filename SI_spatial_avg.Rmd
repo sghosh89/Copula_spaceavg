@@ -349,9 +349,9 @@ source("make_tab_stability_assessment.R")
 # randomly sample numsurrog surrogate matrices from Pearson preserving array
 numsurrog<-10000
 id_surrogs<-sample(c(1:dim(surrogs_CP_hays)[3]),numsurrog,replace=F)
-surrogs_CP_hays<-surrogs_CP_hays[,,id_surrogs]
+surrogs_CP_hays_sampled<-surrogs_CP_hays[,,id_surrogs]
 
-stability_CP_hays<-make_tab_stability(m=ts_mat_CP_hays,surrogs = surrogs_CP_hays, surrogs_given = T)
+stability_CP_hays<-make_tab_stability(m=ts_mat_CP_hays,surrogs = surrogs_CP_hays_sampled, surrogs_given = T)
 ans<-(stability_CP_hays$df_stability)
 rownames(ans)<-"C+P"
 class(ans)
@@ -430,6 +430,18 @@ legend("topright",lty=c(NA,NA,3,2),pch=c(20,2,NA,NA),
 dev.off()
 ```
 
+```{r few_checks_on_surrogs_hays, echo=F, results="hide", cache=T, cache.extra=list(seed,ts_mat_CP_hays,surrogs_CP_hays,mtime("PPsurrogs_tests.R"),mtime("get_var_ratio.R"))}
+set.seed(seed)
+source("./PPsurrogs_tests.R")
+
+# randomly sample numsurrog surrogate matrices from Pearson preserving array
+numsurrog<-10000
+id_surrogs<-sample(c(1:dim(surrogs_CP_hays)[3]),numsurrog,replace=F)
+surrogs_CP_hays_sampled<-surrogs_CP_hays[,,id_surrogs]
+
+ans<-PPsurrogs_tests(m=ts_mat_CP_hays, surrogs=surrogs_CP_hays_sampled)
+saveRDS(ans,"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/PPsurrogs_tests_with_HaysSurrogates.RDS")
+```
 
 <!--some additional fig for suppmat : hays-->
 ```{r hays_spaceavg_some_figs,echo=F,results="hide"}
@@ -736,9 +748,9 @@ surrogs_CP_knz<-surrogs_CP_KNZ_t
 # randomly sample numsurrog surrogate matrices from Pearson preserving array
 numsurrog<-10000
 id_surrogs<-sample(c(1:dim(surrogs_CP_knz)[3]),numsurrog,replace=F)
-surrogs_CP_knz<-surrogs_CP_knz[,,id_surrogs]
+surrogs_CP_knz_sampled<-surrogs_CP_knz[,,id_surrogs]
 
-stability_CP_knz<-make_tab_stability(m=ts_mat_CP_knz,surrogs = surrogs_CP_knz, surrogs_given = T)
+stability_CP_knz<-make_tab_stability(m=ts_mat_CP_knz,surrogs = surrogs_CP_knz_sampled, surrogs_given = T)
 ans<-(stability_CP_knz$df_stability)
 rownames(ans)<-"C+P"
 class(ans)
@@ -815,6 +827,19 @@ legend("topright",lty=c(NA,NA,3,2),pch=c(20,2,NA,NA),
        legend=c("real value,","no Tail-dep. (median),","95%CI,","Indep."),x.intersp=0, text.width = 0.22)
 #par(op)
 dev.off()
+```
+
+```{r few_checks_on_surrogs_knz, echo=F, results="hide", cache=T, cache.extra=list(seed,ts_mat_CP_knz,surrogs_CP_KNZ_t,mtime("PPsurrogs_tests.R"),mtime("get_var_ratio.R"))}
+set.seed(seed)
+source("./PPsurrogs_tests.R")
+
+# randomly sample numsurrog surrogate matrices from Pearson preserving array
+numsurrog<-10000
+id_surrogs<-sample(c(1:dim(surrogs_CP_KNZ_t)[3]),numsurrog,replace=F)
+surrogs_CP_KNZ_t_sampled<-surrogs_CP_KNZ_t[,,id_surrogs]
+
+ans<-PPsurrogs_tests(m=ts_mat_CP_knz, surrogs=surrogs_CP_KNZ_t_sampled)
+saveRDS(ans,"./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/PPsurrogs_tests_with_KNZtSurrogates.RDS")
 ```
 
 ```{r pedagog_fig, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,mtime("ExtremeTailDep.R"),mtime("ncsurrog.R"),mtime("pedagog_ts.R"))}
