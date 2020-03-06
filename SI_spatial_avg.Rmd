@@ -453,7 +453,7 @@ m<-ts_mat_CP_hays
 ans<-readRDS("./Results/hays_results/skewness_results/pp_surrogs_hays_CP/PPsurrogs_tests_with_HaysSurrogates.RDS")
 resloc<-"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/"
 
-Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,ht=15,wd=15)
+Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc)
 ```
 
 <!--some additional fig for suppmat : hays-->
@@ -865,7 +865,7 @@ m<-ts_mat_CP_knz
 ans<-readRDS("./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/PPsurrogs_tests_with_KNZtSurrogates.RDS")
 resloc<-"./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/"
 
-Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,ht=18,wd=18)
+Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc)
 ```
 
 ```{r pedagog_fig, echo=F, results="hide", warning=F, cache=T, cache.extra=list(seed,mtime("ExtremeTailDep.R"),mtime("ncsurrog.R"),mtime("pedagog_ts.R"))}
