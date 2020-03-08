@@ -243,7 +243,7 @@ described in the previous paragraph but using this matrix $\hat{P}$.
 With two multivariate species cover datasets (Hays: $N=$19sp. and KNZ: $N=$22 sp.), we checked 
 (Fig. \ref{fig:check_cov_var_vr}, Fig. \ref{fig:check_pairwisecor}) whether the 
 surrogates were ``good" enough to be consistent with our assumptions or not. First, using 
-each of $m$-surrogates (${m : 1, 2, \ldots, 100000}$) we computed total contribution from
+each of $m$-surrogates (${m : 1, 2, \ldots, 10000}$) we computed total contribution from
 covariances between each unique pair of time-series, i.e., $\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ 
 and compared how they were distributed around the same quantity but calculated with the 
 actual dataset, $\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$ (top panel 
@@ -285,9 +285,10 @@ each parameter value.}\label{fig:varphiexample}
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/compare_pairwisecor_PPsurrogs.pdf}  
-\includegraphics[width=9 cm]{./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/compare_pairwisecor_PPsurrogs.pdf} 
-\caption{Comparison for pairwise Pearson correlation: Hays (on left), KNZ (on right). Each pair has 3 horizontal bars: lower and upper bar of color coded region are the $25^{th}$ and $75^{th}$ percentiles of surrogates statistics, the region gets its color depending on the value (see the color scale for reference) of corresponding pairwise Pearson correlation computed for the real data - presenting the third bar. If the third bar is close to the middle of the colored region then corresponding surrogates are considered as Pearson-preserving surrogates.}\label{fig:check_pairwisecor}
+\includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_pairwisecor_PPsurrogs.pdf}  
+\includegraphics[width=9 cm]{./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/comparison_pairwisecor_PPsurrogs.pdf} 
+\caption{Comparison for pairwise Pearson correlation: Hays (on left), KNZ (on right). Vertical bars are the $2.5^{th}$ and $97.5^{th}$ percentiles of surrogates statistics with a point for $50^{th}$ percentile. All black bars are considered as coming from ``good" surrogates
+because they include the 1:1 dashed line in the scatter plot - so pairwise Pearson correlations are statistically similar for those surrogates and that of the real data, whereas red ones are not consistent our assumptions for ``good" surrogates.}\label{fig:check_pairwisecor}
 \end{figure}
 
 
