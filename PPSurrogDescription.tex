@@ -258,10 +258,10 @@ of Fig. \ref{fig:check_cov_var_vr}). In each of the three cases, we expected
 the histogram should be equally distributed on either sides of the actual statistics, if 
 the surrogates had similar Pearson pairwise correlation. Finally, to get a glimpse of how 
 similar Pearson correlation from the surrogates to that of the actual data for each unique pair, 
-we plotted $25^{th}$ and $75^{th}$ percentiles of the correlations for the surrogates 
-along with the corresponding Pearson correlation of actual data (Fig. \ref{fig:check_pairwisecor}).
-If the actual statistics lie within the confidence interval shown in Fig. \ref{fig:check_pairwisecor}, 
-then the surrogates had approximately same (upto sampling variation) pairwise correlation as we assumed.
+we made a scatter plot with the Pearson correlation from actual data and its 10000 surrogates 
+for each unique species pair; $95\%$ CI was added for the surrogates 
+(Fig. \ref{fig:check_pairwisecor}). If the CI included the 1:1 line in the scatter plot,
+then the corresponding surrogate had approximately same (upto sampling variation) pairwise correlation as we assumed.
 
 
 \begin{figure}
