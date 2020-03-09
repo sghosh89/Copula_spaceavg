@@ -48,139 +48,60 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 \newpage
 
 # Introduction\label{Introduction}
-<!--Q1 : Do syncronous/ compensatory pop. dynamics in communities commonly show asymmetric tail association?, 
-Q2: If so, what are the consequences of these patterns for the stability of aggregated community properties?-->
 
-<!--
-NOTE: I need to rewrite the intro:
-1. Don't say anything about copula (keep it for suppmat), but introduce the concept of tail association (see ERC paper)
-2. Motivate Q2 with aphid/plankton paper
-3. present logically how asymmetric tail association should influence skewness - can be considered as a new measure of community stability. Also states may be it's not significant on individual interaction level but could be significant on aggregate level.
+<!--p1: what is community stability? How it relates to species interaction? - 
+2 types of interaction: synchronous: more variable or less stable, 
+asynchronous/ compensatory: more stable, less variable.
+Stability-variability relationship usually explained by cassic variance ratio method
 -->
 
 
-<!--grassland and earlier work : Here I deliberately exclude the ref. for environmental variable effect on species-->
-Understanding the mechanisms behind spatial and temporal 
-dynamics has been a long-standing focus in community ecology [@gibson2009; @turner1989].
-Interspecies interaction in a grassland 
-community could be advantageous or
-disadvantageous to either or both species involved, 
-which led to mutualism or competition
-as the case might be. A community is thought to be resilient towards environmental extremes
-through time when members of that community show variable and/ or asynchronous fluctuations. But if most of 
-the species in a community vary synchronously through time then in a "bad"
-year (e.g. extreme drought) with limiting resource could wipe out the whole community.
-Thus identifying patterns of species fluctuations over time and in relation to 
-each other is essential to understand community-stability. Most of the prior studies 
-used, in general, the correlation or regression based approach to 
-understand variability of a species response with other
-species within a community (or with environmental variables) to establish causal
-relationship. But they are inadequate to explain the joint distribution structure 
-of multiple species response within a community.
+<!--p2: what is variance ratio? How it is used to determine a community's variability?-->
 
-<!--Limitation of usual approach and introduction of copula?-->
-Common correlation measures, i. e., Pearson's correlation used in earlier studies, is based 
-on the notions of linearity, normality and mean which are not appropriate when dealing 
-with extreme events or for non-normal distributions which occur commonly in ecological
-datasets [our BIVAN paper]. Though rank-based non-parametric dependence measures, Spearman's 
-$\rho$ and Kendall's $\tau$, do not assume linearity and normality, but they do not attribute 
-sufficient weight to the extreme values and the distribution tail. Thus a better approach to model
-multivariate dependence structure is necessary. Concept of a copula is a widely used 
-statistical tool in other fields to model dependence between 
-multiple variables [@joe2014_dependence; @nelsen2006_copula; 
-@sklar1959_theorem; @burnham2003_modelselection]. A "copula" can separate the 
-information contained in a joint distribution of bivariate random variables 
-into two distinct parts: the information contained in the marginal 
-distributions (which says nothing about the dependence between the 
-variables), and the remaining information (which is solely
-about the dependence between the variables). From a data perspective, we can construct 
-a bivariate copula from a set of two variables
-$\{ x_i, y_i\}, i = 1, 2, \ldots , n$ after some ranking procedure is applied so that 
-their marginal distributions become uniform. If $\{ \bar{u_i}, \bar{v_i}\}$ are the
-corresponding ranks of $\{ x_i, y_i\}$, then the "normalized rank" 
-$\{ u_i, v_i\} = \{ \bar{u_i}, \bar{v_i}\} / (n+1)$
-reveals the associated dependence in the bivariate copula when plotted in a unit square. 
-Through suitable choice from a wide varity of families and parameters, one can control 
-this dependence structure of a bivariate copula which shows over which parts of the 
-distributions the variables are more strongly associated. This information
-is implied in their degree of "tail-dependence" which can be viewed as stronger 
-association between two random variables in their extreme values. If smaller values of 
-two positively associated variables are more strongly correlated than are larger values, 
-the variables are said to have stronger lower- or left-tail dependence than right- or 
-upper-tail dependence (Fig. \ref{fig_pedag_taildep}A); and vice versa if higher values are more strongly
-associated than smaller ones (Fig. \ref{fig_pedag_taildep}B). A copula might have symmetric 
-(with zero tail-dependence in both tail) or asymmetric (finite tail-dependence in either
-or both tail) feature depending on its family and parameters [@nelsen2006_copula].
+<!--p3: Though widely used, but this coeff. of variation or variance measure is not 
+showing the full picture: what if skewness changes with same variance? Fig. 1A-->
 
-<!--\begin{tcolorbox}[width=\columnwidth,colback={blue!20},arc=0mm,colframe=blue!50!black,coltext=blue!50!black]
-Significance
-Write significance here.
-\end{tcolorbox}-->  
 
-<!--why copula (and tail-dep.) is important in ecology, specially on grassland? : 
-1) direction of competetion
-2) leibig's law
-3) global climate change : ongoing invasion and sp. extinction : pollinators?
+<!--p4: Following the arguments, we need an additional measure which 
+could incorporate thi "skewness changing" feature of the community. Fig 1B: Box simple diagram.
+Skewness has been found as an indicator even in the studies for 
+early warning signal or regime shifts (citations)-->
+
+
+<!--p5: But how skewness is different than variance-measure? Is there 
+any mechanism working in the background [?Fig 1B] that is responsible 
+for changing skewness while keeping the overall correlation same? Therefore, we think may be it is "tail-association".-->
+
+
+<!--p6: What is tail-association? How it could chenge the skewness of the 
+community on aggregated sp. level? and then relate it to the stability 
+intuitively: LT association means crashing the whole community.-->
+
+
+<!--p7: Our objectives:
+(Q1) Could we find an overall tail association (L/U) in a community which arises because of  
+synchronous/ compensatory species interaction? [answer by pscor]
+(Q2) If we do, then how does tail-association pattern explain the underlying mechanism 
+affecting the overall skewness of the community? More specifically, could this
+assymetric sp. interaction explain the community stability which we might miss with the classic variance ratio method? [answer: Fig 1b hidden box revealed]
+Wwill answer these Qs with two grassland community datasets: Hays & Konza.-->
+
+<!--Figs:
+1A: 3 panel plot: cv same, skew = -ve, 0, +ve
+1B: simple box diagram
+2: pscor/tail association conceptual
+3:box diagram detailed
+4:corl-coru matrix plot: A. hays, B. konza
+5.box diagram detailed as of fig. 3 but with filled in numbers for A. hays, B. konza.
+Also show the histogram plot if needed in addition.
 -->
-The benefit of using copula with its unique tail-dependence feature is that it can be applied
-to model synchronous (or compensatory) response between two or more ecological variables. 
-Spatial synchrony [@liebhold2004; @walter2017; @sheppard2016] between 
-metapopulations, is recently investigated using copula (BIVAN paper),
-but there has been no report using copula approach in explaining 
-multi-species dynamics within a commulity.
-Here we will summarize how copula could be useful in ecology, specially in a grassland 
-ecosystem perspective. First, in case of compensatory dynamics between any two species 
-over years, tail dependence
-measurement using a bivariate copula not only shows species are negatively correlated but 
-in addition could indicate which one is superior competitor between them. Secondly, earlier 
-studies showed the importance of limiting resources (soil nutrients, N, P)
-(Leibig's law) in the grassland productivity [@reynolds2003; @de2004; @john2007; @fay2015]. 
-Therefore, a community showing overall
-lower tail-dependence throughout years could suggest that the species-abundance on average
-was limited as a particular resource became rare in that field and experimental addition of 
-soil-fertilizer could improve their productivity after years. As multiple species in a
-grassland community could show limited growth
-with respect to multiple nutrients and to different extent, therefore adding nutrient 
-may increase the net primary productivity but could also reduce niche-dimensionality 
-and increase compositional turnover [@harpole2016]. Using pairwise copula approach for
-modelling a multivariate dependence structure offers more insight to understand
-individual species' response towards their drivers separately. Third, long-term and short-term
-experiments established that change in global climate induced changes in species-composition 
-in a grassland community 
-[@cowles2016; @garcia2018; @harrison2015; @eisenhauer2013; @zavaleta2003]. 
-For example, abundant growth of invasive species in their "favorable" scope on
-space or time-scale [@white2001; @thomason2017] could suppress
-and even lead to extinction of their weak competitors which are natives in a community.
-This scenario could also evoke a potential threat for the pollinator 
-community (e.g. butterfly) due to their habitat loss [@mclaughlin2002; @thomas2004].
-Monitoring tail-dependence of species-above ground biomass of 
-a plant with respect to any of biotic and/ or abiotic factors could be beneficial
-against this threat of biodiversity loss in a grassland eco-system. 
 
-<!--community variability in view of skewness change?-->
-Overall asymmetric tail-dependence (either lower or upper) bears a major implication
-in estimating the pattern of community-variability and thus in turn stability of its 
-compositional balance. A major lower (or upper) tail dependence in community structure arises 
-due to simultaneous rare (or abundant) occurrence of the species and thus the "spikiness" of 
-their individual time series become more or less synchronous in their low (or high) values.
-Lower tail dependence in the time series of individual species biomass makes total biomass 
-distribution of a community through years less skewed (see Fig. \ref{fig_pedag_skewness}A, synchronous 
-fluctuations in low values) whereas upper tail dependence leads to more skewed 
-(see Fig. \ref{fig_pedag_skewness}B, synchronous 
-fluctuations in high values) distribution of total productivity through years
-as compared to a community having no major asymmetric tail-dependence feature. 
-Significantly lower skewness (arising from lower 
-tail dependence) not only affects net primary productivity of a community 
-but could also make some native species disappear from the system. The second scenario is 
-that the overall skewness could change abruptly due to some "episodic" species, which occur 
-in plenty in the community all of a sudden. Thus in a favorable scope of year, these episodic species
-could take over the existing community and change the compositional balance in subsequent stages. 
-Tracking skewness of a community over a period of years could serve
-beneficial to better strategize conservation and management of native species. 
-In terms of stability assessment, a community could be considered as less stable 
-if the absolute value of skewness of total biomass time series is relatively high 
-which, we argue, is coming from the stronger correlation of individual species-biomass
-in their extreme values. <!-- am I right for this last sentence?-->
+<!--Tables
+S1: splist for hays
+S2: splist for knz
+-->
+
+
 
 <!--Pedagogical figure for copula with asym. taildep.-->
 \begin{figure}[!h]
@@ -209,35 +130,6 @@ between any two species' time series.\label{fig_pedag_skewness}}
 \end{center}
 \end{figure}
 
-<!--Why choose jasper ridge and hays as study system?-->
-In this paper, we will preach for the potential of using "copula" approach to analyze
-species' response within a community in understanding variation in species-richness
-over a temporal scale. We consider two grassland ecosystems for our study. 
-
-<!--write about 2nd dataset : KNZ-->
-
-
-
-
-
-
-Both datasets (Appendix \ref{SI-Data}) have been served as experimental model system to 
-study ecological hypothesis since long and proved to be effective
-in decision making from conservation and management perspective. 
-
-<!-- what is our objective?-->
- Our objective is to examine the 
-synchronous (for positively correlated variables)
-or compensatory (for negatively correlated variables) dynamics, if any, in 
-the serpentine grassland of JRBP and prairie of Hays in Kansas 
-using "tail-dependence" feature of copula.
-Implementing a model selection approach (Appendix \ref{SI-model_sel}) as well as nonparametric 
-analysis (Appendix \ref{SI-nonparam}), we 
-try to find is there any overall major asymmetric tail-dependence in those grassland community and
-if there is, then what could we interpret about interspecific response from this
-asymmetric tail-dependence? We also suggest an alternative measure of 
-community variability (henceforth stability) in terms of quantifying skewness of 
-total biomass distribution over years using those two datasets.
 
 # Methods\label{Methods} 
 
