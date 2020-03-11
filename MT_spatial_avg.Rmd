@@ -452,7 +452,8 @@ upper-tail association.\label{fig_pedag_taildep}}
 <!--Pedagogical figure to explain method-->
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=17 cm]{./Results/pedagog_figs/method_box_diagram_combo.pdf}
+\includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_complex_cv2_skw.pdf}\\
+\includegraphics[width=16cm]{./Results/pedagog_figs/method_box_diagram.pdf}
 \caption{Schematic diagram showing the difference between two approach: variance-ratio based
 and skewness-ratio based. \label{fig_method_box}}
 \end{center}
