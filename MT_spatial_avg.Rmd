@@ -102,35 +102,6 @@ S2: splist for knz
 -->
 
 
-
-<!--Pedagogical figure for copula with asym. taildep.-->
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=12 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
-\caption{ Pedagogical figure showing asymmetric tail dependence between $200$ observations of 
-two positively correlated variables $(u,v)$ with same Spearman correlation $\rho = 0.8$;
-$(A)$ lower or left tail dependence indicates stronger association in extreme lower values, whereas $(B)$ upper 
-or right tail dependence indicates stronger association in their extreme higher values.\label{fig_pedag_taildep}}
-\end{center}
-\end{figure}
-
-<!--Pedagogical figure for skewness & taildep.-->
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[width=17cm]{./Results/pedagog_figs/pedagog_ts.pdf}
-\caption{Pedagogical figure showing how skewness of total biomass distribution of a community 
-is affected by extreme asymmetric tail-association (Appendix \ref{SI-extreme_taildep_mat}) in individual 
-species biomass-distribution throughout years. Major lower tail association in 
-a community makes its total biomass more negatively skewed $(A)$, whereas
-major upper tail association in a community makes 
-its total biomass more positively skewed $(B)$, compared to a
-community which is generated via a resampling method (Appendix \ref{SI-skew_ncsurrog})
-to have no tail-dependence but preserving pairwise Spearman correlation
-between any two species' time series.\label{fig_pedag_skewness}}
-\end{center}
-\end{figure}
-
-
 # Methods\label{Methods} 
 
 <!--NOTE: if you can, just separate theory and methods section.-->
@@ -433,6 +404,61 @@ because of dominant lower tail-dependence in the comminity was observed with Hay
 concerned, significantly lower skewness than its "Normal" analog scale means the community could have 
 a potential threat for some of its native species which could crash simultaneously below a threshold. -->
 
+
+# Discussion\label{Discussion}
+
+
+
+### \textbf{For Data, see Appendix \ref{SI-Data} and \ref{SI-Methods} in Supporting material, respectively.}
+
+
+<!--add figures-->
+
+
+<!--Pedagogical figure for same variance ratio but different skewness-->
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=16cm]{./Results/pedagog_figs/pedagog_cv2_skw.pdf}
+\caption{Pedagogical figure showing two hypothetical communities with stronger interspecific
+interaction when species are $(A)$ rare and $(B)$ abundant, respectively. Total 
+community-biomass time-series is $(C)$ negatively ($s<0$) and $(D)$ positively ($s>0$) skewed whereas both 
+communities have similar variance ratio, $\phi_{cv}$. \label{fig_pedag_cv2_skw}}
+\end{center}
+\end{figure}
+
+
+<!--Pedagogical figure for variance-ratio and skewness-ratio idea and asymmetric tail association-->
+\begin{figure}[!h]
+\begin{center}
+\textbf{ \hspace{-0.5 cm} (A)}\\
+\hspace{0.5 cm}
+\includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_simple_cv2_skw.pdf}\\
+\textbf{ \hspace{0.5 cm} (B) \hspace{5 cm} (C)}\\
+\includegraphics[width=12 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
+\caption{Upper panel shows $(A)$ a schematic diagram of the known variance-ratio approach (on left) usually used
+to assess community-stability and our proposed skewness-based analog (on right); \textit{CV} and \textit{S} denote 
+coefficient of variation and skewness, respectively. White boxes indicate a missing link between 
+the two extremes: an actual community ($com$) having both correlation and tail 
+association between species and its independent ($ind$) analog with no
+interspecific interaction. This is explored in detail later (Fig. \ref{fig_method_box}).
+Lower panel shows pedagogical
+figures of asymmetric tail associations between $200$ observations of 
+two positively correlated (same Spearman correlation $\rho = 0.8$) random variables $(x,y)$ with 
+$(B)$ stronger lower-tail and $(C)$ stronger 
+upper-tail association.\label{fig_pedag_taildep}}
+\end{center}
+\end{figure}
+
+<!--Pedagogical figure to explain method-->
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=17 cm]{./Results/pedagog_figs/method_box_diagram_combo.pdf}
+\caption{Schematic diagram showing the difference between two approach: variance-ratio based
+and skewness-ratio based. \label{fig_method_box}}
+\end{center}
+\end{figure}
+
+<!--Results with corl-coru matrix plot-->
 \begin{figure*}[!h]
 \begin{center}
 \textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
@@ -456,15 +482,21 @@ pose significant contribution. (for details see text).\label{fig_CorlmCoru_space
 \end{center}
 \end{figure*}
 
-
-# Discussion\label{Discussion}
-
-
-
-### \textbf{For Data, see Appendix \ref{SI-Data} and \ref{SI-Methods} in Supporting material, respectively.}
-
-
-
+<!--Skewness results for both datasets-->
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=16cm]{./Results/pedagog_figs/results_hays_knz_complex_cv2_skw.pdf}
+\caption{Pedagogical figure showing how skewness of total biomass distribution of a community 
+is affected by extreme asymmetric tail-association (Appendix \ref{SI-extreme_taildep_mat}) in individual 
+species biomass-distribution throughout years. Major lower tail association in 
+a community makes its total biomass more negatively skewed $(A)$, whereas
+major upper tail association in a community makes 
+its total biomass more positively skewed $(B)$, compared to a
+community which is generated via a resampling method (Appendix \ref{SI-skew_ncsurrog})
+to have no tail-dependence but preserving pairwise Spearman correlation
+between any two species' time series.\label{fig_result_box}}
+\end{center}
+\end{figure}
 
 \clearpage
 \setlength{\parindent}{-0.2in}
