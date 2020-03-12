@@ -88,24 +88,50 @@ productivity and so considered as less stabilized [@keitt2008coherent; @loreau20
 @ma2017climate].
 
 <!--p2: what is variance ratio? How it is used to determine a community's variability?-->
-A commonly used stability-index is the 'variance ratio' (say, $\phi_{cv}$) that measures how  
-community-variance changes compared to the consisting species if acting independently. 
-Community with lower variance than the independent one (i.e., $\phi_{cv}<1$), is considered 
-to be more stable due to overall compensatory dynamics whereas a community with higher variance than 
+Variance ratio, $\phi_{cv}$, is a commonly used stability-index that measures how 
+community-variance changes compared to an independent community where each species 
+fluctuate randomly. Community with lower variance than the 
+independent one (i.e., $\phi_{cv}<1$), is considered 
+to be more stable due to overall compensatory dynamics 
+whereas a community with higher variance than 
 the independent one (i.e., $\phi_{cv}>1$), is considered to be less stable due to 
-overall synchronous fluctuations. Therefore, the variance ratio ($\phi_{cv}$) considers 
+overall synchronous fluctuations. Therefore, the variance ratio approach is based on 
 if the species are negatively (compensation) or positively (synchronous) correlated 
-among themselves within the community. An independent community means where species fluctuate 
-randomly with zero correlation.
+among themselves within the community. An independent community means where 
+species fluctuate randomly with zero correlation.
 
 <!--p3: Though widely used, but this coeff. of variation or variance measure is not 
 showing the full picture: what if skewness changes with same variance? Fig. 1-->
-
+Although widely used, simple-correlation based variance ratio metric is not 
+enough to predict the community-stability if the species show stronger 
+correlation among themselves for certain years than others. For example, consider
+two hypothetical communities with equal number of species. The only difference is 
+in one community all the species have simultaneously low values in catastrophic years
+(i.e. synchronous rare occurrence than being abundant, Fig. \ref{fig_pedag_cv2_skw}A) and in the 
+other community all species have simultaneously high values in beneficial
+years (i.e. synchronous abundance than being rare, Fig. \ref{fig_pedag_cv2_skw}B). 
+The first community has higher risk to collapse at once whereas the second one maintains 
+high productivity throughout years. But both communities would indicate
+similar variance ratio because it assumes equal variance between 
+interspecific fluctuations throughout years. We propose skewness instead using variance 
+could be appropriate to make the distinction between two such communities. Simultaneous 
+dip in the individual timeseries of Fig. \ref{fig_pedag_cv2_skw}A make the 
+aggregated timeseries more negatively skewed (Fig. \ref{fig_pedag_cv2_skw}C) whereas 
+simultaneous hike in the individual timeseries of Fig. \ref{fig_pedag_cv2_skw}B make the 
+aggregated timeseries more positively skewed (Fig. \ref{fig_pedag_cv2_skw}D) compared to 
+if the species were fluctuating randomly.
 
 <!--p4: Following the arguments, we need an additional measure which 
-could incorporate thi "skewness changing" feature of the community. Fig 2(A-B): Box simple diagram.
+could incorporate the "skewness changing" feature of the community. Fig 2(A-B): Box simple diagram.
 Skewness has been found as an indicator even in the studies for 
 early warning signal or regime shifts (citations)-->
+Following the above argument, we need an additional measure which could 
+incorporate the changing skewness feature of the community. 
+
+
+
+
+
 
 
 <!--p5: But how skewness is different than variance-measure? Is there 
@@ -462,7 +488,7 @@ communities have similar variance ratio, $\phi_{cv}$. \label{fig_pedag_cv2_skw}}
 \begin{center}
 \hspace{0.5 cm}
 \includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_simple_cv2_skw.pdf}\\
-\includegraphics[width=12 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
+\includegraphics[width=13 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
 \caption{Upper panel shows a schematic diagram of the known $(A)$ variance-ratio approach usually used
 to assess community-stability and our proposed $(B)$ skewness-based analog; \textit{CV} and \textit{S} denote 
 coefficient of variation and skewness, respectively. White boxes indicate a missing link between 
@@ -480,8 +506,8 @@ upper-tail association.\label{fig_pedag_taildep}}
 <!--Pedagogical figure to explain method-->
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_complex_cv2_skw.pdf}\\
-\includegraphics[width=16cm]{./Results/pedagog_figs/method_box_diagram.pdf}
+\includegraphics[width=12.5cm]{./Results/pedagog_figs/pedagog_complex_cv2_skw.pdf}\\
+\includegraphics[width=12.5cm]{./Results/pedagog_figs/method_box_diagram.pdf}
 \caption{Schematic diagram showing the difference between two approach: variance-ratio based
 and skewness-ratio based. \label{fig_method_box}}
 \end{center}
