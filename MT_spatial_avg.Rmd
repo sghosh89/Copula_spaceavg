@@ -55,22 +55,62 @@ asynchronous/ compensatory: more stable, less variable.
 Stability-variability relationship usually explained by cassic variance ratio method
 -->
 
+<!--diversity-stability relationship-->
+Understanding the mechanism behind the stability of an ecosystem 
+(be it on population or community level) has been intrigued the ecologists since 
+long [@macarthur1955fluctuations; @paine1969note; 
+@grimm1992application; @pimm1984complexity]. Theoretical and experimental 
+studies indicated 'diversity-stability' relationship as a possible indicator to predict 
+stability on community or ecosystem scale [@goodman1975theory; @tilman1994biodiversity; 
+@doak1998statistical] though contradiction became apparent with few studies 
+asking if diversity increases or decreases the community-stability [@mccann2000diversity].
+@ives2007stability concluded 'diversity-stability' relationship is complex and cannot 
+be explained without considering the effect of environmental drivers due to anthropogenic changes.
+
+<!--variability-stability relationship-->
+Another perspective to understand community-stability is to study the 'variability-stability' 
+relationship [@wang2014ecosystem]. How species fluctuate with time 
+and also how environmental fluctuation affects the species-interaction 
+within the community help us to interprete whether the total productivity is consistent 
+throughout times or not [@ives1999stability]. The change in total productivity with time 
+is considered as one of the proxy to quantify community-stability [@grimm1992application].
+This total productivity is influenced by two major types of species interaction - compensatory and 
+synchronous. Compensatory dynamics mean when species are in competition 
+such that decreases in one or more species-abundances are compensated 
+by the increases in others so that the total productivity 
+remains overall constant throughout years, making the community 
+less variable and hence more stabilized [@frost1995species; @bai2004ecosystem; 
+@gonzalez2009causes; @hallett2014]. Synchronous dynamics, on 
+the other hand, arises when majority of species fluctuate
+together in response to a common biotic/ abiotic driver 
+so that the community shows high variability in total 
+productivity and so considered as less stabilized [@keitt2008coherent; @loreau2008species; 
+@ma2017climate].
 
 <!--p2: what is variance ratio? How it is used to determine a community's variability?-->
+A commonly used stability-index is the 'variance ratio' (say, $\phi_{cv}$) that measures how  
+community-variance changes compared to the consisting species if acting independently. 
+Community with lower variance than the independent one (i.e., $\phi_{cv}<1$), is considered 
+to be more stable due to overall compensatory dynamics whereas a community with higher variance than 
+the independent one (i.e., $\phi_{cv}>1$), is considered to be less stable due to 
+overall synchronous fluctuations. Therefore, the variance ratio ($\phi_{cv}$) considers 
+if the species are negatively (compensation) or positively (synchronous) correlated 
+among themselves within the community. An independent community means where species fluctuate 
+randomly with zero correlation.
 
 <!--p3: Though widely used, but this coeff. of variation or variance measure is not 
-showing the full picture: what if skewness changes with same variance? Fig. 1A-->
+showing the full picture: what if skewness changes with same variance? Fig. 1-->
 
 
 <!--p4: Following the arguments, we need an additional measure which 
-could incorporate thi "skewness changing" feature of the community. Fig 1B: Box simple diagram.
+could incorporate thi "skewness changing" feature of the community. Fig 2(A-B): Box simple diagram.
 Skewness has been found as an indicator even in the studies for 
 early warning signal or regime shifts (citations)-->
 
 
 <!--p5: But how skewness is different than variance-measure? Is there 
-any mechanism working in the background [?Fig 1B] that is responsible 
-for changing skewness while keeping the overall correlation same? Therefore, we think may be it is "tail-association".-->
+any mechanism working in the background that is responsible 
+for changing skewness while keeping the overall correlation same? Therefore, we think may be it is "tail-association".(Fig. 2C-D)-->
 
 
 <!--p6: What is tail-association? How it could chenge the skewness of the 
@@ -85,16 +125,6 @@ synchronous/ compensatory species interaction? [answer by pscor]
 affecting the overall skewness of the community? More specifically, could this
 assymetric sp. interaction explain the community stability which we might miss with the classic variance ratio method? [answer: Fig 1b hidden box revealed]
 Wwill answer these Qs with two grassland community datasets: Hays & Konza.-->
-
-<!--Figs:
-1A: 3 panel plot: cv same, skew = -ve, 0, +ve
-1B: simple box diagram
-2: pscor/tail association conceptual
-3:box diagram detailed
-4:corl-coru matrix plot: A. hays, B. konza
-5.box diagram detailed as of fig. 3 but with filled in numbers for A. hays, B. konza.
-Also show the histogram plot if needed in addition.
--->
 
 <!--Tables
 S1: splist for hays
@@ -430,13 +460,11 @@ communities have similar variance ratio, $\phi_{cv}$. \label{fig_pedag_cv2_skw}}
 <!--Pedagogical figure for variance-ratio and skewness-ratio idea and asymmetric tail association-->
 \begin{figure}[!h]
 \begin{center}
-\textbf{ \hspace{-0.5 cm} (A)}\\
 \hspace{0.5 cm}
 \includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_simple_cv2_skw.pdf}\\
-\textbf{ \hspace{0.5 cm} (B) \hspace{5 cm} (C)}\\
 \includegraphics[width=12 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
-\caption{Upper panel shows $(A)$ a schematic diagram of the known variance-ratio approach (on left) usually used
-to assess community-stability and our proposed skewness-based analog (on right); \textit{CV} and \textit{S} denote 
+\caption{Upper panel shows a schematic diagram of the known $(A)$ variance-ratio approach usually used
+to assess community-stability and our proposed $(B)$ skewness-based analog; \textit{CV} and \textit{S} denote 
 coefficient of variation and skewness, respectively. White boxes indicate a missing link between 
 the two extremes: an actual community ($com$) having both correlation and tail 
 association between species and its independent ($ind$) analog with no
@@ -444,7 +472,7 @@ interspecific interaction. This is explored in detail later (Fig. \ref{fig_metho
 Lower panel shows pedagogical
 figures of asymmetric tail associations between $200$ observations of 
 two positively correlated (same Spearman correlation $\rho = 0.8$) random variables $(x,y)$ with 
-$(B)$ stronger lower-tail and $(C)$ stronger 
+$(C)$ stronger lower-tail and $(D)$ stronger 
 upper-tail association.\label{fig_pedag_taildep}}
 \end{center}
 \end{figure}
@@ -486,13 +514,19 @@ pose significant contribution. (for details see text).\label{fig_CorlmCoru_space
 <!--Skewness results for both datasets-->
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=16cm]{./Results/pedagog_figs/results_hays_knz_complex_cv2_skw.pdf}
+\includegraphics[width=14cm]{./Results/pedagog_figs/results_hays_knz_complex_cv2_skw.pdf}\\
+\textbf{ \hspace{-5 cm} (E) \hspace{7 cm} (F)}\\
+\includegraphics[width=15cm]{./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf}\\
+\textbf{ \hspace{-5 cm} (G) \hspace{7 cm} (H)}\\
+\includegraphics[width=15cm]{./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf}
+\hspace{1 cm}
+\includegraphics[width=16cm]{./Results/hays_results/skewness_results/legend_plot.pdf}
 \caption{Pedagogical figure showing how skewness of total biomass distribution of a community 
 is affected by extreme asymmetric tail-association (Appendix \ref{SI-extreme_taildep_mat}) in individual 
 species biomass-distribution throughout years. Major lower tail association in 
-a community makes its total biomass more negatively skewed $(A)$, whereas
+a community makes its total biomass more negatively skewed $(B)$, whereas
 major upper tail association in a community makes 
-its total biomass more positively skewed $(B)$, compared to a
+its total biomass more positively skewed $(D)$, compared to a
 community which is generated via a resampling method (Appendix \ref{SI-skew_ncsurrog})
 to have no tail-dependence but preserving pairwise Spearman correlation
 between any two species' time series.\label{fig_result_box}}

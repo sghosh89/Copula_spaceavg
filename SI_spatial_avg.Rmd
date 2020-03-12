@@ -360,15 +360,15 @@ write.csv(ans,"./Results/hays_results/skewness_results/hays_stability_CP.csv")
 
 #--------------generate plots with hays stability results : CVsq and skewness-------------------------------
 
-pdf("./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf",height=5,width=10)
+pdf("./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf",height=2.5,width=10)
 
-op<-par(mfrow=c(1,2),mar=c(6,5,0.1,2),mgp=c(3,1,0))
+op<-par(mfrow=c(1,2),mar=c(6,5,0.2,2),mgp=c(3,1,0))
 
 #--------------CVsq histogrm-------------------------------------
 xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_hays$cvsq_surrogs)
 
 hist(stability_CP_hays$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
-     xlab="CVsq. of Surrogates",main="",cex.lab=1.5)
+     xlab=expression(paste(CV^2," of surrogates: Hays")),main="",cex.lab=1.5)
 axis(side=1, at=round(c(xlm[1],xlm[2]),3))
 points(x=ans$cvsq_real,y=0,col="black",pch=20,cex=1) # actual CVsq from real data
 #abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
@@ -393,7 +393,7 @@ abline(v=ans$cvsq_indep,col="black",lty="dashed")
 xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_hays$skw_surrogs)
 
 hist(stability_CP_hays$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
-     xlab="Skewness of Surrogates",main="",cex.lab=1.5)
+     xlab="Skewness of surrogates: Hays",main="",cex.lab=1.5)
 axis(side=1, at=round(c(xlm[1],0,xlm[2]),3))
 points(x=ans$skw_real,y=0,col="black",pch=20,cex=1) # actual skw from real data
 
@@ -419,13 +419,14 @@ abline(v=ans$skw_indep,col="black",lty="dashed")
 par(op)
 dev.off()
 
-pdf("./Results/hays_results/skewness_results/legend_plot.pdf",height=0.5,width=11)
+pdf("./Results/hays_results/skewness_results/legend_plot.pdf",height=0.5,width=12.5)
 op<-par(mar=c(0.1,0.1,0.1,0.1),mgp=c(1,1,0))
 
 plot.new()
-legend("topright",lty=c(NA,NA,3,2),pch=c(20,2,NA,NA),
-       horiz = T, bty="n",
-       legend=c("real value,","no Tail-dep. (median),","95%CI,","Indep."),x.intersp=0, text.width = 0.22)
+legend_order <- matrix(1:4,ncol=4,byrow =F)
+legend("topright",lty=c(NA,NA,3,2)[legend_order],pch=c(20,2,NA,NA)[legend_order],
+       bty="n", pt.cex=1.2, cex=1.2,
+       legend=c("actual community value (com),",expression(paste("median (nta surrogates),")),"95% CI (nta surrogates),","no interaction (ind)")[legend_order],x.intersp=0, ncol=4)
 #par(op)
 dev.off()
 ```
@@ -776,14 +777,14 @@ write.csv(ans,"./Results/knz_results/skewness_results/knz_stability_CP.csv")
 
 #--------------generate plots with knz stability results : CVsq and skewness-------------------------------
 
-pdf("./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf",height=5,width=10)
-op<-par(mfrow=c(1,2),mar=c(6,5,0.1,2),mgp=c(3,1,0))
+pdf("./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf",height=2.5,width=10)
+op<-par(mfrow=c(1,2),mar=c(6,5,0.2,2),mgp=c(3,1,0))
 
 #--------------CVsq histogrm-------------------------------------
 xlm<-range(ans$cvsq_real,ans$cvsq_indep,stability_CP_knz$cvsq_surrogs)
 
 hist(stability_CP_knz$cvsq_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
-     xlab="CVsq. of Surrogates",main="",cex.lab=1.5)
+     xlab=expression(paste(CV^2," of surrogates: Konza")),main="",cex.lab=1.5)
 axis(side=1, at=round(c(xlm[1],xlm[2]),3))
 points(x=ans$cvsq_real,y=0,col="black",pch=20,cex=1)  # actual CVsq from real data
 #abline(v=ans$cvsq_real,col="black") # actual CVsq from real data
@@ -808,7 +809,7 @@ abline(v=ans$cvsq_indep,col="black",lty="dashed")
 xlm<-range(ans$skw_real,ans$skw_indep,stability_CP_knz$skw_surrogs)
 
 hist(stability_CP_knz$skw_surrogs,col="grey",border=F,breaks=100,xaxt="n",xlim=xlm,
-     xlab="Skewness of Surrogates",main="",cex.lab=1.5)
+     xlab="Skewness of surrogates: Konza",main="",cex.lab=1.5)
 axis(side=1, at=round(c(xlm[1],0,xlm[2]),3))
 points(x=ans$skw_real,y=0,col="black",pch=20,cex=1) # actual skw from real data
 #abline(v=ans$skw_real,col="black") # actual skw from real data
@@ -835,13 +836,14 @@ abline(v=ans$skw_indep,col="black",lty="dashed")
 par(op)
 dev.off()
 
-pdf("./Results/knz_results/skewness_results/legend_plot.pdf",height=0.5,width=11)
+pdf("./Results/knz_results/skewness_results/legend_plot.pdf",height=0.5,width=12.5)
 op<-par(mar=c(0.1,0.1,0.1,0.1),mgp=c(1,1,0))
 
 plot.new()
-legend("topright",lty=c(NA,NA,3,2),pch=c(20,2,NA,NA),
-       horiz = T, bty="n",
-       legend=c("real value,","no Tail-dep. (median),","95%CI,","Indep."),x.intersp=0, text.width = 0.22)
+legend_order <- matrix(1:4,ncol=4,byrow =F)
+legend("topright",lty=c(NA,NA,3,2)[legend_order],pch=c(20,2,NA,NA)[legend_order],
+       bty="n", pt.cex=1.2, cex=1.2,
+       legend=c("actual community value (com),",expression(paste("median (nta surrogates),")),"95% CI (nta surrogates),","no interaction (ind)")[legend_order],x.intersp=0, ncol=4)
 #par(op)
 dev.off()
 ```
@@ -897,7 +899,7 @@ lines(c(0,1.7),c(1.7,0),type='l')
 ind1<-which(ccop[,1]+ccop[,2]>1.4 & ccop[,1]+ccop[,2]<1.7)
 points(ccop[ind1,1],ccop[ind1,2],col=rgb(0,0,1,0.1),pch=20)
 
-#text(x=0.1,y=0.9,"A",cex=2)
+text(x=0.1,y=0.9,"(C)",cex=1.3, family="serif")
 
 plot(sccop[,1],sccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="x",ylab="y",cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
 lines(c(0,0.3),c(0.3,0),type='l')
@@ -911,7 +913,7 @@ ind1<-which(sccop[,1]+sccop[,2]>1.4 & sccop[,1]+sccop[,2]<1.7)
 points(sccop[ind1,1],sccop[ind1,2],col=rgb(0,0,1,0.1),pch=20)
 lines(c(0,1),c(1,0),type='l',lty=2)
 
-#text(x=0.1,y=0.9,"B",cex=2)
+text(x=0.1,y=0.9,"(D)",cex=1.3, family="serif")
 
 par(op)
 #box(which="figure")
