@@ -71,9 +71,9 @@ be explained without considering the effect of environmental drivers due to anth
 Another perspective to understand community-stability is to study the 'variability-stability' 
 relationship [@wang2014ecosystem]. How species fluctuate with time 
 and also how environmental fluctuation affects the species-interaction 
-within the community help us to interprete whether the total productivity is consistent 
+within the community help us to interpret whether the total productivity is consistent 
 throughout times or not [@ives1999stability]. The change in total productivity with time 
-is considered as one of the proxy to quantify community-stability [@grimm1992application].
+is considered as one of the proxies to quantify community-stability [@grimm1992application].
 This total productivity is influenced by two major types of species interaction - compensatory and 
 synchronous. Compensatory dynamics mean when species are in competition 
 such that decreases in one or more species-abundances are compensated 
@@ -81,7 +81,7 @@ by the increases in others so that the total productivity
 remains overall constant throughout years, making the community 
 less variable and hence more stabilized [@frost1995species; @bai2004ecosystem; 
 @gonzalez2009causes; @hallett2014]. Synchronous dynamics, on 
-the other hand, arises when majority of species fluctuate
+the other hand, arises when the majority of species fluctuate
 together in response to a common biotic/ abiotic driver 
 so that the community shows high variability in total 
 productivity and so considered as less stabilized [@keitt2008coherent; @loreau2008species; 
@@ -102,55 +102,119 @@ species fluctuate randomly with zero correlation.
 
 <!--p3: Though widely used, but this coeff. of variation or variance measure is not 
 showing the full picture: what if skewness changes with same variance? Fig. 1-->
-Although widely used, simple-correlation based variance ratio metric is not 
-enough to predict the community-stability if the species show stronger 
+Although widely used, the simple-correlation based variance ratio metric is not 
+enough to predict the community-stability if the species show a stronger 
 correlation among themselves for certain years than others. For example, consider
-two hypothetical communities with equal number of species. The only difference is 
+two hypothetical communities with an equal number of species. The only difference is 
 in one community all the species have simultaneously low values in catastrophic years
 (i.e. synchronous rare occurrence than being abundant, Fig. \ref{fig_pedag_cv2_skw}A) and in the 
-other community all species have simultaneously high values in beneficial
+other community, all species have simultaneously high values in beneficial
 years (i.e. synchronous abundance than being rare, Fig. \ref{fig_pedag_cv2_skw}B). 
-The first community has higher risk to collapse at once whereas the second one maintains 
-high productivity throughout years. But both communities would indicate
-similar variance ratio because it assumes equal variance between 
-interspecific fluctuations throughout years. We propose skewness instead using variance 
+The first community has a higher risk to collapse at once whereas the second one maintains 
+high productivity throughout the years. But both communities would indicate
+a similar variance ratio because it assumes equal variance between 
+interspecific fluctuations throughout the years. We propose skewness instead using variance 
 could be appropriate to make the distinction between two such communities. Simultaneous 
-dip in the individual timeseries of Fig. \ref{fig_pedag_cv2_skw}A make the 
-aggregated timeseries more negatively skewed (Fig. \ref{fig_pedag_cv2_skw}C) whereas 
-simultaneous hike in the individual timeseries of Fig. \ref{fig_pedag_cv2_skw}B make the 
-aggregated timeseries more positively skewed (Fig. \ref{fig_pedag_cv2_skw}D) compared to 
+dip in the individual time series of Fig. \ref{fig_pedag_cv2_skw}A makes the 
+aggregated time series more negatively skewed (Fig. \ref{fig_pedag_cv2_skw}C) whereas 
+simultaneous hike in the individual time series of Fig. \ref{fig_pedag_cv2_skw}B make the 
+aggregated time series more positively skewed (Fig. \ref{fig_pedag_cv2_skw}D) compared to 
 if the species were fluctuating randomly.
 
 <!--p4: Following the arguments, we need an additional measure which 
 could incorporate the "skewness changing" feature of the community. Fig 2(A-B): Box simple diagram.
 Skewness has been found as an indicator even in the studies for 
 early warning signal or regime shifts (citations)-->
-Following the above argument, we need an additional measure which could 
-incorporate the changing skewness feature of the community. 
-
-
-
-
-
-
+Following the above argument, we need an additional measure that could 
+incorporate the changing skewness feature of the community. Like variance, 
+changing skewness had been used earlier as an indicator 
+for changing ecosystem (i.e. for an early warning signal, regime shift, etc.) 
+[@guttal2008changing; @guttal2009spatial; @dakos2010spatial; @dakos2012methods]. 
+Keeping this in mind, we propose an analogous skewness-based approach 
+to that of variance-based one in Fig. \ref{fig_pedag_taildep}. The skewness ratio,
+$\phi_{s}$, could tell us how interspecific interaction (even the 
+nonlinear response) changes the net productivity over the years 
+compared to an independent community. But still, we don't know in particular 
+which makes this difference between the variance based and skewness based approach (the 
+dashed arrows with the mystery box in Fig. \ref{fig_pedag_taildep}A-B). 
 
 <!--p5: But how skewness is different than variance-measure? Is there 
 any mechanism working in the background that is responsible 
-for changing skewness while keeping the overall correlation same? Therefore, we think may be it is "tail-association".(Fig. 2C-D)-->
+for changing skewness while keeping the overall correlation same? Therefore, we think may be it is "tail-association".(Fig. 2C-D)
 
-
-<!--p6: What is tail-association? How it could chenge the skewness of the 
+What is tail-association? How it could chenge the skewness of the 
 community on aggregated sp. level? and then relate it to the stability 
 intuitively: LT association means crashing the whole community.-->
 
+A recent study [@Ghosh_copula]
+shows tail associations between local quantities affects the 
+skewness of spatially averaged
+productivity. Likewise, we anticipate the tail-association between 
+individual time-series could be responsible for changing skewness on 
+an aggregate level. Tail association means a stronger correlation between two 
+variables at their extremes than moderate values. If two random variables (say, 
+time series for two individual species from a community) are more 
+associated in their smaller values than higher then they are having 
+stronger 'lower-tail' association (Fig. \ref{fig_pedag_taildep}C) indicating 
+both species are going synchronously rare than abundant 
+(as shown in Fig. \ref{fig_pedag_cv2_skw}A). Similarly, 
+if variables are more associated in their higher values than smaller
+then they are having stronger 'upper-tail' association (Fig. \ref{fig_pedag_taildep}D)
+indicating both species are going synchronously abundant than rare 
+(as shown in Fig. \ref{fig_pedag_cv2_skw}B). A finite 
+difference between lower- and upper-tail association indicates 'tail-asymmetry' 
+between interspecific response over the years. Tail-asymmetry is known to
+have significant effect on population-extinction risk [ERC_ecosphere]
+and hence could be related to stability on the population, community and even ecosystem level.
+For example, the lower tail association could cause the community 
+likely to crash at once - making the community less stable.
 
-<!--p7: Our objectives:
+<!--p6: Our objectives:
 (Q1) Could we find an overall tail association (L/U) in a community which arises because of  
 synchronous/ compensatory species interaction? [answer by pscor]
 (Q2) If we do, then how does tail-association pattern explain the underlying mechanism 
 affecting the overall skewness of the community? More specifically, could this
-assymetric sp. interaction explain the community stability which we might miss with the classic variance ratio method? [answer: Fig 1b hidden box revealed]
-Wwill answer these Qs with two grassland community datasets: Hays & Konza.-->
+assymetric sp. interaction explain the community stability which we might miss 
+with the classic variance ratio method? [answer: Fig 1b hidden box revealed]
+We will answer these Qs with two grassland community datasets: Hays & Konza.-->
+
+In this paper, we will explore the potential for asymmetric tail associations 
+to assess nonlinear interactions among species in a community and to 
+unravel any hidden mechanism - not detected by the usual variance ratio approach -
+for stabilizing (or destabilizing) a community. Specifically, we will address 
+the following sets of questions: (Q1) In a community, could we find 
+asymmetric tail associations (lower and/ or upper) that arise because of 
+synchronous/ compensatory interaction between species? Do those interactions 
+make the community overall lower-tail or overall upper-tail asymmetric? 
+(Q2) If we do, then how does the tail association pattern 
+explain the underlying mechanism affecting the overall 
+skewness of the community? To be specific, we seek for 
+a route map to predict stability for an overall tail-asymmetric 
+community, based on a 'skewness ratio' approach. For (Q1), we use partial 
+Spearman correlation measures [@Ghosh_copula; ERC_ecosphere] focusing 
+on the extremes of pairwise species interaction. For (Q2) we disentangle
+the overall contribution in variance-/ skewness-ratio 
+into two distinct parts: one from the usual correlation and the 
+other from the tail association. We tested our theoretical 
+framework for assessing stability measure and detecting tail-asymmetry for 
+a community with two long-term grassland datasets: basal cover data of vascular 
+plant species from Hays and plant species composition data from Konza prairie. 
+To our knowledge, though the potential of tail association in population 
+ecology [@Ghosh_copula; ERC_ecosphere] has been recently studied, using it 
+on the community level to assessing variability-stability relationship remains 
+unexplored. Our essential goal is to advance the idea that tail
+associations may also be important in this context. Our questions are 
+also an important step for predicting net productivity, 
+community reorganization, etc. through monitoring skewness over years.
+
+
+<!--idea: 
+- can we make specific outcome oriented 
+community by choosing species or a cluster of sp.?
+- could change in skewness/ phi_s indicate species reordering 
+similar to that of early warning signal 
+used for regime shift?-->
+
 
 <!--Tables
 S1: splist for hays
@@ -448,11 +512,11 @@ We measured skewness of this aggregated percent cover time-series and compared a
 skewnesses of $10000$ "Normal" surrogate time-series which were meant to have no tail-dependence
 but same pairwise Spearman correlation between species (for details see Appendix \ref{SI-skew_ncsurrog}).
 We repeated this procedure for five different combination of species (see Fig. \ref{SI-fig_jrg_spaceavg_skewness})
-in JRBP: considering total percent cover timeseries from (i) only 23 common sp., (ii) 23 common sp. and 
+in JRBP: considering total percent cover time series from (i) only 23 common sp., (ii) 23 common sp. and 
 rest aggregated into one pseudo sp., 
 (iii) 34 common and intermediate sp., (iv) 34 common and intermediate sp. along with the rest aggregated into 
 one pseudo sp., (v) all sp. including the rare ones (for classification of species 
-categories see Appendix \ref{SI-Data}, Fig. \ref{SI-fig_spaceavg_timeseries}). As a community with major lower tail dependence, JRBP was 
+categories see Appendix \ref{SI-Data}, Fig. \ref{SI-fig_spaceavg_time series}). As a community with major lower tail dependence, JRBP was 
 expected to show significantly lower skewness than symmetric "Normal" surrogates. We found the expected results with 
 all five combinations. Similar results with significant lower skewness
 because of dominant lower tail-dependence in the comminity was observed with Hays datasets (Fig. 
@@ -491,7 +555,7 @@ communities have similar variance ratio, $\phi_{cv}$. \label{fig_pedag_cv2_skw}}
 \includegraphics[width=13 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
 \caption{Upper panel shows a schematic diagram of the known $(A)$ variance-ratio approach usually used
 to assess community-stability and our proposed $(B)$ skewness-based analog; \textit{CV} and \textit{S} denote 
-coefficient of variation and skewness, respectively. White boxes indicate a missing link between 
+coefficient of variation and skewness, respectively. White boxes with dashed arrows indicate a missing link between 
 the two extremes: an actual community ($com$) having both correlation and tail 
 association between species and its independent ($ind$) analog with no
 interspecific interaction. This is explored in detail later (Fig. \ref{fig_method_box}).
@@ -499,7 +563,7 @@ Lower panel shows pedagogical
 figures of asymmetric tail associations between $200$ observations of 
 two positively correlated (same Spearman correlation $\rho = 0.8$) random variables $(x,y)$ with 
 $(C)$ stronger lower-tail and $(D)$ stronger 
-upper-tail association.\label{fig_pedag_taildep}}
+upper-tail association, respectively.\label{fig_pedag_taildep}}
 \end{center}
 \end{figure}
 
@@ -530,7 +594,7 @@ $n_L>n_U$ (majority of red cells) indicates major lower tail association
 in sp-sp interaction matrix.
 Yellow cells indicate independent relationship. For initially negatively correlated 
 cells (indicated by green dots), we measured the tail asymmetry by taking negative of the 
-timeseries of species shown in column, so the sign (or color) of the cells do not matter but 
+time series of species shown in column, so the sign (or color) of the cells do not matter but 
 the absolute values. Cross sign in the cells indicate the interspecific tail-asymmetry is not 
 significant (95\% CI) when considered individually, but on an aggregate level 
 pose significant contribution. (for details see text).\label{fig_CorlmCoru_spaceavg_hays}}
