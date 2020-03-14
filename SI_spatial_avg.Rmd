@@ -937,11 +937,6 @@ for each location. If left-tail dependent noise is desired, take the negative of
 entire matrix.
 
 
-# Algorithm to generate "tail-symmetric community" but with same Pearson correlation between any two species  \label{alg_pp_com} 
-
-<!--See tex file by DCR -->
-
-
 # Data \label{Data} 
 
 <!--Hays data-->
@@ -1057,6 +1052,9 @@ knitr::kable(tab_spinfo_knz,
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
 
+# Algorithm to generate "tail-symmetric community" but with same Pearson correlation between any two species  \label{alg_pp_com} 
+
+See .tex file by DCR.
 
 
 

@@ -254,7 +254,7 @@ interacting species over years in a grassland community that is intended to stud
 the *partial Spearman correlation* approach (first introduced in @Ghosh_copula) to 
 estimate the association between a pair of interacting species' time-series, i.e., whether 
 they are strongly correlated in their common good/ bad years (synchronous dynamics) or 
-one species abundance in certain 'good' years limits the growth for the 
+one species' abundance in certain 'good' years limits the growth for the 
 other (compensatory dynamics). From a data perspective, consider 
 a set of two variables, i.e. time series for any two species,
 $\{ u_t, v_t\}, t = 1, 2, \ldots , T$. If $\{ \bar{x_t}, \bar{y_t}\}$ 
@@ -282,8 +282,8 @@ species pair time series ($u(t), v(t)$) as follows;
 $u$ and $v$, respectlively, as stated before. Sample means 
 and variances are computed using all the data but the sum is computed only
 over the $t$ such that $x(t)+y(t) > 2l_b$ and $x(t)+y(t)<2u_b$ (i.e. colored data points lying in 
-between two bounds as in Fig. \ref{fig_pedag_taildep}C-D). The partial Spearman correlation, 
-attributed by those colored data points between bounds, is the contribution in the Spearman
+between two bounds as in Fig. \ref{fig_pedag_taildep}C-D). The partial Spearman correlation 
+is the contribution of those colored data points between bounds in the total Spearman
 correlation of $u$ and $v$. For an asymmetric relationship 
 between a species-pair, association in one extreme of their copula plot would be
 stronger than the other extreme. For example, Fig. \ref{fig_pedag_taildep}C has a 
@@ -315,7 +315,7 @@ species we are reversing). Species for reversal can be chosen arbitrarily,
 hence only the magnitude, not the sign of tail-asymmetry 
 $\cor_{l}-\cor_{u}$ is considered for competing species pair. Therefore, a finite 
 value of $|\cor_{l}-\cor_{u}|$ would indicate asymmetric tail association 
-between two crresponding species time series $\{ u_t, v_t\}$. In particular, 
+between two corresponding species time series $\{ u_t, v_t\}$. In particular, 
 the magnitude for compensatory and magnitude as well as the sign for synchronous 
 (positive for lower tail and negative for upper tail) dynamics can answer the 
 first part of (Q1). 
@@ -330,7 +330,7 @@ species (only occurs once or twice) and the rest as *intermediate* ones. Through
 we assume a $n$-species-community comprised of $T$-years long observations for 
 $(n-1)$ *common* species and 
 one *pseudo*-species (aggregated time-series 
-of *rare* and *intermediate* categories). For
+for *rare* and *intermediate* categories). For
 such community, there are $p=n(n-1)/2$ number of unique 
 pair-wise interspecific interactions possible. First, for 
 each of these species-pairs, we construct the scatter plot with 
@@ -343,8 +343,9 @@ and measured tail-asymmetry ($\cor_{l}-\cor_{u}$) as described above. For positi
 correlated species-pair, we count how many are with the stronger 
 lower-tail (or upper-tail) association, $n_L$ (or $n_U$). These 
 numbers along with the sum of each asymmetric 
-tail-association estimate, $A_{tot} = \sum_p (\cor_{l}-\cor_{u})$ 
-can give us an idea about the overall nature of tail-asymmetry 
+tail-association estimate, $A_{tot} = \sum_p (\cor_{l}-\cor_{u})$ for 
+positively correlated pair, can give us an idea about the 
+overall nature of tail-asymmetry 
 within the community that answers the second part of (Q1).
 
 <!--omitted as of now: Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R
@@ -397,9 +398,10 @@ variance ratio, $\phi_{cv}$ ($= CV_{com}^2/CV_{ind}^2 =  \sum_{i,j}v_{ij}/ \sum_
 When $\phi_{cv}>1$, community is highly variable compared to a community where species are fluctuating 
 independently and randomly. Species with compensatory dynamics (fluctuating time-series 
 in anti-phase) makes a community more stable (i.e., $\phi_{cv}<1$) due to different 
-functional responses from different functional group of species within the community whereas 
-synchronized fluctuation results higher $\phi_{cv}(>1)$ and makes community 
-less stable towards environmental perturbation compared to an independent community.
+functional responses from different functional group of species within the community. 
+On the other hand, synchronized fluctuation between species results higher $\phi_{cv}(>1)$ 
+and makes community less stable towards 
+environmental perturbation compared to an independent community.
 
 <!--alternative measure of stability: based on skewness-->
 We here propose an alternative measure of 
@@ -461,29 +463,14 @@ between $\phi_{cv}$ and $\phi_s$, we make partition for the overall contribution
 in stability metric into two distict parts - due to correlation and
 due to tail association for extreme values between interspecific response, as follows. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!--partition between correlation and tail association effect in phi_s, phi_cv-->
 As we have mentioned earlier, the skewness of a community ($S_{com}$) is related 
 with its independent analog ($S_{ind}$) by the scaling factor $\phi_s$ that can be considered 
-as a measure of community-change over time. This $\phi_s$ can have two distinct 
+as a measure of community-change over time. This $\phi_s$ can have two distinct independent
 contributions: $\phi_{s,cor}$ (due to only correlation) 
 and $\phi_{s,ta}$ (due to tail-asymmetry), i.e., $\phi_s = \phi_{s,cor} \times \phi_{s,ta}$. 
 One can consider $\phi_{s,cor}$ as a factor by which skewness of an independent-community 
-($S_{ind}$, skewness for species without any interactions) changes to the skewness of 
+($S_{ind}$, skewness for species having no interactions) changes to the skewness of 
 the community when species show correlated fluctuations but no asymmetric tail-association ($S_{nta}$), 
 i.e., $S_{ind} = \phi_{s,cor} \times S_{nta}$. From now on, we will mention the later type of community 
 as 'tail-symmetric' community where interspecific response showed no 
@@ -501,18 +488,24 @@ and the given community with all these metrics are shown as a schematic diagram 
 <!--What to expect for the values of $\phi_s$'s with two different kinds of tail-asymmetry?-->
 For a given community where most of the species showed stronger correlation in 
 lower values (i.e. stronger lower tail association with $A_{tot}>0$), one can 
-expect the change in skewness would be in the order $S_{com} < S_{nta} < S_{ind}$ where 
-$\phi_s$ and $\phi_{s,ta}$ would be of similar values and $\phi_{s,ta} < \phi_{s,cor}$ as 
-lower tail association tends to suppress the skewness (Fig. \ref{fig_pedag_taildep}E-F). If the 
+expect the change in skewness would be in the order $S_{com} < S_{nta}$ 
+and $\phi_{s,ta} < \phi_{s,cor}$ as lower tail association 
+tends to suppress the skewness (Fig. \ref{fig_pedag_cv2_skw}C). If the 
 community showed stronger tail-association for the higher values of 
 species-time series (i.e. $A_{tot}<0$), skewness should change in 
-reverse order, i.e., $S_{com} > S_{nta} > S_{ind}$.
+reverse order, i.e., $S_{com} > S_{nta}$ with $\phi_{s,ta} > \phi_{s,cor}$.
 This anticipitation is consistent with the fact that upper tail 
-association tends to increase the skewness (Fig. \ref{fig_pedag_taildep}G-H). The stronger the 
-tail-asymmetry for the interspecific response within the community (i.e. higher $|A_{tot}|$), the larger would be 
-the difference between $\phi_{s,cor}$ and $\phi_{s,ta}$. The complete reproducible workflow 
-for this project is available at https://github.com/sghosh89/Copula_spaceavg. Following we will present
-the results from the analyses with two examplary long-term community data.
+association tends to increase the skewness (Fig. \ref{fig_pedag_cv2_skw}D). The 
+stronger the tail-asymmetry for the 
+interspecific response within the community (i.e. higher $|A_{tot}|$), the larger would be 
+the difference between $\phi_{s,cor}$ and $\phi_{s,ta}$. We summarize the similarity 
+and difference between classic variance ratio approach and our proposed 
+skewness ratio approach in Fig. \ref{fig_method_box} that can help to answer (Q2).
+
+The complete reproducible workflow 
+for this project is available at https://github.com/sghosh89/Copula_spaceavg. Following 
+we will present the results from the analyses with 
+two examplary long-term community data described in appendix \ref{SI-Data}.
 
 # Results\label{Results}
 
