@@ -498,8 +498,8 @@ This anticipitation is consistent with the fact that upper tail
 association tends to increase the skewness (Fig. \ref{fig_pedag_cv2_skw}D). The 
 stronger the tail-asymmetry for the 
 interspecific response within the community (i.e. higher $|A_{tot}|$), the larger would be 
-the difference between $\phi_{s,cor}$ and $\phi_{s,ta}$. We summarize the similarity 
-and difference between classic variance ratio approach and our proposed 
+the difference between $\phi_{s,cor}$ and $\phi_{s,ta}$. We summarize the 
+difference between classic variance ratio approach and our proposed 
 skewness ratio approach in Fig. \ref{fig_method_box} that can help to answer (Q2).
 
 The complete reproducible workflow 
