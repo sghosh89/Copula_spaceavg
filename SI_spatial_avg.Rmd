@@ -1,5 +1,5 @@
 ---
-title: "Supporting Information : Asymmetric tail association affects community stability"
+title: "Supporting Information: 'Skewness ratio: a complimentary measure for variance ratio and community stability'"
 author: "Shyamolina Ghosh, other authors, Daniel Reuman"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 12pt

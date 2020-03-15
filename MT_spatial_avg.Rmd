@@ -1,5 +1,5 @@
 ---
-title: "Asymmetric tail association affects community stability"
+title: "Skewness ratio: a complimentary measure for variance ratio and community stability"
 author: "Shyamolina Ghosh, other authors, Daniel Reuman"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 #date: "October 12, 2018"
@@ -28,7 +28,8 @@ bibliography: REF_CSS.bib
 <!--***DAN: store alternative titles here, decide on one closer to the end
 1) A complete description of synchrony and compensatory dynamics yields a better understanding of community stability
 2) Asymmetric tail association, skewness and community stability
-3) Asymmetric tail association, skewness and community variability (Shya: I prefer this)
+3) Asymmetric tail association, skewness and community variability 
+4) Asymmetric tail association affects community stability
 -->
 
 ```{r setup_Paper, echo=F}
@@ -42,7 +43,7 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 \noindent \textbf{ABSTRACT} 
 
 <!--keywords-->
-\textbf{\textit{Keywords:}} Synchrony, tail-association, grassland, community variability, skewness
+\textbf{\textit{Keywords:}} variance ratio, community-stability, synchrony, tail-association, grassland, skewness
 
 
 \newpage
@@ -505,11 +506,17 @@ skewness ratio approach in Fig. \ref{fig_method_box} that can help to answer (Q2
 The complete reproducible workflow 
 for this project is available at https://github.com/sghosh89/Copula_spaceavg. Following 
 we will present the results from the analyses with 
-two examplary long-term community data described in appendix \ref{SI-Data}.
+two examplary long-term community data described in Appendix \ref{SI-Data}.
 
 # Results\label{Results}
 
-<!--
+We here present the results from the study carried out with two long-term
+grassland community data sets: basal cover data (1932-1972)
+of mixed grass priarie near Hays, KS and Konza prairie 
+percent cover data (1983-2018) (for details see
+Appendix \ref{SI-Data}). 
+
+<!--Results for Q1
 (Q1) In a community, could we find 
 asymmetric tail associations (lower and/ or upper) that arise because of 
 synchronous/ compensatory interaction between species? 
@@ -517,23 +524,8 @@ synchronous/ compensatory interaction between species?
 Do those interactions make the community overall lower-tail or 
 overall upper-tail asymmetric? 
 
-For Q1: plot with hays and knz corl-coru (Fig 4, panels a,b)
+For Q1: plot with hays and knz corl-coru (Fig 4, panels a,b)-->
 
-(Q2) If we do, then how does the tail association pattern 
-explain the underlying mechanism affecting the overall 
-skewness of the community? To be specific, we seek for 
-a route map to predict stability for an overall tail-asymmetric 
-community, based on a 'skewness ratio' approach.
-
-For Q2: Fig. 5
--->
-We here present the results from the study carried out with two long-term
-grassland community data sets: basal cover data (1932-1972)
-of mixed grass priarie near Hays, KS and Konza prairie 
-percent cover data (1983-2018) (for details see
-Appendix \ref{SI-Data}). 
-
-<!--Results for Q1-->
 For each unique pairwise species combination from 
 each of two examplary communities, we computed lower and upper tail 
 association (*partial Spearman correlation* method) between 
@@ -560,9 +552,52 @@ was slightly negative, $-1.3496$, <!--caution,
 not autolinked, I copied from fig. legend-->making the Konza community 
 overall upper tail asymmetric. These observations answered (Q1).
 
-<!--Results for Q2-->
+<!--Results for Q2
 
+(Q2) How does the tail association pattern 
+explain the underlying mechanism affecting the overall 
+skewness of the community? To be specific, we seek for 
+a route map to predict stability for an overall tail-asymmetric 
+community, based on a 'skewness ratio' approach.
 
+For Q2: Fig. 5-->
+
+To answer (Q2), we followed the route map of monitoring the 
+change of variance as well as of skewness as 
+shown in Fig. \ref{fig_result_box}A-D. We tracked the changes 
+through three states of the given community (Hays and Konza); they 
+are: the independent community (species having no interaction), 
+tail-symmetric community (species with correlation but no tail-association), 
+and the actual community (species having correlation as well 
+as tail association). For Hays, variance ratio $\phi_{cv}$ was less than 1 
+indicating stable community than the independent 
+fluctuation (Fig. \ref{fig_result_box}A). For Konza, $\phi_{cv}$ concluded 
+the same (Fig. \ref{fig_result_box}C). Both communities have 
+$\phi_{cv} \approx \phi_{cv,cor}$ as tail-association did not contribute
+to the change in variance (i.e., $\phi_{cv,ta} \approx 1$). But our proposed 
+approach detected the difference between the two communities. Skewness ratio 
+$\phi_s = 0.2911$ for Hays was much less than 1, and mainly affected by 
+the tail-asymmetric contribution as $\phi_{s} \approx \phi_{s,ta}$ and 
+$\phi_{s,cor} \approx 1$ (Fig. \ref{fig_result_box}B). This observation was consistent with our 
+earlier finding (i.e. answer for second part of Q1) that species in Hays 
+showed stronger lower tail association on overall community level. Lower tail association 
+makes a community more negatively skewed making total productivity *less stable* as 
+species could crash altogether unexpectedly. On the other hand, for Konza, skewness ratio 
+$\phi_s = 7.3811$ was much higher than 1, meaning a community 
+with consistently high productivity - so *more stable*. This finding was also 
+consistent with the fact that species in Konza showed major upper-tail 
+association in our earlier findings. Also note, as total tail-asymmetry, $A_{tot}$, for Konza was not 
+as large as $A_{tot}$ for Hays, there was slight difference between 
+$\phi_{s,ta}$ and $\phi_{s,cor}$ for Konza. Fig. \ref{fig_result_box}(E-H) is a 
+pictorial representation of the summary result shown 
+in Fig. \ref{fig_result_box}(A-D) for squared coefficient of 
+variation, $CV^2$, and skewness, $S$, for 
+actual community and independent community compared
+to $10000$ tail-symmetric surrogate 
+communities we made up via algorithm stated in Appendix \ref{SI-alg_pp_com}. This 
+example with two community datasets showed two tail-asymmetric communities could have 
+same variance ratio but contrasting skewness ratio because of opposing tail 
+asymmetric nature they had - which answered (Q2).
 
 
 # Discussion\label{Discussion}
@@ -621,7 +656,7 @@ and skewness-ratio based. \label{fig_method_box}}
 \textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
 \includegraphics[width=8cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
 \includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/soiltype_t/Corl-Coru_ub_0.5.pdf} 
-\caption{Measure of tail-asymmetry (i.e., lower minus upper tail association) for species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
+\caption{Results for Q1: Measure of tail-asymmetry (i.e., lower minus upper tail association) for species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
 found in (A) Hays and (B) Konza priarie (for details see \nameref{Results}). 
 $n_L$ and $n_U$, the count of cells (considered for positive correlation only)
 with positive and negative tail-asymmetry values, respectively. 
@@ -645,15 +680,12 @@ computed considering sum over all positively correlated cell-values.\label{fig_C
 \includegraphics[width=15cm]{./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf}
 \hspace{1 cm}
 \includegraphics[width=16cm]{./Results/hays_results/skewness_results/legend_plot.pdf}
-\caption{Pedagogical figure showing how skewness of total biomass distribution of a community 
-is affected by extreme asymmetric tail-association (Appendix \ref{SI-extreme_taildep_mat}) in individual 
-species biomass-distribution throughout years. Major lower tail association in 
-a community makes its total biomass more negatively skewed $(B)$, whereas
-major upper tail association in a community makes 
-its total biomass more positively skewed $(D)$, compared to a
-community which is generated via a resampling method (Appendix \ref{SI-skew_ncsurrog})
-to have no tail-dependence but preserving pairwise Spearman correlation
-between any two species' time series.\label{fig_result_box}}
+\caption{Results for Q2: $(A-B)$ schematic diagram with computed parameter 
+values for Hays following the route map given in Fig. \ref{fig_method_box}. $(C-D)$ similar 
+diagram but for Konza. $(E-H)$ graphical representation of $(A-D)$ with the actual communities, 
+$10000$ tail-symmetric surrogates and independent communities. Both communities show similar 
+interpretation for stability as per variance ratio (same $\phi_{cv}$) but contrasting conclusion 
+for skewness-based stability approach (different $\phi_s$).\label{fig_result_box}}
 \end{center}
 \end{figure}
 
