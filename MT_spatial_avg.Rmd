@@ -510,85 +510,69 @@ two examplary long-term community data described in appendix \ref{SI-Data}.
 # Results\label{Results}
 
 <!--
-Q1 : Do syncronous/ compensatory pop. dynamics in communities commonly show asymmetric tail association? 
-For Q1: plot with hays and knz corl-coru (2 panels a,b)
+(Q1) In a community, could we find 
+asymmetric tail associations (lower and/ or upper) that arise because of 
+synchronous/ compensatory interaction between species? 
 
-Q2: If so, what are the consequences of these patterns for the stability of aggregated community properties?
-For Q2: multipanel plot with figs:
-            - same schematic diagram as of method section but now with corresponding numerical value
-            - histogram for hays and knz
+Do those interactions make the community overall lower-tail or 
+overall upper-tail asymmetric? 
+
+For Q1: plot with hays and knz corl-coru (Fig 4, panels a,b)
+
+(Q2) If we do, then how does the tail association pattern 
+explain the underlying mechanism affecting the overall 
+skewness of the community? To be specific, we seek for 
+a route map to predict stability for an overall tail-asymmetric 
+community, based on a 'skewness ratio' approach.
+
+For Q2: Fig. 5
 -->
-
-
 We here present the results from the study carried out with two long-term
-spatio-temporal data sets: basal cover data (for 51 quadrats over 41 years, 1932-1972)
-of mixed grass priarie near Hays, KS and (for details see
-Appendix \ref{SI-Data}). We here analyzed
-our findings from a model-selection based 
-copula approach, but we also verified the overall finding using
-alternative nonparametric analysis (Appendix \ref{SI-compare_methods}).
+grassland community data sets: basal cover data (1932-1972)
+of mixed grass priarie near Hays, KS and Konza prairie 
+percent cover data (1983-2018) (for details see
+Appendix \ref{SI-Data}). 
 
-<!--Results from Hays-->
-We carried out the tail-dependence analysis with the basal cover time series of
-20 most common species and the rest of the species data aggregated into single pseudo-species
-found in prairie of Hays, Kansas (Table \ref{SI-tab_spinfo_hays}). We
-found lower tail-dependence (considering positively correlation in
-counting lower and upper tail dependent pairwise copula) were dominant, overall, in 
-the community (Fig. \ref{fig_LTmUT_spaceavg_hays}). We will discuss here few instances 
-of interspecific interactions which 
-we found interesting. Some deep rooted grasses (e.g. sp2 : ANGE, 
-sp11 : PAVI2 and sp13 : PSTE5) showed upper tail dependence with synchronous abundance
-with each other (Fig. \ref{fig_LTmUT_spaceavg_hays}) 
-whereas they were not as strongly 
-correlated in other years 
-(see Fig. \ref{SI-fig_hays_spaceavg_dryseasoned_grass_UTdep}). 
-On the other hand, when \textit{Schizachyrium scoparium} (sp14) was abundant throughout 
-the plots for certain years, it appeared to be a stronger competitor 
-(Fig \ref{SI-fig_hays_spaceavg_SCSC_interactions}) suppressing growth of 
-other drought-tolerant grasses (e. g. \textit{Bouteloua gracilis} (sp5), 
-\textit{Paronychia jamesii} (sp12), 
-\textit{Sporobolus asper} (sp17) , \textit{Sporobolus cryptandrus} (sp18)) which
-were found to be synchronously rare and lower tail-dependent within themselves (positively 
-correlated red cells in Fig. \ref{fig_LTmUT_spaceavg_hays}).
+<!--Results for Q1-->
+For each unique pairwise species combination from 
+each of two examplary communities, we computed lower and upper tail 
+association (*partial Spearman correlation* method) between 
+species over years. The difference (i.e. lower minus upper tail 
+association estimates) are presented in 
+Fig. \ref{fig_CorlmCoru}A for Hays and B for Konza. 
+We found both positively correlated (synchronous) and negatively 
+correlated (compensatory) species pairs showed 
+asymmetric tail association. For Hays, majority of species pair interaction showed 
+stronger lower tail association ($n_L$ = 70) than stronger 
+upper tail association ($n_U$ = 40). Negatively correlated pairs,indicated by green dots, 
+were excluded while counting $n_L$ and $n_U$ since the magnitude not the sign matters 
+for tail-asymmetry with competitive species interaction (see \ref{Methods} for details). 
+As the number of interspecific interaction with lower tail asymmetry,$n_L$ was nearly double 
+than the number of interspecific interaction with upper tail asymmetry,$n_U$ for Hays, 
+the overall tail-asymmetry estimate, $A_{tot}$ was strongly positive, $6.0842$, <!--caution, 
+not autolinked, I copied from fig. legend-->suggecting Hays community was strongly 
+lower tail asymmetric for the $1932-1972$ study period (Fig. \ref{fig_CorlmCoru}A). 
+On the other hand, for Konza (Fig. \ref{fig_CorlmCoru}B), majority of species pair 
+interaction showed stronger upper tail association ($n_U$ = 82) than stronger 
+upper tail association ($n_L$ = 70), though the difference between $n_L$ and $n_U$ 
+was not that apperent as of Hays. Total asymmetry $A_{tot}$ estimates for Konza
+was slightly negative, $-1.3496$, <!--caution, 
+not autolinked, I copied from fig. legend-->making the Konza community 
+overall upper tail asymmetric. These observations answered (Q1).
 
-<!--Results from skewness as a measure of community variability-->
+<!--Results for Q2-->
 
-<!--Need to modify the following results-->
 
-<!--Major lower tail dependence than upper, as observed in interspecific interactions 
-in both grassland communities (Figs. \ref{fig_LTmUT_spaceavg_jrg}-\ref{fig_LTmUT_spaceavg_hays},
-$nL>NU$) could play a significant contributors in predicting their stabilities. Via skewness 
-measurement of total productivity through out the study period, one can assess an alternate measure 
-of community-variability. Following the idea as we introduced in the earlier section, 
-for each of the 36 years (1983-2018), we computed total percent cover
-(averaged throughout the plots) of the species in Jasper Ridge.
-We measured skewness of this aggregated percent cover time-series and compared against 
-skewnesses of $10000$ "Normal" surrogate time-series which were meant to have no tail-dependence
-but same pairwise Spearman correlation between species (for details see Appendix \ref{SI-skew_ncsurrog}).
-We repeated this procedure for five different combination of species (see Fig. \ref{SI-fig_jrg_spaceavg_skewness})
-in JRBP: considering total percent cover time series from (i) only 23 common sp., (ii) 23 common sp. and 
-rest aggregated into one pseudo sp., 
-(iii) 34 common and intermediate sp., (iv) 34 common and intermediate sp. along with the rest aggregated into 
-one pseudo sp., (v) all sp. including the rare ones (for classification of species 
-categories see Appendix \ref{SI-Data}, Fig. \ref{SI-fig_spaceavg_time series}). As a community with major lower tail dependence, JRBP was 
-expected to show significantly lower skewness than symmetric "Normal" surrogates. We found the expected results with 
-all five combinations. Similar results with significant lower skewness
-because of dominant lower tail-dependence in the comminity was observed with Hays datasets (Fig. 
-\ref{SI-fig_hays_spaceavg_skewness}). As skewness is related to the "spikiness" of the time-series
-concerned, significantly lower skewness than its "Normal" analog scale means the community could have 
-a potential threat for some of its native species which could crash simultaneously below a threshold. -->
 
 
 # Discussion\label{Discussion}
 
 
 
-### \textbf{For Data, see Appendix \ref{SI-Data} and \ref{SI-Methods} in Supporting material, respectively.}
+
 
 
 <!--add figures-->
-
-
 <!--Pedagogical figure for same variance ratio but different skewness-->
 \begin{figure}[!h]
 \begin{center}
@@ -637,21 +621,17 @@ and skewness-ratio based. \label{fig_method_box}}
 \textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
 \includegraphics[width=8cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
 \includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/soiltype_t/Corl-Coru_ub_0.5.pdf} 
-\caption{Measure of tail-asymmetry for most common plant species along with 
-other species merged into a pseudo species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
-found in (A) Hays and (B) Konza priarie, 
-details were discussed in \nameref{Results}. 
-$n_L$ and $n_U$ are the count of cells (considered for positive correlation only)
-with positive and negative tail-asymmetry  
-values; 
+\caption{Measure of tail-asymmetry (i.e., lower minus upper tail association) for species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
+found in (A) Hays and (B) Konza priarie (for details see \nameref{Results}). 
+$n_L$ and $n_U$, the count of cells (considered for positive correlation only)
+with positive and negative tail-asymmetry values, respectively. 
 $n_L>n_U$ (majority of red cells) indicates major lower tail association
-in sp-sp interaction matrix.
-Yellow cells indicate independent relationship. For initially negatively correlated 
-cells (indicated by green dots), we measured the tail asymmetry by taking negative of the 
-time series of species shown in column, so the sign (or color) of the cells do not matter but 
-the absolute values. Cross sign in the cells indicate the interspecific tail-asymmetry is not 
-significant (95\% CI) when considered individually, but on an aggregate level 
-pose significant contribution. (for details see text).\label{fig_CorlmCoru_spaceavg_hays}}
+in Hays, whereas for Konza it is major upper tail association ($n_L<n_U$).
+For initially negatively correlated 
+cells (indicated by green dots), we measured the tail asymmetry by taking 
+negative of the time series of species shown in column, so the magnitude 
+matters only, not the sign or color of the cell. $A_{tot}$ is the total tail asymmetry 
+computed considering sum over all positively correlated cell-values.\label{fig_CorlmCoru}}
 \end{center}
 \end{figure*}
 
@@ -678,6 +658,8 @@ between any two species' time series.\label{fig_result_box}}
 \end{figure}
 
 \clearpage
+
+# References
 \setlength{\parindent}{-0.2in}
 \setlength{\leftskip}{0.2in}
 \setlength{\parskip}{1pt}
