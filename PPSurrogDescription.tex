@@ -200,41 +200,6 @@ $\hat{P}$ from these values, putting $1$s on the diagonal. This was a
 positive definite matrix by construction. Surrogates were constructed as 
 described in the previous paragraph but using this matrix $\hat{P}$.
 
-%To do
-%You probably also ought to include some results here which are testing our specific surrogates
-%For instance, show a series of histograms (or similar) showing the range of correlation
-%values a pair of species for surrogates, and the actual value for that pair. Do it for all
-%pairs of species. Also show the distribution of variance ratio values for the surrogates 
-%and for the real data.
-
-
-%***First thing for Shya to do and include a description of here as well as the resulting figures:
-%A) Using the actual surrogates I produced and saved to the disk, make a histogram of 
-%the quantities $\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ and put on it
-%a line or red dot or something at the location corresponding to 
-%$\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$. The line or red dot should be close to the
-%middle of the histogram.
-%B) Using the actual surrogates I produced and saved to disk, make a histogram of all the
-%quantities $\var_t(\sum_n x_n^{(m)}(t))$ and put on it a line or red dot or something
-%at the location corresponding to $\var_t(\sum_n x_n(t))$. The red dot should again be close
-%to the middle of the histogram.
-%C) Using the actual surrogates I produced and saved to disk, make a histogram of all the
-%values of the variance ratio for the surrogates, and put on it a red dot or line or something at
-%the location corresponding to the variance ratio for the actual data.
-
-%***Do all the above for the Hays data/surrogates, and again for the KNZ data/surrogates.
-
-%***Some of the above has already been done, but I think not all of it.
-
-%***Next, for each $n_2>n_1$, compute $alpha=cor_t(x_{n_1}(t),x_{n_2}(t))$ and compute all
-%the values $beta(m)=cor_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$. For each n_2 and n_1,
-%figure out how to display this information. One way to do it might be to make a scatter
-%plot where the alpha values are on the x axis and the mean (over m) beta values are on the
-%axis and then each point on that plot has error bars showing the extent of the variation
-%in beta across surrogates, m. But this plot may end up being too full, so you may need
-%to come up with another way. The point is to check the idea that the alphas are "close
-%to" the betas, at least in general (though this may not be true for all n_1 and n_2).
-
 With two multivariate species cover datasets (Hays: $N=$19 sp. and KNZ: $N=$22 sp.), we checked 
 (Fig. \ref{fig:check_cov_var_vr}, Fig. \ref{fig:check_pairwisecor}) whether the 
 surrogates were ``good" enough to be consistent with our assumptions or not. First, using 
