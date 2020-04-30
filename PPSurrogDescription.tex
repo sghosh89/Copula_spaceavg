@@ -21,12 +21,6 @@
 \author{Daniel C Reuman}
 \maketitle
 
-%What are some of the things that have to be included here?
-%1) a description of what you are going for - surrogates with what properties?
-%2) A description of the map for one pair of species. For that you are going to first have to describe the %alignranks algorithm, probably best to do that separately first, and give it a name like "aligning ranks"
-%3) Given two species, we could use this map to get surrogates just for them (right?). Maybe want to %describe the bivariate version of the algorithm, first, as a warmup
-
-
 \noindent In order to start simply, we first describe the Pearson-preserving surrogates 
 algorithm for bivariate data. Then we move on to describing the algorithm
 for multivariate data. 
@@ -159,7 +153,8 @@ $\frac{\sum_{n_1, n_2} \cov_t(x_{n_1}(t),x_{n_2}(t))}
 {\sum_{n} \var_t(x_n(t))}$ should be similar.
 
 We begin by defining the map $\varphi_{n_1 n_2}:[-1,1]\rightarrow[-1,1]$
-for each pair of taxa $n_1<n_2$, using the data $(x_{n_1}(t),x_{n_2}(t))$ for $t=1,\ldots,T$.
+for each pair of taxa $n_1<n_2$, using the data $(x_{n_1}(t),x_{n_2}(t))$ for $t=1,\ldots,T$;
+this is done using the same procedure described in the bivariate case.
 We then construct $\hat{p}_{n_1 n_2} = \E\varphi_{n_1 n_2}^{-1}(c_{n_1 n_2})$ for 
 $c_{n_1 n_2} = \cor_t(x_{n_1}(t),x_{n_2}(t))$.
 For the datasets we considered, this was uniquely defined for all $n_1$ and $n_2$.
@@ -240,7 +235,7 @@ described in the previous paragraph but using this matrix $\hat{P}$.
 %to come up with another way. The point is to check the idea that the alphas are "close
 %to" the betas, at least in general (though this may not be true for all n_1 and n_2).
 
-With two multivariate species cover datasets (Hays: $N=$19sp. and KNZ: $N=$22 sp.), we checked 
+With two multivariate species cover datasets (Hays: $N=$19 sp. and KNZ: $N=$22 sp.), we checked 
 (Fig. \ref{fig:check_cov_var_vr}, Fig. \ref{fig:check_pairwisecor}) whether the 
 surrogates were ``good" enough to be consistent with our assumptions or not. First, using 
 each of $m$-surrogates (${m : 1, 2, \ldots, 10000}$) we computed total contribution from
