@@ -454,7 +454,7 @@ m<-ts_mat_CP_hays
 ans<-readRDS("./Results/hays_results/skewness_results/pp_surrogs_hays_CP/PPsurrogs_tests_with_HaysSurrogates.RDS")
 resloc<-"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/"
 
-Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc)
+Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,tag_legend = c("(A)","(C)","(E)"))
 ```
 
 <!-- preparing spatial avg data in usual format with common+pseudo sp. for knz data-->
@@ -779,7 +779,7 @@ m<-ts_mat_CP_knz
 ans<-readRDS("./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/PPsurrogs_tests_with_KNZtSurrogates.RDS")
 resloc<-"./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/"
 
-Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc)
+Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,tag_legend = c("(B)","(D)","(F)"))
 ```
 
 ```{r pedagog_fig, echo=F, results="hide"}

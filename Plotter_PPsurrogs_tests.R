@@ -15,8 +15,9 @@ getqs<-function(x){
 # m: a matrix with common and pseudo sp time series along each column
 # ans: a list which is the output from PPsurrogs_tests function
 # resloc: folder path to save the plots
+# tag_legend: a character string of length 3 for comparison hist plot
 
-Plotter_PPsurrogs_tests<-function(m,ans,resloc){
+Plotter_PPsurrogs_tests<-function(m,ans,resloc,tag_legend){
   
   cm<-cor(m)
   s1<-ans$cor_surrogs
@@ -95,6 +96,7 @@ Plotter_PPsurrogs_tests<-function(m,ans,resloc){
   pval<-sum(ans$tot_cov_surrogs<ans$tot_cov_real)/length(ans$tot_cov_surrogs)
   hist(ans$tot_cov_surrogs,col="grey",border=F,breaks=1000,xaxt="n",cex.axis=1.6,cex.main=2,
        xlab="Total pairwise-covariance from surrogates",cex.lab=2.4,main=paste("p = ",pval))
+  legend("topleft", tag_legend[1], bty="n", cex=3)
   axis(side=1, at=round(xlm,2),cex.axis=1.6)
   abline(v=ans$tot_cov_real,col="black") # actual skw from real data
   
@@ -103,6 +105,7 @@ Plotter_PPsurrogs_tests<-function(m,ans,resloc){
   pval<-sum(ans$var_aggr_sp_surrogs<ans$var_aggr_sp_real)/length(ans$var_aggr_sp_surrogs)
   hist(ans$var_aggr_sp_surrogs,col="grey",border=F,breaks=1000,xaxt="n",cex.axis=1.6,cex.main=2,
        xlab="Variance of aggregated species time-series from surrogates",cex.lab=2.4,main=paste("p = ",pval))
+  legend("topleft", tag_legend[2], bty="n", cex=3)
   axis(side=1, at=round(xlm,2),cex.axis=1.6)
   abline(v=ans$var_aggr_sp_real,col="black") # actual skw from real data
   
@@ -110,6 +113,7 @@ Plotter_PPsurrogs_tests<-function(m,ans,resloc){
   pval<-sum(ans$vr_surrogs<ans$vr_real)/length(ans$vr_surrogs)
   hist(ans$vr_surrogs,col="grey",border=F,breaks=1000,xaxt="n",cex.axis=1.6,cex.main=2,
        xlab="Variance ratio from surrogates",cex.lab=2.4,main=paste("p = ",pval))
+  legend("topleft", tag_legend[3], bty="n", cex=3)
   axis(side=1, at=round(xlm,2),cex.axis=1.6)
   abline(v=ans$vr_real,col="black") # actual skw from real data
   
@@ -124,7 +128,7 @@ Plotter_PPsurrogs_tests<-function(m,ans,resloc){
 #m<-readRDS("./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS")
 #ans<-readRDS("./Results/hays_results/skewness_results/pp_surrogs_hays_CP/PPsurrogs_tests_with_HaysSurrogates.RDS")
 #resloc<-"./Results/hays_results/skewness_results/pp_surrogs_hays_CP/"
-#Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,ht=15,wd=15)
+#Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,tag_legend = c("(A)","(C)","(E)"))
 
 
 # call the function for KNZ
@@ -132,8 +136,7 @@ Plotter_PPsurrogs_tests<-function(m,ans,resloc){
 #m<-readRDS("./Results/knz_results/skewness_results/ts_CP_knz_soiltype_t.RDS")
 #ans<-readRDS("./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/PPsurrogs_tests_with_KNZtSurrogates.RDS")
 #resloc<-"./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/"
-
-#Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,ht=18,wd=18)
+#Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,tag_legend = c("(B)","(D)","(F)"))
 
 
 
