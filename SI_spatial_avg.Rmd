@@ -826,6 +826,9 @@ text(x=0.1,y=0.9,"(D)",cex=1.3, family="serif")
 par(op)
 #box(which="figure")
 dev.off()
+
+# Another type of pedagog fig
+source("./pedagog_cv2_skw.R")
 ```
 
 <!--# Algorithm to generate extreme asymmetric tail dependence in a community matrix \label{extreme_taildep_mat} 

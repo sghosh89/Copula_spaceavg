@@ -82,9 +82,9 @@ dev.off()
 
 
 #____________________________________________________
-source("make_tab_stability_assessment.R")
-make_tab_stability(m=clmat,surrogs_given = F) #LT dep. community
-make_tab_stability(m=crmat,surrogs_given = F)  #UT dep. community
+#source("make_tab_stability_assessment.R")
+#make_tab_stability(m=clmat,surrogs_given = F) #LT dep. community
+#make_tab_stability(m=crmat,surrogs_given = F)  #UT dep. community
 
 
 
