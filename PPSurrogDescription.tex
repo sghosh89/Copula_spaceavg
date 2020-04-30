@@ -200,29 +200,31 @@ $\hat{P}$ from these values, putting $1$s on the diagonal. This was a
 positive definite matrix by construction. Surrogates were constructed as 
 described in the previous paragraph but using this matrix $\hat{P}$.
 
-With two multivariate species cover datasets (Hays: $N=$19 sp. and KNZ: $N=$22 sp.), we checked 
+With two multivariate species cover datasets (Hays, $N=$19 sp., and Konza, $N=$22 sp.), we checked 
 (Fig. \ref{fig:check_cov_var_vr}, Fig. \ref{fig:check_pairwisecor}) whether the 
-surrogates were ``good" enough to be consistent with our assumptions or not. First, using 
-each of $m$-surrogates (${m : 1, 2, \ldots, 10000}$) we computed total contribution from
-covariances between each unique pair of time-series, i.e., $\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ 
-and compared how they were distributed around the same quantity but calculated with the 
-actual dataset, $\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$ (top panel 
-of Fig. \ref{fig:check_cov_var_vr}). Second, we made a similar 
-comparison (middle panel of Fig. \ref{fig:check_cov_var_vr}) with the histograms 
-of variance of aggregated species time-series 
-for surrogates, $\var_t(\sum_n x_n^{(m)}(t))$, and the same for 
-actual data, $\var_t(\sum_n x_n(t))$. Third, we computed the variance ratio
-for each of m-surrogates, $\var_t(\sum_n x_n^{(m)}(t))/ \sum_n(\var_t x_n^{(m)}(t))$,
-and compared its distribution to that of the actual data (bottom panel 
-of Fig. \ref{fig:check_cov_var_vr}). In each of the three cases, we expected 
-the histogram should be equally distributed on either sides of the actual statistics, if 
-the surrogates had similar Pearson pairwise correlation. Finally, to get a glimpse of how 
-similar Pearson correlation from the surrogates to that of the actual data for each unique pair, 
-we made a scatter plot with the Pearson correlation from actual data and its 10000 surrogates 
-for each unique species pair; $95\%$ CI was added for the surrogates 
-(Fig. \ref{fig:check_pairwisecor}). If the CI included the 1:1 line in the scatter plot,
-then the corresponding surrogate had approximately same (upto sampling variation) pairwise correlation as we assumed.
-
+surrogates actually had the properties outlined above. First, using 
+each of 10000 surrrogates indexed by $m=1, 2, \ldots, 10000$, we computed 
+$\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ 
+and compared the resulting distribution of values to the single quantity 
+$\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$ (Fig. \ref{fig:check_cov_var_vr}A, B). 
+The values for the data were very close to the middle of the distributions of surrogate
+values, as desired. Second, we made similar 
+comparisons (Fig. \ref{fig:check_cov_var_vr}C, D) using the quantities 
+$\var_t(\sum_n x_n^{(m)}(t))$ and $\var_t(\sum_n x_n(t))$. Again, and by mathematical necessity
+given the results of Fig. \ref{fig:check_cov_var_vr}A, B,
+the values for the data were very close to the middle of the distributions of surrogate
+values, as desired. Third, we made similar comparisons using the variance ratio,
+i.e., using the quantities  $\var_t(\sum_n x_n^{(m)}(t))/ \sum_n(\var_t x_n^{(m)}(t))$
+and $\var_t(\sum_n x_n(t))/ \sum_n(\var_t x_n(t))$ (Fig. \ref{fig:check_cov_var_vr}E, F). 
+Again, and by mathematical necessity
+given the results from Fig. \ref{fig:check_cov_var_vr}A, B,
+the values for the data were very close to the middle of the distributions of surrogate
+values, as desired. Finally, to see how 
+similar Pearson correlations from the surrogates were to those of the data for each pair of species, 
+we made a scatter plot with the Pearson correlations from actual data plotted against the same quantities
+for the surrogates, for each pair of distinct species (Fig. \ref{fig:check_pairwisecor}). 
+For most pairs of species, the 2.5th and 97.5th quantiles of the surrogate values 
+were on opposite sides of the data value.
 
 \begin{figure}
 \includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_1_2.pdf} 
@@ -241,16 +243,31 @@ each parameter value.}\label{fig:varphiexample}
 \begin{figure}
 \includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_histplot_PPsurrogs.pdf}
 \includegraphics[width=9 cm]{./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/comparison_histplot_PPsurrogs.pdf}  
-\caption{Distribution of similar statistics for Pearson-preserving surrogates (histograms in each panel) and that from real data (vertical line): for Hays (left column), for KNZ (right column). The fraction, p, of surrogates with statistics less than that of real one is printed on the top of each panel.}\label{fig:check_cov_var_vr}
+\caption{(A, B) Distributions of surrogate values 
+$\sum_{n_2>n_1} \cov_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ 
+compared to the value $\sum_{n_2>n_1} \cov_t(x_{n_1}(t),x_{n_2}(t))$ for Hays (A) and Konza (B),
+where surrogate datasets were indexed by $m=1,\ldots,10000$. 
+(C, D) Distributions of surrogate values $\var_t(\sum_n x_n^{(m)}(t))$ compared
+to the value $\var_t(\sum_n x_n(t))$ for Hays (C) and Konza (D). 
+(E, F) Distributions of surrogate values 
+$\var_t(\sum_n x_n^{(m)}(t))/ \sum_n(\var_t x_n^{(m)}(t))$ compared
+to the value $\var_t(\sum_n x_n(t))/ \sum_n(\var_t x_n(t))$ for Hays (E) and Konza (F). 
+The fraction, p, of surrogate values less than 
+the data value is at the top of each panel.}\label{fig:check_cov_var_vr}
 \end{figure}
+%***DAN: Shya, can you please add panel labels, A, B for the top, C, D for the next, etc.
 
 \begin{figure}
 \includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_pairwisecor_PPsurrogs.pdf}  
 \includegraphics[width=9 cm]{./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/comparison_pairwisecor_PPsurrogs.pdf} 
-\caption{Comparison for pairwise Pearson correlation: Hays (on left), KNZ (on right). Vertical bars are the $2.5^{th}$ and $97.5^{th}$ percentiles of surrogates statistics with a point for $50^{th}$ percentile. All black bars are considered as coming from ``good" surrogates
-because they include the 1:1 dashed line in the scatter plot - so pairwise Pearson correlations are statistically similar for those surrogates and that of the real data, whereas red ones are not consistent our assumptions for ``good" surrogates.}\label{fig:check_pairwisecor}
+\caption{For each pair of species $n_1<n_2$, the distribution of values 
+$\cor_t(x_{n_1}^{(m)}(t),x_{n_2}^{(m)}(t))$ for $m=1,\ldots,10000$ was plotted against the value
+$\cor_t(x_{n_1}(t),x_{n_2}(t))$ for Hays (A) and Konza (B). Distributions of surrogate 
+correlations were rendered by showing their $2.5^{th}$ and $97.5^{th}$ percentiles (extents of
+vertical lines) and their median (dots). Black bars overlap with the 1-1 line and red bars 
+do not. }\label{fig:check_pairwisecor}
 \end{figure}
-
+%***DAN: Shya, can you please add panel labels, A, B
 
 
 
