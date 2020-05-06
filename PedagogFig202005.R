@@ -1,252 +1,47 @@
 rm(list=ls())
 
-#Generates data from a multivariate copula I constructed - see math notes dated 2020 05 04,
-#entitled "Creating a copula with certain properties", though there are some notational
-#differences between there and here, and the written-up math is a more specific case
-#(which corresponds to the test below).
+#***Functions that will be used below to generate data for a possibly improved pedagogical figure
+
+#A function for generating data for a pedagogical figure, copula scale
 #
 #Args
-#n              Number of random vectors to generate
-#sig1           A covariance matrix of dimensions equal to the desired dimension for the copula
-#sig2           Another covariance matrix
-#vartovar       A vector of length dim(sig1)[1] consisting solely of the integers between 1 and
-#                 dim(sig2), inclusive. 
+#n        The number of random vectors you want
+#sig      A covariance matrix. See the code and examples for how this is used
 #
-#Output - an n by dim(sig1)[1] matrix of copula values
+#Output - A matrix of dimensions n by 2*(dim(sig)[1]-1), draws from the random 
+#variable corresponding to a 2*(dim(sig)[1]-1)-dimensional copula
 #
-rnewcop<-function(n,sig1,sig2,vartovar,betas)
-{
-  ncop1<-copula::normalCopula(param=P2p(sig1),dim=dim(sig1)[1],dispstr="un")
-  ncop2<-copula::normalCopula(param=P2p(sig2),dim=dim(sig2)[1],dispstr="un")
-  
-  dcop1<-copula::rCopula(n,ncop1)
-  dcop2<-copula::rCopula(n,ncop2)
-  
-  for (counter in 1:dim(sig2)[1])
-  {
-    inds_var<-which(vartovar==counter)
-    indicator1<-0*numeric(n)
-    indicator1[dcop2[,counter]>betas[counter]]<-1
-    indicator2<-as.numeric(!indicator1)
-
-    dcop1[,inds_var]<-indicator1*dcop2[,counter]+indicator2*betas[counter]*dcop1[,inds_var]
-  }
-  
-  return(dcop1)
-}
-
-#Now test it
-rho<-.8
-n_math<-12 #this is the n from the math notes
-eta<-(n_math/2-1)*rho/(n_math/2)
-sig11<-matrix(rho,n_math/2,n_math/2)
-diag(sig11)<-1
-sig22<-sig11
-sig12<-matrix(-eta,n_math/2,n_math/2)
-sig21<-sig12
-sig1<-rbind(cbind(sig11,sig12),cbind(sig21,sig22))
-sig1
-sum(sig1) #should equal n, making a vr of 1
-eigen(sig1,symmetric=TRUE,only.values=TRUE)
-sig2<-matrix(c(1,-.8,-.8,1),2,2)
-vartovar<-c(rep(1,n_math/2),rep(2,n_math/2))
-n_func<-10000 #this is the n argument for the function above
-betas<-c(.8,.8)
-res<-rnewcop(n_func,sig1,sig2,vartovar,betas)
-
-plot(res[1:500,1],res[1:500,2],type="p",pch=20)
-plot(res[1:500,1],res[1:500,3],type="p",pch=20)
-plot(res[1:500,2],res[1:500,3],type="p",pch=20)
-
-plot(res[1:500,n_math/2+1],res[1:500,n_math/2+2],type="p",pch=20)
-plot(res[1:500,n_math/2+1],res[1:500,n_math/2+3],type="p",pch=20)
-plot(res[1:500,n_math/2+2],res[1:500,n_math/2+3],type="p",pch=20)
-
-plot(res[1:500,1],res[1:500,n_math/2+1],type="p",pch=20)
-plot(res[1:500,1],res[1:500,n_math/2+2],type="p",pch=20)
-plot(res[1:500,1],res[1:500,n_math/2+3],type="p",pch=20)
-
-hist(res[,1],30)
-hist(res[,2],30)
-hist(res[,3],30)
-hist(res[,n_math/2+1],30)
-hist(res[,n_math/2+2],30)
-hist(res[,n_math/2+3],30) #illustrates the fact that the marginals are uniform
-
-
-cor(res)
-res_norm<-qnorm(res)
-cm<-cov(res_norm)
-tsvr::vr(t(res_norm)-min(res_norm)+1)
-tot<-apply(FUN=sum,MARGIN=1,X=res_norm)
-hist(tot,50)
-source("SkewnessAnd3CentMom.R")
-myskns(tot)
-
-#The above does not seem to be giving me what I was hoping for. Let's try a bone-headed way of doing it.
-
-getdat1<-function(n)
-{
-  res<-matrix(NA,n,4)
-  
-  thirds<-runif(n)
-  indstop<-which(thirds<1/3)
-  indsmid<-which(thirds>=1/3 & thirds<=2/3)
-  indsbot<-which(thirds>2/3)
-  
-  #A third of the time, variables 1 and 2 are the same and uniformly distributed between 2/3 and 1,
-  #and variables 3 and 4 are independent and uniformly distributed beyween 0 and 1/3
-  res[indstop,1:2]<-rep(runif(length(indstop),min=2/3,max=1),times=2)
-  res[indstop,3:4]<-runif(length(indstop)*2,0,1/3)
-  
-  #A third of the time, variables 3 and 4 are the same and uniformly distributed between 2/3 and 1,
-  #and variables 1 and 2 are independent and uniformly distributed beyween 0 and 1/3
-  res[indsbot,3:4]<-rep(runif(length(indsbot),min=2/3,max=1),times=2)
-  res[indsbot,1:2]<-runif(length(indsbot)*2,0,1/3)
-  
-  #A third of the time, all four variables are independent and uniformly distributed between 1/3
-  #and 2/3
-  res[indsmid,]<-runif(length(indsmid)*4,1/3,2/3)
-  
-  return(res)
-}
-
-res<-getdat(10000)
-hist(res[,1],30)
-hist(res[,2],30)
-hist(res[,3],30)
-hist(res[,4],30) #histograms seem uniform, as they should be
-plot(res[1:500,1],res[1:500,2],type="p",pch=20)
-plot(res[1:500,1],res[1:500,3],type="p",pch=20)
-#This is probably working, but why use three parts?
-
-#A simpler alternative using 2 parts
-getdat2<-function(n)
-{
-  res<-matrix(NA,n,4)
-  
-  halves<-runif(n)
-  indstop<-which(halves<1/2)
-  indsbot<-which(halves>=1/2)
-  
-  #Half of the time, variables 1 and 2 are the same and uniformly distributed between 1/2 and 1,
-  #and variables 3 and 4 are independent and uniformly distributed beyween 0 and 1/2
-  res[indstop,1:2]<-rep(runif(length(indstop),min=1/2,max=1),times=2)
-  res[indstop,3:4]<-runif(length(indstop)*2,0,1/2)
-  
-  #The other half of the time, variables 3 and 4 are the same and uniformly distributed between 1/2 and 1,
-  #and variables 1 and 2 are independent and uniformly distributed beyween 0 and 1/2
-  res[indsbot,3:4]<-rep(runif(length(indsbot),min=1/2,max=1),times=2)
-  res[indsbot,1:2]<-runif(length(indsbot)*2,0,1/2)
-
-  return(res)
-}
-
-res<-getdat2(10000)
-hist(res[,1],30)
-hist(res[,2],30)
-hist(res[,3],30)
-hist(res[,4],30) #histograms seem uniform, as they should be
-plot(res[1:500,1],res[1:500,2],type="p",pch=20)
-plot(res[1:500,3],res[1:500,4],type="p",pch=20)
-
-plot(res[1:500,1],res[1:500,3],type="p",pch=20)
-plot(res[1:500,1],res[1:500,4],type="p",pch=20)
-plot(res[1:500,2],res[1:500,3],type="p",pch=20)
-plot(res[1:500,2],res[1:500,4],type="p",pch=20)
-
-cov(res)
-cor(res)
-
-normres<-qnorm(res)
-normres<-normres-min(normres)+1
-tsvr::vr(t(normres))
-
-
-
-#A maybe more flexbile and controlled alternative, but perhaps not general yet
-getdat3<-function(n,sig)
-{
-  coinflip<-runif(n)
-  cop<-copula::normalCopula(param=P2p(sig),dim=dim(sig)[1],dispstr="un")
-  intres<-rCopula(n,cop)
-  
-  res<-matrix(NA,n,4)
-  #for about half the cases 
-  res[coinflip<1/2,1:2]<-rep(intres[coinflip<1/2,1]/2+1/2,times=2)
-  res[coinflip<1/2,3:4]<-intres[coinflip<1/2,2:3]/2
-    
-  #for the other half
-  res[coinflip>=1/2,1:2]<-intres[coinflip>=1/2,2:3]/2
-  res[coinflip>=1/2,3:4]<-rep(intres[coinflip>=1/2,1]/2+1/2,times=2)
-  
-  return(res)
-}
-
-n<-10000
-#sig<-matrix(c(1,-.8,-.8,-.8,1,.35,-.8,.35,1),3,3)
-#sig<-matrix(c(1,-.7,-.7,-.7,1,.25,-.7,.25,1),3,3)
-#sig<-matrix(c(1,-0,-0,-0,1,0,-0,0,1),3,3)
-sig<-matrix(c(1,-0,-0,-0,1,.5,-0,.5,1),3,3)
-sig
-eigen(sig,symmetric=TRUE,only.values=TRUE)
-res<-getdat3(n=10000,sig=sig)
-
-hist(res[,1],30)
-hist(res[,2],30)
-hist(res[,3],30)
-hist(res[,4],30) #histograms seem uniform, as they should be
-
-plot(res[1:500,1],res[1:500,2],type="p",pch=20)
-plot(res[1:500,3],res[1:500,4],type="p",pch=20)
-
-plot(res[1:500,1],res[1:500,3],type="p",pch=20)
-plot(res[1:500,1],res[1:500,4],type="p",pch=20)
-plot(res[1:500,2],res[1:500,3],type="p",pch=20)
-plot(res[1:500,2],res[1:500,4],type="p",pch=20)
-
-normres<-qnorm(res)
-cov(normres)
-normres<-normres-min(normres)+1
-tsvr::vr(t(normres))
-
-tot<-apply(FUN=sum,MARGIN=1,X=normres)
-hist(tot,50)
-#source("SkewnessAnd3CentMom.R")
-myskns(tot)
-
-tim<-1:50
-plot(tim,res[tim,1],type="l",col="red")
-lines(tim,res[tim,2],type="l",col="pink")
-lines(tim,res[tim,3],type="l",col="blue")
-lines(tim,res[tim,4],type="l",col="black")
-
-#try to generalize it some
-
-getdat4<-function(n,sig)
+getdat<-function(n,sig)
 {
   coinflip<-runif(n)
   cop<-copula::normalCopula(param=P2p(sig),dim=dim(sig)[1],dispstr="un")
   intres<-rCopula(n,cop)
   d<-dim(sig)[1]-1
 
+  #this will be the result to fill in
   res<-matrix(NA,n,2*d)
-  #for about half the cases 
+  
+  #for about half the cases, the first d variables are in the interval (1/2,1)
+  #and are the same, and the rest of the variables are in the interval (0,1/2) 
   res[coinflip<1/2,1:d]<-rep(intres[coinflip<1/2,1]/2+1/2,times=d)
   res[coinflip<1/2,(d+1):(2*d)]<-intres[coinflip<1/2,2:(d+1)]/2
   
-  #for the other half
+  #for the other half of the cases, the last d variables are in the interval (1/2,1)
+  #and are the same, and the first d variables are in the interval (0,1/2)
   res[coinflip>=1/2,1:d]<-intres[coinflip>=1/2,2:(d+1)]/2
   res[coinflip>=1/2,(d+1):(2*d)]<-rep(intres[coinflip>=1/2,1]/2+1/2,times=d)
   
   return(res)
 }
 
-#Skewness ratio. Assumes no NAs.
+#Skewness ratio. Assumes no NAs in the input matrix. Perhaps Shyamolina has a function
+#like this somewhere that should be used instead of this one and this one should be 
+#deleted to prevent redundancy.
 #
 #Args
-#x      A matrix, years by species
+#x      A matrix, time steps by species
 #
+source("SkewnessAnd3CentMom.R")
 sr<-function(x)
 {
   xtot<-apply(FUN=sum,X=x,MARGIN=1)
@@ -254,8 +49,12 @@ sr<-function(x)
   scom<-myskns(xtot)
   sind<-(sum(apply(FUN=my3cm,MARGIN=2,X=x)))/(sum(apply(FUN=var,MARGIN=2,X=x)))^(3/2)
   
-  return(scom/sind)
+  return(c(scom=scom,sind=sind,sr=scom/sind))
 }
+
+#***Now generate the data, copula scale, for the first half of the figure
+
+set.seed(104)
 
 n<-10000
 d<-5
@@ -274,57 +73,128 @@ sig<-cbind(rep(-compconst,d),sig_p)
 sig<-rbind(c(1,rep(-compconst,d)),sig)
 sig
 eigen(sig,symmetric=TRUE,only.values=TRUE)
-res<-getdat4(n=10000,sig=sig)
 
-hist(res[,1],30)
-hist(res[,2],30)
-hist(res[,3],30)
-hist(res[,4],30) 
-hist(res[,5],30) 
-hist(res[,6],30) 
-hist(res[,7],30) 
-hist(res[,8],30) 
-hist(res[,9],30) 
-hist(res[,10],30) #histograms seem uniform, as they should be
+res_p1<-getdat(n=10000,sig=sig)
 
-plot(res[1:500,1],res[1:500,2],type="p",pch=20)
-plot(res[1:500,6],res[1:500,7],type="p",pch=20)
+hist(res_p1[,1],30)
+hist(res_p1[,2],30)
+hist(res_p1[,3],30)
+hist(res_p1[,4],30) 
+hist(res_p1[,5],30) 
+hist(res_p1[,6],30) 
+hist(res_p1[,7],30) 
+hist(res_p1[,8],30) 
+hist(res_p1[,9],30) 
+hist(res_p1[,10],30) #histograms seem uniform, as they should be
 
-plot(res[1:500,1],res[1:500,6],type="p",pch=20)
-plot(res[1:500,1],res[1:500,7],type="p",pch=20)
-plot(res[1:500,2],res[1:500,6],type="p",pch=20)
-plot(res[1:500,2],res[1:500,7],type="p",pch=20)
+plot(res_p1[1:500,1],res_p1[1:500,2],type="p",pch=20)
+plot(res_p1[1:500,6],res_p1[1:500,7],type="p",pch=20)
 
-normres<-qnorm(res)
-normres<-normres-min(normres)+1
-tsvr::vr(t(normres))
-tot<-apply(FUN=sum,MARGIN=1,X=normres)
-hist(tot,50)
-myskns(tot)
-sr(normres)
+plot(res_p1[1:500,1],res_p1[1:500,6],type="p",pch=20)
+plot(res_p1[1:500,1],res_p1[1:500,7],type="p",pch=20)
+plot(res_p1[1:500,2],res_p1[1:500,6],type="p",pch=20)
+plot(res_p1[1:500,2],res_p1[1:500,7],type="p",pch=20)
 
-lognormres<-exp(qnorm(res))
-tsvr::vr(t(lognormres))
-tot<-apply(FUN=sum,MARGIN=1,X=lognormres)
-hist(tot,50)
-myskns(tot)
+#***Now generate the data, copula scale, for the second half of the figure
+res_p2<-getdat(n=10000,sig=sig)
+res_p2<-(-res_p2+1)
 
-gamres<-qgamma(res,shape=2,scale=2)
-tsvr::vr(t(gamres))
-tot<-apply(FUN=sum,MARGIN=1,X=gamres)
-hist(tot,50)
-myskns(tot)
+hist(res_p2[,1],30)
+hist(res_p2[,2],30)
+hist(res_p2[,3],30)
+hist(res_p2[,4],30) 
+hist(res_p2[,5],30) 
+hist(res_p2[,6],30) 
+hist(res_p2[,7],30) 
+hist(res_p2[,8],30) 
+hist(res_p2[,9],30) 
+hist(res_p2[,10],30) #histograms seem uniform, as they should be
 
+plot(res_p2[1:500,1],res_p2[1:500,2],type="p",pch=20)
+plot(res_p2[1:500,6],res_p2[1:500,7],type="p",pch=20)
 
+plot(res_p2[1:500,1],res_p2[1:500,6],type="p",pch=20)
+plot(res_p2[1:500,1],res_p2[1:500,7],type="p",pch=20)
+plot(res_p2[1:500,2],res_p2[1:500,6],type="p",pch=20)
+plot(res_p2[1:500,2],res_p2[1:500,7],type="p",pch=20)
 
+#***now combine both copulas with standard normal marginals
 
-tim<-1:50
-plot(tim,res[tim,1],type="l",col="red")
+normres_p1<-qnorm(res_p1)
+normres_p2<-qnorm(res_p2)
+
+normres_p1<-normres_p1-min(normres_p1,normres_p2)+1
+normres_p2<-normres_p2-min(normres_p2,normres_p2)+1
+
+#***now compare the two resulting datasets in various respects
+
+#very similar species marginal distributions in the two cases
+empcdf<-data.frame(x=sort(normres_p1[,1]),y=(1:n)/n)
+plot(empcdf[,"x"],empcdf[,"y"],type="l",xlim=c(1,10),ylim=c(0,1))
 for (counter in 2:d)
 {
-  lines(tim,res[tim,counter],col="red")
+  empcdf<-data.frame(x=sort(normres_p1[,counter]),y=(1:n)/n)
+  lines(empcdf[,"x"],empcdf[,"y"],type="l")
 }
 for (counter in (d+1):(2*d))
 {
-  lines(tim,res[tim,counter],col="blue")
+  empcdf<-data.frame(x=sort(normres_p1[,counter]),y=(1:n)/n)
+  lines(empcdf[,"x"],empcdf[,"y"],type="l",col="red")
 }
+
+#very similar mean of the total
+tot_p1<-apply(FUN=sum,MARGIN=1,X=normres_p1)
+tot_p2<-apply(FUN=sum,MARGIN=1,X=normres_p2)
+mean(tot_p1)
+mean(tot_p2)
+
+#very similar variance of the total
+var(tot_p1)
+var(tot_p2)
+
+#very similar variance ratio
+tsvr::vr(t(normres_p1))
+tsvr::vr(t(normres_p2))
+
+#very different skewnesses of the total
+hist(tot_p1,50)
+myskns(tot_p1)
+hist(tot_p2,50)
+myskns(tot_p2)
+
+#extremely different skewness ratios
+sr(normres_p1)
+sr(normres_p2)
+
+#***Now make some plots of the time series. The real figure also show some similar plots 
+#but will be much nicer than this.
+
+#first set of time series
+tim<-1100:1150
+plot(tim,normres_p1[tim,1],type="l",col="red",ylim=range(normres_p1[tim,],normres_p2[tim,]))
+for (counter in 2:d)
+{
+  lines(tim,normres_p1[tim,counter],col="red")
+}
+for (counter in (d+1):(2*d))
+{
+  lines(tim,normres_p1[tim,counter],col="black")
+}
+
+#second set of time series
+plot(tim,normres_p2[tim,1],type="l",col="red",ylim=range(normres_p1[tim,],normres_p2[tim,]))
+for (counter in 2:d)
+{
+  lines(tim,normres_p2[tim,counter],col="red")
+}
+for (counter in (d+1):(2*d))
+{
+  lines(tim,normres_p2[tim,counter],col="black")
+}
+
+#both totals
+plot(tim,tot_p1[tim],type="l",ylim=range(tot_p1[tim],tot_p2[tim]))
+lines(tim,tot_p2[tim],type="l",col="red")
+
+#The advantage of this approach over the fig currently used in the manuscript is the vr is 
+#realistic in this one
