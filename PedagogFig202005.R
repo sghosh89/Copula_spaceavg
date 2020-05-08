@@ -76,6 +76,7 @@ eigen(sig,symmetric=TRUE,only.values=TRUE)
 
 res_p1<-getdat(n=10000,sig=sig)
 
+#the following plots are just for checking the data generated has the desired properties
 hist(res_p1[,1],30)
 hist(res_p1[,2],30)
 hist(res_p1[,3],30)
@@ -99,6 +100,7 @@ plot(res_p1[1:500,2],res_p1[1:500,7],type="p",pch=20)
 res_p2<-getdat(n=10000,sig=sig)
 res_p2<-(-res_p2+1)
 
+#again these plots just for checking
 hist(res_p2[,1],30)
 hist(res_p2[,2],30)
 hist(res_p2[,3],30)
@@ -166,8 +168,12 @@ myskns(tot_p2)
 sr(normres_p1)
 sr(normres_p2)
 
-#***Now make some plots of the time series. The real figure also show some similar plots 
-#but will be much nicer than this.
+#***Now make some plots of the time series. The real figure also should show some similar plots 
+#but will be much nicer than this. It should also include, in the caption or on the figure,
+#some of the above stats. The plots in Shyanolina's version of the figure are similar to what
+#I want here, but instead the new time series should be plotted. I am plotting the two groups of 
+#species in black and red, to easily distinguish them. So there are two groups of synchronous
+#species, and the two groups show compensatory dynamics with each other.
 
 #first set of time series
 tim<-1100:1150
