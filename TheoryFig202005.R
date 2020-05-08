@@ -49,7 +49,7 @@ plot(res[,2],res[,3],type="p",pch=20,cex=.5)
 
 #***Get the data you need for plotting
 
-numpts<-10000
+numpts<-1000000
 numscatpts<-500
 dtouse<-20
 
@@ -68,7 +68,7 @@ cov1<-mean(cov1,na.rm=TRUE)
 totX1<-apply(FUN=sum,X=d1,MARGIN=1)
 vartotX1<-var(totX1)
 sktotX1<-myskns(totX1)
-empcdf1<-data.frame(x=sort(totX1),(1:numpts)/numpts)
+empcdf1<-data.frame(x=sort(totX1),y=(1:numpts)/numpts)
 
 #get data for example 2 - comonotonic
 dcop2<-matrix(rep(runif(numpts),times=dtouse),numpts,dtouse)
@@ -79,7 +79,7 @@ cov2<-mean(cov2,na.rm=TRUE)
 totX2<-apply(FUN=sum,X=d2,MARGIN=1)
 vartotX2<-var(totX2)
 sktotX2<-myskns(totX2)
-empcdf2<-data.frame(x=sort(totX2),(1:numpts)/numpts)
+empcdf2<-data.frame(x=sort(totX2),y=(1:numpts)/numpts)
 
 #get data for example 3 - upper-tail comonotonic
 beta1<-0
@@ -115,7 +115,7 @@ cov3<-mean(cov3,na.rm=TRUE)
 totX3<-apply(FUN=sum,X=d3,MARGIN=1)
 vartotX3<-var(totX3)
 sktotX3<-myskns(totX3)
-empcdf3<-data.frame(x=sort(totX3),(1:numpts)/numpts)
+empcdf3<-data.frame(x=sort(totX3),y=(1:numpts)/numpts)
 
 #get data for example 4 - lower-tail comonotonic
 beta1<-0.05
@@ -145,7 +145,7 @@ cov4<-mean(cov4,na.rm=TRUE)
 totX4<-apply(FUN=sum,X=d4,MARGIN=1)
 vartotX4<-var(totX4)
 sktotX4<-myskns(totX4)
-empcdf4<-data.frame(x=sort(totX4),(1:numpts)/numpts)
+empcdf4<-data.frame(x=sort(totX4),y=(1:numpts)/numpts)
 
 #get data for example 5
 beta1<-0.05
@@ -175,7 +175,7 @@ cov5<-mean(cov5,na.rm=TRUE)
 totX5<-apply(FUN=sum,X=d5,MARGIN=1)
 vartotX5<-var(totX5)
 sktotX5<-myskns(totX5)
-empcdf5<-data.frame(x=sort(totX5),(1:numpts)/numpts)
+empcdf5<-data.frame(x=sort(totX5),y=(1:numpts)/numpts)
 
 #other prep for consistency among plots
 scatylim<-range(d1[,2],d2[,2],d3[,2],d4[,2],d5[,2],na.rm=TRUE)
@@ -184,17 +184,21 @@ histXbreaks<-seq(from=scatxlim[1],to=scatxlim[2],length.out=50)
 histYbreaks<-seq(from=scatylim[1],to=scatylim[2],length.out=50)
 histtotXxlim<-range(totX1,totX2,totX3,totX4,totX5,na.rm=TRUE)
 histtotXbreaks<-seq(from=histtotXxlim[1],to=histtotXxlim[2],length.out=50)
+topthreshrg<-c(20,60)
+botthreshrg<-c(-60,-20)
 
 #***plot dimensions, units inches
 xmarght<-.5
 ymargwd<-.6
-totwd<-4
+totwd<-6
 gap<-0.25
 spf<-0.45
-panwd<-(totwd-2*gap-2*ymargwd)/(2+spf)
+panwd<-(totwd-2*gap-3*ymargwd)/(3+spf)
 smallpan<-panwd*spf
 panht<-panwd
+cdfpanht<-(panht+gap+smallpan-gap)/2
 totht<-xmarght+5*(panht+2*gap+smallpan)
+textsz<-.9
 pdf(file="TheoryFig.pdf",width=totwd,height=totht)
 
 #***Example 1, top row of panels, normal copula
@@ -251,9 +255,33 @@ x1<-x1[2:length(x1)]-diff(x1)[1]/2
 plot(x1,h1$counts,xaxt='n',type="l")
 axis(side=1,labels=FALSE)
 mtext("Count",side=2,line=1.2)
-mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov1,3))),side=3,line=1.6,cex=.75)
-mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX1),3))),side=3,line=.8,cex=.75)
-mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX1,3))),side=3,line=0,cex=.75)
+mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov1,3))),side=3,line=1.6,cex=textsz)
+mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX1),3))),side=3,line=.8,cex=textsz)
+mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX1,3))),side=3,line=0,cex=textsz)
+
+#cdf panel for exceeding large thresholds (top panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
+x<-empcdf1$x[inds]
+y<-1-empcdf1$y[inds]
+plot(x,y,type="l")
+mtext("P>th.",side=2,line=1.2)
+
+#cdf panel for falling under small thresholds (bottom panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
+x<-empcdf1$x[inds]
+y<-empcdf1$y[inds]
+plot(x,y,type="l")
+mtext("P<th.",side=2,line=1.2)
 
 #***Example 2, second row of panels, comonotonic case
 
@@ -308,9 +336,41 @@ plot(x,h$counts,xaxt='n',type="l",col="red",ylim=range(h$counts,h1$counts))
 lines(x1,h1$counts,xaxt='n',type="l")
 axis(side=1,labels=FALSE)
 mtext("Count",side=2,line=1.2)
-mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov2,3))),side=3,line=1.6,cex=.75)
-mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX2),3))),side=3,line=.8,cex=.75)
-mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX2,3))),side=3,line=0,cex=.75)
+mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov2,3))),side=3,line=1.6,cex=textsz)
+mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX2),3))),side=3,line=.8,cex=textsz)
+mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX2,3))),side=3,line=0,cex=textsz)
+
+#cdf panel for exceeding large thresholds (top panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
+x<-empcdf1$x[inds]
+y<-1-empcdf1$y[inds]
+inds<-which(empcdf2$x>topthreshrg[1] & empcdf2$x<topthreshrg[2])
+xn<-empcdf2$x[inds]
+yn<-1-empcdf2$y[inds]
+plot(x,y,type="l",ylim=c(0,max(y,yn)))
+lines(xn,yn,type='l',col='red')
+mtext("P>th.",side=2,line=1.2)
+
+#cdf panel for falling under small thresholds (bottom panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
+x<-empcdf1$x[inds]
+y<-empcdf1$y[inds]
+inds<-which(empcdf2$x>botthreshrg[1] & empcdf2$x<botthreshrg[2])
+xn<-empcdf2$x[inds]
+yn<-empcdf2$y[inds]
+plot(x,y,type="l",ylim=c(0,max(y,yn)))
+lines(xn,yn,type='l',col='red')
+mtext("P<th.",side=2,line=1.2)
 
 #***Example 3, third row of panels, comonotonicity in the right tails only
 
@@ -365,9 +425,41 @@ plot(x,h$counts,xaxt='n',type="l",col="blue",ylim=range(h$counts,h1$counts))
 lines(x1,h1$counts,xaxt='n',type="l")
 axis(side=1,labels=FALSE)
 mtext("Count",side=2,line=1.2)
-mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov3,3))),side=3,line=1.6,cex=.75)
-mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX3),3))),side=3,line=.8,cex=.75)
-mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX3,3))),side=3,line=0,cex=.75)
+mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov3,3))),side=3,line=1.6,cex=textsz)
+mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX3),3))),side=3,line=.8,cex=textsz)
+mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX3,3))),side=3,line=0,cex=textsz)
+
+#cdf panel for exceeding large thresholds (top panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
+x<-empcdf1$x[inds]
+y<-1-empcdf1$y[inds]
+inds<-which(empcdf3$x>topthreshrg[1] & empcdf3$x<topthreshrg[2])
+xn<-empcdf3$x[inds]
+yn<-1-empcdf3$y[inds]
+plot(x,y,type="l",ylim=c(0,max(y,yn)))
+lines(xn,yn,type='l',col='blue')
+mtext("P>th.",side=2,line=1.2)
+
+#cdf panel for falling under small thresholds (bottom panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
+x<-empcdf1$x[inds]
+y<-empcdf1$y[inds]
+inds<-which(empcdf3$x>botthreshrg[1] & empcdf3$x<botthreshrg[2])
+xn<-empcdf3$x[inds]
+yn<-empcdf3$y[inds]
+plot(x,y,type="l",ylim=c(0,max(y,yn)))
+lines(xn,yn,type='l',col='blue')
+mtext("P<th.",side=2,line=1.2)
 
 #***Example 4, fourth row of panels, comonotonicity in the left tails only
 
@@ -422,9 +514,41 @@ plot(x,h$counts,xaxt='n',type="l",col="green",ylim=range(h$counts,h1$counts))
 lines(x1,h1$counts,xaxt='n',type="l")
 axis(side=1,labels=FALSE)
 mtext("Count",side=2,line=1.2)
-mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov4,3))),side=3,line=1.6,cex=.75)
-mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX4),3))),side=3,line=.8,cex=.75)
-mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX4,3))),side=3,line=0,cex=.75)
+mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov4,3))),side=3,line=1.6,cex=textsz)
+mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX4),3))),side=3,line=.8,cex=textsz)
+mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX4,3))),side=3,line=0,cex=textsz)
+
+#cdf panel for exceeding large thresholds (top panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
+x<-empcdf1$x[inds]
+y<-1-empcdf1$y[inds]
+inds<-which(empcdf4$x>topthreshrg[1] & empcdf4$x<topthreshrg[2])
+xn<-empcdf4$x[inds]
+yn<-1-empcdf4$y[inds]
+plot(x,y,type="l",ylim=c(0,max(y,yn)))
+lines(xn,yn,type='l',col='green')
+mtext("P>th.",side=2,line=1.2)
+
+#cdf panel for falling under small thresholds (bottom panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
+x<-empcdf1$x[inds]
+y<-empcdf1$y[inds]
+inds<-which(empcdf4$x>botthreshrg[1] & empcdf4$x<botthreshrg[2])
+xn<-empcdf4$x[inds]
+yn<-empcdf4$y[inds]
+plot(x,y,type="l",ylim=c(0,max(y,yn)))
+lines(xn,yn,type='l',col='green')
+mtext("P<th.",side=2,line=1.2)
 
 #***Example 5, fifth row of panels, comonotonicity in the right and left tails only
 
@@ -481,9 +605,42 @@ plot(x,h$counts,xaxt='n',type="l",col="purple",ylim=range(h$counts,h1$counts))
 lines(x1,h1$counts,xaxt='n',type="l")
 axis(side=1,labels=TRUE)
 mtext("Count",side=2,line=1.2)
-mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov5,3))),side=3,line=1.6,cex=.75)
-mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX5),3))),side=3,line=.8,cex=.75)
-mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX5,3))),side=3,line=0,cex=.75)
+mtext(bquote(cov(X[i],X[j]) %~~% .(round(cov5,3))),side=3,line=1.6,cex=textsz)
+mtext(bquote(sd(Sigma[i] * X[i]) == .(round(sqrt(vartotX5),3))),side=3,line=.8,cex=textsz)
+mtext(bquote(sk(Sigma[i] * X[i]) == .(round(sktotX5,3))),side=3,line=0,cex=textsz)
 mtext(expression(Sigma[i] * X[i]),side=1,line=1.2)
+
+#cdf panel for exceeding large thresholds (top panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
+x<-empcdf1$x[inds]
+y<-1-empcdf1$y[inds]
+inds<-which(empcdf5$x>topthreshrg[1] & empcdf5$x<topthreshrg[2])
+xn<-empcdf5$x[inds]
+yn<-1-empcdf5$y[inds]
+plot(x,y,type="l",ylim=c(0,max(y,yn)))
+lines(xn,yn,type='l',col='purple')
+mtext("P>th.",side=2,line=1.2)
+
+#cdf panel for falling under small thresholds (bottom panel of the cdf panels)
+par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
+          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
+          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
+x<-empcdf1$x[inds]
+y<-empcdf1$y[inds]
+inds<-which(empcdf5$x>botthreshrg[1] & empcdf5$x<botthreshrg[2])
+xn<-empcdf5$x[inds]
+yn<-empcdf5$y[inds]
+plot(x,y,type="l",ylim=c(0,max(y,yn)))
+lines(xn,yn,type='l',col='purple')
+mtext("P<th.",side=2,line=1.2)
+mtext("Threshold (th.)",side=1,line=1.2)
 
 dev.off()
