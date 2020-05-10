@@ -1,5 +1,6 @@
 rm(list=ls())
 
+library(copula)
 #***Functions that will be used below to generate data for a possibly improved pedagogical figure
 
 #A function for generating data for a pedagogical figure, copula scale
@@ -11,8 +12,7 @@ rm(list=ls())
 #Output - A matrix of dimensions n by 2*(dim(sig)[1]-1), draws from the random 
 #variable corresponding to a 2*(dim(sig)[1]-1)-dimensional copula
 #
-getdat<-function(n,sig)
-{
+getdat<-function(n,sig){
   coinflip<-runif(n)
   cop<-copula::normalCopula(param=P2p(sig),dim=dim(sig)[1],dispstr="un")
   intres<-rCopula(n,cop)
@@ -41,16 +41,19 @@ getdat<-function(n,sig)
 #Args
 #x      A matrix, time steps by species
 #
-source("SkewnessAnd3CentMom.R")
-sr<-function(x)
-{
-  xtot<-apply(FUN=sum,X=x,MARGIN=1)
+#source("SkewnessAnd3CentMom.R")
+#sr<-function(x)
+#{
+#  xtot<-apply(FUN=sum,X=x,MARGIN=1)
   
-  scom<-myskns(xtot)
-  sind<-(sum(apply(FUN=my3cm,MARGIN=2,X=x)))/(sum(apply(FUN=var,MARGIN=2,X=x)))^(3/2)
+#  scom<-myskns(xtot)
+#  sind<-(sum(apply(FUN=my3cm,MARGIN=2,X=x)))/(sum(apply(FUN=var,MARGIN=2,X=x)))^(3/2)
   
-  return(c(scom=scom,sind=sind,sr=scom/sind))
-}
+#  return(c(scom=scom,sind=sind,sr=scom/sind))
+#}
+
+# Shya: my function to get CV2 and skw related metric
+source("./make_tab_stability_assessment.R")
 
 #***Now generate the data, copula scale, for the first half of the figure
 
@@ -88,12 +91,17 @@ hist(res_p1[,8],30)
 hist(res_p1[,9],30) 
 hist(res_p1[,10],30) #histograms seem uniform, as they should be
 
+# P2p(sig) = lower traingular matrix of sig
+# [1] -0.2 -0.2 -0.2 -0.2 -0.2  0.1  0.1  0.1  0.1  0.1  0.1  0.1  0.1  0.1  0.1 #???
+
+dim(res_p1)
+
 plot(res_p1[1:500,1],res_p1[1:500,2],type="p",pch=20)
 plot(res_p1[1:500,6],res_p1[1:500,7],type="p",pch=20)
 
 plot(res_p1[1:500,1],res_p1[1:500,6],type="p",pch=20)
 plot(res_p1[1:500,1],res_p1[1:500,7],type="p",pch=20)
-plot(res_p1[1:500,2],res_p1[1:500,6],type="p",pch=20)
+plot(res_p1[1:500,2],res_p1[1:500,6],type="p",pch=20) #???
 plot(res_p1[1:500,2],res_p1[1:500,7],type="p",pch=20)
 
 #***Now generate the data, copula scale, for the second half of the figure
@@ -125,21 +133,27 @@ plot(res_p2[1:500,2],res_p2[1:500,7],type="p",pch=20)
 normres_p1<-qnorm(res_p1)
 normres_p2<-qnorm(res_p2)
 
+# check the marginals: should be normal
+hist(normres_p1[,10],30)
+hist(normres_p2[,10],30)
+
 normres_p1<-normres_p1-min(normres_p1,normres_p2)+1
 normres_p2<-normres_p2-min(normres_p2,normres_p2)+1
+
+# check the marginals: should be normal but shifted to +ve axes
+hist(normres_p1[,10],30)
+hist(normres_p2[,10],30)
 
 #***now compare the two resulting datasets in various respects
 
 #very similar species marginal distributions in the two cases
 empcdf<-data.frame(x=sort(normres_p1[,1]),y=(1:n)/n)
 plot(empcdf[,"x"],empcdf[,"y"],type="l",xlim=c(1,10),ylim=c(0,1))
-for (counter in 2:d)
-{
+for (counter in 2:d){
   empcdf<-data.frame(x=sort(normres_p1[,counter]),y=(1:n)/n)
   lines(empcdf[,"x"],empcdf[,"y"],type="l")
 }
-for (counter in (d+1):(2*d))
-{
+for (counter in (d+1):(2*d)){
   empcdf<-data.frame(x=sort(normres_p1[,counter]),y=(1:n)/n)
   lines(empcdf[,"x"],empcdf[,"y"],type="l",col="red")
 }
@@ -155,18 +169,22 @@ var(tot_p1)
 var(tot_p2)
 
 #very similar variance ratio
-tsvr::vr(t(normres_p1))
-tsvr::vr(t(normres_p2))
+#tsvr::vr(t(normres_p1))
+#tsvr::vr(t(normres_p2))
 
 #very different skewnesses of the total
-hist(tot_p1,50)
-myskns(tot_p1)
-hist(tot_p2,50)
-myskns(tot_p2)
+#hist(tot_p1,50)
+#myskns(tot_p1)
+#hist(tot_p2,50)
+#myskns(tot_p2)
 
 #extremely different skewness ratios
-sr(normres_p1)
-sr(normres_p2)
+#sr(normres_p1)
+#sr(normres_p2)
+
+# extremely different skewness ratios (but they are unrealistically large than 1???) though have nearly same variance ratios
+make_tab_stability(m=normres_p1,surrogs = NA,surrogs_given = F)
+make_tab_stability(m=normres_p2,surrogs = NA,surrogs_given = F)
 
 #***Now make some plots of the time series. The real figure also should show some similar plots 
 #but will be much nicer than this. It should also include, in the caption or on the figure,
