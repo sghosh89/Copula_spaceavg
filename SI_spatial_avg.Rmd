@@ -828,7 +828,7 @@ par(op)
 dev.off()
 
 # Another type of pedagog fig
-source("./pedagog_cv2_skw.R")
+source("./pedagog_cv2_skw.R") # we used seed=104 in this source function
 ```
 
 <!--# Algorithm to generate extreme asymmetric tail dependence in a community matrix \label{extreme_taildep_mat} 
