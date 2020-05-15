@@ -352,7 +352,7 @@ y<-1-empcdf1$y[inds]
 inds<-which(empcdf2$x>topthreshrg[1] & empcdf2$x<topthreshrg[2])
 xn<-empcdf2$x[inds]
 yn<-1-empcdf2$y[inds]
-plot(x,y,type="l",ylim=c(0,max(y,yn)))
+plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn)))
 lines(xn,yn,type='l',col='red')
 mtext("P>th.",side=2,line=1.2)
 
@@ -368,7 +368,7 @@ y<-empcdf1$y[inds]
 inds<-which(empcdf2$x>botthreshrg[1] & empcdf2$x<botthreshrg[2])
 xn<-empcdf2$x[inds]
 yn<-empcdf2$y[inds]
-plot(x,y,type="l",ylim=c(0,max(y,yn)))
+plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn)))
 lines(xn,yn,type='l',col='red')
 mtext("P<th.",side=2,line=1.2)
 
@@ -438,10 +438,14 @@ par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
 inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
 x<-empcdf1$x[inds]
 y<-1-empcdf1$y[inds]
+inds<-which(empcdf2$x>topthreshrg[1] & empcdf2$x<topthreshrg[2])
+xr_l<-empcdf2$x[inds]
+yr_l<-1-empcdf2$y[inds]
 inds<-which(empcdf3$x>topthreshrg[1] & empcdf3$x<topthreshrg[2])
 xn<-empcdf3$x[inds]
 yn<-1-empcdf3$y[inds]
-plot(x,y,type="l",ylim=c(0,max(y,yn)))
+plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn,yr_l)))
+lines(xr_l,yr_l,type="l",lty="dashed",col="red")
 lines(xn,yn,type='l',col='blue')
 mtext("P>th.",side=2,line=1.2)
 
@@ -454,10 +458,14 @@ par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
 inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
 x<-empcdf1$x[inds]
 y<-empcdf1$y[inds]
+inds<-which(empcdf2$x>botthreshrg[1] & empcdf2$x<botthreshrg[2])
+xr_s<-empcdf2$x[inds]
+yr_s<-empcdf2$y[inds]
 inds<-which(empcdf3$x>botthreshrg[1] & empcdf3$x<botthreshrg[2])
 xn<-empcdf3$x[inds]
 yn<-empcdf3$y[inds]
-plot(x,y,type="l",ylim=c(0,max(y,yn)))
+plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn,yr_s)))
+lines(xr_s,yr_s,type="l",lty="dashed",col="red")
 lines(xn,yn,type='l',col='blue')
 mtext("P<th.",side=2,line=1.2)
 
@@ -530,7 +538,8 @@ y<-1-empcdf1$y[inds]
 inds<-which(empcdf4$x>topthreshrg[1] & empcdf4$x<topthreshrg[2])
 xn<-empcdf4$x[inds]
 yn<-1-empcdf4$y[inds]
-plot(x,y,type="l",ylim=c(0,max(y,yn)))
+plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn)))
+lines(xr_l,yr_l,type="l",lty="dashed",col="red")
 lines(xn,yn,type='l',col='green')
 mtext("P>th.",side=2,line=1.2)
 
@@ -546,7 +555,8 @@ y<-empcdf1$y[inds]
 inds<-which(empcdf4$x>botthreshrg[1] & empcdf4$x<botthreshrg[2])
 xn<-empcdf4$x[inds]
 yn<-empcdf4$y[inds]
-plot(x,y,type="l",ylim=c(0,max(y,yn)))
+plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn)))
+lines(xr_s,yr_s,type="l",lty="dashed",col="red")
 lines(xn,yn,type='l',col='green')
 mtext("P<th.",side=2,line=1.2)
 
@@ -622,7 +632,8 @@ y<-1-empcdf1$y[inds]
 inds<-which(empcdf5$x>topthreshrg[1] & empcdf5$x<topthreshrg[2])
 xn<-empcdf5$x[inds]
 yn<-1-empcdf5$y[inds]
-plot(x,y,type="l",ylim=c(0,max(y,yn)))
+plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn)))
+lines(xr_l,yr_l,type="l",lty="dashed",col="red")
 lines(xn,yn,type='l',col='purple')
 mtext("P>th.",side=2,line=1.2)
 
@@ -638,9 +649,11 @@ y<-empcdf1$y[inds]
 inds<-which(empcdf5$x>botthreshrg[1] & empcdf5$x<botthreshrg[2])
 xn<-empcdf5$x[inds]
 yn<-empcdf5$y[inds]
-plot(x,y,type="l",ylim=c(0,max(y,yn)))
+plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn)))
+lines(xr_s,yr_s,type="l",lty="dashed",col="red")
 lines(xn,yn,type='l',col='purple')
 mtext("P<th.",side=2,line=1.2)
 mtext("Threshold (th.)",side=1,line=1.2)
 
 dev.off()
+
