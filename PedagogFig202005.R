@@ -42,15 +42,15 @@ getdat<-function(n,sig){
 #x      A matrix, time steps by species
 #
 #source("SkewnessAnd3CentMom.R")
-#sr<-function(x)
-#{
-#  xtot<-apply(FUN=sum,X=x,MARGIN=1)
+sr<-function(x)
+{
+  xtot<-apply(FUN=sum,X=x,MARGIN=1)
   
-#  scom<-myskns(xtot)
-#  sind<-(sum(apply(FUN=my3cm,MARGIN=2,X=x)))/(sum(apply(FUN=var,MARGIN=2,X=x)))^(3/2)
+  scom<-myskns(xtot)
+  sind<-(sum(apply(FUN=my3cm,MARGIN=2,X=x)))/(sum(apply(FUN=var,MARGIN=2,X=x)))^(3/2)
   
-#  return(c(scom=scom,sind=sind,sr=scom/sind))
-#}
+  return(c(scom=scom,sind=sind,sr=scom/sind))
+}
 
 # Shya: my function to get CV2 and skw related metric
 source("./make_tab_stability_assessment.R")
@@ -137,8 +137,13 @@ normres_p2<-qnorm(res_p2)
 hist(normres_p1[,10],30)
 hist(normres_p2[,10],30)
 
+#this makes them both be positive and have the same mean - this has been changed 
+#and it is an improvement so should be incorporated into the pedagog fig.
 normres_p1<-normres_p1-min(normres_p1,normres_p2)+1
-normres_p2<-normres_p2-min(normres_p2,normres_p2)+1
+#normres_p2<-normres_p2-min(normres_p1,normres_p2)+1
+normres_p2<-normres_p2-mean(normres_p2)+mean(normres_p1)
+mean(normres_p1)
+mean(normres_p2)
 
 # check the marginals: should be normal but shifted to +ve axes
 hist(normres_p1[,10],30)
@@ -158,7 +163,7 @@ for (counter in (d+1):(2*d)){
   lines(empcdf[,"x"],empcdf[,"y"],type="l",col="red")
 }
 
-#very similar mean of the total
+#the same mean of the total
 tot_p1<-apply(FUN=sum,MARGIN=1,X=normres_p1)
 tot_p2<-apply(FUN=sum,MARGIN=1,X=normres_p2)
 mean(tot_p1)
@@ -169,18 +174,18 @@ var(tot_p1)
 var(tot_p2)
 
 #very similar variance ratio
-#tsvr::vr(t(normres_p1))
-#tsvr::vr(t(normres_p2))
+tsvr::vr(t(normres_p1))
+tsvr::vr(t(normres_p2))
 
 #very different skewnesses of the total
-#hist(tot_p1,50)
-#myskns(tot_p1)
-#hist(tot_p2,50)
-#myskns(tot_p2)
+hist(tot_p1,50)
+myskns(tot_p1)
+hist(tot_p2,50)
+myskns(tot_p2)
 
-#extremely different skewness ratios
-#sr(normres_p1)
-#sr(normres_p2)
+#extremely different skewness ratios, but won't be using this in the fig because not defined yet
+sr(normres_p1)
+sr(normres_p2)
 
 # extremely different skewness ratios (but they are unrealistically large than 1???) though have nearly same variance ratios
 make_tab_stability(m=normres_p1,surrogs = NA,surrogs_given = F)
@@ -220,5 +225,17 @@ for (counter in (d+1):(2*d))
 plot(tim,tot_p1[tim],type="l",ylim=range(tot_p1[tim],tot_p2[tim]))
 lines(tim,tot_p2[tim],type="l",col="red")
 
-#The advantage of this approach over the fig currently used in the manuscript is the vr is 
-#realistic in this one
+#Now make a picture of the cdfs of the total in the two cases. 
+
+empcdf1<-data.frame(x=sort(tot_p1),y=1:n/n)
+empcdf2<-data.frame(x=sort(tot_p2),y=1:n/n)
+
+plot(empcdf1$x,empcdf1$y,type='l')
+lines(empcdf2$x,empcdf2$y,type='l',col="red")
+
+#Get probabilities of exceeding a large threshold and going below a small one
+sum(tot_p1>59)/n
+sum(tot_p2>59)/n
+sum(tot_p1<50)/n
+sum(tot_p2<50)/n
+

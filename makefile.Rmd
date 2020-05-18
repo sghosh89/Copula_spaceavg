@@ -1,5 +1,5 @@
 ---
-title: "Space average makefile, compiliation notes"
+title: "Space average makefile, compilation notes"
 author: "Daniel Reuman, Shyamolina Ghosh"
 date: ""
 output: pdf_document
@@ -53,6 +53,4 @@ system2(command="pdflatex",args=mfile.tex,stdout=TRUE,stderr=TRUE)
 system2(command="pdflatex",args=sfile.tex,stdout=TRUE,stderr=TRUE)
 system2(command="pdflatex",args=mfile.tex,stdout=TRUE,stderr=TRUE)
 ```
-
-
 

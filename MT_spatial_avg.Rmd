@@ -2,7 +2,6 @@
 title: "Skewness ratio: a complimentary measure for variance ratio and community stability"
 author: "Shyamolina Ghosh, other authors, Daniel Reuman"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-#date: "October 12, 2018"
 fontsize: 12pt
 geometry: "left=1 in,right=1 in,top=1 in,bottom=1 in"
 
@@ -695,7 +694,6 @@ for skewness-based stability approach (different $\phi_s$).\label{fig_result_box
 \setlength{\parindent}{-0.2in}
 \setlength{\leftskip}{0.2in}
 \setlength{\parskip}{1pt}
-\noindent
 
 
 
