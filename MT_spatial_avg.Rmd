@@ -611,10 +611,11 @@ asymmetric nature they had - which answered (Q2).
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=16cm]{./Results/pedagog_figs/pedagog_cv2_skw.pdf}
-\caption{Pedagogical figure showing two hypothetical communities with stronger interspecific
-interaction when species are $(A)$ rare and $(B)$ abundant, respectively. Total 
-community-biomass time-series is $(C)$ negatively ($s<0$) and $(D)$ positively ($s>0$) skewed whereas both 
-communities have similar variance ratio, $\phi_{cv}$. \label{fig_pedag_cv2_skw}}
+\caption{Pedagogical figure showing two hypothetical communities having two functional groups each.
+Community shows compensatory dynamics between groups but synchronous dynamics within groups. Similar 
+variance ratios, $\phi_{cv}$ for both communities though species are synchronously $(A)$ rare and 
+$(B)$ abundant, respectively. Total community-biomass have exactly same mean, $\mu$, and similar temporal variance $v$, throughout years but time-series are $(C)$ negatively ($s<0$) and $(D)$ positively ($s>0$) skewed, making 
+the whole communities $(E)$ left-tail and $(F)$ right-tail dependent, respectively. Timeseries are generated for $10000$ years, but showed for initial $60$ years in $(A-D)$ for simplicity. Dashed and dotted lines show lower and higher extreme threshold for total productivity of extremely bad years ("catastrophes") and extremely good years ("bonanzas"), respectively.\label{fig_pedag_cv2_skw}}
 \end{center}
 \end{figure}
 
