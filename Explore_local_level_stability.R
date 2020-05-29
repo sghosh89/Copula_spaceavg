@@ -36,8 +36,8 @@ apply(quadsamp[,-id_grz], MARGIN = 2, function(x){sum(is.na(x))})
 
 # Here I consider from year 1943 afterwards as 1932-1942 no "et" community plots are surveyed 
 # So, for an equal comparison consider only 1943-1972 periods
-quadsamp_43to72<-quadsamp[12:41,-id_grz]
-apply(quadsamp_43to72, MARGIN = 2, function(x){sum(is.na(x))})
+quadsamp_43to72_nogrz<-quadsamp[12:41,-id_grz]
+apply(quadsamp_43to72_nogrz, MARGIN = 2, function(x){sum(is.na(x))})
 # Now, we have last 30 years of data where quadrats were surveyed for most of the years 
 # if not, then max for 2 years were not surveyed, 
 # so it is reasonable to compare
@@ -91,27 +91,54 @@ rownames(tbl_allsp)<-dimnames(hays_array_nograzing)[[3]] # no-grazed quadrat nam
 hist(tbl_allsp$phi_cvsq,50)
 hist(tbl_allsp$phi_skw,50)
 
-#tbl_allsp[which(tbl_allsp$phi_cvsq<1 & tbl_allsp$phi_skw>1),]
-# only 3 quadrats have similar conclusion that they are more stable than their indep. communities
+quad_info_nogrz<-subset(quad_info,quad_info$Grazing=="No")
 
-# Now interpret the results?
+if(all(quad_info_nogrz$quadrat==rownames(tbl_allsp))==T){
+  tbl_allsp$community<-quad_info_nogrz$community
+  tbl_allsp$group<-quad_info_nogrz$group
+}
 
+library(ggplot2)
+p<-ggplot(tbl_allsp,aes(x=phi_cvsq,y=phi_skw,col=community))+
+  geom_point(size=0)+xlim(0,1.2)+ylim(-2.5,1.5)+geom_vline(xintercept=1)+geom_hline(yintercept = c(0,1),lty=c(2,3))+
+  theme_bw()
+p1<-p+geom_text(aes(label = rownames(tbl_allsp)),
+                      size = 3.5)
+#phi_cv>1 less stable, right side of vertical line, phi_cv<1 more stable, left side of vertical line
+#phi_s when in between [0,1] less stable, i.e. within two horizontal lines
+# phi_s>1 : more stable
+# ph_s<0 : species reordering???
 
+# most of the cases, points fall in between two horizontal lines 
+# where two stability indices differ in their interpretation
 
+(xx<-tbl_allsp[which(tbl_allsp$phi_cvsq<1 & tbl_allsp$phi_skw>0 & tbl_allsp$phi_skw<1),])
+quad_no_grz[which(quad_no_grz$quadrat%in%rownames(xx)),]
 
+#======= what happens if we do on plot level? =================
+dim(hays_array_nograzing) # 30yrs by 146sp by 36quadrats
+bigmat<-apply(hays_array_nograzing, MARGIN=c(1,2),FUN=mean, na.rm=T) # averaged over 36 non-grazed quadrats
+dim(bigmat) # 30yrs by 146sp, should have no NAs
 
+# rare sp. means sp. present max for two years
+id_rare<-which(apply(bigmat, MARGIN=2, function(x){length(which(x==0))})>=(nrow(bigmat)-2))
+bigmat_rare<-bigmat[,id_rare]
 
+rare_sp<-apply(bigmat_rare, MARGIN=1, sum)
 
+# check on rare_sp
+if(sum(rare_sp)==0){print("rare sp. combined still zero, no variance: watch out!")}
 
-
-
-
-
-
+bigmat<-cbind(bigmat[,-id_rare],rare_sp)
+(temp<-make_tab_stability(m=bigmat,surrogs=NA,surrogs_given=F))
+p2<-p1+
+  annotate(geom="text", x = temp$phi_cvsq, y = temp$phi_skw, color = "red", label="avg.quads",size=4)
+p2
 
 
 
 #=================== Now try to do the above but for different community type ==================================
+
 quad_no_grz<-quad_info[which(quad_info$Grazing=="No"),]
 quad_no_grz[,"quadrat"] == rownames(tbl_allsp) # check: this should be all TRUE
 
