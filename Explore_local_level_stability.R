@@ -3,9 +3,14 @@
 
 rm(list=ls())
 seed<-101
+
+library(ggplot2)
+
 # First try with Hays data
 
 set.seed(seed)
+
+dir.create("./Results/Explore_local_level_stability/")
 
 #====================================== HAYS DATA ======================================================
 
@@ -19,7 +24,8 @@ count_quad_grazed<-table(quad_info$Grazing) #36 No grazing, 15 Yes grazed
 quad_grazing<-quad_info$quadrat[which(quad_info$Grazing=="Yes")]
 quad_grazing<-as.character(quad_grazing) # we will exclude these 15 quadrats where grazing was done
 
-hays_array<-readRDS("./Results/hays_results/hays_array_41yr_51plot_151sp.RDS")
+hays_array<-readRDS("./Results/hays_results/hays_array_41yr_51plot_151sp.RDS") # total basal cover for each sp. 
+                                                                                   # for each quad for each yr
 dim(hays_array) # 41 yrs by 51 quad by 151 sp
 
 id_grz<-which(colnames(hays_array)%in%quad_grazing) 
@@ -98,12 +104,13 @@ if(all(quad_info_nogrz$quadrat==rownames(tbl_allsp))==T){
   tbl_allsp$group<-quad_info_nogrz$group
 }
 
-library(ggplot2)
+
 p<-ggplot(tbl_allsp,aes(x=phi_cvsq,y=phi_skw,col=community))+
   geom_point(size=0)+xlim(0,1.2)+ylim(-2.5,1.5)+geom_vline(xintercept=1)+geom_hline(yintercept = c(0,1),lty=c(2,3))+
   theme_bw()
 p1<-p+geom_text(aes(label = rownames(tbl_allsp)),
                       size = 3.5)
+p1
 #phi_cv>1 less stable, right side of vertical line, phi_cv<1 more stable, left side of vertical line
 #phi_s when in between [0,1] less stable, i.e. within two horizontal lines
 # phi_s>1 : more stable
@@ -112,10 +119,9 @@ p1<-p+geom_text(aes(label = rownames(tbl_allsp)),
 # most of the cases, points fall in between two horizontal lines 
 # where two stability indices differ in their interpretation
 
-(xx<-tbl_allsp[which(tbl_allsp$phi_cvsq<1 & tbl_allsp$phi_skw>0 & tbl_allsp$phi_skw<1),])
-quad_no_grz[which(quad_no_grz$quadrat%in%rownames(xx)),]
+#======= what happens if we do on regional(plot) level? =================
 
-#======= what happens if we do on plot level? =================
+# first, we will average cover over all quadrats for each sp. and yr
 dim(hays_array_nograzing) # 30yrs by 146sp by 36quadrats
 bigmat<-apply(hays_array_nograzing, MARGIN=c(1,2),FUN=mean, na.rm=T) # averaged over 36 non-grazed quadrats
 dim(bigmat) # 30yrs by 146sp, should have no NAs
@@ -135,14 +141,11 @@ p2<-p1+
   annotate(geom="text", x = temp$phi_cvsq, y = temp$phi_skw, color = "red", label="avg.quads",size=4)
 p2
 
-
-
 #=================== Now try to do the above but for different community type ==================================
 
-quad_no_grz<-quad_info[which(quad_info$Grazing=="No"),]
-quad_no_grz[,"quadrat"] == rownames(tbl_allsp) # check: this should be all TRUE
+quad_info_nogrz[,"quadrat"] == rownames(tbl_allsp) # check: this should be all TRUE
 
-(cg<-split(quad_no_grz,quad_no_grz$community)) #4 category: bb, et, lb, sg
+(cg<-split(quad_info_nogrz,quad_info_nogrz$community)) #4 category: bb, et, lb, sg
 
 tbl_allsp_community_type<-c()
 for(j in 1:length(cg)){
@@ -150,23 +153,34 @@ for(j in 1:length(cg)){
   id_cg<-which(dimnames(hays_array_nograzing)[3][[1]] %in% as.character(cg[[j]]$quadrat))
   tempo<-hays_array_nograzing[,,id_cg] # array filtering based on community type
   tempo_avg<-apply(tempo, MARGIN=c(1,2), FUN=mean, na.rm=T) # take average over the same category quads
-  tempo_avg<-na.omit(tempo_avg) # to omit NaN when certain communities are not suevwyed for a particular year
+  #dim(tempo_avg)
+  #tempo_avg<-na.omit(tempo_avg) # to omit NaN when certain communities are not suevwyed for a particular year 1933
+  #dim(tempo_avg)
   ans<-make_tab_stability(m=tempo_avg,surrogs=NA,surrogs_given=F)
   ans$community_type<-names(cg)[j]
   tbl_allsp_community_type<-rbind(tbl_allsp_community_type,ans)
 }
 
-tbl_allsp_community_type # for bb and et community it reversed
-# i.e. stability from phi_cv and phi_s are opposite, now for "et" I am not surprised as for ecotone, 
-# there is higher chance of species reordering (caution only "et" category are not surveyed continuously for 1933 to 1942) but I don't know why that also happens for "bb"
-
+tbl_allsp_community_type 
 # so, I think, we should  concentrate on some continuous years surveyed for all 4 categories
 
+p3<-p2+
+  annotate(geom="text", x = tbl_allsp_community_type$phi_cvsq, y = tbl_allsp_community_type$phi_skw, 
+           color ="black", 
+           label=paste(tbl_allsp_community_type$community_type,"_avg"),size=4)
+
+p3
+
+ggsave(filename="./Results/Explore_local_level_stability/summary_hays.pdf",p3,height=8,width=12,device="pdf")
+
+# what could you conclude from this plot?
 
 
-
-
+#================================================================================================================
 #========================================= KONZA PRAIRIE ================================================
+#=================================================================================================================
+
+
 
 
 
