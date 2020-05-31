@@ -4,7 +4,8 @@
 rm(list=ls())
 seed<-101
 
-library(ggplot2)
+library(tidyverse)
+#library(ggplot2)
 
 # First try with Hays data
 
@@ -111,6 +112,11 @@ p<-ggplot(tbl_allsp,aes(x=phi_cvsq,y=phi_skw,col=community))+
 p1<-p+geom_text(aes(label = rownames(tbl_allsp)),
                       size = 3.5)
 p1
+
+gd<-tbl_allsp%>%group_by(community)%>%summarize(phi_cvsq=mean(phi_cvsq),
+                                                phi_skw=mean(phi_skw))
+p1<-p1+geom_point(data=gd,size=7,alpha=0.3)
+p1
 #phi_cv>1 less stable, right side of vertical line, phi_cv<1 more stable, left side of vertical line
 #phi_s when in between [0,1] less stable, i.e. within two horizontal lines
 # phi_s>1 : more stable
@@ -174,13 +180,20 @@ p3
 ggsave(filename="./Results/Explore_local_level_stability/summary_hays.pdf",p3,height=8,width=12,device="pdf")
 
 # what could you conclude from this plot?
+# selective harvesting maybe, we can point out which community 
+# type makes the whole community less productive, could they be linked with 
+# grouped_species-specific response to abiotic factor? I can check this if I get 
+# soil depth data from short grass dominated quadrats, maybe Lauren's Jasper Ridge data set could help?
 
+# I am not sure, but my intuition it could be related to functional diversity
+
+# Here, I can see short grass community differs most in phi_cvsq and phi_s interpretation
+# No quadrats from blue stem dominated quadrat show species reordering, i.e., phi_s not negative,
+# but it could be because of comperatively lower sample size than other 3 communities
+
+# community type wise I can check on JRG, PARKGRASS, 
 
 #================================================================================================================
-#========================================= KONZA PRAIRIE ================================================
-#=================================================================================================================
-
-
 
 
 
