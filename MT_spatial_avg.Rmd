@@ -167,47 +167,38 @@ choose thresholds so the time series on C goes below the lower threshold at leas
 the upper threshold at least once.
 -->
 
+This study is centered around three suggestions about how research on the effects of species 
+relationships on variability of a community aggregate property may devlop into the future;
+and we take some first steps toward implementing these suggestions. First, statistical descriptions of community 
+stability/variability that are more nuanced than the coefficient of variation ought to be developed 
+and used. The results of Fig. \ref{fig_pedag_cv2_skw} suggest that measures related to skewness may
+be useful first steps. The second suggestion is that descriptions ought to be applied, of how species time series 
+relate to each other in a community, that are more nuanced than the covariance and correlation approaches
+that have overwhelmingly been used so far. Fig. \ref{fig_pedag_cv2_skw} suggests that measures might be
+useful that isolate the extent to which species abundances are more related to each other when the species
+are common, or rare. The third suggestion is that we ought to then study how species relationships
+influence community community stability/variability using the more nuanced statistical descriptors. 
+
+The core ideas of this study relate to rare events, and specifically how the relationships between the constituents of 
+an aggregate quantity change during rare events. There are strong conceptual and methodological connections to
+risk pricing in finance. A portfolio of investments is supposed to reduce risk if the constituent investments 
+are uncorrelated. But correlation among constituents can accentuate instead of reducing risk. Some observers have 
+blamed the 2008 financial crisis on a trend under which many analysts estimated correlations between housing default
+risks based on data from normal times, not taking into account that in a crisis, default risks become much more correlated. 
+A single financial approach [@li2000] was apparently widely used [@salmon2009]. The relationship between two 
+quantities, be they investment risks or species populations, can probably never be completely captured by a single number
+such as a covariance [@cheung2013], or considered to be constant through time. Just as mortgage defaults which were typically uncorrelated 
+became correlated when the macroeconomic situation worsened, it seems likely that abundances of two species in a community may
+be more or less correlated with each other under different circumstances, and classical approaches that characterize relationships
+between species using covariances may be neglecting something important. 
+
+<Now do some ECE connection>
+
+ 
 
 
 
-
-
-
-<!--p2: what is variance ratio? How it is used to determine a community's variability?-->
-Variance ratio, $\phi_{cv}$, is a commonly used stability-index that measures how 
-community-variance changes compared to an independent community where each species 
-fluctuate randomly. Community with lower variance than the 
-independent one (i.e., $\phi_{cv}<1$), is considered 
-to be more stable due to overall compensatory dynamics 
-whereas a community with higher variance than 
-the independent one (i.e., $\phi_{cv}>1$), is considered to be less stable due to 
-overall synchronous fluctuations. Therefore, the variance ratio approach is based on 
-if the species are negatively (compensation) or positively (synchronous) correlated 
-among themselves within the community. An independent community means where 
-species fluctuate randomly with zero correlation.
-
-<!--p3: Though widely used, but this coeff. of variation or variance measure is not 
-showing the full picture: what if skewness changes with same variance? Fig. 1-->
-Although widely used, the simple-correlation based variance ratio metric is not 
-enough to predict the community-stability if the species show a stronger 
-correlation among themselves for certain years than others. For example, consider
-two hypothetical communities with an equal number of species. The only difference is 
-in one community all the species have simultaneously low values in catastrophic years
-(i.e. synchronous rare occurrence than being abundant, Fig. \ref{fig_pedag_cv2_skw}A) and in the 
-other community, all species have simultaneously high values in beneficial
-years (i.e. synchronous abundance than being rare, Fig. \ref{fig_pedag_cv2_skw}B). 
-The first community has a higher risk to collapse at once whereas the second one maintains 
-high productivity throughout the years. But both communities would indicate
-a similar variance ratio because it assumes equal variance between 
-interspecific fluctuations throughout the years. We propose skewness instead using variance 
-could be appropriate to make the distinction between two such communities. Simultaneous 
-dip in the individual time series of Fig. \ref{fig_pedag_cv2_skw}A makes the 
-aggregated time series more negatively skewed (Fig. \ref{fig_pedag_cv2_skw}C) whereas 
-simultaneous hike in the individual time series of Fig. \ref{fig_pedag_cv2_skw}B make the 
-aggregated time series more positively skewed (Fig. \ref{fig_pedag_cv2_skw}D) compared to 
-if the species were fluctuating randomly. 
-
-<!--but why to consider skewness?-->
+<!--***DAN: Not sure how relevant this stuff is, but keeping it around for now, partly for the references.
 There are reasons to focus on skewness to better understand the community-stability 
 in this rapidly changing world. Earlier studies [@smith2011ecological; @hoover2014resistance; 
 @felton2017integrating] showed climatic events that are extreme and 
@@ -220,7 +211,7 @@ as on ecosystem level. Another reason is like variance changing skewness had bee
 used earlier as an indicator for changing ecosystem (i.e. for an early 
 warning signal, regime shift, etc.) [@guttal2008changing; @guttal2009spatial; 
 @dakos2010spatial; @dakos2012methods]. But to our knowledge, there is a gap to incorporate 
-this skewness into direct community-stability metric.
+this skewness into direct community-stability metric.-->
 
 <!--p4: Following the arguments, we need an additional measure which 
 could incorporate the "skewness changing" feature of the community. Fig 2(A-B): Box simple diagram.
