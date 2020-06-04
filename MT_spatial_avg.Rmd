@@ -1,6 +1,6 @@
 ---
-title: "Skewness ratio: a complimentary measure for variance ratio and community stability"
-author: "Shyamolina Ghosh, other authors, Daniel Reuman"
+title: "Species relationships in extreme times and their specific influence on community stability"
+author: "Shyamolina Ghosh, Daniel C. Reuman"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 fontsize: 12pt
 geometry: "left=1 in,right=1 in,top=1 in,bottom=1 in"
@@ -25,11 +25,19 @@ bibliography: REF_CSS.bib
 ---
 
 <!--***DAN: store alternative titles here, decide on one closer to the end
-1) A complete description of synchrony and compensatory dynamics yields a better understanding of community stability
-2) Asymmetric tail association, skewness and community stability
-3) Asymmetric tail association, skewness and community variability 
-4) Asymmetric tail association affects community stability
+1) Skewness ratio: a complimentary measure for variance ratio and community stability
+2) A complete description of synchrony and compensatory dynamics yields a better understanding of community stability
+3) Asymmetric tail association, skewness and community stability
+4) Asymmetric tail association, skewness and community variability 
+5) Asymmetric tail association affects community stability
+6) Species relationships influence community stability in more ways than classical approaches reveal. This is OK, but
+may make people think of it as a methods paper?
+7) Through thick and thin: species relationships in extreme times and their specific influence on community stability 
+8) Species relationships in extreme times and their specific influence on community stability
 -->
+
+<!--***DAN: Shyamolina, please go ahead and format the title page appropriately, making the proper affiliations
+appear and so on-->
 
 ```{r setup_Paper, echo=F}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
@@ -49,43 +57,121 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 
 # Introduction\label{Introduction}
 
-<!--p1: what is community stability? How it relates to species interaction? - 
-2 types of interaction: synchronous: more variable or less stable, 
-asynchronous/ compensatory: more stable, less variable.
-Stability-variability relationship usually explained by cassic variance ratio method
+Understanding the extent to which, and the mechanisms by which, species interactions in an ecological 
+community help stabilize or destabilize the ecosystem as a whole is a topic that has fascinated ecologists 
+for decades [@macarthur1955fluctuations; @paine1969note; @grimm1992application; @pimm1984complexity; @gonzalez2009causes]. 
+An important early insight was that an aggregate 
+community property such as the total biomass of all species can be relatively stable through time, even 
+while the dynamics of individual species are highly variable, if different species exhibit offsetting fluctuations.
+This is often refered to as *compensatory dynamics*, because decreases in species abundances are compensated
+for by simultaneous increases in other species [@frost1995species;@bai2004ecosystem;@hallett2014]. When species instead exhibit 
+positively correlated fluctuations through time, it tends to cause increased variability through time in the community 
+aggregate property [@keitt2008coherent;@loreau2008species;@ma2017climate]. This is called *synchrony* because 
+species dynamics are partly synchronized in their fluctuations. Thus an important part of what determines 
+the variability of an aggregate community property is the nature
+of relationships between the dynamics of different species. 
+
+Historically, how species relationships influence community stability, including questions of compensatory 
+and synchronous dynamics, have been investigated principally by examining the coefficient of variation through time
+of the aggregate community property, together with covariances between species population abundance time series.
+For instance, if $x_i(t)$ are data representing the population abundances of species $i=1,\ldots,N$ at the sampling times
+$t=1,\ldots,T$, and if $\mu_i=\mean(x_i)$, $v_{ii}=\var(x_i)$, and $v_{ij}=\cov(x_i,x_j)$, community variability
+has commonly been quantified using the squared coefficient of variation of $\xtot(t)=\sum_i x_i(t)$, i.e., 
+$\CVcomsq=\var(\xtot)/\left(\mean(\xtot)\right)^2=\left(\sum_{i,j} v_{ij}\right)/\left(\sum \mu_i\right)^2$.
+And this formula obviously connects to species relationships via the covariances, $v_{ij}$, which appear directly in the formula. Denoting by 
+$\CVindsq=\left(\sum_i v_{ii}\right)/\left(\sum \mu_i\right)^2$ the value that $\CVcomsq$ would take if 
+the dynamics of each species were independent of the dynamics of all other species (so $v_{ij}=0$ for all $i \neq j$), the 
+classic *variance ratio* was defined [@schluter1984variance;@peterson1975] as 
+$\phi_{\text{cv}}=\CVcomsq/\CVindsq=\var(\xtot)/\left(\sum_i v_{ii}\right)=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i v_{ii}\right)$. 
+The variance ratio has very commonly been used [@houlahan2007;@winfree2009;@hallett2014] as an index of whether dynamics 
+are synchronous or compensatory. If $\phi_{\text{cv}}>1$, the interpretation has been that dynamics are, on balance,
+synchronous because then $\CVcomsq>\CVindsq$, i.e., the total community biomass $\xtot$ is more variable than
+it would be if species dynamics were independent. Conversely, if $\phi_{\text{cv}}<1$, the interpretation has been
+that dynamics are, on balance, compensatory. 
+
+Timescale-specific extensions of the variance ratio [@vasseur2007;
+@brown2016;@zhao2020] have revealed that it is possible for compensatory 
+dynamics to occur on some timescales while 
+synchronous dynamics simultaneously occur on other timescales, and other improvements and alternatives to the variance ratio 
+have also been proposed [@loreau2008species]. However, $\phi_{\text{cv}}$ is still very commonly used, 
+and the nature of how species relationships influence community stability is likely to be substantially 
+more nuanced and interesting than is revealed by either the classic variance ratio approach or
+by any existing extensions of which we are aware. To 
+begin to illustrate the concepts we will explore in this 
+study, and to understand what has been omitted from earlier approaches, we consider two artifically
+generated community dynamics datasets (Fig. \ref{fig_pedag_cv2_skw}A, B; data generated as in SI section X).
+<!--***DAN: Dan to fill in the X in the above line, and write the corresponding section of the SI.-->
+Both model communities consist of $N=10$ species, and data were generated so that species marginal distributions 
+(and therefore the means, $\mu_i$, and variances, $v_{ii}$, 
+through time) were the same, up to sampling variance, in both cases. Likewise, data were 
+generated so that pairwise species covariances, $v_{ij}$ for $i \neq j$,
+were essentially the same for Fig. \ref{fig_pedag_cv2_skw}A and B. Thus both $\CVcomsq$ and $\CVindsq$, which 
+depend only on the $\mu_i$ and $v_{ij}$,
+were the same in both cases, and so $\phi_{\text{cv}}$ was also the same. The Loreau-de Mazancourt variance ratio
+[@loreau2008species], which itself depends only on the $v_{ij}$, was also the same, up to sampling variance, in the two cases 
+(Fig. \ref{fig_pedag_cv2_skw}A, B). Classical approaches such as these do not distinguish between our two cases, neither in the nature
+of species interrelationships nor in the effects of interrelationships on community aggregate dynamics $\xtot(t)$.
+
+Nevertheless, species relationships and resulting aggregate dynamics differed in important ways in these cases. In both cases,
+the ten species could be separated into two groups of five species (red and black lines on Fig. \ref{fig_pedag_cv2_skw}A, B), 
+and the dynamics of species in different groups were strongly compensatory. However, in case 1 (Fig. \ref{fig_pedag_cv2_skw}A), 
+species in the same group exhibited strongly synchronous dynamics when rare and much less synchronous dynamics when 
+common; whereas in case 2 (Fig. \ref{fig_pedag_cv2_skw}B) species in the same group exhibited strongly synchronous dynamics 
+when common and much less synchronous dynamics when rare. Dynamics of this kind could occur ecologically, for instance, in case 1,
+(Fig. \ref{fig_pedag_cv2_skw}A) if red species were sensitive to an environmental factor such as precipitation, but only when it 
+takes values below a threshold. So all the red species are controlled by the same factor, precipitation, when it is below the threshold,
+and hence are synchronous when rare. 
+When precipitation is above the threshold, the red species are each sensitive, instead, to other, distinct factors, rendering them asynchronous
+when common. Black species 
+of (Fig. \ref{fig_pedag_cv2_skw}A) may also be senstive to precipitation, but in a reverse manner, being all simultaneously 
+harmed by precipitation when it is
+above the threshold and unaffected by precipitation below the threshold. Resulting community dynamics 
+(Fig. \ref{fig_pedag_cv2_skw}C-F) were quite different in our two cases because of the distinct species interrelationships.
+Total community biomass was left-skewed, frequently crashing to low values, for case 1; but was right skewed, frequently
+exploding to high values, in case 2. It is not difficult to imagine cascading ecological ramifications or 
+potential applied significance of the distinction our example illustrates. For instance, grazers subsisting on a grass mixture that 
+exhibits frequent crashes may experience different population growth prospects than grazers consuming a grass mixture that
+shows frequent explosions of abundance. 
+Thus species interrelationships and their effects on community aggregate dynamics can differ in potentially ecologically
+meaningful ways which are nevertheless not detected by classic approaches. 
+It is the reliance of earlier approaches on the coefficient of variation, covariance and related linear tools
+for quantifying species relationships that causes those approaches to be unable to register the differences
+we have illustrated here.
+<!--***DAN: Shyamolina, can you please make the following changes to the figure?
+1) Please delete the text that appears on the panels themselves in A and B (but keep the panel
+labels that say "(A)" and "(B)"). Adjust the y axis extents of both panels so the time series ocupy the 
+space vacated by the deleted text, so the reader can see these time series better. Please keep the y-axis 
+extents the same on both panels.
+2) Across the bottom of A (likewise, B), please display CV_com^2, CV_ind^2, \phi_cv, and \phi_LdM, their 
+values as well as the notation which tells the reader what each value is. \phi_LdM is the Loreau and 
+de Mazancourt variance ratio, which is defined in eq 41 of the sup mat of Lei's paper "A new variance 
+ratio metric...". Please add a computation of \phi_{LdM} to your Rmd code so you can include the value 
+here. The value should be about the same for A and B.
+3) Please replace \mu on C and D by the approriate rendering of $\mean(x_{\text{tot}})$, and likewise replace
+v by the appropriate rendering of $\var(x_{\text{tot}})$. Please also insert $\text{skew}(x_{\text{tot}})$
+and the value of that skewness. Please make the formats for all three of these be parallel (currently the skew
+is black and to the left, and the mean and variance are blue and to the right), and please also use parallel
+formatting choices to what you use in panels A and B to put values on the panels.
+4) Please delete the text that appears on panels E and F, but keep the panel labels.
+5) change the y-axis in A, B to be a latex rendering of "Individual species biomass, x_i(t)"
+6) change the y-axis in C, D to be a latex rendering of "Total community biomass, x_{\text{tot}}(t)". Likewise 
+for the x axis of E, F
+7) make the y axis of E, F read "Count"
+8) make the thresholds used in C-F be 50-51 and 59-60 (see below on how to chose specific values). On panels E and F, 
+insert two labels on each panel in the format "P=x" which give the probability of being above the higher threshold 
+or below the lower threshold. Please these probabilities near on the panel to the tails of the distributions that
+they give information about. Select your thresholds in such a way that there is a clear difference between the 
+lower-tail probabilities on the two panels, and also between the upper-tail probabilities on the two panels.
+Of course the horizontal lines on C, D should also be modified to correspond to the new thresholds. Make sure you 
+choose thresholds so the time series on C goes below the lower threshold at least once, and the time series on F goes above
+the upper threshold at least once.
 -->
 
-<!--diversity-stability relationship-->
-Understanding the mechanism behind the stability of an ecosystem 
-(be it on population or community level) has been intrigued the ecologists since 
-long [@macarthur1955fluctuations; @paine1969note; 
-@grimm1992application; @pimm1984complexity]. Theoretical and experimental 
-studies indicated 'diversity-stability' relationship as a possible indicator to predict 
-stability on community or ecosystem scale [@goodman1975theory; @tilman1994biodiversity; 
-@doak1998statistical] though contradiction became apparent with few studies 
-asking if diversity increases or decreases the community-stability [@mccann2000diversity].
-@ives2007stability concluded 'diversity-stability' relationship is complex and cannot 
-be explained without considering the effect of environmental drivers due to anthropogenic changes.
 
-<!--variability-stability relationship-->
-Another perspective to understand community-stability is to study the 'variability-stability' 
-relationship [@wang2014ecosystem]. How species fluctuate with time 
-and also how environmental fluctuation affects the species-interaction 
-within the community help us to interpret whether the total productivity is consistent 
-throughout times or not [@ives1999stability]. The change in total productivity with time 
-is considered as one of the proxies to quantify community-stability [@grimm1992application].
-This total productivity is influenced by two major types of species interaction - compensatory and 
-synchronous. Compensatory dynamics mean when species are in competition 
-such that decreases in one or more species-abundances are compensated 
-by the increases in others so that the total productivity 
-remains overall constant throughout years, making the community 
-less variable and hence more stabilized [@frost1995species; @bai2004ecosystem; 
-@gonzalez2009causes; @hallett2014]. Synchronous dynamics, on 
-the other hand, arises when the majority of species fluctuate
-together in response to a common biotic/ abiotic driver 
-so that the community shows high variability in total 
-productivity and so considered as less stabilized [@keitt2008coherent; @loreau2008species; 
-@ma2017climate].
+
+
+
+
 
 <!--p2: what is variance ratio? How it is used to determine a community's variability?-->
 Variance ratio, $\phi_{cv}$, is a commonly used stability-index that measures how 
