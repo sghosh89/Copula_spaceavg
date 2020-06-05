@@ -150,7 +150,7 @@ abline(h=th_low,lty=2)
 abline(h=th_high,lty=3)
 legend(x=15,y=64,"(C)", bty="n",cex=1.4)
 legend(x=30,y=63,
-       c(as.expression(bquote(skew(x[tot])==.(round(tab2$skw_real,2)))),
+       c(as.expression(bquote(skew(x[tot])==.(formatC(tab2$skw_real,2,format="f")))),
          as.expression(bquote(mean(x[tot])==.(round(mu_l,2)))),
                     as.expression(bquote(var(x[tot])==.(round(v_l,2))))),
        bty="n",cex=1,text.col="black",horiz = F)
