@@ -40,7 +40,10 @@ may make people think of it as a methods paper?
 
 <!--***DAN: Shyamolina, please go ahead and format the title page appropriately, making the proper affiliations
 appear and so on
-***Shya: affiliation added, I remember Prof. Foster and Prof. Bever listened to your talk and gave input, should not I include them as co-authors?-->
+***Shya: affiliation added, I remember Prof. Foster and Prof. Bever listened to your talk and gave input, should not I include them as co-authors?
+***DAN: Good question. I don't think their contribution rises to the level of authorship yet, but I've added them to the 
+acknowledgments, and I think we should send them a draft at some point and see if they want to contribute more. How does that 
+sound to you?-->
 
 ```{r setup_Paper, echo=F}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
@@ -140,36 +143,26 @@ meaningful ways which are nevertheless not detected by classic approaches.
 It is the reliance of earlier approaches on the coefficient of variation, covariance and related linear tools
 for quantifying species relationships that causes those approaches to be unable to register the differences
 we have illustrated here.
-<!--***DAN: Shyamolina, can you please make the following changes to the figure?
-1) Please delete the text that appears on the panels themselves in A and B (but keep the panel
-labels that say "(A)" and "(B)"). Adjust the y axis extents of both panels so the time series ocupy the 
-space vacated by the deleted text, so the reader can see these time series better. Please keep the y-axis 
-extents the same on both panels.
-***Shya: Done.
-2) Across the bottom of A (likewise, B), please display CV_com^2, CV_ind^2, \phi_cv, and \phi_LdM, their 
-values as well as the notation which tells the reader what each value is. \phi_LdM is the Loreau and 
-de Mazancourt variance ratio, which is defined in eq 41 of the sup mat of Lei's paper "A new variance 
-ratio metric...". Please add a computation of \phi_{LdM} to your Rmd code so you can include the value 
-here. The value should be about the same for A and B.
-***Shya: Done, I did not edit the fig caption...once we settle down to a good fig with notational edits, we will add that.
-3) Please replace \mu on C and D by the approriate rendering of $\mean(x_{\text{tot}})$, and likewise replace
+<!--***DAN: Here are a few more changes needed to the figure:
+1) On A and B, please provide one more significant figure for CV_com^2 and CV_ind^2, so it will then show 4 decimal places
+2) I had previously written this:
+"3) Please replace \mu on C and D by the approriate rendering of $\mean(x_{\text{tot}})$, and likewise replace
 v by the appropriate rendering of $\var(x_{\text{tot}})$. Please also insert $\text{skew}(x_{\text{tot}})$
 and the value of that skewness. Please make the formats for all three of these be parallel (currently the skew
 is black and to the left, and the mean and variance are blue and to the right), and please also use parallel
-formatting choices to what you use in panels A and B to put values on the panels.
-***Shya: Done. Though I don't know where were my mean and var wrong? Now it changes as my time series also changes - previously I gave a shift of +1 to the individual time series just to ensure nothing goes negative biomass, that's why mean was ~54.5..Now, I deleted that shift and checked my individual timeseries is positive. 
-Now, the mean and var are okay?
-4) Please delete the text that appears on panels E and F, but keep the panel labels.
-***Shya: Done.
-5) change the y-axis in A, B to be a latex rendering of "Individual species biomass, x_i(t)" 
-***Shya: Done.
-6) change the y-axis in C, D to be a latex rendering of "Total community biomass, x_{\text{tot}}(t)". Likewise 
-for the x axis of E, F 
-***Shya: Done.
-7) make the y axis of E, F read "Count" 
-***Shya: Done.
-8) make the thresholds used in C-F be 50-51 and 59-60 (see below on how to chose specific values). On panels E and F, insert two labels on each panel in the format "P=x" which give the probability of being above the higher threshold or below the lower threshold. Please these probabilities near on the panel to the tails of the distributions that they give information about. Select your thresholds in such a way that there is a clear difference between the lower-tail probabilities on the two panels, and also between the upper-tail probabilities on the two panels. Of course the horizontal lines on C, D should also be modified to correspond to the new thresholds. Make sure you choose thresholds so the time series on C goes below the lower threshold at least once, and the time series on F goes above the upper threshold at least once. 
-***Shya: Done. threshold set as (41,49)
+formatting choices to what you use in panels A and B to put values on the panels."
+But perhaps I did not make myself clear. The numeric values displayed are fine, as far as I can tell at the moment. However, the 
+notation "s", "\mu" and "v" is not consistent with the notation used in the text I have been editing. Please replace the notation 
+"s" on panels C and D with a proper latex rendering of $\text{skew}(x_{\text{tot}})$. Please replace the notation "\mu" on 
+C and D with a proper latex rendering of $\mean(x_{\text{tot}})$. Likewise replace "v" with $\var(x_{\text{tot}})$.
+3) With regard to the values p on panels E and F, perhaps I did not make myself clear. There need to be 2 values of p on 
+*each panel*, one representing the probability of exceeding the upper threshold, and the other representing the probability
+of falling below the lower threshold. The point is to be able to compare the lower-threshold p's across the two panels,
+and the p on E should be substantially larger, so the probability of going below the lower threshold is revealed to be greater
+on E than it is on F. Likewise, one should be able to compare the upper-threshold p's across the two panels, and the p on F
+should be substantially larger, so the probability of going about the upper threshold is revealed to be greater on F than it is on E.
+You may need to readjust your thresholds now that the goals here are (hopefully) clear, but it may also be that your current thresholds
+will work to reveal the substantial difference in ps between the panels.  
 -->
 
 This study is centered around three suggestions about how research on the effects of species 
@@ -686,7 +679,10 @@ asymmetric nature they had - which answered (Q2).
 
 
 
-
+# Acknowledgments
+\noindent The authors thank Jim Bever and Bryan Foster for helpful discussions. The authors were partly supported 
+by U.S. National Science Foundation grant 1714195, the James S. McDonnell Foundation, and the California Department
+of Fish and Wildlife Delta Science Program. 
 
 <!--add figures-->
 <!--Pedagogical figure for same variance ratio but different skewness-->
