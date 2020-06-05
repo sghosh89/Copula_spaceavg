@@ -12,9 +12,11 @@ get_var_ratio<-function(m){
   #cvsq_indep<-sum(var_each_sp)/((sum(mean_each_sp))^2)
   #phi_cvsq<-cvsq_real/cvsq_indep
   
-  var_ratio<-var(tot_quantity)/sum(var_each_sp) # same as phi_cvsq
-  
-  return(var_ratio)
+  classic_var_ratio<-var(tot_quantity)/sum(var_each_sp) # same as phi_cvsq
+  loreau_var_ratio<-var(tot_quantity)/((sum(sqrt(var_each_sp)))^2) # Loreau's variance ratio method
+    
+  return(list(classic_var_ratio=classic_var_ratio,
+         loreau_var_ratio=loreau_var_ratio))
 }
 
 #get_var_ratio(m)
