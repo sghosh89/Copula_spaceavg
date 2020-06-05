@@ -192,7 +192,7 @@ became correlated when the macroeconomic situation worsened, it seems likely tha
 be more or less correlated with each other under different circumstances, and classical approaches that characterize relationships
 between species using covariances may be neglecting something important. 
 
-<Now do some ECE connection>
+<!--***DAN: Now do some ECE connection-->
 
  
 
