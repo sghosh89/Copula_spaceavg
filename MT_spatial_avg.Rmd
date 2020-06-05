@@ -162,7 +162,13 @@ and the p on E should be substantially larger, so the probability of going below
 on E than it is on F. Likewise, one should be able to compare the upper-threshold p's across the two panels, and the p on F
 should be substantially larger, so the probability of going about the upper threshold is revealed to be greater on F than it is on E.
 You may need to readjust your thresholds now that the goals here are (hopefully) clear, but it may also be that your current thresholds
-will work to reveal the substantial difference in ps between the panels.  
+will work to reveal the substantial difference in ps between the panels. Not all threshold will reveal the discrepancy in upper 
+(respectively, lower) ps equally well. For some choices of threshold there will be very little difference between the panels in ps.
+But for other choices of threshold there will be a bigger difference. One way to choose good thresholds might be to
+plot the empirical cdf associated with E, and also that associated with F (see the wikipedia page on empirical cdfs if you
+don't know what they are) and select thresholds that correspond to large differences between the two empirical cdfs. It is not
+necessary to put the plots of the empirical cdf into your figure, but it may help to generate them to choose the best thresholds
+for making the point we are trying to make.
 -->
 
 This study is centered around three suggestions about how research on the effects of species 
