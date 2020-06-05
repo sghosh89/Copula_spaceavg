@@ -23,7 +23,7 @@ PPsurrogs_tests<-function(m,surrogs){
   tot_cov_real<-sum(m_cov[lower.tri(m_cov)])
   
   # get variance ratio for real data
-  vr_real<-get_var_ratio(m)
+  vr_real<-get_var_ratio(m)$classic_var_ratio
   
   #initialize
   cor_surrogs<-array(numeric(),c(nrow(cor_real),ncol(cor_real),0)) # to store pairwise correlation for surrogates
@@ -51,7 +51,7 @@ PPsurrogs_tests<-function(m,surrogs){
     tot_cov_surrogs<-c(tot_cov_surrogs,get_ms_cov)
     
     # get variance ratio for surrogate
-    gvs<-get_var_ratio(ms)
+    gvs<-get_var_ratio(ms)$classic_var_ratio
     vr_surrogs<-c(vr_surrogs,gvs)
   }
   

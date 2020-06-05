@@ -1,5 +1,5 @@
 source("./make_tab_stability_assessment.R")
-
+source("./get_var_ratio.R")
 set.seed(seed=104)
 library(copula)
 
@@ -60,13 +60,12 @@ res_p2<-1-res_p2
 
 normres_p1<-qnorm(res_p1) # qnorm makes marginals normal from uniform
 normres_p2<-qnorm(res_p2)
-
-normres_p1<-normres_p1-min(normres_p1,normres_p2)+1 # we give this normal marginals a shift towards +ve axis 
-                                                    # as they are sp. biomass timeseries
+range(normres_p1)
+normres_p1<-normres_p1-min(normres_p1,normres_p2) 
 normres_p2<-normres_p2-mean(normres_p2)+mean(normres_p1) # so that both have same mean
 mean(normres_p1)
 mean(normres_p2)
-
+range(normres_p2)
 #------------------ Stability metrics ------------------
 # extremely different skewness ratios though have nearly same variance ratios
 (tab1<-make_tab_stability(m=normres_p1,surrogs = NA,surrogs_given = F))
@@ -76,30 +75,50 @@ mean(normres_p2)
 time_to_show<-c(1:60)
 normres_p1_show<-normres_p1[time_to_show,]
 normres_p2_show<-normres_p2[time_to_show,]
-ylm<-max(normres_p1_show,normres_p2_show)+5
-
+#ylm<-max(normres_p1_show,normres_p2_show)
+ylm<-7
 pdf("./Results/pedagog_figs/pedagog_cv2_skw.pdf",height=3,width=9)
 op<-par(mar=c(0.5, 0.5, 0.5, 4), mfcol=c(2,3), oma = c(3.5,4.5, 0.1, 0.1))
 
 # first column for individual biomass of each sp.
-plot.ts(normres_p2_show,col=c(rep(1,d),rep(2,d)),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(1,ylm))
-
-legend(x=-2.5,y=15,"(A) species are synchronously rare \n than abundant within each group \n of the community",
-                      bty="n",cex=1.1)
-
-#get variance ratio
-phi_cv_l<-round(tab2$phi_cvsq,2)
-legend("bottomright",as.expression(bquote(phi[cv]==.(phi_cv_l))),bty="n",cex=1,text.col="blue")
-
-plot.ts(normres_p1_show,col=c(rep(1,d),rep(2,d)),ylab="",xlab="",plot.type = "single",ylim=c(1,ylm))
-legend(x=-2.5,y=15,"(B) species are synchronously \n abundant than rare within each \n group of the community",
-       bty="n",cex=1.1)
+plot.ts(normres_p2_show,col=c(rep(1,d),rep(2,d)),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=c(0,ylm))
+        
+legend(x=20,y=8,"(A)", bty="n",cex=1.4)
 
 #get variance ratio
-phi_cv_r<-round(tab1$phi_cvsq,2)
-legend("bottomright",as.expression(bquote(phi[cv]==.(phi_cv_r))),bty="n",cex=1,text.col="blue")
+phi_cv_l<-round(tab2$phi_cvsq,3)
+cvsq_com<-round(tab2$cvsq_real,3)
+cvsq_ind<-round(tab2$cvsq_indep,3)
+phi_loreau<-round(get_var_ratio(m=normres_p2)$loreau_var_ratio,3)
+legend(x=38,y=2.4,c(as.expression(bquote(phi[cv]==.(phi_cv_l))),
+                  as.expression(bquote(phi[LdM]==.(phi_loreau)))),
+       y.intersp = 1.2,
+       bty="n",cex=1,text.col="black")
+legend(x=10,y=2.6,
+       c(as.expression(bquote(CV[com]^"2"==.(cvsq_com))),
+         as.expression(bquote(CV[ind]^"2"==.(cvsq_ind)))),
+       y.intersp = 1.2,
+       bty="n",cex=1,text.col="black",horiz=F)
 
-mtext(paste("Individual sp. (i = ",ncol(normres_p1),") biomass \n in the community",sep=""),side=2,line=2.2, adj = 0,cex=1)
+plot.ts(normres_p1_show,col=c(rep(1,d),rep(2,d)),ylab="",xlab="",plot.type = "single",ylim=c(0,ylm))
+legend(x=20,y=8,"(B)", bty="n",cex=1.4)
+
+#get variance ratio
+phi_cv_r<-round(tab1$phi_cvsq,3)
+cvsq_com<-round(tab1$cvsq_real,3)
+cvsq_ind<-round(tab1$cvsq_indep,3)
+phi_loreau<-round(get_var_ratio(m=normres_p1)$loreau_var_ratio,3)
+legend(x=38,y=2.4,c(as.expression(bquote(phi[cv]==.(phi_cv_r))),
+                       as.expression(bquote(phi[LdM]==.(phi_loreau)))),
+       y.intersp = 1.2,
+       bty="n",cex=1,text.col="black")
+legend(x=10,y=2.6,
+       c(as.expression(bquote(CV[com]^"2"==.(cvsq_com))),
+         as.expression(bquote(CV[ind]^"2"==.(cvsq_ind)))),
+       y.intersp = 1.2,
+       bty="n",cex=1,text.col="black")
+
+mtext(expression("Individual species biomass, x"[i]*"(t)"),side=2,line=2.2, adj = 0,cex=1)
 mtext("Year",side=1,line=2.2, adj = 0.5,cex=1)
 
 
@@ -107,8 +126,8 @@ mtext("Year",side=1,line=2.2, adj = 0.5,cex=1)
 tot_ts_l<-apply(FUN=sum,MARGIN=1,X=normres_p2)
 tot_ts_r<-apply(FUN=sum,MARGIN=1,X=normres_p1)
 
-th_low<-52
-th_high<-58
+th_low<-41
+th_high<-49
   
 # same mean 
 mu_l<-mean(tot_ts_l)
@@ -121,56 +140,63 @@ v_r<-var(tot_ts_r)
 
 tot_ts_l_show<-tot_ts_l[time_to_show]
 tot_ts_r_show<-tot_ts_r[time_to_show]
-ylm<-c(38,72)
+ylm<-c(30,60)
 #ylm<-range(tot_ts_l_show,tot_ts_r_show)
 
 plot(time_to_show,tot_ts_l_show,type="l",ylim=ylm,col="darkgrey",ylab="",xaxt="n",xlab="")
 abline(h=th_low,lty=2)
 abline(h=th_high,lty=3)
-legend(x=-2.5,y=75,paste("(C) s = ",round(tab2$skw_real,2)),bty="n",cex=1.1)
+legend(x=20,y=64,"(C)", bty="n",cex=1.4)
 legend("topright",
-       c(as.expression(bquote(mu==.(round(mu_l,2)))),
-                    as.expression(bquote(v==.(round(v_l,2))))),
-       bty="n",cex=1,text.col="blue",horiz = F)
+       c(as.expression(bquote(s==.(round(tab2$skw_real,3)))),
+         as.expression(bquote(mu==.(round(mu_l,3)))),
+                    as.expression(bquote(v==.(round(v_l,3))))),
+       bty="n",cex=1,text.col="black",horiz = F)
 
 
 plot(time_to_show,tot_ts_r_show,type="l",ylim=ylm,col="darkgrey",xlab="",ylab="")
 abline(h=th_low,lty=2)
 abline(h=th_high,lty=3)
-legend(x=-2.5,y=75,paste("(D) s = ",round(tab1$skw_real,2)),bty="n",cex=1.1)
+#legend(x=-2.5,y=75,paste("(D) s = ",round(tab1$skw_real,3)),bty="n",cex=1.5)
+legend(x=20,y=64,"(D)", bty="n",cex=1.4)
 legend("topright",
-       c(as.expression(bquote(mu==.(round(mu_r,2)))),
-         as.expression(bquote(v==.(round(v_r,2))))),
-       bty="n",cex=1,text.col="blue",horiz = F)
-mtext("Total community biomass",side=2,line=2.2, adj = -0.5,cex=1)
+       c(as.expression(bquote(s==.(round(tab1$skw_real,3)))),
+         as.expression(bquote(mu==.(round(mu_r,3)))),
+         as.expression(bquote(v==.(round(v_r,3))))),
+       bty="n",cex=1,text.col="black",horiz = F)
+mtext(expression("Total community biomass, x"[tot]*"(t)"),side=2,line=2.2, adj = 0,cex=1)
 mtext("Year",side=1,line=2.2, adj = 0.5,cex=1)
 
 
 # third column for temporal distribution of aggregated biomass
-xlm<-c(38,72)
+xlm<-c(25,64)
 x <- tot_ts_l
-y <- hist(tot_ts_l,breaks = 100,plot=F)
+y <- hist(x,breaks = 100,plot=F)
+pval<-sum(x<th_low)/length(x)
 plot(y$breaks,
      c(y$counts,0),
      type="s",col="darkgrey",xlim=xlm,ylim=c(0,500),xaxt="n",
      ylab="Frequency",xlab="Total community Biomass")
 abline(v=th_low,lty=2)
 abline(v=th_high,lty=3)
-legend(x=35,y=540,"(E) Left tail dependent community",bty="n",cex=1.1)
+legend(x=38,y=570,"(E)", bty="n",cex=1.4)
+legend(x=20,y=120,paste("p = ",round(pval,3)),bty="n",cex=1.1)
 
 #hist(tot_ts_l,breaks = 100, col="grey",lty="blank")
 
 x <- tot_ts_r
-y <- hist(tot_ts_r,breaks = 100,plot=F)
+y <- hist(x,breaks = 100,plot=F)
+pval<-sum(x>th_high)/length(x)
 plot(y$breaks,
      c(y$counts,0),
      type="s",col="darkgrey",xlim=xlm,ylim=c(0,500),
      ylab="Frequency",xlab="Total community Biomass")
 abline(v=th_low,lty=2)
 abline(v=th_high,lty=3)
-mtext("Annual frequency",side=2,line=2.2, adj = -3,cex=1)
+mtext("Count",side=2,line=2.2, adj = 1.5,cex=1)
 mtext("Total community biomass",side=1,line=2.2, adj = 0.5,cex=1)
-legend(x=35,y=540,"(F) Right tail dependent community",bty="n",cex=1.1)
+legend(x=38,y=570,"(F)", bty="n",cex=1.4)
+legend(x=50,y=120,paste("p = ",round(pval,3)),bty="n",cex=1.1)
 
 par(op)
 #box(which="figure")
