@@ -43,7 +43,8 @@ appear and so on
 ***Shya: affiliation added, I remember Prof. Foster and Prof. Bever listened to your talk and gave input, should not I include them as co-authors?
 ***DAN: Good question. I don't think their contribution rises to the level of authorship yet, but I've added them to the 
 acknowledgments, and I think we should send them a draft at some point and see if they want to contribute more. How does that 
-sound to you?-->
+sound to you?
+***Shya: Fine for me.-->
 
 ```{r setup_Paper, echo=F}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
@@ -145,6 +146,7 @@ for quantifying species relationships that causes those approaches to be unable 
 we have illustrated here.
 <!--***DAN: Here are a few more changes needed to the figure:
 1) On A and B, please provide one more significant figure for CV_com^2 and CV_ind^2, so it will then show 4 decimal places
+***Shya: every value in the plot are showed upto 2nd digit (rounded) and for CV^2 upto 4th digit (rounded)
 2) I had previously written this:
 "3) Please replace \mu on C and D by the approriate rendering of $\mean(x_{\text{tot}})$, and likewise replace
 v by the appropriate rendering of $\var(x_{\text{tot}})$. Please also insert $\text{skew}(x_{\text{tot}})$
@@ -155,6 +157,7 @@ But perhaps I did not make myself clear. The numeric values displayed are fine, 
 notation "s", "\mu" and "v" is not consistent with the notation used in the text I have been editing. Please replace the notation 
 "s" on panels C and D with a proper latex rendering of $\text{skew}(x_{\text{tot}})$. Please replace the notation "\mu" on 
 C and D with a proper latex rendering of $\mean(x_{\text{tot}})$. Likewise replace "v" with $\var(x_{\text{tot}})$.
+***Shya: Done.
 3) With regard to the values p on panels E and F, perhaps I did not make myself clear. There need to be 2 values of p on 
 *each panel*, one representing the probability of exceeding the upper threshold, and the other representing the probability
 of falling below the lower threshold. The point is to be able to compare the lower-threshold p's across the two panels,
@@ -169,6 +172,7 @@ plot the empirical cdf associated with E, and also that associated with F (see t
 don't know what they are) and select thresholds that correspond to large differences between the two empirical cdfs. It is not
 necessary to put the plots of the empirical cdf into your figure, but it may help to generate them to choose the best thresholds
 for making the point we are trying to make.
+***Shya: Done.
 -->
 
 This study is centered around three suggestions about how research on these topics should devlop in the future;
