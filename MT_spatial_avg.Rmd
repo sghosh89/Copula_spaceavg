@@ -118,29 +118,29 @@ were the same in both cases, and so $\phi_{\text{cv}}$ was also the same. The Lo
 (Fig. \ref{fig_pedag_cv2_skw}A, B). Classical approaches such as these do not distinguish between our two cases, neither in the nature
 of species interrelationships nor in the effects of interrelationships on community aggregate dynamics $\xtot(t)$.
 
-Nevertheless, species relationships and resulting aggregate dynamics differed in important ways in these cases. In both cases,
+Nevertheless, species relationships and resulting aggregate dynamics differed in important ways in our two cases. In both cases,
 the ten species could be separated into two groups of five species (red and black lines on Fig. \ref{fig_pedag_cv2_skw}A, B), 
 and the dynamics of species in different groups were strongly compensatory. However, in case 1 (Fig. \ref{fig_pedag_cv2_skw}A), 
 species in the same group exhibited strongly synchronous dynamics when rare and much less synchronous dynamics when 
 common; whereas in case 2 (Fig. \ref{fig_pedag_cv2_skw}B) species in the same group exhibited strongly synchronous dynamics 
-when common and much less synchronous dynamics when rare. Dynamics of this kind could occur ecologically, for instance, in case 1,
-(Fig. \ref{fig_pedag_cv2_skw}A) if red species were sensitive to an environmental factor such as precipitation, but only when it 
+when common and much less synchronous dynamics when rare. Dynamics of this kind could occur ecologically, for instance, in case 1, 
+if red species in Fig. \ref{fig_pedag_cv2_skw}A were sensitive to an environmental factor such as precipitation, but only when it 
 takes values below a threshold. So all the red species are controlled by the same factor, precipitation, when it is below the threshold,
 and hence are synchronous when rare. 
 When precipitation is above the threshold, the red species are each sensitive, instead, to other, distinct factors, rendering them asynchronous
 when common. Black species 
-of (Fig. \ref{fig_pedag_cv2_skw}A) may also be senstive to precipitation, but in a reverse manner, being all simultaneously 
+of Fig. \ref{fig_pedag_cv2_skw}A may also be senstive to precipitation, but in a reverse manner, being all simultaneously 
 harmed by precipitation when it is
 above the threshold and unaffected by precipitation below the threshold. Resulting community dynamics 
 (Fig. \ref{fig_pedag_cv2_skw}C-F) were quite different in our two cases because of the distinct species interrelationships.
 Total community biomass was left-skewed, frequently crashing to low values, for case 1; but was right skewed, frequently
 exploding to high values, in case 2. It is not difficult to imagine cascading ecological ramifications or 
 potential applied significance of the distinction our example illustrates. For instance, grazers subsisting on a grass mixture that 
-exhibits frequent crashes may experience different population growth prospects than grazers consuming a grass mixture that
-shows frequent explosions of abundance. 
-Thus species interrelationships and their effects on community aggregate dynamics can differ in potentially ecologically
-meaningful ways which are nevertheless not detected by classic approaches. 
-It is the reliance of earlier approaches on the coefficient of variation, covariance and related linear tools
+exhibits occasional crashes may experience different population growth prospects than grazers consuming a grass mixture that
+instead shows occasional explosions of abundance. 
+Thus species interrelationships and their effects on community aggregate dynamics may differ in potentially ecologically
+meaningful ways which are nevertheless not detected by classical approaches. 
+It is the reliance of earlier approaches on variances, covariance and related linear tools
 for quantifying species relationships that causes those approaches to be unable to register the differences
 we have illustrated here.
 <!--***DAN: Here are a few more changes needed to the figure:
@@ -171,37 +171,53 @@ necessary to put the plots of the empirical cdf into your figure, but it may hel
 for making the point we are trying to make.
 -->
 
-This study is centered around three suggestions about how research on the effects of species 
-relationships on variability of a community aggregate property may devlop into the future;
+This study is centered around three suggestions about how research on these topics should devlop in the future;
 and we take some first steps toward implementing these suggestions. First, statistical descriptions of community 
 stability/variability that are more nuanced than the coefficient of variation ought to be developed 
 and used. The results of Fig. \ref{fig_pedag_cv2_skw} suggest that measures related to skewness may
-be useful first steps. The second suggestion is that descriptions ought to be applied, of how species time series 
-relate to each other in a community, that are more nuanced than the covariance and correlation approaches
-that have overwhelmingly been used so far. Fig. \ref{fig_pedag_cv2_skw} suggests that measures might be
+be useful first steps. Second, descriptions of species relationships that are more nuanced than the standard 
+covariance/correlation approaches ought to be developed and applied.
+Fig. \ref{fig_pedag_cv2_skw} suggests that measures might be
 useful that isolate the extent to which species abundances are more related to each other when the species
-are common, or rare. The third suggestion is that we ought to then study how species relationships
-influence community community stability/variability using the more nuanced statistical descriptors. 
+are common, or rare. Third, we ought to then study how species relationships
+influence community stability/variability using the nuanced descriptors. 
 
-The core ideas of this study relate to rare events, and specifically how the relationships between the constituents of 
+The core ideas of this study relate to rare events, and specifically to how the relationships between the constituents of 
 an aggregate quantity change during rare events. There are strong conceptual and methodological connections to
 risk pricing in finance. A portfolio of investments is supposed to reduce risk if the constituent investments 
-are uncorrelated. But correlation among constituents can accentuate instead of reducing risk. Some observers have 
-blamed the 2008 financial crisis on a trend under which many analysts estimated correlations between housing default
-risks based on data from normal times, not taking into account that in a crisis, default risks become much more correlated. 
-A single financial approach [@li2000] was apparently widely used [@salmon2009]. The relationship between two 
+are negatively correlated or uncorrelated. But if these constituents become positively correlated, it can instead accentuate risk. 
+Some observers have blamed the 2008 financial crisis on a trend during which many analysts estimated correlations between housing default
+risks based on data from normal times, not taking into account that in a crisis, default risks become much more correlated.
+In such times, financial products based on aggregating mortgages become riskier due to the increased correlation. 
+A single modelling approach [@li2000] was apparently widely used [@salmon2009]. The relationship between two 
 quantities, be they investment risks or species populations, can probably never be completely captured by a single number
-such as a covariance [@cheung2013], or considered to be constant through time. Just as mortgage defaults which were typically uncorrelated 
+such as a covariance [@cheung2013], nor considered to be constant through time. Just as mortgage defaults which were typically uncorrelated 
 became correlated when the macroeconomic situation worsened, it seems likely that abundances of two species in a community may
-be more or less correlated with each other under different circumstances, and classical approaches that characterize relationships
-between species using covariances may be neglecting something important. 
+be more or less correlated with each other under different circumstances. Therefore classical approaches that characterize relationships
+between species using covariances may be neglecting something important. In particular, correlations between species 
+may change as global climate change progresses, or when extreme climatic events impact an 
+ecosystem [@Ghosh_extinction]. Some financial analysts 
+have learned these lessons and have begun developing the necessary mathematics for more appropriate models [@cheung2013]. Ecologists 
+can benefit from application of the same methods, and we hope this study helps begin that process.
 
-<!--***DAN: Now do some ECE connection-->
-
+The goals of this study are as follows, and parallel the research suggestions listed above. We will develop the 
+concepts of an approach to studying the relationships
+between species that complements classic approaches relying on covariances. We will also develop the concepts of an
+approach to studying aggregate community stability/variability that complements the traditional use of the 
+coefficient of variation. Finally, we will study how species interrelationships influence community stability variability
+using the new approaches. Our results provide a new take on classic questions about the influence of synchronous or 
+compensatory dynamics on community stability. We will use theory, as well as data from two iconic, long-term glassland studies:
+plant percent cover data from long-term quadrats in mixed-grass prairie located in Hays, Kansas; and annual 
+species composition data from the Konza Prairie Lonter-Term Ecological Research (LTER) site, also located in Kansas.
+Synchronous versus compensatory dynamics in communities, and their influence on community stability, has most commonly
+been studied in plankton systems (REFS) and in grasslands (REFS). Evidence so far suggests that synchonous dynamics may be dominant
+and compensatory dynamics rare in plankton systems (REFS), whereas compensatory dynamic appears at least somewhat more common
+in grasslands (REFS). One outcome of our empirical work is a suggestion that compensatory dynamics in grasslands may be less 
+common than was previously appreciated, when one adopts a broader conceptual view of what constitutes synchronous versus 
+compensatory dynamics. Overall, our work seeks to establish the beginnings of a new and more flexible paradigm for
+conceptualizing synchronous and compensatory dynamics and their influence on community stability.
+<!--***DAN: Don't forget to fill in the references above-->
  
-
-
-
 <!--***DAN: Not sure how relevant this stuff is, but keeping it around for now, partly for the references.
 There are reasons to focus on skewness to better understand the community-stability 
 in this rapidly changing world. Earlier studies [@smith2011ecological; @hoover2014resistance; 
@@ -217,28 +233,7 @@ warning signal, regime shift, etc.) [@guttal2008changing; @guttal2009spatial;
 @dakos2010spatial; @dakos2012methods]. But to our knowledge, there is a gap to incorporate 
 this skewness into direct community-stability metric.-->
 
-<!--p4: Following the arguments, we need an additional measure which 
-could incorporate the "skewness changing" feature of the community. Fig 2(A-B): Box simple diagram.
-Skewness has been found as an indicator even in the studies for 
-early warning signal or regime shifts (citations)-->
-Following the above argument, we need an additional measure that could 
-include the changing skewness feature of the community. 
-Keeping this in mind, we propose an analogous skewness-based approach 
-to that of variance-based one in Fig. \ref{fig_pedag_taildep}. The skewness ratio,
-$\phi_{s}$, could tell us how interspecific interaction (even the 
-nonlinear response) changes the net productivity over the years 
-compared to an independent community. But still, we don't know in particular 
-which makes this difference between the variance based and skewness based approach (the 
-dashed arrows with the mystery box in Fig. \ref{fig_pedag_taildep}A-B). 
-
-<!--p5: But how skewness is different than variance-measure? Is there 
-any mechanism working in the background that is responsible 
-for changing skewness while keeping the overall correlation same? Therefore, we think may be it is "tail-association".(Fig. 2C-D)
-
-What is tail-association? How it could chenge the skewness of the 
-community on aggregated sp. level? and then relate it to the stability 
-intuitively: LT association means crashing the whole community.-->
-
+<!--***DAN: Keeping the following text, may end up included in the Discussion.
 A recent study [@Ghosh_copula]
 shows tail associations between local quantities affects the 
 skewness of spatially averaged
@@ -260,7 +255,7 @@ between interspecific response over the years. Tail-asymmetry is known to
 have significant effect on population-extinction risk [ERC_ecosphere]
 and hence could be related to stability on the population, community and even ecosystem level.
 For example, the lower tail association could cause the community 
-likely to crash at once - making the community less stable.
+likely to crash at once - making the community less stable.-->
 
 <!--p6: Our objectives:
 (Q1) Could we find an overall tail association (L/U) in a community which arises because of  
@@ -271,6 +266,8 @@ assymetric sp. interaction explain the community stability which we might miss
 with the classic variance ratio method? [answer: Fig 1b hidden box revealed]
 We will answer these Qs with two grassland community datasets: Hays & Konza.-->
 
+<!--***DAN: These framings of the objectives are too technical for the reader to understand right now,
+keeping for possible use at end of Theory section.
 In this paper, we will explore the potential for asymmetric tail associations 
 to assess nonlinear interactions among species in a community and to 
 unravel any hidden mechanism - not detected by the usual variance ratio approach -
@@ -298,8 +295,7 @@ on the community level to assessing variability-stability relationship remains
 unexplored. Our essential goal is to advance the idea that tail
 associations may also be important in this context. Our questions are 
 also an important step for predicting net productivity, 
-community reorganization, etc. through monitoring skewness over years.
-
+community reorganization, etc. through monitoring skewness over years.-->
 
 <!--idea: 
 - can we make specific outcome oriented 
@@ -308,11 +304,13 @@ community by choosing species or a cluster of sp.?
 similar to that of early warning signal 
 used for regime shift?-->
 
-
 <!--Tables
 S1: splist for hays
 S2: splist for knz
 -->
+
+# Theory \label{Theory}
+
 
 
 # Methods\label{Methods} 
