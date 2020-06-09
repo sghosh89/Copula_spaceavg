@@ -54,10 +54,10 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 <!--Abstract-->
 \newpage
 
-\noindent \textbf{ABSTRACT} 
+\noindent \textbf{ABSTRACT.} 
 
 <!--keywords-->
-\textbf{\textit{Keywords:}} variance ratio, community-stability, synchrony, tail-association, grassland, skewness
+\noindent \textbf{\textit{Keywords:}} variance ratio, community-stability, synchrony, tail-association, grassland, skewness
 
 
 \newpage
@@ -108,7 +108,7 @@ begin to illustrate the concepts we will explore in this
 study, and to understand what has been omitted from earlier approaches, we consider two artifically
 generated community dynamics datasets (Fig. \ref{fig_pedag_cv2_skw}A, B; data generated as in SI section X).
 <!--***DAN: Dan to fill in the X in the above line, and write the corresponding section of the SI.-->
-Both model communities consist of $N=10$ species, and data were generated so that species marginal distributions 
+Both model communities consist of $N=20$ species, and data were generated so that species marginal distributions 
 (and therefore the means, $\mu_i$, and variances, $v_{ii}$, 
 through time) were the same, up to sampling variance, in both cases. Likewise, data were 
 generated so that pairwise species covariances, $v_{ij}$ for $i \neq j$,
@@ -120,7 +120,7 @@ were the same in both cases, and so $\phi_{\text{cv}}$ was also the same. The Lo
 of species interrelationships nor in the effects of interrelationships on community aggregate dynamics $\xtot(t)$.
 
 Nevertheless, species relationships and resulting aggregate dynamics differed in important ways in our two cases. In both cases,
-the ten species could be separated into two groups of five species (red and black lines on Fig. \ref{fig_pedag_cv2_skw}A, B), 
+the twenty species could be separated into two groups of ten species (red and black lines on Fig. \ref{fig_pedag_cv2_skw}A, B), 
 and the dynamics of species in different groups were strongly compensatory. However, in case 1 (Fig. \ref{fig_pedag_cv2_skw}A), 
 species in the same group exhibited strongly synchronous dynamics when rare and much less synchronous dynamics when 
 common; whereas in case 2 (Fig. \ref{fig_pedag_cv2_skw}B) species in the same group exhibited strongly synchronous dynamics 
@@ -208,20 +208,24 @@ The goals of this study are as follows, and parallel the research suggestions li
 concepts of an approach to studying the relationships
 between species that complements classic approaches relying on covariances. We will also develop the concepts of an
 approach to studying aggregate community stability/variability that complements the traditional use of the 
-coefficient of variation. Finally, we will study how species interrelationships influence community stability variability
+coefficient of variation. Finally, we will study how species interrelationships influence community stability/variability
 using the new approaches. Our results provide a new take on classic questions about the influence of synchronous or 
 compensatory dynamics on community stability. We will use theory, as well as data from two iconic, long-term glassland studies:
 plant percent cover data from long-term quadrats in mixed-grass prairie located in Hays, Kansas; and annual 
-species composition data from the Konza Prairie Lonter-Term Ecological Research (LTER) site, also located in Kansas.
+species composition data from the Konza Prairie Long-Term Ecological Research (LTER) site, also in Kansas.
 Synchronous versus compensatory dynamics in communities, and their influence on community stability, has most commonly
-been studied in plankton systems (REFS) and in grasslands (REFS). Evidence so far suggests that synchonous dynamics may be dominant
-and compensatory dynamics rare in plankton systems (REFS), whereas compensatory dynamic appears at least somewhat more common
-in grasslands (REFS). One outcome of our empirical work is a suggestion that compensatory dynamics in grasslands may be less 
+been studied in plankton systems [@downing2008;@keitt2008coherent;@brown2016] and in grasslands 
+[@bai2004ecosystem;@houlahan2007;@hallett2014]. Evidence so far suggests that synchonous dynamics may be dominant
+and compensatory dynamics rare in plankton systems [@Vasseur2014]. On the other hand, previous work suggests that
+compensatory dynamic may be at least somewhat more common
+in grasslands [@hallett2014;@zhao2020]. Though some studies have also found compensatory dynamics to be rare in
+grasslands [@houlahan2007;@valone2008], others have found general evidence for compensatory dynamics [@bai2004ecosystem;@hector2010] 
+or have found compensatory dynamics selectively, in some contexts [@grman2010;@hallett2014]. 
+One outcome of our empirical work is a suggestion that compensatory dynamics in grasslands may be less 
 common than was previously appreciated, when one adopts a broader conceptual view of what constitutes synchronous versus 
 compensatory dynamics. Overall, our work seeks to establish the beginnings of a new and more flexible paradigm for
 conceptualizing synchronous and compensatory dynamics and their influence on community stability.
-<!--***DAN: Don't forget to fill in the references above-->
- 
+
 <!--***DAN: Not sure how relevant this stuff is, but keeping it around for now, partly for the references.
 There are reasons to focus on skewness to better understand the community-stability 
 in this rapidly changing world. Earlier studies [@smith2011ecological; @hoover2014resistance; 
@@ -315,7 +319,115 @@ S2: splist for knz
 
 # Theory \label{Theory}
 
+\noindent In this section we illustrate theoretical concepts for how relationships between
+constituent species of a community, beyond just pairwise covariances/correlations of the species
+time series, can influence the variability of an aggregate community property such as the 
+total community biomass. The setup for the theory is as follows. Let $x_i(t)$ be an abundance 
+measure for species $i=1,\ldots,N$ at time $t=1,\ldots,T$. We use $N=20$ and $T=100000$ in the examples of this 
+section. We assume the multivariate random variables $x(t)=(x_1(t),\ldots,x_N(t))$ are independent
+and identically distributed for distinct times, $t$. It should be straighforward to replace
+this assumption with an appropriate stationarity/ergodicity assumption, with no real change
+to the theoretical development, but we adopt the stronger assumption for simplicity. 
+To describe community variability, classic
+approaches such as the variance ratio approach consider the variance of 
+$\xtot=\sum_i x_i$, and quantities based on it (such as the 
+squared coefficient of variation of $\xtot$, i.e. $\CVcomsq$). But this is only a summary of the 
+distribution $\xtot$. We will instead consider the 
+whole distribution of $\xtot$, and its skewness. To describe relationships between species, 
+classic approaches consider the covariances
+$v_{ij}=\cov(x_i,x_j)$, and quantities based on them. We will instead consider, for each $i,j$, the whole 
+joint distribution $(x_i,x_j)$, and some quantities based on it that are distinct from the $v_{ij}$.
+We will present four scenarios (labeled 1-4 below) for which the marginal distributions $x_i$ and
+the covariances $v_{ij}$ are the same
+in all scenarios, as is the quantity $\var(\xtot)$ and the variance ratio $\phi_{\text{cv}}$. Thus 
+our scenarios are indistinguishable from the standpoint of classic approaches. But our scenarios are,
+in fact, ecological distinct, as we will see, in that the total biomass $\xtot$ achieves much
+more extreme values under some scenarios than others. Hence our scenarios represent communities showing 
+different characteristics of stability/variability. 
+Our scenarios are intentionally as simple as
+possible, with complexities of population dynamics such as autocorrelation not included, so that the main
+new ideas can be clearly described. But the ideas here apply to real communities, as we will see in 
+subsequent sections of the paper. We will also compare our four scenario to a reference scenario, a 
+so-called *comonotonic* scenario for which the $x_i$ are all equal. This is a scenario of maximal covariance between species
+and a maximal value of $\var(\xtot)$.
 
+In scenario 1, which is a baseline scenario to which the other scenarios will be compared, 
+$(x_1,\ldots,x_N)$ is a multivariate normal distribution with mean $(0,\ldots,0)$ and covariance matrix
+having $1$s along the diagonal and off-diagonal entries $0.6$. A sample from $(x_1,x_2)$ (Fig. \ref{fig_theory}A)
+and marginal histograms (side panels of Fig. \ref{fig_theory}A) help illustrate that this is a simple
+multivariate normal distribution. The marginal distributions $x_1$ and $x_2$ will be the same in all scenarios.
+The standard deviation of $\xtot$ was about $`r round(sqrt(vartotX1),1)`$, and the skewness of $\xtot$
+was close to $0$ (Fig. \ref{fig_theory}B). The probability of $\xtot$ exceeding a high threshold is given 
+in Fig. \ref{fig_theory}C for a range of high thresholds. Likewise the probability of $\xtot$ falling below a
+low threshold is in Fig. \ref{fig_theory}D for a range of low thresholds. 
+
+The other scenario for comparison is the comonotonic scenario, scenario C, for which $x_i=x_1$ for all $i$. 
+Comonotonicity between $x_1$ and $x_2$ is pictured in Fig.  \ref{fig_theory}E.
+Because synchrony between the dynamics of individual species is perfect in this case, $\sd(\xtot)$ is much larger
+than it was in scenario 1 (Fig.  \ref{fig_theory}F). The probabilities of $\xtot$ exceeding a high threshold or falling
+below a low threshold are likewise larger (Fig.  \ref{fig_theory}G-H) than they were for scenario 1.
+
+Scenarios 2-4 illustrate the ideas, previously little recognized within ecological research, 
+of tail comonotonicity and tail associations [@Ghosh_extinction;@Ghosh_copula], and the consequences of tail
+comonotonicity for the distribution of $\xtot$ and the probability of $\xtot$ passing a threshold. 
+In scenario 2, each $x_i$ is again standard-normally distributed (Fig. \ref{fig_theory}I side panels),
+but $(x_1,\ldots,x_N)$ is not a multivariate normal distribution. Instead, $(x_1,\ldots,x_N)$ was engineered so
+that $x_i$ and $x_j$ are perfectly correlated when they exceed some threshold, but imperfectly correlated 
+below the threshold (Fig. \ref{fig_theory}I; see SI section X for details). Correlation below the threshold was selected 
+to make $\cov(x_i,x_j)$ equal to the same value that pertained in scenario 1, and so $\sd(\xtot)$ was also
+the same, up to sampling variation, as it was in scenario 1 (Fig. \ref{fig_theory}J). (Recall that 
+$\var(\xtot)=\sum_{i,j} \cov(x_i,x_j)$ and that the standard deviations is the square root of the variance.)
+Comonotonicity in the upper tails produces right/positive skewness in $\xtot$ (Fig. \ref{fig_theory}J). The
+skewness translates to elevated probabilities of $\xtot$ exceeding high thresholds (Fig. \ref{fig_theory}K),
+compared to the baseline of scenario 1. In fact, the probability of exceeding sufficiently high thresholds is the
+same as for scenario C. So, although scenarios 1 and 2 are indistinguishable to the classic variance ratio approach
+and related approaches, the the probability of exceeding high thresholds in scenario 2 is much elevated compared 
+to scenario 1, and, in fact, is the same as scenario C and hence is as high as it can possibly be. The community
+of scenario 2 is maximally unstable in the sense that its probability of exceeding certain high thresholds is maximal,
+given fixed species marginal distributions, although it does not appear unstable to the classic variance ratio approach.
+<!--***DAN: Don't forget to create the SI section mentioned above-->
+
+Scenario 3 is like scenario 2, but the comonotonicity is in the left tails instead of the right. 
+Each $x_i$ is again standard-normally distributed (Fig. \ref{fig_theory}I side panels), but for this scenario
+$(x_1,\ldots,x_N)$ was engineered so
+that $x_i$ and $x_j$ are perfectly correlated when they go below some threshold, but imperfectly correlated 
+above the threshold (Fig. \ref{fig_theory}M; see SI section X for details).
+Correlation above the threshold was selected 
+to again make $\cov(x_i,x_j)$ equal to the same value that pertained in scenario 1, and so $\sd(\xtot)$ was also
+the same, up to sampling variation, as it was in scenario 1 (Fig. \ref{fig_theory}N).  
+Comonotonicity in the lower tails produces left/negative skewness in $\xtot$ (Fig. \ref{fig_theory}N). The
+skewness translates to elevated probabilities of $\xtot$ falling below low thresholds (Fig. \ref{fig_theory}P),
+compared to the baseline of scenario 1. The probability of falling below sufficiently low thresholds is the
+same as for scenario C. Although scenarios 1-3 are indistinguishable to classic approaches, 
+the probabilities of exceeding high thresholds in 2 or falling below low thresholds in 3 are as 
+high as they can possibly be, given fixed species marginals. The communities of scenarios 2 and 3 
+are maximally unstable in the right and left tails, respectively. 
+Scenario 4 shows comonotonicity in both tails. Therefore probabilities of exceeding high thresholds and falling below
+low thresholds are as high as they can be, even though scenario 4 again appears the same as 1-3 to classic approaches.
+
+Our scanarios were constructed making use of mathematical results of @cheung2008 and @cheung2013. We refer the reader
+to those papers for mathematical specifics, while summarizing some of their importance for ecological
+applications here. Given one-dimensional cumulative distribution functions (cdfs) $F_1,\ldots,F_N$, the 
+\emph{Fr\'{e}chet space} $\mathcal{R}(F_1,\ldots,F_N)$ is the set of all $N$-dimensional random vectors 
+$(x_1,\ldots,x_N)$ with the $F_1,\ldots,F_N$ as their marginal distribution functions. Thus the Fr\'{e}chet space
+represents, in our modelling context, all possible interspecific relationships (e.g., different degrees and kinds of 
+synchrony and compensatory dynamics between species) that can pertain, given fixed
+species marginal distributions. So the question of what values $\var(\xtot)$ can take across the Fr\'{e}chet space
+is a related, but more precise version of the classic question of how species interrelationships 
+such as synchrony and compensatory dynamics can influence community stability/variability.
+It is well known that the sum
+$\xtot$ exhibits maximal variance when the $x_i$ are comonotonic [@cheung2013]; this is the maximal-synchrony case.
+@cheung2013 showed the converse, i.e. if $\var(\xtot)$ is maximal in the Fr\'{e}chet space, then 
+$(x_1,\ldots,x_N)$ must be comonotonic (@cheung2013 made some mild regularity assumptions about the $F_i$). 
+The classical, variance ratio approach essentially makes sole use of
+$\var(\xtot)$ to quantify community variance ($\CVcomsq$ is used, actually, but this is equivalent, since species 
+marginals are considered fixed). But @cheung2013 showed that, even if we consider only the sub-Fr\'{e}chet space
+consisting of random vectors $(x_1,\ldots,x_N)$ in $\mathcal{R}(F_1,\ldots,F_N)$ that additionally have 
+$\var(\xtot)=S$ for some fixed $S$, there are random vectors that achieve extreme values just as extreme as the
+comonotonic case (e.g., scenarios 2-3 in Fig. \ref{fig_theory}). The classic approach tells us nothing
+about true community stability/variability, in the sense that if species relationships are tail associated,
+the community can exhibit the same extreme behavior as the comonotonic case, while the classically important
+quantity $\var(\xtot)$ gives the impression of a much stabler community.
 
 # Methods\label{Methods} 
 
@@ -692,19 +804,39 @@ asymmetric nature they had - which answered (Q2).
 by U.S. National Science Foundation grant 1714195, the James S. McDonnell Foundation, and the California Department
 of Fish and Wildlife Delta Science Program. 
 
-<!--add figures-->
-<!--Pedagogical figure for same variance ratio but different skewness-->
+<!--Pedagogical figure-->
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=16cm]{./Results/pedagog_figs/pedagog_cv2_skw.pdf}
-\caption{Pedagogical figure showing two hypothetical communities having two functional groups each.
-Community shows compensatory dynamics between groups but synchronous dynamics within groups. Similar 
-variance ratios, $\phi_{cv}$ for both communities though species are synchronously $(A)$ rare and 
-$(B)$ abundant, respectively. Total community-biomass have exactly same mean, $\mu$, and similar temporal variance $v$, throughout years but time-series are $(C)$ negatively ($s<0$) and $(D)$ positively ($s>0$) skewed, making 
-the whole communities $(E)$ left-tail and $(F)$ right-tail dependent, respectively. Timeseries are generated for $10000$ years, but showed for initial $60$ years in $(A-D)$ for simplicity. Dashed and dotted lines show lower and higher extreme threshold for total productivity of extremely bad years ("catastrophes") and extremely good years ("bonanzas"), respectively.\label{fig_pedag_cv2_skw}}
+\includegraphics[width=18cm]{./Results/pedagog_figs/pedagog_cv2_skw.pdf}
+\caption{Pedagogical example showing two communities (A, B) of twenty species each that are not distinguishable 
+via the classic variance ratio approach and related approaches, but that nonetheless differ markedly in 
+ecologically important ways. Species marginal distributions, and therefore species means and variances
+over time, were the same in both scenarios, as were species covariances, up to sampling variance. 
+Thus the quantities $\CVcomsq$, $\CVindsq$ and $\phi_{\text{cv}}$ of the classic variance ratio approach
+were essentially the same in the two scenarios (A, B), as was the Loreau-de Mazancourt (Loreau \emph{et al.} 2008)
+variance ratio, denoted $\phi_{\text{LdM}}$. Nevertheless, differences between the scenarios in interspecific relationships, not 
+captured by covariances, resulted in differently skewed total time series, $\xtot(t)$, in the two scenarios
+(C-F). The total was much more likely to crash to low values in the first scenario (C, E)
+than in the second scenario (D, F), whereas $\xtot(t)$ was much more likely to explode to high values 
+in the second scenario than in the first. In both scenarios, there were two groups of species (red and black lines).
+Species in different groups were were compensatory, but for scenario 1, within-group synchrony occurred principally
+when populations were low, and for scenario 2 when populations were high. See the Introduction and SI section X for notation and 
+additional details. Time series were generated and statistics computed for 100000 years, but are plotted on A, B
+for 60 years only, for clarity. Dashed and dotted lines show lower and upper thresholds which may be considered
+disasterous for $\xtot(t)$ to cross. Probabilities of crossing these thresholds were negligible for one scenario, but
+non-negligible for the other.\label{fig_pedag_cv2_skw}}
 \end{center}
 \end{figure}
+<!--***DAN: Don't forget to fill in the SI section number, X in the above-->
 
+<!--Theory figure-->
+\begin{figure}
+\begin{center}
+\includegraphics[width=9cm]{./Results/TheoryFig.pdf}
+\caption{Fill in. \label{fig_theory}}
+\end{center}
+\end{figure}
+<!--***DAN: Don't forget to write this, Dan.-->
 
 <!--Pedagogical figure for variance-ratio and skewness-ratio idea and asymmetric tail association-->
 \begin{figure}[!h]
@@ -781,7 +913,7 @@ for skewness-based stability approach (different $\phi_s$).\label{fig_result_box
 \setlength{\parindent}{-0.2in}
 \setlength{\leftskip}{0.2in}
 \setlength{\parskip}{1pt}
-
+\noindent
 
 
 
