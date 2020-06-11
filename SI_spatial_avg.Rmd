@@ -941,7 +941,7 @@ tab_spinfo_hays$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_hays, 
              format="latex", align="c", linesep = "",
              caption.short="Species list for Hays data",
-             caption = "`Common' species (see Methods) of the Hays dataset. The column `ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column `Sp. code' is the species code used in the downloaded, raw data. \\label{tab_spinfo_hays}", 
+             caption = "`Common' species (see Methods) of the Hays dataset. The column `ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column `Sp. code' is a species code used in the downloaded, raw data. \\label{tab_spinfo_hays}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
@@ -972,7 +972,7 @@ tab_spinfo_knz$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_knz, 
              format="latex", align="c", linesep = "",
              caption.short="Species list for Konza",
-             caption = "`Common' species (see Methods) of the Konza dataset. The column `ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column `Sp. code' is the species code used in the downloaded, raw data.\\label{tab_spinfo_knz}", 
+             caption = "`Common' species (see Methods) of the Konza dataset. The column `ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column `Sp. code' is a species code used in the downloaded, raw data.\\label{tab_spinfo_knz}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
@@ -989,7 +989,7 @@ See .tex file by DCR.
 \textbf{ \hspace{0.5 cm} (A) \hspace{5.5 cm} (B)} \\
 \includegraphics[width=6 cm]{./Results/hays_results/skewness_results/total_timeseries.pdf}
 \includegraphics[width=6 cm]{./Results/knz_results/skewness_results/total_timeseries_soiltype_t.pdf}\\
-\caption[Timeseries plot for (A) Hays and $(B)$ KNZ data]{Timeseries plot for (A) Hays and $(B)$ KNZ data; "common" species indicate the most abundant species throughout years averaging over quadrats and present minimum for $35$ years. "Rare" species refer to the species which was present maximum for 2 years in both datasets. The rest are classified into "intermediate" category.\label{fig_spaceavg_timeseries}}
+\caption[Timeseries plot for (A) Hays and $(B)$ Konza data]{Timeseries plot for (A) Hays and $(B)$ Konza data; "common" species indicate the most abundant species throughout years averaging over quadrats and present minimum for $35$ years. "Rare" species refer to the species which was present maximum for 2 years in both datasets. The rest are classified into "intermediate" category.\label{fig_spaceavg_timeseries}}
 \end{center}
 \end{figure}
 <!--***DAN: Shyamolina, the y axis on panel B says "Total percent cover", but the values are always above 100, and
@@ -998,7 +998,20 @@ occassionally go about 200. It is possible for percent cover to go about 100, si
 mistake here. Please check, determine whether or not there was a mistake, and correct if there was. Let me know, please,
 whether there was a mistake, since if there was then we may need to re-run some things. If there was not a mistake, you 
 will need to insert a note in the caption of this figure explaining to the reader why percent covers can go over 200.
-***Shya: I don't think it is a mistake. The percent cover should not take literally as the cover is computed based on midpoint rule of each of the seven "class" categories: see details already explained in the Data section (line 909 of this Rmd). If you agree with me I will write something like this in the figure caption.-->
+***Shya: I don't think it is a mistake. The percent cover should not take literally as the cover is computed based on midpoint 
+rule of each of the seven "class" categories: see details already explained in the Data section (line 909 of this Rmd). If you 
+agree with me I will write something like this in the figure caption.
+***DAN: Please do write something. However, I don't think using cover class categories, by itself, can produce this - that'll 
+introduce some noise, but I can't see how it will introduce bias toward high values. On the other hand, it occurs to me you wrote
+"Species sampled on multiple census date
+in a year (initially started with three times a year but 1991 onwards sampling frequency changed to twice a
+year) we used the highest cover class for each plot. Finally, the percent cover for each plot was computed by
+averaging the mid-points of the cover classes for the 20 plots." Does this mean that if species A was at 90% cover 
+on census date 1 and then died out later in the same summer, and species B took over later in the summer and was at
+90% cover on census date 2, and there were no other species, then the total cover would be 180%, since they take the
+max cover for each species? If so, then please put that in your explanation.-->
+<!--***DAN: Shyamolina, please specify the units for panel A-->
+
 
 
 

@@ -423,16 +423,7 @@ averaged over 36 quadrats from which livestock were excluded, for each species p
 [@adler2007long]. 
 Data from Konza Prairie, after initial processing, consisted of annual canopy percent cover data by species for the years
 1983-2018, averaged over 20 annually burned plots on tully soils which were not grazed by livestock [@Hartnett2019]. 
-<!--***DAN: Shyamolina, is 1983-2019 the right range of years? In the SI section on the data, you say the data started in 1983
-and were downloaded in 2019, but I don't know whether the end of the data you analyzed was 2019 or 2018 or what?
-Sometimes the processed, published data are a year or more behind the actual sampling, so please check the end
-year of the data you used, and if it differed from 2019 change the above line
-***Shya: it is downloaded in Nov, 2019 but data were updated on their website upto 2018 as of Feb, 2019.
-Every year on Feb they updated their data upto the previous year. Like if you now download their data it will be upto 2019 updated on Feb, 2020.-->
 Additional details of the sites and initial processing efforts are in SI section \ref{SI-Data}.
-<!--***DAN: Shyamolina, I created the above summaries after carefully reading your detailed descriptions in the SI section 
-on the data, but please check them carefully to make sure I did not misinterpret anything you wrote there.
-***Shya: checked.-->
 Community data often include numerous rare species, including species which were only detected a few times over the 
 duration of a study, and our data are no exception. Rare species complicate analyses of interspecific relationships 
 and their effect on community variability because relationships between rare species are difficult to accurately
@@ -800,7 +791,6 @@ additional details. Time series were generated and statistics computed for 10000
 for 60 years only, for clarity. \label{fig_pedag_cv2_skw}}
 \end{center}
 \end{figure}
-<!--***DAN: Don't forget to fill in the SI section number, X in the above-->
 
 <!--Theory figure-->
 \begin{figure}
@@ -830,11 +820,6 @@ Ghosh \emph{et al.} 2020a and Fig. 7 of Ghosh \emph{et al.} 2020b. \label{fig_pe
 <!--***DAN: This is a reminder that the citations in the above caption are not autolinks, so need to be
 changed manually if anything changes. They are supposed to be to BIVAN and the extinction risk paper. Do
 not delete this reminder.-->
-<!--***DAN: Shyamolina, can you please remove the diagonal dashed lines.
-***Shya: Done.-->
-<!--***DAN: Shyamolina, can you please make the x axis be labeled $u_i$ and the y axis be labeled $u_j$ on both panels? Also, please
-change the panel labels to (A) and (B).
-***Shya: Done.-->
 <!--***DAN: Here is some stuff that I cut from the above figure, keeping in case needed later:
 \includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_simple_cv2_skw.pdf}\\
 Upper panel shows a schematic diagram of the known $(A)$ variance-ratio approach usually used
