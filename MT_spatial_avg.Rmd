@@ -1,10 +1,10 @@
 ---
-title: "Species relationships in extreme times and their specific influence on community stability"
+title: "Species relationships in the extremes and their specific influence on community stability"
 author:
  - Shyamolina Ghosh\textsuperscript{1}, Daniel C. Reuman\textsuperscript{1,2,\dag}
  - \textsuperscript{1}Department of Ecology and Evolutionary Biology and Kansas Biological Survey, University of Kansas, Lawrence, KS, 66045, USA; \textsuperscript{2}Laboratory of Populations, Rockefeller University, 1230 York Ave., New York, NY 10065, USA
 date: '\textsuperscript{\dag}Correspondence: Daniel Reuman, 2101 Constant Ave, Lawrence, KS, 66047, reuman@ku.edu, 626 560 7084'
-fontsize: 12pt
+fontsize: 11pt
 geometry: "left=1 in,right=1 in,top=1 in,bottom=1 in"
 
 output: 
@@ -64,7 +64,7 @@ options(scipen = 1, digits = 5) #This option round all numbers appeared in the i
 
 # Introduction\label{Introduction}
 
-Understanding the extent to which, and the mechanisms by which, species interactions in an ecological 
+Understanding the extent to which species interactions in an ecological 
 community help stabilize or destabilize the ecosystem as a whole is a topic that has fascinated ecologists 
 for decades [@macarthur1955fluctuations; @paine1969note; @grimm1992application; @pimm1984complexity; @gonzalez2009causes]. 
 An important early insight was that an aggregate 
@@ -75,22 +75,25 @@ for by simultaneous increases in other species [@frost1995species;@bai2004ecosys
 positively correlated fluctuations through time, it tends to cause increased variability through time in the community 
 aggregate property [@keitt2008coherent;@loreau2008species;@ma2017climate]. This is called *synchrony* because 
 species dynamics are partly synchronized in their fluctuations. Thus an important part of what determines 
-the variability of an aggregate community property is the nature
+the stability/variability of an aggregate property such as total biomass is the nature
 of relationships between the dynamics of different species. 
 
 Historically, how species relationships influence community stability, including questions of compensatory 
 and synchronous dynamics, have been investigated principally by examining the coefficient of variation through time
 of the aggregate community property, together with covariances between species population abundance time series.
-For instance, if $x_i(t)$ are data representing the population abundances of species $i=1,\ldots,N$ at the sampling times
+For instance, if $x_i(t)$ are data representing the population or biomass abundances of species $i=1,\ldots,N$ at the sampling times
 $t=1,\ldots,T$, and if $\mu_i=\mean(x_i)$, $v_{ii}=\var(x_i)$, and $v_{ij}=\cov(x_i,x_j)$, community variability
 has commonly been quantified using the squared coefficient of variation of $\xtot(t)=\sum_i x_i(t)$, i.e., 
 $\CVcomsq=\var(\xtot)/\left(\mean(\xtot)\right)^2=\left(\sum_{i,j} v_{ij}\right)/\left(\sum \mu_i\right)^2$.
-And this formula obviously connects to species relationships via the covariances, $v_{ij}$, which appear directly in the formula. Denoting by 
+And this formula obviously connects to species relationships as measured via 
+the covariances, $v_{ij}$, which appear directly in the formula. Denoting by 
 $\CVindsq=\left(\sum_i v_{ii}\right)/\left(\sum \mu_i\right)^2$ the value that $\CVcomsq$ would take if 
 the dynamics of each species were independent of the dynamics of all other species (so $v_{ij}=0$ for all $i \neq j$), the 
 classic *variance ratio* was defined [@schluter1984variance;@peterson1975] as 
 $\phi_{\text{cv}}=\CVcomsq/\CVindsq=\var(\xtot)/\left(\sum_i v_{ii}\right)=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i v_{ii}\right)$. 
-The variance ratio has very commonly been used [@houlahan2007;@winfree2009;@hallett2014] as an index of whether dynamics 
+Thus $\CVcomsq=\phi_{\text{cv}} \CVindsq$. Because $\CVindsq$ is in sinterpreted as what community variability would be, without species interactions,
+$\phi_{\text{cv}}$ is the factor by which species interactions inflate or decrease community variability.
+The variance ratio has therefore commonly been used [@houlahan2007;@winfree2009;@hallett2014] as an index of whether dynamics 
 are synchronous or compensatory. If $\phi_{\text{cv}}>1$, the interpretation has been that dynamics are, on balance,
 synchronous because then $\CVcomsq>\CVindsq$, i.e., the total community biomass $\xtot$ is more variable than
 it would be if species dynamics were independent. Conversely, if $\phi_{\text{cv}}<1$, the interpretation has been
@@ -100,31 +103,31 @@ Timescale-specific extensions of the variance ratio [@vasseur2007;
 @brown2016;@zhao2020] have revealed that it is possible for compensatory 
 dynamics to occur on some timescales while 
 synchronous dynamics simultaneously occur on other timescales, and other improvements and alternatives to the variance ratio 
-have also been proposed [@loreau2008species]. However, $\phi_{\text{cv}}$ is still very commonly used, 
-and the nature of how species relationships influence community stability is likely to be substantially 
-more nuanced and interesting than is revealed by either the classic variance ratio approach or
+have also been proposed [@loreau2008species]. However, $\phi_{\text{cv}}$ is still commonly used; 
+furthermore, as we will show, how species relationships influence community stability is likely to be 
+more nuanced than is revealed by either the classic variance ratio approach or
 by any existing extensions of which we are aware. To 
 begin to illustrate the concepts we will explore in this 
 study, and to understand what has been omitted from earlier approaches, we consider two artifically
-generated community dynamics datasets (Fig. \ref{fig_pedag_cv2_skw}A, B; data generated as in SI section X).
-<!--***DAN: Dan to fill in the X in the above line, and write the corresponding section of the SI.-->
+generated community dynamics datasets (Fig. \ref{fig_pedag_cv2_skw}A, B; data generated as in SI section \ref{SI-PedagogFigMethods}).
+<!--***DAN: Dan to write the corresponding section of the SI.-->
 Both model communities consist of $N=20$ species, and data were generated so that species marginal distributions 
 (and therefore the means, $\mu_i$, and variances, $v_{ii}$, 
-through time) were the same, up to sampling variance, in both cases. Likewise, data were 
+through time) were the same, up to sampling variance, in both scenarios. Likewise, data were 
 generated so that pairwise species covariances, $v_{ij}$ for $i \neq j$,
 were essentially the same for Fig. \ref{fig_pedag_cv2_skw}A and B. Thus both $\CVcomsq$ and $\CVindsq$, which 
 depend only on the $\mu_i$ and $v_{ij}$,
-were the same in both cases, and so $\phi_{\text{cv}}$ was also the same. The Loreau-de Mazancourt variance ratio
-[@loreau2008species], which itself depends only on the $v_{ij}$, was also the same, up to sampling variance, in the two cases 
-(Fig. \ref{fig_pedag_cv2_skw}A, B). Classical approaches such as these do not distinguish between our two cases, neither in the nature
+were the same in both scenarios, and so $\phi_{\text{cv}}$ was also the same. The Loreau-de Mazancourt variance ratio
+[@loreau2008species], which itself depends only on the $v_{ij}$, was also the same, up to sampling variance, in the two scenarios 
+(Fig. \ref{fig_pedag_cv2_skw}A, B). Classical approaches such as these do not distinguish between our two scenarios, neither in the nature
 of species interrelationships nor in the effects of interrelationships on community aggregate dynamics $\xtot(t)$.
 
-Nevertheless, species relationships and resulting aggregate dynamics differed in important ways in our two cases. In both cases,
+Nevertheless, species relationships and resulting aggregate dynamics differed in important and related ways in our two scenarios. In both scenarios,
 the twenty species could be separated into two groups of ten species (red and black lines on Fig. \ref{fig_pedag_cv2_skw}A, B), 
-and the dynamics of species in different groups were strongly compensatory. However, in case 1 (Fig. \ref{fig_pedag_cv2_skw}A), 
+and the dynamics of species in different groups were strongly compensatory. However, in scenario 1 (Fig. \ref{fig_pedag_cv2_skw}A), 
 species in the same group exhibited strongly synchronous dynamics when rare and much less synchronous dynamics when 
-common; whereas in case 2 (Fig. \ref{fig_pedag_cv2_skw}B) species in the same group exhibited strongly synchronous dynamics 
-when common and much less synchronous dynamics when rare. Dynamics of this kind could occur ecologically, for instance, in case 1, 
+common; whereas in scenario 2 (Fig. \ref{fig_pedag_cv2_skw}B) species in the same group exhibited strongly synchronous dynamics 
+when common and much less synchronous dynamics when rare. Dynamics of this kind could occur ecologically, for instance, in scenario 1, 
 if red species in Fig. \ref{fig_pedag_cv2_skw}A were sensitive to an environmental factor such as precipitation, but only when it 
 takes values below a threshold. So all the red species are controlled by the same factor, precipitation, when it is below the threshold,
 and hence are synchronous when rare. 
@@ -132,69 +135,42 @@ When precipitation is above the threshold, the red species are each sensitive, i
 when common. Black species 
 of Fig. \ref{fig_pedag_cv2_skw}A may also be senstive to precipitation, but in a reverse manner, being all simultaneously 
 harmed by precipitation when it is
-above the threshold and unaffected by precipitation below the threshold. Resulting community dynamics 
-(Fig. \ref{fig_pedag_cv2_skw}C-F) were quite different in our two cases because of the distinct species interrelationships.
-Total community biomass was left-skewed, frequently crashing to low values, for case 1; but was right skewed, frequently
-exploding to high values, in case 2. It is not difficult to imagine cascading ecological ramifications or 
+above the threshold, and unaffected by precipitation below the threshold. Resulting community dynamics 
+(Fig. \ref{fig_pedag_cv2_skw}C-F) were quite different in our two scenarios because of the distinct species interrelationships.
+Total community biomass was left-skewed, frequently crashing to low values, for scenario 1; but was right skewed, frequently
+exploding to high values, in scenario 2. It is not difficult to imagine cascading ecological ramifications or 
 potential applied significance of the distinction our example illustrates. For instance, grazers subsisting on a grass mixture that 
-exhibits occasional crashes may experience different population growth prospects than grazers consuming a grass mixture that
+exhibits occasional crashes may experience different growth prospects than grazers consuming a grass mixture that
 instead shows occasional explosions of abundance. 
 Thus species interrelationships and their effects on community aggregate dynamics may differ in potentially ecologically
 meaningful ways which are nevertheless not detected by classical approaches. 
 It is the reliance of earlier approaches on variances, covariance and related linear tools
-for quantifying species relationships that causes those approaches to be unable to register the differences
+that causes those approaches to be unable to register the differences
 we have illustrated here.
-<!--***DAN: Here are a few more changes needed to the figure:
-1) On A and B, please provide one more significant figure for CV_com^2 and CV_ind^2, so it will then show 4 decimal places
-***Shya: every value in the plot are showed upto 2nd digit (rounded) and for CV^2 upto 4th digit (rounded)
-2) I had previously written this:
-"3) Please replace \mu on C and D by the approriate rendering of $\mean(x_{\text{tot}})$, and likewise replace
-v by the appropriate rendering of $\var(x_{\text{tot}})$. Please also insert $\text{skew}(x_{\text{tot}})$
-and the value of that skewness. Please make the formats for all three of these be parallel (currently the skew
-is black and to the left, and the mean and variance are blue and to the right), and please also use parallel
-formatting choices to what you use in panels A and B to put values on the panels."
-But perhaps I did not make myself clear. The numeric values displayed are fine, as far as I can tell at the moment. However, the 
-notation "s", "\mu" and "v" is not consistent with the notation used in the text I have been editing. Please replace the notation 
-"s" on panels C and D with a proper latex rendering of $\text{skew}(x_{\text{tot}})$. Please replace the notation "\mu" on 
-C and D with a proper latex rendering of $\mean(x_{\text{tot}})$. Likewise replace "v" with $\var(x_{\text{tot}})$.
-***Shya: Done.
-3) With regard to the values p on panels E and F, perhaps I did not make myself clear. There need to be 2 values of p on 
-*each panel*, one representing the probability of exceeding the upper threshold, and the other representing the probability
-of falling below the lower threshold. The point is to be able to compare the lower-threshold p's across the two panels,
-and the p on E should be substantially larger, so the probability of going below the lower threshold is revealed to be greater
-on E than it is on F. Likewise, one should be able to compare the upper-threshold p's across the two panels, and the p on F
-should be substantially larger, so the probability of going about the upper threshold is revealed to be greater on F than it is on E.
-You may need to readjust your thresholds now that the goals here are (hopefully) clear, but it may also be that your current thresholds
-will work to reveal the substantial difference in ps between the panels. Not all threshold will reveal the discrepancy in upper 
-(respectively, lower) ps equally well. For some choices of threshold there will be very little difference between the panels in ps.
-But for other choices of threshold there will be a bigger difference. One way to choose good thresholds might be to
-plot the empirical cdf associated with E, and also that associated with F (see the wikipedia page on empirical cdfs if you
-don't know what they are) and select thresholds that correspond to large differences between the two empirical cdfs. It is not
-necessary to put the plots of the empirical cdf into your figure, but it may help to generate them to choose the best thresholds
-for making the point we are trying to make.
-***Shya: Done.
--->
 
-This study is centered around three suggestions about how research on these topics should devlop in the future;
-and we take some first steps toward implementing these suggestions. First, statistical descriptions of community 
-stability/variability that are more nuanced than the coefficient of variation ought to be developed 
-and used. The results of Fig. \ref{fig_pedag_cv2_skw} suggest that measures related to skewness may
-be useful first steps. Second, descriptions of species relationships that are more nuanced than the standard 
+This study is centered around three suggestions about how research on these topics should develop in the future;
+and we take some initial steps toward implementing these suggestions. First, descriptions of species 
+relationships that are more nuanced than the standard 
 covariance/correlation approaches ought to be developed and applied.
 Fig. \ref{fig_pedag_cv2_skw} suggests that measures might be
 useful that isolate the extent to which species abundances are more related to each other when the species
-are common, or rare. Third, we ought to then study how species relationships
+are common, or rare.
+Second, statistical descriptions of community 
+stability/variability that are more nuanced than the coefficient of variation ought to be developed 
+and used. The results of Fig. \ref{fig_pedag_cv2_skw} suggest that measures related to skewness may
+be useful first steps.
+Third, we ought to then study how species relationships
 influence community stability/variability using the nuanced descriptors. 
 
-The core ideas of this study relate to rare events, and specifically to how the relationships between the constituents of 
-an aggregate quantity change during rare events. There are strong conceptual and methodological connections to
+The core ideas of this study relate to rare and extreme events, and specifically to how the relationships between the constituents of 
+an aggregate quantity change during such events. There are strong conceptual and methodological connections to
 risk pricing in finance. A portfolio of investments is supposed to reduce risk if the constituent investments 
 are negatively correlated or uncorrelated. But if these constituents become positively correlated, it can instead accentuate risk. 
 Some observers have blamed the 2008 financial crisis on a trend during which many analysts estimated correlations between housing default
 risks based on data from normal times, not taking into account that in a crisis, default risks become much more correlated.
 In such times, financial products based on aggregating mortgages become riskier due to the increased correlation. 
 A single modelling approach [@li2000] was apparently widely used [@salmon2009]. The relationship between two 
-quantities, be they investment risks or species populations, can probably never be completely captured by a single number
+real quantities, be they investment risks or species populations, can probably never be completely captured by a single number
 such as a covariance [@cheung2013], nor considered to be constant through time. Just as mortgage defaults which were typically uncorrelated 
 became correlated when the macroeconomic situation worsened, it seems likely that abundances of two species in a community may
 be more or less correlated with each other under different circumstances. Therefore classical approaches that characterize relationships
@@ -204,11 +180,11 @@ ecosystem [@Ghosh_extinction]. Some financial analysts
 have learned these lessons and have begun developing the necessary mathematics for more appropriate models [@cheung2013]. Ecologists 
 can benefit from application of the same methods, and we hope this study helps begin that process.
 
-The goals of this study are as follows, and parallel the research suggestions listed above. We will develop the 
-concepts of an approach to studying the relationships
-between species that complements classic approaches relying on covariances. We will also develop the concepts of an
+The goals of this study are as follows, and parallel the research suggestions listed above. (G1) We will develop 
+an approach to studying the relationships
+between species that complements classic approaches relying on covariances. (G2) We will also develop an
 approach to studying aggregate community stability/variability that complements the traditional use of the 
-coefficient of variation. Finally, we will study how species interrelationships influence community stability/variability
+coefficient of variation. Finally, (G3) we will study how species interrelationships influence community stability/variability
 using the new approaches. Our results provide a new take on classic questions about the influence of synchronous or 
 compensatory dynamics on community stability. We will use theory, as well as data from two iconic, long-term glassland studies:
 plant percent cover data from long-term quadrats in mixed-grass prairie located in Hays, Kansas; and annual 
@@ -317,38 +293,42 @@ S1: splist for hays
 S2: splist for knz
 -->
 
+<!--***DAN: Add scenario labels to Fig. 1-->
+
 # Theory \label{Theory}
 
 \noindent In this section we illustrate theoretical concepts for how relationships between
 constituent species of a community, beyond just pairwise covariances/correlations of the species
 time series, can influence the variability of an aggregate community property such as the 
-total community biomass. The setup for the theory is as follows. Let $x_i(t)$ be an abundance 
+total community biomass. The setup for the theory is as follows. As in the Introduction, let $x_i(t)$ be an abundance 
 measure for species $i=1,\ldots,N$ at time $t=1,\ldots,T$. We use $N=20$ and $T=100000$ in the examples of this 
 section. We assume the multivariate random variables $x(t)=(x_1(t),\ldots,x_N(t))$ are independent
 and identically distributed for distinct times, $t$. It should be straighforward to replace
 this assumption with an appropriate stationarity/ergodicity assumption, with no real change
 to the theoretical development, but we adopt the stronger assumption for simplicity. 
+To describe relationships between species, 
+classic approaches consider the covariances
+$v_{ij}=\cov(x_i,x_j)$, and quantities based on them. We will instead consider, for each $i,j$, the whole 
+joint distribution $(x_i,x_j)$, and some quantities based on it that are distinct from the $v_{ij}$.
 To describe community variability, classic
 approaches such as the variance ratio approach consider the variance of 
 $\xtot=\sum_i x_i$, and quantities based on it (such as the 
 squared coefficient of variation of $\xtot$, i.e. $\CVcomsq$). But this is only a summary of the 
 distribution $\xtot$. We will instead consider the 
-whole distribution of $\xtot$, and its skewness. To describe relationships between species, 
-classic approaches consider the covariances
-$v_{ij}=\cov(x_i,x_j)$, and quantities based on them. We will instead consider, for each $i,j$, the whole 
-joint distribution $(x_i,x_j)$, and some quantities based on it that are distinct from the $v_{ij}$.
+whole distribution of $\xtot$, and its skewness. 
 We will present four scenarios (labeled 1-4 below) for which the marginal distributions $x_i$ and
 the covariances $v_{ij}$ are the same
 in all scenarios, as is the quantity $\var(\xtot)$ and the variance ratio $\phi_{\text{cv}}$. Thus 
 our scenarios are indistinguishable from the standpoint of classic approaches. But our scenarios are,
-in fact, ecological distinct, as we will see, in that the total biomass $\xtot$ achieves much
+in fact, ecologically distinct, as we will see, in that the total biomass $\xtot$ achieves much
 more extreme values under some scenarios than others. Hence our scenarios represent communities showing 
 different characteristics of stability/variability. 
 Our scenarios are intentionally as simple as
 possible, with complexities of population dynamics such as autocorrelation not included, so that the main
 new ideas can be clearly described. But the ideas here apply to real communities, as we will see in 
 subsequent sections of the paper. We will also compare our four scenario to a reference scenario, a 
-so-called *comonotonic* scenario for which the $x_i$ are all equal. This is a scenario of maximal covariance between species
+so-called *comonotonic* scenario for which the $x_i$ are deterministically related via perfect positive relationships. 
+This is a scenario of maximal covariance between species
 and a maximal value of $\var(\xtot)$.
 
 In scenario 1, which is a baseline scenario to which the other scenarios will be compared, 
@@ -361,19 +341,20 @@ was close to $0$ (Fig. \ref{fig_theory}B). The probability of $\xtot$ exceeding 
 in Fig. \ref{fig_theory}C for a range of high thresholds. Likewise the probability of $\xtot$ falling below a
 low threshold is in Fig. \ref{fig_theory}D for a range of low thresholds. 
 
-The other scenario for comparison is the comonotonic scenario, scenario C, for which $x_i=x_1$ for all $i$. 
-Comonotonicity between $x_1$ and $x_2$ is pictured in Fig.  \ref{fig_theory}E.
+The other scenario for comparison is the comonotonic scenario, scenario C, for which we assume in this example that $x_i=x_1$ for all $i$. 
+This is a specific form of comonotonicity. Comonotonicity between $x_1$ and $x_2$ is pictured in Fig.  \ref{fig_theory}E.
 Because synchrony between the dynamics of individual species is perfect in this case, $\sd(\xtot)$ is much larger
 than it was in scenario 1 (Fig.  \ref{fig_theory}F). The probabilities of $\xtot$ exceeding a high threshold or falling
 below a low threshold are likewise larger (Fig.  \ref{fig_theory}G-H) than they were for scenario 1.
 
 Scenarios 2-4 illustrate the ideas, previously little recognized within ecological research, 
-of tail comonotonicity and tail associations [@Ghosh_extinction;@Ghosh_copula], and the consequences of tail
-comonotonicity for the distribution of $\xtot$ and the probability of $\xtot$ passing a threshold. 
+of tail comonotonicity [@cheung2013] and tail associations [@Ghosh_extinction;@Ghosh_copula], and the consequences of tail
+associations for the distribution of $\xtot$ and the probability of $\xtot$ passing a threshold. 
 In scenario 2, each $x_i$ is again standard-normally distributed (Fig. \ref{fig_theory}I side panels),
 but $(x_1,\ldots,x_N)$ is not a multivariate normal distribution. Instead, $(x_1,\ldots,x_N)$ was engineered so
 that $x_i$ and $x_j$ are perfectly correlated when they exceed some threshold, but imperfectly correlated 
-below the threshold (Fig. \ref{fig_theory}I; see SI section X for details). Correlation below the threshold was selected 
+below the threshold (Fig. \ref{fig_theory}I; see SI section \ref{SI-TheoryMethods} for 
+details). Correlation below the threshold was selected 
 to make $\cov(x_i,x_j)$ equal to the same value that pertained in scenario 1, and so $\sd(\xtot)$ was also
 the same, up to sampling variation, as it was in scenario 1 (Fig. \ref{fig_theory}J). (Recall that 
 $\var(\xtot)=\sum_{i,j} \cov(x_i,x_j)$ and that the standard deviations is the square root of the variance.)
@@ -381,20 +362,21 @@ Comonotonicity in the upper tails produces right/positive skewness in $\xtot$ (F
 skewness translates to elevated probabilities of $\xtot$ exceeding high thresholds (Fig. \ref{fig_theory}K),
 compared to the baseline of scenario 1. In fact, the probability of exceeding sufficiently high thresholds is the
 same as for scenario C. So, although scenarios 1 and 2 are indistinguishable to the classic variance ratio approach
-and related approaches, the the probability of exceeding high thresholds in scenario 2 is much elevated compared 
-to scenario 1, and, in fact, is the same as scenario C and hence is as high as it can possibly be. The community
+and related approaches, the probability of exceeding high thresholds in scenario 2 is much elevated compared 
+to scenario 1, and, in fact, is the same as scenario C and hence is as high as it can possibly be given the species marginal
+distributions used in all our scenarios. The community
 of scenario 2 is maximally unstable in the sense that its probability of exceeding certain high thresholds is maximal,
 given fixed species marginal distributions, although it does not appear unstable to the classic variance ratio approach.
 <!--***DAN: Don't forget to create the SI section mentioned above-->
 
 Scenario 3 is like scenario 2, but the comonotonicity is in the left tails instead of the right. 
-Each $x_i$ is again standard-normally distributed (Fig. \ref{fig_theory}I side panels), but for this scenario
+Each $x_i$ is again standard-normally distributed (Fig. \ref{fig_theory}M side panels), but for this scenario
 $(x_1,\ldots,x_N)$ was engineered so
 that $x_i$ and $x_j$ are perfectly correlated when they go below some threshold, but imperfectly correlated 
-above the threshold (Fig. \ref{fig_theory}M; see SI section X for details).
+above the threshold (Fig. \ref{fig_theory}M; see SI section \ref{SI-TheoryMethods} for details).
 Correlation above the threshold was selected 
 to again make $\cov(x_i,x_j)$ equal to the same value that pertained in scenario 1, and so $\sd(\xtot)$ was also
-the same, up to sampling variation, as it was in scenario 1 (Fig. \ref{fig_theory}N).  
+the same, up to sampling variation, as it was in scenario 1 (Fig. \ref{fig_theory}N).
 Comonotonicity in the lower tails produces left/negative skewness in $\xtot$ (Fig. \ref{fig_theory}N). The
 skewness translates to elevated probabilities of $\xtot$ falling below low thresholds (Fig. \ref{fig_theory}P),
 compared to the baseline of scenario 1. The probability of falling below sufficiently low thresholds is the
@@ -402,26 +384,27 @@ same as for scenario C. Although scenarios 1-3 are indistinguishable to classic 
 the probabilities of exceeding high thresholds in 2 or falling below low thresholds in 3 are as 
 high as they can possibly be, given fixed species marginals. The communities of scenarios 2 and 3 
 are maximally unstable in the right and left tails, respectively. 
-Scenario 4 shows comonotonicity in both tails. Therefore probabilities of exceeding high thresholds and falling below
+Scenario 4 shows comonotonicity in both tails. Therefore probabilities of exceeding high thresholds or falling below
 low thresholds are as high as they can be, even though scenario 4 again appears the same as 1-3 to classic approaches.
 
 Our scanarios were constructed making use of mathematical results of @cheung2008 and @cheung2013. We refer the reader
 to those papers for mathematical specifics, while summarizing some of their importance for ecological
 applications here. Given one-dimensional cumulative distribution functions (cdfs) $F_1,\ldots,F_N$, the 
 \emph{Fr\'{e}chet space} $\mathcal{R}(F_1,\ldots,F_N)$ is the set of all $N$-dimensional random vectors 
-$(x_1,\ldots,x_N)$ with the $F_1,\ldots,F_N$ as their marginal distribution functions. Thus the Fr\'{e}chet space
-represents, in our modelling context, all possible interspecific relationships (e.g., different degrees and kinds of 
+$(x_1,\ldots,x_N)$ with the $F_1,\ldots,F_N$ as their marginal distribution functions. Thus the $\text{Fr{\'e}chet}$ space
+represents, in our modelling context, all possible interspecific relationships (different degrees and kinds of 
 synchrony and compensatory dynamics between species) that can pertain, given fixed
-species marginal distributions. So the question of what values $\var(\xtot)$ can take across the Fr\'{e}chet space
-is a related, but more precise version of the classic question of how species interrelationships 
+species marginal distributions. So the question of what forms the distribution of $\xtot$ can take across the $\text{Fr\'{e}chet}$ space
+is a precisely formulated version of the classic question of how species interrelationships 
 such as synchrony and compensatory dynamics can influence community stability/variability.
 It is well known that the sum
 $\xtot$ exhibits maximal variance when the $x_i$ are comonotonic [@cheung2013]; this is the maximal-synchrony case.
-@cheung2013 showed the converse, i.e. if $\var(\xtot)$ is maximal in the Fr\'{e}chet space, then 
-$(x_1,\ldots,x_N)$ must be comonotonic (@cheung2013 made some mild regularity assumptions about the $F_i$). 
+@cheung2013 showed the converse, i.e., if $\var(\xtot)$ is maximal in the $\text{Fr\'{e}chet space}$, then 
+$(x_1,\ldots,x_N)$ must be comonotonic (subject to some mild regularity assumptions about the $F_i$). 
 The classical, variance ratio approach essentially makes sole use of
 $\var(\xtot)$ to quantify community variance ($\CVcomsq$ is used, actually, but this is equivalent, since species 
-marginals are considered fixed). But @cheung2013 showed that, even if we consider only the sub-Fr\'{e}chet space
+marginals are fixed within the $\text{Fr\'{e}chet space}$). But @cheung2013 showed that, 
+even if we consider only the sub-$\text{Fr\'{e}chet}$ space
 consisting of random vectors $(x_1,\ldots,x_N)$ in $\mathcal{R}(F_1,\ldots,F_N)$ that additionally have 
 $\var(\xtot)=S$ for some fixed $S$, there are random vectors that achieve extreme values just as extreme as the
 comonotonic case (e.g., scenarios 2-3 in Fig. \ref{fig_theory}). The classic approach tells us nothing
@@ -431,75 +414,65 @@ quantity $\var(\xtot)$ gives the impression of a much stabler community.
 
 # Methods\label{Methods} 
 
-<!--NOTE: if you can, just separate theory and methods section.-->
+## Data
 
-<!--1. For Q1: 
+<!--Data prep, and common/intermediate/rare species-->
+\noindent We used data from two grassland sites that have been monitored for decades. 
+After initial processing, data from the Hays, Kansas site consisted of annual estimates of basal cover, 
+averaged over 36 quadrats from which livestock were excluded, for each species present, for the years 1932-1972
+[@adler2007long]. 
+Data from Konza Prairie, after initial processing, consisted of annual canopy percent cover data by species for the years
+1983-2019, averaged over 20 annually burned plots on tully soils which were not grazed by livestock [@Hartnett2019]. 
+<!--***DAN: Shyamolina, is 1983-2019 the right range of years? In the SI section on the data, you say the data started in 1983
+and were downloaded in 2019, but I don't know whether the end of the data you analyzed was 2019 or 2018 or what?
+Sometimes the processed, published data are a year or more behind the actual sampling, so please check the end
+year of the data you used, and if it differed from 2019 change the above line-->
+Additional detials of the sites and initial processing efforts are in SI section \ref{SI-Data}.
+<!--***DAN: Shyamolina, I created the above summaries after carefully reading your detailed descriptions in the SI section 
+on the data, but please check them carefully to make sure I did not misinterpret anything you wrote there.-->
+Community data often include numerous rare species, including species which were only detected a few times over the 
+duration of a study, and our data are no exception. Rare species complicate analyses of interspecific relationships 
+and their effect on community variability because relationships between rare species are difficult to accurately
+assess. We therefore categorized species as "common" (present in the quadrats considered for at last 35 years),
+"rare" (present for at most two years), or "intermediate" (other species). Rare and intermediate species were combined
+into a single pseudo-species for analyses. Common species made up the overwhelming majority of both the Hays and Konza 
+communities that we studied (Fig. \ref{SI-fig_spaceavg_timeseries}), so it is the variability of these species, and their
+interspecific relationships, that mainly determine community stability. Common species are listed in Tables
+\ref{SI-tab_spinfo_hays} and \ref{SI-tab_spinfo_knz}. 
 
-(Q1) In a community, could we find asymmetric tail associations (lower and/ or upper) that arise because of
-synchronous/ compensatory interaction between species? Do those interactions make the
-community overall lower-tail or overall upper-tail asymmetric?
+## Statistical methods
 
-      - introduce partial Spearman correlation to measure tail asymmetry corl - coru (need schematic diagram)
-      - corl - coru in community context, count on L, U (+ve correlation only)
-      - binomial and significance testing: at present not shown-->
-
-<!--Defining partial Spearman correlation: measure of tail-asymmetry-->
-To answer Q1 from \nameref{Introduction}, we need a tool to measure the tail asymmetry between 
-interacting species over years in a grassland community that is intended to study. We used 
-the *partial Spearman correlation* approach (first introduced in @Ghosh_copula) to 
-estimate the association between a pair of interacting species' time-series, i.e., whether 
-they are strongly correlated in their common good/ bad years (synchronous dynamics) or 
-one species' abundance in certain 'good' years limits the growth for the 
-other (compensatory dynamics). From a data perspective, consider 
-a set of two variables, i.e. time series for any two species,
-$\{ u_t, v_t\}, t = 1, 2, \ldots , T$. If $\{ \bar{x_t}, \bar{y_t}\}$ 
-are the	corresponding ranks of $\{ u_t, v_t\}$, then a scatter plot with 
-the "normalized rank" $\{ x_t, y_t\} = \{ \bar{x_t}, \bar{y_t}\} / (T+1)$ 
-reveals the associated dependence pattern 
-hidden in the original timeseries of $\{ u_t, v_t\}$. 
-This scatter plot of $\{ x_t, y_t\}$, confined within a unit square, 
-is known as a bivariate *copula* plot.
-*Copula* is a statistical tool tailored to 
-estimate tail-dependence and can isolate the dependence 
-information from its marginals [@joe2014_dependence; 
-@nelsen2006_copula; @MaiScherer2017]. However, computationally 
-low-cost non-parametric approaches are available to estimate tail association
-in the either extremes for this *copula* plot [@Ghosh_copula]. Following we will give a brief 
-description of such a non-parametric measure of tail-association.
-
-First, we define the *partial Spearman correlaion* for a given 
-species pair time series ($u(t), v(t)$) as follows;
-
+<!--Normalized rank plots and partial spearman-->
+\noindent Fig. \ref{fig_pedag_cv2_skw} and the Theory section
+suggest that to accomplish goal G1 of the Introduction, we will need statistical measures of tail associations between species, 
+and asymmetries of tail association. So we here define such measures, based on the *partial Spearman correlation*
+of @Ghosh_copula. Given $x_i(t)$ for $t=1,\ldots,T$, we begin by defining the
+*normalized rank* $u_i(t)$, equal to the rank of $x_i(t)$ in the set $\{x_i(1),\ldots,x_i(T)\}$, 
+divided by $T+1$. The smallest element of this set is here considered to have rank 1, and the largest element to 
+have rank $T$. Plotting the normalized ranks $u_i(t)$ and $u_j(t)$ against each other for two positively associated species 
+$x_i$ and $x_j$ provides a visual
+indication of tail association and asymmetries in tail association, as described by @Ghosh_copula (Fig. \ref{fig_pedag_taildep}).
+Given two bounds $0\leq l_b < u_b \leq 1$, we define the lines $u_i + u_j=2l_b$ and $u_i+v_i=2u_b$,
+which intersect the unit square $[0,1]\times[0,1]$ of the normalized rank plot. The partial Spearman
+correlation associated with the band circumscribed by these bounds is
 \begin{equation}
-\cor_{l_b,u_b}(u,v) = \frac{\sum (x(t)-\mean(x))(y(t)-\mean(y))}{(T-1)\sqrt{\var(x) \var(y)}},\label{PartialSpearmanEq}
+\cor_{l_b,u_b}(x_i,x_j) = \frac{\sum (u_i(t)-\mean(u_i))(u_j(t)-\mean(u_j))}{(T-1)\sqrt{\var(u_i) \var(u_j)}},\label{PartialSpearmanEq}
 \end{equation}
-\noindent where $x$ and $y$ are the normalized ranks of 
-$u$ and $v$, respectlively, as stated before. Sample means 
-and variances are computed using all the data but the sum is computed only
-over the $t$ such that $x(t)+y(t) > 2l_b$ and $x(t)+y(t)<2u_b$ (i.e. colored data points lying in 
-between two bounds as in Fig. \ref{fig_pedag_taildep}C-D). The partial Spearman correlation 
-is the contribution of those colored data points between bounds in the total Spearman
-correlation of $u$ and $v$. For an asymmetric relationship 
-between a species-pair, association in one extreme of their copula plot would be
-stronger than the other extreme. For example, Fig. \ref{fig_pedag_taildep}C has a 
-stronger partial Spearman correlation between the red points in the lower portion 
-than the blue points in the upper part, while Fig. \ref{fig_pedag_taildep}D shows 
-the opposite trend. 
+\noindent where sample means and variances are computed over $t=1,\ldots,T$ but the summation in the 
+above formula is only computed over $t$ such that $u_i(t) + u_j(t)>2l_b$ and $u_i(t) + u_j(t)<2u_b$.
+The partial Spearman correlation is the component of the Spearman correlation which can be attributed to
+the points in the band. For two positively associated variables, $\cor_{0,u_b}$ for $u_b \leq 0.5$ measures 
+lower-tail association, and $\cor_{l_b,1}$ for $l_b \geq 0.5$ measures upper-tail association. 
+The difference $\cor_{0,0.5}-\cor_{0.5,1}$ is then a way to measure asymmetry of tail
+associations. Positive values indicate stronger lower-tail association, and negative values 
+indicate stronger upper-tail association. We henceforth use the shorthand $\cor_l$ for $\cor_{0,0.5}$ and 
+$\cor_u$ for $\cor_{0.5,1}$. 
+@Genest2007 recommend making inferences about dependence structures such as tail associations using 
+rank-based approaches such as Spearman correlations and the normalized rank plots and partial Spearman
+correlations we introduce here.
 
-
-The quantity $\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ is a way to estimate asymmetry of tail
-associations between $u$ and $v$. 
-$\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ represents the amount by which partial Spearman 
-correlation is stronger for the points lying in the lower tail (i.e. 
-below the dashed diagonal $x+y=1$ in Fig. \ref{fig_pedag_taildep}C-D) than the upper tail (i.e. 
-above the dashed diagonal $x+y=1$ in Fig. \ref{fig_pedag_taildep}C-D). We will represent 
-$\cor_{l}-\cor_{u}$ for the shorthand of $\cor_{0,0.5}(u,v)-\cor_{0.5,1}(u,v)$ here 
-afterwards. A non-zero value of $\cor_{l}-\cor_{u}$ means tail-asymmetry between the time series of
-two species - whether they are synchronizing over years 
-or competing with each other. <!--***DAN: please double check this statement-->
-For synchronized species-pair, a positive $\cor_{l}-\cor_{u}$ value signifies stronger lower 
-tail association (Fig. \ref{fig_pedag_taildep}C) of two 
-positively correlated species, whereas a negative value means stronger
+<!--***DAN: I think we should handle the negatively associated species problem in another way, below, but 
+keeping this text for now in case we need it later.
 upper tail association (Fig. \ref{fig_pedag_taildep}D). Though the aforementioned notion of 
 tail-asymmetry measure is constructed for positively correlated species pair keeping in mind, it 
 is possible to extend the idea for negatively correlated species. When the 
@@ -514,34 +487,22 @@ between two corresponding species time series $\{ u_t, v_t\}$. In particular,
 the magnitude for compensatory and magnitude as well as the sign for synchronous 
 (positive for lower tail and negative for upper tail) dynamics can answer the 
 first part of (Q1). 
+-->
 
-<!--corl - coru in community context, count on L, U (+ve correlation only)-->
-From a community perspective, it is possible to determine if the community as a whole
-shows asymmetric tail association and if yes then what is its underlying 
-nature - overall lower tail or upper-tail asymmetry. To explore this, consider a 
-community with $n$ number of species subdivided 
-into three categories: *common* species (present for most of the years), *rare* 
-species (only occurs once or twice) and the rest as *intermediate* ones. Throughout our study, 
-we assume a $n$-species-community comprised of $T$-years long observations for 
-$(n-1)$ *common* species and 
-one *pseudo*-species (aggregated time-series 
-for *rare* and *intermediate* categories). For
-such community, there are $p=n(n-1)/2$ number of unique 
-pair-wise interspecific interactions possible. First, for 
-each of these species-pairs, we construct the scatter plot with 
-the normalized rank of corresponding time-series (i.e. the *copula* plot)
-<!-- omitted as of now: 
-and test their 
-independence using `BiCopIndTest` function from `VineCopula` package implemented in `R`. If 
-independence is rejected ($0.05$ significance level), then we proceed to estimate--> 
-and measured tail-asymmetry ($\cor_{l}-\cor_{u}$) as described above. For positively 
-correlated species-pair, we count how many are with the stronger 
-lower-tail (or upper-tail) association, $n_L$ (or $n_U$). These 
-numbers along with the sum of each asymmetric 
-tail-association estimate, $A_{tot} = \sum_p (\cor_{l}-\cor_{u})$ for 
-positively correlated pair, can give us an idea about the 
-overall nature of tail-asymmetry 
-within the community that answers the second part of (Q1).
+<!--Aggregating to the community-->
+Fig. \ref{fig_pedag_cv2_skw} and the Theory section
+suggest that the nature of tail associations of positively associated species may influence
+the distribution of $\xtot$. Tail associations between positively associated species were 
+measured, in aggregate for a community, by counting the number of values
+$\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$, for all $i \neq j$, that were positive, representing stronger lower- than
+upper-tail association between species (denoted $n_L$); as well as the  number of values 
+that were negative, representing stronger upper- than lower-tail association between species (denoted $n_U$).
+We also computed the sum, $A_{\text{tot}}$, of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$
+across all positively associated species pairs, $i,j$. This was positive of lower-tail 
+association was, in aggregate across the community, stronger than upper-tail association, and
+negative if the reverse.
+<!--***DAN: Do some search and standardize the use of lower v. left-tail and upper v. right-tail
+association, and related quantities-->
 
 <!--omitted as of now: Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R
 At present not shown, because we want to consider all interactions: weekest to strongest.
@@ -565,6 +526,10 @@ test to check whether the community shows significantly stronger lower-tail (or 
       - need schematic diagram to show the relation (this diagram will again help to interpret results for Q2 later)
       - somewhere, in results or in discussion we should talk about the aggregated effect of weak interactions
 -->
+
+
+
+
 
 To answer (Q2) from \nameref{Introduction}, our approach was to assess the effect 
 of tail-asymmetry between species-pairs that was not accounted for 
@@ -810,21 +775,25 @@ of Fish and Wildlife Delta Science Program.
 \includegraphics[width=18cm]{./Results/pedagog_figs/pedagog_cv2_skw.pdf}
 \caption{Pedagogical example showing two communities (A, B) of twenty species each that are not distinguishable 
 via the classic variance ratio approach and related approaches, but that nonetheless differ markedly in 
-ecologically important ways. Species marginal distributions, and therefore species means and variances
+potentially important ways. Species marginal distributions, and therefore species means and variances
 over time, were the same in both scenarios, as were species covariances, up to sampling variance. 
 Thus the quantities $\CVcomsq$, $\CVindsq$ and $\phi_{\text{cv}}$ of the classic variance ratio approach
 were essentially the same in the two scenarios (A, B), as was the Loreau-de Mazancourt (Loreau \emph{et al.} 2008)
 variance ratio, denoted $\phi_{\text{LdM}}$. Nevertheless, differences between the scenarios in interspecific relationships, not 
 captured by covariances, resulted in differently skewed total time series, $\xtot(t)$, in the two scenarios
-(C-F). The total was much more likely to crash to low values in the first scenario (C, E)
-than in the second scenario (D, F), whereas $\xtot(t)$ was much more likely to explode to high values 
-in the second scenario than in the first. In both scenarios, there were two groups of species (red and black lines).
-Species in different groups were were compensatory, but for scenario 1, within-group synchrony occurred principally
-when populations were low, and for scenario 2 when populations were high. See the Introduction and SI section X for notation and 
-additional details. Time series were generated and statistics computed for 100000 years, but are plotted on A, B
-for 60 years only, for clarity. Dashed and dotted lines show lower and upper thresholds which may be considered
+(C-F). The total was more likely to crash to low values in the first scenario (C, E)
+than in the second scenario (D, F; compare the probabilities on E and F listed to the left of the dashed line), 
+whereas $\xtot(t)$ was more likely to explode to high values 
+in the second scenario than in the first (probabilities on E, F to the right of the dotted line). 
+Dashed and dotted lines show lower and upper thresholds which may be considered
 disasterous for $\xtot(t)$ to cross. Probabilities of crossing these thresholds were negligible for one scenario, but
-non-negligible for the other.\label{fig_pedag_cv2_skw}}
+non-negligible for the other.
+In both scenarios, there were two groups of species (red and black lines).
+Species in different groups were compensatory, but for scenario 1, within-group synchrony occurred principally
+when populations were low, and for scenario 2 when populations were high. See the Introduction and SI section \ref{SI-PedagogFigMethods} 
+for notation and 
+additional details. Time series were generated and statistics computed for 100000 years, but are plotted on A, B
+for 60 years only, for clarity. \label{fig_pedag_cv2_skw}}
 \end{center}
 \end{figure}
 <!--***DAN: Don't forget to fill in the SI section number, X in the above-->
@@ -833,30 +802,42 @@ non-negligible for the other.\label{fig_pedag_cv2_skw}}
 \begin{figure}
 \begin{center}
 \includegraphics[width=9cm]{./Results/TheoryFig.pdf}
-\caption{Fill in. \label{fig_theory}}
+\caption{Dan to fill in. \label{fig_theory}}
 \end{center}
 \end{figure}
-<!--***DAN: Don't forget to write this, Dan.-->
+<!--***DAN: Don't forget to write this caption, Dan.-->
 
-<!--Pedagogical figure for variance-ratio and skewness-ratio idea and asymmetric tail association-->
+<!--Methods figure for asymmetric tail association and partial Spearman correlation-->
 \begin{figure}[!h]
 \begin{center}
-\hspace{0.5 cm}
-\includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_simple_cv2_skw.pdf}\\
 \includegraphics[width=13 cm]{./Results/pedagog_figs/LTUT_rho_0.8.pdf}
-\caption{Upper panel shows a schematic diagram of the known $(A)$ variance-ratio approach usually used
+\caption{Normalized rank plots visually reveal that a positive association is asymmetric in the tails if 
+points are clustered closer to the $u_i=u_j$ diagonal in the upper right or lower left corners. 
+The partial Spearman correlation, $\cor_{l_b,u_b}(x_i,x_j)$, within a band defined by $l_b$ and $u_b$
+(see Methods) can be computed for any band to quantify the component of the overall Spearman correlation
+due to that band. Solid diagonal lines show two alternative bands. Lower-tail association is greater than upper-tail 
+association on (A), so the partial Spearman correlation using the band circumscribing the
+red points will be greater on (A) than for the band around the blue points. Reverse statements hold on (B).
+The (total) Spearman correlation is the same on both panels, $0.8$. 
+This figure was slightly modified from Fig. 4 of 
+Ghosh \emph{et al.} 2020a and Fig. 7 of Ghosh \emph{et al.} 2020b. \label{fig_pedag_taildep}}
+\end{center}
+\end{figure}
+<!--***DAN: This is a reminder that the citations in the above caption are not autolinks, so need to be
+changed manually if anything changes. They are supposed to be to BIVAN and the extinction risk paper. Do
+not delete this reminder.-->
+<!--***DAN: Shyamolina, can you please remove the diagonal dashed lines. -->
+<!--***DAN: Shyamolina, can you please make the x axis be labeled $u_i$ and the y axis be labeled $u_j$ on both panels? Also, please
+change the panel labels to (A) and (B).-->
+<!--***DAN: Here is some stuff that I cut from the above figure, keeping in case needed later:
+\includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_simple_cv2_skw.pdf}\\
+Upper panel shows a schematic diagram of the known $(A)$ variance-ratio approach usually used
 to assess community-stability and our proposed $(B)$ skewness-based analog; \textit{CV} and \textit{S} denote 
 coefficient of variation and skewness, respectively. White boxes with dashed arrows indicate a missing link between 
 the two extremes: an actual community ($com$) having both correlation and tail 
 association between species and its independent ($ind$) analog with no
-interspecific interaction. This is explored in detail later (Fig. \ref{fig_method_box}).
-Lower panel shows pedagogical
-figures of asymmetric tail associations between $200$ observations of 
-two positively correlated (same Spearman correlation $\rho = 0.8$) random variables $(x,y)$ with 
-$(C)$ stronger lower-tail and $(D)$ stronger 
-upper-tail association, respectively.\label{fig_pedag_taildep}}
-\end{center}
-\end{figure}
+interspecific interaction. This is explored in detail later (Fig. \ref{fig_method_box}).-->
+
 
 <!--Pedagogical figure to explain method-->
 \begin{figure}[!h]

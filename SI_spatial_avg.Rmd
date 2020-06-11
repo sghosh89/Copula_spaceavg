@@ -1,8 +1,8 @@
 ---
-title: "Supporting Information: 'Skewness ratio: a complimentary measure for variance ratio and community stability'"
-author: "Shyamolina Ghosh, other authors, Daniel Reuman"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
-fontsize: 12pt
+title: "Supporting Information: Species relationships in the extremes and their specific influence on community stability"
+author: "Shyamolina Ghosh, Daniel C. Reuman"
+date: ""
+fontsize: 11pt
 geometry: "left=1.5cm,right=1.5cm,top=1cm,bottom=1.8cm"
 
 output: 
@@ -29,7 +29,6 @@ bibliography: REF_CSS.bib
 \listoftables
 \listoffigures
 
-\pagebreak
 \pagenumbering{arabic}
 
 <!--Basic setup-->
@@ -851,6 +850,11 @@ right-tail dependent noise, normally distributed
 for each location. If left-tail dependent noise is desired, take the negative of the
 entire matrix.-->
 
+# Details of the simulations for Fig. \ref{MT-fig_pedag_cv2_skw}\label{PedagogFigMethods}
+
+
+# Details of the simulations for the Theory section \label{TheoryMethods}
+
 
 # Data\label{Data} 
 
@@ -931,17 +935,18 @@ colnames(tab_spinfo_hays)<-c("ID","Sp. code","Species name")
 tab_spinfo_hays$ID<-c(1:19)
 tab_spinfo_hays$`Sp. code`<-c(as.character(spinfo$PLANTS.Symbol[which(spinfo$species %in% names(hays_spaceavg$avg.basal.cover))]),
                          "pseudo_hays")
-splistfullnm<-c(names(hays_spaceavg$avg.basal.cover)[1:18],"This is a pseudo sp. = (intermediate + rare ones)")
+splistfullnm<-c(names(hays_spaceavg$avg.basal.cover)[1:18],"Intermediate + rare species")
 
 tab_spinfo_hays$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_hays, 
              format="latex", align="c", linesep = "",
-             caption.short="Species list for Hays",
-             caption = "Information of the selected species considered for Hays data; 18 most common species are selected based on the criterion that they had atleast 35 years of finite spatial averaged basal cover, for full list of all the species, including rare ones see Appendix \\ref{Data}.\\label{tab_spinfo_hays}", 
+             caption.short="Species list for Hays data",
+             caption = "'Common' species (see Methods) of the Hays dataset. The column 'ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column 'Sp. code' is the species code used in the downloaded, raw data. \\label{tab_spinfo_hays}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
+<!--***DAN: Shyamolina, I added the text "The column 'ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column 'Sp. code' is the species code used in the downloaded, raw data." Please verify these statements are correct.-->
 
 ```{r make_tab_common_splist_for_knz, echo=F, results="asis"}
 # species list for knz (PPS01) is downloadable from: http://lter.konza.ksu.edu/content/pps01-konza-prairie-plant-species-list
@@ -958,15 +963,14 @@ splistfullnm<-c("Ambrosia psilostachya", "Andropogon gerardii", "Asclepias verti
                 "Mimosa quadrivalvis", "Panicum virgatum", 
                 "Ruellia humilis", "Salvia azurea", "Schizachyrium scoparium", "solidago	altissima", 
                 "Sorghastrum nutans",
-                "Sporobolus compositus", "Symphyotrichum ericoides", "Vernonia baldwinii", "This is a pseudo sp.
-                = (intermediate + rare ones)"
+                "Sporobolus compositus", "Symphyotrichum ericoides", "Vernonia baldwinii", "Intermediate + rare species"
                 )
 
 tab_spinfo_knz$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_knz, 
              format="latex", align="c", linesep = "",
              caption.short="Species list for Konza",
-             caption = "Information of the selected species considered for KNZ data; 21 most common species are selected based on the criterion that they had 35 years of spatially averaged percent cover, for full list of all the species, including rare ones see Appendix \\ref{Data}.\\label{tab_spinfo_knz}", 
+             caption = "'Common' species (see Methods) of the Konza dataset. The column 'ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column 'Sp. code' is the species code used in the downloaded, raw data.\\label{tab_spinfo_knz}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
@@ -986,7 +990,12 @@ See .tex file by DCR.
 \caption[Timeseries plot for (A) Hays and $(B)$ KNZ data]{Timeseries plot for (A) Hays and $(B)$ KNZ data; "common" species indicate the most abundant species throughout years averaging over quadrats and present minimum for $35$ years. "Rare" species refer to the species which was present maximum for 2 years in both datasets. The rest are classified into "intermediate" category.\label{fig_spaceavg_timeseries}}
 \end{center}
 \end{figure}
-
+<!--***DAN: Shyamolina, the y axis on panel B says "Total percent cover", but the values are always above 100, and
+occassionally go about 200. It is possible for percent cover to go about 100, since for Konza they used canopy percent cover 
+(according to the descriptions in your SI section S1), and canopies overlap. However, it is also possible there is some
+mistake here. Please check, determine whether or not there was a mistake, and correct if there was. Let me know, please,
+whether there was a mistake, since if there was then we may need to re-run some things. If there was not a mistake, you 
+will need to insert a note in the caption of this figure explaining to the reader why percent covers can go over 200.-->
 
 
 
