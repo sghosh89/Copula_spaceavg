@@ -3,7 +3,7 @@ title: "Species relationships in the extremes and their specific influence on co
 author:
  - Shyamolina Ghosh\textsuperscript{1}, Daniel C. Reuman\textsuperscript{1,2,\dag}
  - \textsuperscript{1}Department of Ecology and Evolutionary Biology and Kansas Biological Survey, University of Kansas, Lawrence, KS, 66045, USA; \textsuperscript{2}Laboratory of Populations, Rockefeller University, 1230 York Ave., New York, NY 10065, USA
-date: '\textsuperscript{\dag}Correspondence: Daniel Reuman, 2101 Constant Ave, Lawrence, KS, 66047, reuman@ku.edu, 626 560 7084'
+date: '\textsuperscript{\dag}Correspondence: Daniel C. Reuman, 2101 Constant Ave, Lawrence, KS, 66047, reuman@ku.edu, 626 560 7084'
 fontsize: 11pt
 geometry: "left=1 in,right=1 in,top=1 in,bottom=1 in"
 
@@ -70,7 +70,7 @@ for decades [@macarthur1955fluctuations; @paine1969note; @grimm1992application; 
 An important early insight was that an aggregate 
 community property such as the total biomass of all species can be relatively stable through time, even 
 while the dynamics of individual species are highly variable, if different species exhibit offsetting fluctuations.
-This is often refered to as *compensatory dynamics*, because decreases in species abundances are compensated
+This is often referred to as *compensatory dynamics*, because decreases in species abundances are compensated
 for by simultaneous increases in other species [@frost1995species;@bai2004ecosystem;@hallett2014]. When species instead exhibit 
 positively correlated fluctuations through time, it tends to cause increased variability through time in the community 
 aggregate property [@keitt2008coherent;@loreau2008species;@ma2017climate]. This is called *synchrony* because 
@@ -91,7 +91,7 @@ $\CVindsq=\left(\sum_i v_{ii}\right)/\left(\sum \mu_i\right)^2$ the value that $
 the dynamics of each species were independent of the dynamics of all other species (so $v_{ij}=0$ for all $i \neq j$), the 
 classic *variance ratio* was defined [@schluter1984variance;@peterson1975] as 
 $\phi_{\text{cv}}=\CVcomsq/\CVindsq=\var(\xtot)/\left(\sum_i v_{ii}\right)=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i v_{ii}\right)$. 
-Thus $\CVcomsq=\phi_{\text{cv}} \CVindsq$. Because $\CVindsq$ is in sinterpreted as what community variability would be, without species interactions,
+Thus $\CVcomsq=\phi_{\text{cv}} \CVindsq$. Because $\CVindsq$ is interpreted as what community variability would be, without species interactions,
 $\phi_{\text{cv}}$ is the factor by which species interactions inflate or decrease community variability.
 The variance ratio has therefore commonly been used [@houlahan2007;@winfree2009;@hallett2014] as an index of whether dynamics 
 are synchronous or compensatory. If $\phi_{\text{cv}}>1$, the interpretation has been that dynamics are, on balance,
@@ -108,7 +108,7 @@ furthermore, as we will show, how species relationships influence community stab
 more nuanced than is revealed by either the classic variance ratio approach or
 by any existing extensions of which we are aware. To 
 begin to illustrate the concepts we will explore in this 
-study, and to understand what has been omitted from earlier approaches, we consider two artifically
+study, and to understand what has been omitted from earlier approaches, we consider two artificially
 generated community dynamics datasets (Fig. \ref{fig_pedag_cv2_skw}A, B; data generated as in SI section \ref{SI-PedagogFigMethods}).
 <!--***DAN: Dan to write the corresponding section of the SI.-->
 Both model communities consist of $N=20$ species, and data were generated so that species marginal distributions 
@@ -133,7 +133,7 @@ takes values below a threshold. So all the red species are controlled by the sam
 and hence are synchronous when rare. 
 When precipitation is above the threshold, the red species are each sensitive, instead, to other, distinct factors, rendering them asynchronous
 when common. Black species 
-of Fig. \ref{fig_pedag_cv2_skw}A may also be senstive to precipitation, but in a reverse manner, being all simultaneously 
+of Fig. \ref{fig_pedag_cv2_skw}A may also be sensitive to precipitation, but in a reverse manner, being all simultaneously 
 harmed by precipitation when it is
 above the threshold, and unaffected by precipitation below the threshold. Resulting community dynamics 
 (Fig. \ref{fig_pedag_cv2_skw}C-F) were quite different in our two scenarios because of the distinct species interrelationships.
@@ -186,12 +186,12 @@ between species that complements classic approaches relying on covariances. (G2)
 approach to studying aggregate community stability/variability that complements the traditional use of the 
 coefficient of variation. Finally, (G3) we will study how species interrelationships influence community stability/variability
 using the new approaches. Our results provide a new take on classic questions about the influence of synchronous or 
-compensatory dynamics on community stability. We will use theory, as well as data from two iconic, long-term glassland studies:
+compensatory dynamics on community stability. We will use theory, as well as data from two iconic, long-term grassland studies:
 plant percent cover data from long-term quadrats in mixed-grass prairie located in Hays, Kansas; and annual 
 species composition data from the Konza Prairie Long-Term Ecological Research (LTER) site, also in Kansas.
 Synchronous versus compensatory dynamics in communities, and their influence on community stability, has most commonly
 been studied in plankton systems [@downing2008;@keitt2008coherent;@brown2016] and in grasslands 
-[@bai2004ecosystem;@houlahan2007;@hallett2014]. Evidence so far suggests that synchonous dynamics may be dominant
+[@bai2004ecosystem;@houlahan2007;@hallett2014]. Evidence so far suggests that synchronous dynamics may be dominant
 and compensatory dynamics rare in plankton systems [@Vasseur2014]. On the other hand, previous work suggests that
 compensatory dynamic may be at least somewhat more common
 in grasslands [@hallett2014;@zhao2020]. Though some studies have also found compensatory dynamics to be rare in
@@ -303,7 +303,7 @@ time series, can influence the variability of an aggregate community property su
 total community biomass. The setup for the theory is as follows. As in the Introduction, let $x_i(t)$ be an abundance 
 measure for species $i=1,\ldots,N$ at time $t=1,\ldots,T$. We use $N=20$ and $T=100000$ in the examples of this 
 section. We assume the multivariate random variables $x(t)=(x_1(t),\ldots,x_N(t))$ are independent
-and identically distributed for distinct times, $t$. It should be straighforward to replace
+and identically distributed for distinct times, $t$. It should be straightforward to replace
 this assumption with an appropriate stationarity/ergodicity assumption, with no real change
 to the theoretical development, but we adopt the stronger assumption for simplicity. 
 To describe relationships between species, 
@@ -422,14 +422,17 @@ After initial processing, data from the Hays, Kansas site consisted of annual es
 averaged over 36 quadrats from which livestock were excluded, for each species present, for the years 1932-1972
 [@adler2007long]. 
 Data from Konza Prairie, after initial processing, consisted of annual canopy percent cover data by species for the years
-1983-2019, averaged over 20 annually burned plots on tully soils which were not grazed by livestock [@Hartnett2019]. 
+1983-2018, averaged over 20 annually burned plots on tully soils which were not grazed by livestock [@Hartnett2019]. 
 <!--***DAN: Shyamolina, is 1983-2019 the right range of years? In the SI section on the data, you say the data started in 1983
 and were downloaded in 2019, but I don't know whether the end of the data you analyzed was 2019 or 2018 or what?
 Sometimes the processed, published data are a year or more behind the actual sampling, so please check the end
-year of the data you used, and if it differed from 2019 change the above line-->
-Additional detials of the sites and initial processing efforts are in SI section \ref{SI-Data}.
+year of the data you used, and if it differed from 2019 change the above line
+***Shya: it is downloaded in Nov, 2019 but data were updated on their website upto 2018 as of Feb, 2019.
+Every year on Feb they updated their data upto the previous year. Like if you now download their data it will be upto 2019 updated on Feb, 2020.-->
+Additional details of the sites and initial processing efforts are in SI section \ref{SI-Data}.
 <!--***DAN: Shyamolina, I created the above summaries after carefully reading your detailed descriptions in the SI section 
-on the data, but please check them carefully to make sure I did not misinterpret anything you wrote there.-->
+on the data, but please check them carefully to make sure I did not misinterpret anything you wrote there.
+***Shya: checked.-->
 Community data often include numerous rare species, including species which were only detected a few times over the 
 duration of a study, and our data are no exception. Rare species complicate analyses of interspecific relationships 
 and their effect on community variability because relationships between rare species are difficult to accurately
@@ -502,7 +505,8 @@ across all positively associated species pairs, $i,j$. This was positive of lowe
 association was, in aggregate across the community, stronger than upper-tail association, and
 negative if the reverse.
 <!--***DAN: Do some search and standardize the use of lower v. left-tail and upper v. right-tail
-association, and related quantities-->
+association, and related quantities
+***Shya: I did, it is always lower-tail and upper-tail association. Left- and right- tail for skewness.-->
 
 <!--omitted as of now: Significance tests for individual and overall asymmetry, tailsignif.R, binomial_sigtest.R
 At present not shown, because we want to consider all interactions: weekest to strongest.
@@ -552,7 +556,7 @@ and $v_{tot} = \sum_{i,j}v_{ij}$, respectively. These quantities quantify
 squared coefficient of variation ($CV_{com}^2 = v_{tot}/\mu_{tot}^2$) that measures 
 the variability of the said community [@pimm1984complexity]. If interspecific 
 interaction makes a community more variable compared to independent species
-fluctuation, then the community is considered more stable. In mathematical natation, 
+fluctuation, then the community is considered more stable. In mathematical notation, 
 this stability index is represented as the classic 
 variance ratio, $\phi_{cv}$ ($= CV_{com}^2/CV_{ind}^2 =  \sum_{i,j}v_{ij}/ \sum_{i} v_{ii}$). 
 When $\phi_{cv}>1$, community is highly variable compared to a community where species are fluctuating 
@@ -593,9 +597,9 @@ interactions of the species within the community, i.e., high productivity of som
 for some years are balanced by its proportional drop in productivity 
 for other years or by other species for those same years. <!--***Shya:please review this line, am I right here? 
 is this similar as of phi_cv < 1 for compensatory dynamics?--> A negative $\phi_s$ indicates 
-interspefic interactions at the extreme values can alter the skewness (i.e. changing its sign) of a 
+interspecific interactions at the extreme values can alter the skewness (i.e. changing its sign) of a 
 community-biomass distribution over years than it would have been expected without any interactions. 
-<!--for example, see explore_phis.R where a left-tail dep. community 
+<!--for example, see explore_phis.R where a lower-tail dep. community 
 with slightly right skewed marginals make phi_s -ve.-->
 
 
@@ -620,7 +624,7 @@ should be less than that for community $C_B$, i.e., $0<\phi_{s,C_A}<1 < \phi_{s,
 <!--***DAN: double check this statement, this is theoretically I expect but in Fig.1 with madeup extreme tail dep community phi_s are same though S_com are different-->
 To explain the theoretical basis of such difference 
 between $\phi_{cv}$ and $\phi_s$, we make partition for the overall contribution 
-in stability metric into two distict parts - due to correlation and
+in stability metric into two distinct parts - due to correlation and
 due to tail association for extreme values between interspecific response, as follows. 
 
 <!--partition between correlation and tail association effect in phi_s, phi_cv-->
@@ -654,7 +658,7 @@ tends to suppress the skewness (Fig. \ref{fig_pedag_cv2_skw}C). If the
 community showed stronger tail-association for the higher values of 
 species-time series (i.e. $A_{tot}<0$), skewness should change in 
 reverse order, i.e., $S_{com} > S_{nta}$ with $\phi_{s,ta} > \phi_{s,cor}$.
-This anticipitation is consistent with the fact that upper tail 
+This anticipation is consistent with the fact that upper tail 
 association tends to increase the skewness (Fig. \ref{fig_pedag_cv2_skw}D). The 
 stronger the tail-asymmetry for the 
 interspecific response within the community (i.e. higher $|A_{tot}|$), the larger would be 
@@ -665,7 +669,7 @@ skewness ratio approach in Fig. \ref{fig_method_box} that can help to answer (Q2
 The complete reproducible workflow 
 for this project is available at https://github.com/sghosh89/Copula_spaceavg. Following 
 we will present the results from the analyses with 
-two examplary long-term community data described in Appendix \ref{SI-Data}.
+two exemplary long-term community data described in Appendix \ref{SI-Data}.
 
 # Results\label{Results}
 
@@ -686,7 +690,7 @@ overall upper-tail asymmetric?
 For Q1: plot with hays and knz corl-coru (Fig 4, panels a,b)-->
 
 For each unique pairwise species combination from 
-each of two examplary communities, we computed lower and upper tail 
+each of two exemplary communities, we computed lower and upper tail 
 association (*partial Spearman correlation* method) between 
 species over years. The difference (i.e. lower minus upper tail 
 association estimates) are presented in 
@@ -826,9 +830,11 @@ Ghosh \emph{et al.} 2020a and Fig. 7 of Ghosh \emph{et al.} 2020b. \label{fig_pe
 <!--***DAN: This is a reminder that the citations in the above caption are not autolinks, so need to be
 changed manually if anything changes. They are supposed to be to BIVAN and the extinction risk paper. Do
 not delete this reminder.-->
-<!--***DAN: Shyamolina, can you please remove the diagonal dashed lines. -->
+<!--***DAN: Shyamolina, can you please remove the diagonal dashed lines.
+***Shya: Done.-->
 <!--***DAN: Shyamolina, can you please make the x axis be labeled $u_i$ and the y axis be labeled $u_j$ on both panels? Also, please
-change the panel labels to (A) and (B).-->
+change the panel labels to (A) and (B).
+***Shya: Done.-->
 <!--***DAN: Here is some stuff that I cut from the above figure, keeping in case needed later:
 \includegraphics[width=13cm]{./Results/pedagog_figs/pedagog_simple_cv2_skw.pdf}\\
 Upper panel shows a schematic diagram of the known $(A)$ variance-ratio approach usually used

@@ -151,7 +151,7 @@ abline(h=th_low,lty=2)
 abline(h=th_high,lty=3)
 #legend(x=15,y=64,"(C)", bty="n",cex=1.4)
 text(0,ylm[1],"C",adj=c(0,0),cex=1.4)
-legend(x=30,y=ylm[2]+5,
+legend(x=25,y=ylm[2]+5,
        c(as.expression(bquote(skew(x[tot])==.(formatC(tab2$skw_real,2,format="f")))),
          as.expression(bquote(mean(x[tot])==.(round(mu_l,2)))),
                     as.expression(bquote(var(x[tot])==.(round(v_l,2))))),
@@ -163,7 +163,7 @@ abline(h=th_high,lty=3)
 #legend(x=-2.5,y=75,paste("(D) s = ",round(tab1$skw_real,3)),bty="n",cex=1.5)
 #legend(x=15,y=64,"(D)", bty="n",cex=1.4)
 text(0,ylm[1],"D",adj=c(0,0),cex=1.4)
-legend(x=30,y=ylm[2]+5,
+legend(x=25,y=ylm[2]+5,
        c(as.expression(bquote(skew(x[tot])==.(round(tab1$skw_real,2)))),
          as.expression(bquote(mean(x[tot])==.(round(mu_r,2)))),
          as.expression(bquote(var(x[tot])==.(round(v_r,2))))),

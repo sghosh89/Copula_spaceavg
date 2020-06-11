@@ -794,21 +794,21 @@ ccop<-BiCopSim(200,3,par=par_rho_0.8)
 sccop<-BiCopSim(200,13,par=par_rho_0.8)
 pdf("./Results/pedagog_figs/LTUT_rho_0.8.pdf",height=3,width=6)
 op<-par(mfrow=c(1,2),mar=c(3.5, 3.5, 0.1, 1.1),mgp=c(1.8,0.5,0))
-plot(ccop[,1],ccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="x",ylab="y",cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
+plot(ccop[,1],ccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab=expression("u"[i]),ylab=expression("u"[j]),cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
 lines(c(0,0.3),c(0.3,0),type='l')
 lines(c(0,0.6),c(0.6,0),type='l')	
 ind1<-which(ccop[,1]+ccop[,2]>0.3 & ccop[,1]+ccop[,2]<0.6)
 points(ccop[ind1,1],ccop[ind1,2],col=rgb(1,0,0,0.1),pch=20)
-lines(c(0,1),c(1,0),type='l',lty=2)
+#lines(c(0,1),c(1,0),type='l',lty=2)
 
 lines(c(0,1.4),c(1.4,0),type='l')	
 lines(c(0,1.7),c(1.7,0),type='l')	
 ind1<-which(ccop[,1]+ccop[,2]>1.4 & ccop[,1]+ccop[,2]<1.7)
 points(ccop[ind1,1],ccop[ind1,2],col=rgb(0,0,1,0.1),pch=20)
 
-text(x=0.1,y=0.9,"(C)",cex=1.3, family="serif")
+text(x=0.1,y=0.9,"(A)",cex=1.3, family="serif")
 
-plot(sccop[,1],sccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab="x",ylab="y",cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
+plot(sccop[,1],sccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab=expression("u"[i]),ylab=expression("u"[j]),cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
 lines(c(0,0.3),c(0.3,0),type='l')
 lines(c(0,0.6),c(0.6,0),type='l')	
 ind1<-which(sccop[,1]+sccop[,2]>0.3 & sccop[,1]+sccop[,2]<0.6)
@@ -818,9 +818,9 @@ lines(c(0,1.4),c(1.4,0),type='l')
 lines(c(0,1.7),c(1.7,0),type='l')	
 ind1<-which(sccop[,1]+sccop[,2]>1.4 & sccop[,1]+sccop[,2]<1.7)
 points(sccop[ind1,1],sccop[ind1,2],col=rgb(0,0,1,0.1),pch=20)
-lines(c(0,1),c(1,0),type='l',lty=2)
+#lines(c(0,1),c(1,0),type='l',lty=2)
 
-text(x=0.1,y=0.9,"(D)",cex=1.3, family="serif")
+text(x=0.1,y=0.9,"(B)",cex=1.3, family="serif")
 
 par(op)
 #box(which="figure")
@@ -846,8 +846,8 @@ absolute value of the first element of the row (including the first element itse
 For other rows, every element in the row was replaced by the negative of its
 own absolute value. To make the matrix $m$ having non-negative numbers (as they correspond
 to species-biomass), we gave a positive shift to all the entries in $m$. This produces 
-right-tail dependent noise, normally distributed
-for each location. If left-tail dependent noise is desired, take the negative of the
+upper-tail dependent noise, normally distributed
+for each location. If lower-tail dependent noise is desired, take the negative of the
 entire matrix.-->
 
 # Details of the simulations for Fig. \ref{MT-fig_pedag_cv2_skw}\label{PedagogFigMethods}
@@ -911,7 +911,7 @@ Species sampled on multiple census date in a year (initially started with three 
 sampling frequency changed to twice a year) we used the highest cover class for each plot. Finally, the 
 percent cover for each plot was computed by averaging the mid-points of the cover classes for the 20 plots. This is in accordance with the method used in raw cover data processing (see [`methods manual for PVC02`](http://lter.konza.ksu.edu/sites/default/files/MM.pdf)). We presented our result considering average canopy cover sampled from tully soils only as we could not produce 
 Pearson correlation preserving surrogate data for the other soiltype (florence soils) - this surrogates were used 
-to answer (Q2) from \ref{MT-Introduction}.
+to answer (Q2) from \nameref{MT-Introduction}.
 
 <!--data category-->
 For both datasets, we classified all the species into 
@@ -941,12 +941,14 @@ tab_spinfo_hays$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_hays, 
              format="latex", align="c", linesep = "",
              caption.short="Species list for Hays data",
-             caption = "'Common' species (see Methods) of the Hays dataset. The column 'ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column 'Sp. code' is the species code used in the downloaded, raw data. \\label{tab_spinfo_hays}", 
+             caption = "`Common' species (see Methods) of the Hays dataset. The column `ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column `Sp. code' is the species code used in the downloaded, raw data. \\label{tab_spinfo_hays}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
-<!--***DAN: Shyamolina, I added the text "The column 'ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column 'Sp. code' is the species code used in the downloaded, raw data." Please verify these statements are correct.-->
+<!--***DAN: Shyamolina, I added the text "The column 'ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column 'Sp. code' is the species code used in the downloaded, raw data." Please verify these statements are correct.
+***Shya: for Hays, Sp. Code refers to PLANTS.Symbol column of "species_list.csv" file which we downloaded as raw data (I wrote about this in Data Section line 876 of this Rmd.)
+Fpr Konza, I combine genus and species column of raw data to get "Sp. Code", I got the full species name from a species list pdf file - this file is also downloadable from the link I added in my Datadescription section.-->
 
 ```{r make_tab_common_splist_for_knz, echo=F, results="asis"}
 # species list for knz (PPS01) is downloadable from: http://lter.konza.ksu.edu/content/pps01-konza-prairie-plant-species-list
@@ -970,7 +972,7 @@ tab_spinfo_knz$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_knz, 
              format="latex", align="c", linesep = "",
              caption.short="Species list for Konza",
-             caption = "'Common' species (see Methods) of the Konza dataset. The column 'ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column 'Sp. code' is the species code used in the downloaded, raw data.\\label{tab_spinfo_knz}", 
+             caption = "`Common' species (see Methods) of the Konza dataset. The column `ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column `Sp. code' is the species code used in the downloaded, raw data.\\label{tab_spinfo_knz}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
@@ -995,7 +997,8 @@ occassionally go about 200. It is possible for percent cover to go about 100, si
 (according to the descriptions in your SI section S1), and canopies overlap. However, it is also possible there is some
 mistake here. Please check, determine whether or not there was a mistake, and correct if there was. Let me know, please,
 whether there was a mistake, since if there was then we may need to re-run some things. If there was not a mistake, you 
-will need to insert a note in the caption of this figure explaining to the reader why percent covers can go over 200.-->
+will need to insert a note in the caption of this figure explaining to the reader why percent covers can go over 200.
+***Shya: I don't think it is a mistake. The percent cover should not take literally as the cover is computed based on midpoint rule of each of the seven "class" categories: see details already explained in the Data section (line 909 of this Rmd). If you agree with me I will write something like this in the figure caption.-->
 
 
 
