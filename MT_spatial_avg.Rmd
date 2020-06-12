@@ -492,7 +492,7 @@ $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$, for all $i \neq j$, that were positive, repre
 upper-tail association between species (denoted $n_L$); as well as the  number of values 
 that were negative, representing stronger upper- than lower-tail association between species (denoted $n_U$).
 We also computed the sum, $A_{\text{tot}}$, of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$
-across all positively associated species pairs, $i,j$. This was positive of lower-tail 
+across all positively associated species pairs, $i,j$. This was positive if lower-tail 
 association was, in aggregate across the community, stronger than upper-tail association, and
 negative if the reverse.
 <!--***DAN: Do some search and standardize the use of lower v. left-tail and upper v. right-tail
@@ -522,8 +522,11 @@ test to check whether the community shows significantly stronger lower-tail (or 
       - somewhere, in results or in discussion we should talk about the aggregated effect of weak interactions
 -->
 
-
-
+To accomplish goal G2 of the Introduction, we will need a statistical measure of the distribution $\xtot$ that
+characterizes community variability in a way that complements the classic use of $\var(\xtot)$ or $\CVcomsq$. We use
+the skewness of $\xtot$. 
+-Dan, give a definition, to distinguish it from the third central moment and ot make sure we are all on the same page since I think there are different definitions
+-Dan, explain briefly what this measures and how it complements the usual measure
 
 
 To answer (Q2) from \nameref{Introduction}, our approach was to assess the effect 
