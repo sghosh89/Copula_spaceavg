@@ -84,10 +84,10 @@ of the aggregate community property, together with covariances between species p
 For instance, if $x_i(t)$ are data representing the population or biomass abundances of species $i=1,\ldots,N$ at the sampling times
 $t=1,\ldots,T$, and if $\mu_i=\mean(x_i)$, $v_{ii}=\var(x_i)$, and $v_{ij}=\cov(x_i,x_j)$, community variability
 has commonly been quantified using the squared coefficient of variation of $\xtot(t)=\sum_i x_i(t)$, i.e., 
-$\CVcomsq=\var(\xtot)/\left(\mean(\xtot)\right)^2=\left(\sum_{i,j} v_{ij}\right)/\left(\sum \mu_i\right)^2$.
+$\CVcomsq=\var(\xtot)/\left(\mean(\xtot)\right)^2=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i \mu_i\right)^2$.
 And this formula obviously connects to species relationships as measured via 
 the covariances, $v_{ij}$, which appear directly in the formula. Denoting by 
-$\CVindsq=\left(\sum_i v_{ii}\right)/\left(\sum \mu_i\right)^2$ the value that $\CVcomsq$ would take if 
+$\CVindsq=\left(\sum_i v_{ii}\right)/\left(\sum_i \mu_i\right)^2$ the value that $\CVcomsq$ would take if 
 the dynamics of each species were independent of the dynamics of all other species (so $v_{ij}=0$ for all $i \neq j$), the 
 classic *variance ratio* was defined [@schluter1984variance;@peterson1975] as 
 $\phi_{\text{cv}}=\CVcomsq/\CVindsq=\var(\xtot)/\left(\sum_i v_{ii}\right)=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i v_{ii}\right)$. 
@@ -446,24 +446,25 @@ divided by $T+1$. The smallest element of this set is here considered to have ra
 have rank $T$. Plotting the normalized ranks $u_i(t)$ and $u_j(t)$ against each other for two positively associated species 
 $x_i$ and $x_j$ provides a visual
 indication of tail association and asymmetries in tail association, as described by @Ghosh_copula (Fig. \ref{fig_pedag_taildep}).
-Given two bounds $0\leq l_b < u_b \leq 1$, we define the lines $u_i + u_j=2l_b$ and $u_i+v_i=2u_b$,
+Given two bounds $0\leq b_l < b_u \leq 1$ ($l$ stands for "lower" and $u$ for "upper"), we define the lines $u_i + u_j=2b_l$ and $u_i+v_i=2b_u$,
 which intersect the unit square $[0,1]\times[0,1]$ of the normalized rank plot. The partial Spearman
 correlation associated with the band circumscribed by these bounds is
 \begin{equation}
 \cor_{l_b,u_b}(x_i,x_j) = \frac{\sum (u_i(t)-\mean(u_i))(u_j(t)-\mean(u_j))}{(T-1)\sqrt{\var(u_i) \var(u_j)}},\label{PartialSpearmanEq}
 \end{equation}
 \noindent where sample means and variances are computed over $t=1,\ldots,T$ but the summation in the 
-above formula is only computed over $t$ such that $u_i(t) + u_j(t)>2l_b$ and $u_i(t) + u_j(t)<2u_b$.
+above formula is only computed over $t$ such that $u_i(t) + u_j(t)>2b_l$ and $u_i(t) + u_j(t)<2b_u$.
 The partial Spearman correlation is the component of the Spearman correlation which can be attributed to
-the points in the band. For two positively associated variables, $\cor_{0,u_b}$ for $u_b \leq 0.5$ measures 
-lower-tail association, and $\cor_{l_b,1}$ for $l_b \geq 0.5$ measures upper-tail association. 
+the points in the band. For two positively associated variables, $\cor_{0,b_u}$ for $b_u \leq 0.5$ measures 
+lower-tail association, and $\cor_{b_l,1}$ for $b_l \geq 0.5$ measures upper-tail association. 
 The difference $\cor_{0,0.5}-\cor_{0.5,1}$ is then a way to measure asymmetry of tail
 associations. Positive values indicate stronger lower-tail association, and negative values 
 indicate stronger upper-tail association. We henceforth use the shorthand $\cor_l$ for $\cor_{0,0.5}$ and 
 $\cor_u$ for $\cor_{0.5,1}$. 
 @Genest2007 recommend making inferences about dependence structures such as tail associations using 
 rank-based approaches such as Spearman correlations and the normalized rank plots and partial Spearman
-correlations we introduce here.
+correlations we introduce here. @Ghosh_copula, @Ghosh_extinction and @Ghosh_aphidplankton provide additional information on
+why rank-based approaches and the partial Spearman correlation are appropriate for purposes such as ours. 
 
 <!--***DAN: I think we should handle the negatively associated species problem in another way, below, but 
 keeping this text for now in case we need it later.
@@ -485,7 +486,7 @@ first part of (Q1).
 
 <!--Aggregating to the community-->
 Fig. \ref{fig_pedag_cv2_skw} and the Theory section
-suggest that the nature of tail associations of positively associated species may influence
+suggest that the aggregate nature of tail associations of positively associated species may influence
 the distribution of $\xtot$. Tail associations between positively associated species were 
 measured, in aggregate for a community, by counting the number of values
 $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$, for all $i \neq j$, that were positive, representing stronger lower- than
@@ -494,7 +495,8 @@ that were negative, representing stronger upper- than lower-tail association bet
 We also computed the sum, $A_{\text{tot}}$, of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$
 across all positively associated species pairs, $i,j$. This was positive if lower-tail 
 association was, in aggregate across the community, stronger than upper-tail association, and
-negative if the reverse.
+negative if the reverse. We refer to $A_{\text{tot}}$ as the *total community tail association*
+of positively associated species pairs. 
 <!--***DAN: Do some search and standardize the use of lower v. left-tail and upper v. right-tail
 association, and related quantities
 ***Shya: I did, it is always lower-tail and upper-tail association. Left- and right- tail for skewness.-->
@@ -522,82 +524,58 @@ test to check whether the community shows significantly stronger lower-tail (or 
       - somewhere, in results or in discussion we should talk about the aggregated effect of weak interactions
 -->
 
-To accomplish goal G2 of the Introduction, we will need a statistical measure of the distribution $\xtot$ that
+To accomplish goal G2 of the Introduction, we need a statistical measure of the distribution $\xtot$ that
 characterizes community variability in a way that complements the classic use of $\var(\xtot)$ or $\CVcomsq$. We use
-the skewness of $\xtot$. 
--Dan, give a definition, to distinguish it from the third central moment and ot make sure we are all on the same page since I think there are different definitions
--Dan, explain briefly what this measures and how it complements the usual measure
+the skewness, denoted $\sk(\xtot)$. The skewness of $\xtot$ is the third central moment, 
+$m_3(\xtot)$, divided by the cube of the standard 
+deviation of $\xtot$. The
+unbiased estimator (with Bessel's correction) was used for the standard deviation. For the third central moment, we used 
+the third $h$-statistic, $m_3(\xtot)=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (\xtot(t)-\mean(\xtot))^3$, which is the 
+unique symmetric unbiased estimator of that quantity. As illustrated in Fig. \ref{fig_pedag_cv2_skw}, the skewness 
+complements the traditional use of 
+$\var(\xtot)$ or $\CVcomsq$ to characterize community variability because strongly negative values indicate that $\xtot$
+undergoes occasional large downward departures from typical values (i.e., crashes), and large positive values
+indicate that $\xtot$ undergoes occasional large upward departures from typical values. As also illustrated in
+Fig. \ref{fig_pedag_cv2_skw}, either of these dynamical behaviors (i.e., either positive or negative
+values of $\sk(\xtot)$) can happen independently of the values of $\var(\xtot)$ and $\CVcomsq$. 
 
+Just as, in the classic approach, the variance ratio $\phi_{\text{cv}}$ is the quotient $\CVcomsq/\CVindsq$, we can 
+analogously define a *skewness ratio* for our new framework, as follows. Let $\Scom=\sk(\xtot)$, and consider the value that 
+this quantity would take if species dynamics were independent.
+We have $\sk(\xtot)=\frac{m_3(\xtot)}{\var(\xtot)^{3/2}}=\frac{\sum_{i,j,k}m_{ijk}}{(\sum_{i,j}v_{ij})^{3/2}}$,
+where $m_{ijk}=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (x_i(t)-\mean(x_i))(x_j(t)-\mean(x_j))(x_k(t)-\mean(x_k))$ is a third
+cross-moment. Assuming independence of species dynamics, this is $\Sind=\frac{\sum_i m_{iii}}{(\sum_i v_{ii})^{3/2}}$.
+We define the *skewness ratio* as $\phi_S=\Scom/\Sind$, so that $\Scom=\phi_S \Sind$. 
 
-To answer (Q2) from \nameref{Introduction}, our approach was to assess the effect 
-of tail-asymmetry between species-pairs that was not accounted for 
-classic variance ratio approach. Variability 
-through time, be it for individual or for total community biomass, is a key component to
-measure the stability [@ives1999stability]. Following we
-briefly discuss about the classic variance ratio metric which is generally 
-used to predict the community-stability [@schluter1984variance]. 
-
-
-<!--short theoretical background to calculate phi_cv with variance ratio method, and its interpretation-->
-Consider a community with $n$ number of species where individual species biomass 
-or productivity ($x_i(t); i = 1, 2, \ldots, n$) being monitored 
-through $t = 1, 2, \ldots, T$ years. Mean biomass time series is denoted as 
-$\mu_i = \bar{x_i}$ for $i^{th}$ individual species whereas interaction between species
-is represented by the covariance $v_{ij} = \cov(x_i,x_j)$. $v_{ij} = 0$ implies
-independent fluctuation. On an aggregated scale, the total productivity, mean and the variance 
-are represented as $x_{tot} = \sum_{i} x_i$, $\mu_{tot} = \sum_{i} \mu_i$ 
-and $v_{tot} = \sum_{i,j}v_{ij}$, respectively. These quantities quantify
-squared coefficient of variation ($CV_{com}^2 = v_{tot}/\mu_{tot}^2$) that measures 
-the variability of the said community [@pimm1984complexity]. If interspecific 
-interaction makes a community more variable compared to independent species
-fluctuation, then the community is considered more stable. In mathematical notation, 
-this stability index is represented as the classic 
-variance ratio, $\phi_{cv}$ ($= CV_{com}^2/CV_{ind}^2 =  \sum_{i,j}v_{ij}/ \sum_{i} v_{ii}$). 
-When $\phi_{cv}>1$, community is highly variable compared to a community where species are fluctuating 
-independently and randomly. Species with compensatory dynamics (fluctuating time-series 
-in anti-phase) makes a community more stable (i.e., $\phi_{cv}<1$) due to different 
-functional responses from different functional group of species within the community. 
-On the other hand, synchronized fluctuation between species results higher $\phi_{cv}(>1)$ 
-and makes community less stable towards 
-environmental perturbation compared to an independent community.
-
-<!--alternative measure of stability: based on skewness-->
-We here propose an alternative measure of 
-stability for a $n$-species community. Accounting for the effect due to 
-extreme environmental perturbation, it is reasonable to consider
-how much the mean and the median would differ for total productivity of a 
-community throughout the years. In such case, we represent 
-the skewness for a community as
-$S_{com}=\sum_{i,j,k}m_{ijk}/\sum_{i,j,k}v_{ijk}^{3/2} = m_{tot}/v_{tot}^{3/2}$, where 
-$m_{tot}$ is the 3$^{rd}$ central moment of the temporal distribution 
-for total biomass of the community. If all the species within 
-that community behave as independent entities (i.e. no interaction between species), then the skewness 
-for an independent community would be 
-$S_{ind} = \sum_{i}m_{iii}/\sum_{i}v_{i}^{3/2}$. Therefore, we define the index for
-skewness-based change in a community $\phi_{s} = S_{com}/ S_{ind}$ similar to that 
-of the variance ratio metric, $\phi_{cv}$. It is trivial to show the relationship
-between these two stability indices as $\phi_s = (m_{tot}/\sum_im_{iii})(1/\phi_{cv}^{3/2})$.
-
-<!--interpretation for phi_s and stability-->
-Unlike $\phi_{cv}$, $\phi_s$ can be positive, $0$ or negative depending on the 
-signs of the skewnesses from the concerned community and its 
-independent analog. $\phi_s >1$ indicates that
-the community biomass is more positively (or more negatively) skewed
-than it would have been if the species have no interactions with each other.
-The opposite scenario - i.e., when the community with interacting species shows less positive
-or less negative skewness than would be expected if there was no interactions - represents 
-$\phi_s$ to be within the range $(0,1)$. $\phi_s \approx 0$ means skewness is eliminated by the 
-interactions of the species within the community, i.e., high productivity of some species 
-for some years are balanced by its proportional drop in productivity 
-for other years or by other species for those same years. <!--***Shya:please review this line, am I right here? 
-is this similar as of phi_cv < 1 for compensatory dynamics?--> A negative $\phi_s$ indicates 
-interspecific interactions at the extreme values can alter the skewness (i.e. changing its sign) of a 
-community-biomass distribution over years than it would have been expected without any interactions. 
-<!--for example, see explore_phis.R where a lower-tail dep. community 
-with slightly right skewed marginals make phi_s -ve.-->
-
+Values of the skewness ratio provide a summary of how species interactions influence community variability that 
+complements the information provided by the variance ratio. The skewness ratio can be positive or negative because 
+$\Scom$ and $\Sind$ can be positive or negative, unlike $\CVcomsq$ and $\CVindsq$. If $\phi_S>1$, 
+the skewness, $\Scom$, of $\xtot$ has greater magnitude, but the same sign, as what its value would be in 
+the absence of species interactions, i.e., $\Sind$. So in such a case, and assuming for simplicity $\phi_{\text{cv}} \approx 1$
+(see Discussion for more on this assumption), species interactions
+magnify the tendency for the community aggregate quantity $\xtot$ to crash, or explode to large values.
+This can be viewed as a new type of synchrony among species, in the sense that species relationships
+inflate community instability.
+If $0<\phi_S<1$, then $\Scom$ has lower magnitude, but the same sign, as $\Sind$, so species interactions
+mitigate the tendency for the $\xtot$ to crash, or explode to large values (again assuming, for simplicity, that
+$\phi_{\text{cv}} \approx 1$ -- see Discussion). This can be viewed as a new type of compensatory dynamics, in the sense that species 
+relationships reduce community instability. If $\phi_S \approx 0$,
+then skewness of $\xtot$ is eliminated by species interactions, i.e., the tendency of the community to
+asymmetrically crash or explode to high values is eliminated by species interactions. 
+If $\phi_S<0$, then whereas, without species interactions, $\xtot$ would have exhibited occasional
+crashes (or, respectively, explosions to high values), with species interactions $\xtot$ instead
+exhibits occasional explosions to high values (respectively, crashes). 
+Our skewness ratio should in no way be seen to supplant the classic variance ratio approach, but rather
+complements it. Just as one understands more about a distribution by knowing both its variance and skewness, so
+one can understand more about community dynamics by combining the variance ratio and skewness
+ratio approaches. The values of $\phi_{\text{cv}}$ and $\phi_S$ together provide two complementary
+pieces of information about how the distribution of $\xtot$ is influenced by species interactions (see Discussion).
+See Fig. \ref{fig_method_box}A,B for a summary of the two approaches, and 
+Fig. \ref{fig_method_box}E for a summary of notation.
+<!--***DAN: Don't forget to add the promised Discussion material mentioned in this paragraph-->
 
 <!--how phi_s and phi_cv are different?-->
+<!--***DAN: Some of the below might be useful for the Discussion
 We recommend to use both these indices ($\phi_{cv}$ and $\phi_s$) to get 
 a complete picture to predict the stability of the community. It is possible
 to underestimate the stability status of the community if we only
@@ -615,11 +593,16 @@ their overall pairwise correlation remains same. In such case, $C_A$ and $C_B$
 should show more or less same $\phi_{cv}$ but 
 different $\phi_s$, particularly $\phi_s$ for community $C_A$ 
 should be less than that for community $C_B$, i.e., $0<\phi_{s,C_A}<1 < \phi_{s,C_B}$. 
-<!--***DAN: double check this statement, this is theoretically I expect but in Fig.1 with madeup extreme tail dep community phi_s are same though S_com are different-->
+***DAN: double check this statement, this is theoretically I expect but in Fig.1 with madeup extreme tail dep community phi_s are same though S_com are different
 To explain the theoretical basis of such difference 
 between $\phi_{cv}$ and $\phi_s$, we make partition for the overall contribution 
 in stability metric into two distinct parts - due to correlation and
 due to tail association for extreme values between interspecific response, as follows. 
+-->
+
+<!--***DAN: Dan stopped here for now, 2020 06 12-->
+
+
 
 <!--partition between correlation and tail association effect in phi_s, phi_cv-->
 As we have mentioned earlier, the skewness of a community ($S_{com}$) is related 
@@ -842,6 +825,7 @@ interspecific interaction. This is explored in detail later (Fig. \ref{fig_metho
 and skewness-ratio based. \label{fig_method_box}}
 \end{center}
 \end{figure}
+<!--***DAN: This figure to be replaced by a similar figure that Shyamolina is making-->
 
 <!--Results with corl-coru matrix plot-->
 \begin{figure*}[!h]

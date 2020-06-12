@@ -856,7 +856,7 @@ entire matrix.-->
 # Details of the simulations for the Theory section \label{TheoryMethods}
 
 
-# Data\label{Data} 
+# Data \label{Data} 
 
 <!--Hays data-->
 For first dataset, we used basal cover of vascular plants mapped in permanent quadrats in 
@@ -989,7 +989,12 @@ See .tex file by DCR.
 \textbf{ \hspace{0.5 cm} (A) \hspace{5.5 cm} (B)} \\
 \includegraphics[width=6 cm]{./Results/hays_results/skewness_results/total_timeseries.pdf}
 \includegraphics[width=6 cm]{./Results/knz_results/skewness_results/total_timeseries_soiltype_t.pdf}\\
-\caption[Timeseries plot for (A) Hays and (B) Konza data]{Timeseries plot for (A) Hays and (B) Konza data; "common" species indicate the most abundant species throughout years averaging over quadrats and present minimum for $35$ years. "Rare" species refer to the species which was present maximum for 2 years in both datasets. The rest are classified into "intermediate" category. The total percent cover in (B) are often beyond 100 because we considered the highest cover for each species when they were sampled multiple times in a year, therefore, if some species were dominating (say, >50) during first sampling time and others during the second sampling time for a given year, the aggregated effect yields more than 100$\%$ cover for that year.\label{fig_spaceavg_timeseries}}
+\caption[The aggregate quantity, $\xtot$, for (A) Hays and (B) Konza data]{The aggregate quantity, $\xtot$, for (A) Hays and (B) Konza data, 
+compared to the value obtained using only "common" species, or only "common" and "intermediate" species. Dynamics were very similar in all three
+cases, justifying the claim that "common" species constitute the large majority of the community, and dominate the dynamics. 
+See Methods for definitions of common, intermediate, and rare species. Total percent cover values in (B) are often above $100\%$ 
+because species percent cover values for a year and a plot were computed as the maximum percent cover over multiple sampling 
+occasions. See SI section \ref{Data} for details.\label{fig_spaceavg_timeseries}}
 \end{center}
 \end{figure}
 <!--***DAN: Shyamolina, the y axis on panel B says "Total percent cover", but the values are always above 100, and
