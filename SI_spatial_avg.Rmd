@@ -239,7 +239,7 @@ total_ts_C<-apply(X=avg_cover_over_plots_hays[,id_common_sp_hays],MARGIN = 1,FUN
 total_ts_CI<-apply(X=avg_cover_over_plots_hays[,sort(c(id_common_sp_hays,id_interm_sp_hays))],MARGIN = 1,FUN = sum)
 total_ts_CIR<-apply(X=avg_cover_over_plots_hays[,sort(c(id_common_sp_hays,id_interm_sp_hays,id_rare_sp_hays))],MARGIN = 1,FUN = sum)
 total_ts<-cbind(total_ts_C,total_ts_CI,total_ts_CIR)
-plot(c(1932:1972),total_ts[,1],ylim=c(range(total_ts)[1],10000),col=rgb(1,0,0,0.5),type="b",pch=16,xlab="Years",ylab="Total basal cover",xlim=c(1932,1972),cex.lab=2,cex.axis=2)
+plot(c(1932:1972),total_ts[,1],ylim=c(range(total_ts)[1],10000),col=rgb(1,0,0,0.5),type="b",pch=16,xlab="Years",ylab=expression("Total basal cover, cm"^2),xlim=c(1932,1972),cex.lab=2,cex.axis=2)
 lines(c(1932:1972),total_ts[,2],type="b",pch=16,col=rgb(0,1,0,0.5))
 lines(c(1932:1972),total_ts[,3],type="b",col="black",pch=1)
 legend("topright",c("common sp.","common + intermediate sp.","all sp. including rare"),lty=c(1,1,1),
@@ -860,7 +860,7 @@ entire matrix.-->
 
 <!--Hays data-->
 For first dataset, we used basal cover of vascular plants mapped in permanent quadrats in 
-Kansas mixed-grass prairieevery year from 1932-1972 [@adler2007long]. Researchers from 
+Kansas mixed-grass prairie every year from 1932-1972 [@adler2007long]. Researchers from 
 Fort Hays State University, in Hays, Kansas, mapped all individual plants in a series 
 of 1 sq. meter quadrats in a mixed grass prairie (38.8$^\circ$N, 99.3$^\circ$W) 
 [@albertson1937ecology; @albertson1965vegation]. In fact, data produced 
@@ -989,7 +989,7 @@ See .tex file by DCR.
 \textbf{ \hspace{0.5 cm} (A) \hspace{5.5 cm} (B)} \\
 \includegraphics[width=6 cm]{./Results/hays_results/skewness_results/total_timeseries.pdf}
 \includegraphics[width=6 cm]{./Results/knz_results/skewness_results/total_timeseries_soiltype_t.pdf}\\
-\caption[Timeseries plot for (A) Hays and $(B)$ Konza data]{Timeseries plot for (A) Hays and $(B)$ Konza data; "common" species indicate the most abundant species throughout years averaging over quadrats and present minimum for $35$ years. "Rare" species refer to the species which was present maximum for 2 years in both datasets. The rest are classified into "intermediate" category.\label{fig_spaceavg_timeseries}}
+\caption[Timeseries plot for (A) Hays and (B) Konza data]{Timeseries plot for (A) Hays and (B) Konza data; "common" species indicate the most abundant species throughout years averaging over quadrats and present minimum for $35$ years. "Rare" species refer to the species which was present maximum for 2 years in both datasets. The rest are classified into "intermediate" category. The total percent cover in (B) are often beyond 100 because we considered the highest cover for each species when they were sampled multiple times in a year, therefore, if some species were dominating (say, >50) during first sampling time and others during the second sampling time for a given year, the aggregated effect yields more than 100$\%$ cover for that year.\label{fig_spaceavg_timeseries}}
 \end{center}
 \end{figure}
 <!--***DAN: Shyamolina, the y axis on panel B says "Total percent cover", but the values are always above 100, and
@@ -1009,8 +1009,15 @@ year) we used the highest cover class for each plot. Finally, the percent cover 
 averaging the mid-points of the cover classes for the 20 plots." Does this mean that if species A was at 90% cover 
 on census date 1 and then died out later in the same summer, and species B took over later in the summer and was at
 90% cover on census date 2, and there were no other species, then the total cover would be 180%, since they take the
-max cover for each species? If so, then please put that in your explanation.-->
-<!--***DAN: Shyamolina, please specify the units for panel A-->
+max cover for each species? If so, then please put that in your explanation.
+***Shya: Yes, I wanted to mean this. Say, for 1983 the mean cover over 20 plots for sp.A is 70, sp.B is 50, sp.C is 60 and so on...when I take sum over all species cover(which are mean over 20 plots) it will cross 100%, I checked it is not the case that any individual species cover (mean over 20 plots) would cross 100%.
+# run the below code to visualize:
+z<-readRDS("./Results/knz_results/ts_all_sp_knz_soiltype_t.RDS") # whole processed data 36yrs by 125sp.
+plot.ts(z,plot.type = "single",col=rainbow(ncol(z)),type="o",xlab="36 years",ylab="each 125 sp. mean cover over 20 plots")
+for any given year, if you take the sum of all the colored points it will be >100
+-->
+<!--***DAN: Shyamolina, please specify the units for panel A
+***Shya: Done.-->
 
 
 
