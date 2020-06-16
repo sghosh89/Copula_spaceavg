@@ -445,7 +445,8 @@ of @Ghosh_copula. Given $x_i(t)$ for $t=1,\ldots,T$, we begin by defining the
 divided by $T+1$. The smallest element of this set is here considered to have rank 1, and the largest element to 
 have rank $T$. Plotting the normalized ranks $u_i(t)$ and $u_j(t)$ against each other for two positively associated species 
 $x_i$ and $x_j$ provides a visual
-indication of tail association and asymmetries in tail association, as described by @Ghosh_copula (Fig. \ref{fig_pedag_taildep}).
+indication of tail association and asymmetries in tail association (Fig. \ref{fig_pedag_taildep}), 
+as described by @Ghosh_copula.
 Given two bounds $0\leq b_l < b_u \leq 1$ ($l$ stands for "lower" and $u$ for "upper"), we define the lines $u_i + u_j=2b_l$ and $u_i+v_i=2b_u$,
 which intersect the unit square $[0,1]\times[0,1]$ of the normalized rank plot. The partial Spearman
 correlation associated with the band circumscribed by these bounds is
@@ -488,15 +489,16 @@ first part of (Q1).
 Fig. \ref{fig_pedag_cv2_skw} and the Theory section
 suggest that the aggregate nature of tail associations of positively associated species may influence
 the distribution of $\xtot$. Tail associations between positively associated species were 
-measured, in aggregate for a community, by counting the number of values
+measured, in aggregate for a community, by counting the number, $n_L$, of values
 $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$, for all $i \neq j$, that were positive, representing stronger lower- than
-upper-tail association between species (denoted $n_L$); as well as the  number of values 
-that were negative, representing stronger upper- than lower-tail association between species (denoted $n_U$).
+upper-tail association between species; as well as the  number, $n_U$, of values 
+that were negative, representing stronger upper- than lower-tail association between species.
 We also computed the sum, $A_{\text{tot}}$, of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$
 across all positively associated species pairs, $i,j$. This was positive if lower-tail 
 association was, in aggregate across the community, stronger than upper-tail association, and
 negative if the reverse. We refer to $A_{\text{tot}}$ as the *total community tail association*
-of positively associated species pairs. 
+of positively associated species pairs. Positive association interpreted to mean a positive 
+Spearman correlation.
 <!--***DAN: Do some search and standardize the use of lower v. left-tail and upper v. right-tail
 association, and related quantities
 ***Shya: I did, it is always lower-tail and upper-tail association. Left- and right- tail for skewness.-->
@@ -533,7 +535,7 @@ unbiased estimator (with Bessel's correction) was used for the standard deviatio
 the third $h$-statistic, $m_3(\xtot)=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (\xtot(t)-\mean(\xtot))^3$, which is the 
 unique symmetric unbiased estimator of that quantity. As illustrated in Fig. \ref{fig_pedag_cv2_skw}, the skewness 
 complements the traditional use of 
-$\var(\xtot)$ or $\CVcomsq$ to characterize community variability because strongly negative values indicate that $\xtot$
+$\var(\xtot)$ or $\CVcomsq$ to characterize community variability, because strongly negative values indicate that $\xtot$
 undergoes occasional large downward departures from typical values (i.e., crashes), and large positive values
 indicate that $\xtot$ undergoes occasional large upward departures from typical values. As also illustrated in
 Fig. \ref{fig_pedag_cv2_skw}, either of these dynamical behaviors (i.e., either positive or negative
@@ -544,7 +546,7 @@ analogously define a *skewness ratio* for our new framework, as follows. Let $\S
 this quantity would take if species dynamics were independent.
 We have $\sk(\xtot)=\frac{m_3(\xtot)}{\var(\xtot)^{3/2}}=\frac{\sum_{i,j,k}m_{ijk}}{(\sum_{i,j}v_{ij})^{3/2}}$,
 where $m_{ijk}=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (x_i(t)-\mean(x_i))(x_j(t)-\mean(x_j))(x_k(t)-\mean(x_k))$ is a third
-cross-moment. Assuming independence of species dynamics, this is $\Sind=\frac{\sum_i m_{iii}}{(\sum_i v_{ii})^{3/2}}$.
+cross-moment. Assuming independence of species dynamics, this becomes $\Sind=\frac{\sum_i m_{iii}}{(\sum_i v_{ii})^{3/2}}$.
 We define the *skewness ratio* as $\phi_S=\Scom/\Sind$, so that $\Scom=\phi_S \Sind$. 
 
 Values of the skewness ratio provide a summary of how species interactions influence community variability that 
@@ -600,55 +602,95 @@ in stability metric into two distinct parts - due to correlation and
 due to tail association for extreme values between interspecific response, as follows. 
 -->
 
-<!--***DAN: Dan stopped here for now, 2020 06 12-->
+The skewness ratio $\phi_{S}$ provides information about the influence of species interactions, of all kinds,
+on the skewness of $\xtot$. But goal G3 of the Introduction was to understand the influence of species tail associations,
+and asymmetries of tail associations, on $\Scom=\sk(\xtot)$. We did this through a randomization procedure
+that rendered symmetric the tail associations between species, while keeping other statistical properties of 
+community dynamics approximately fixed. Given the data $x_i(t)$ ($i=1,\ldots,N$, $t=1,\ldots,T$), the randomization 
+procedure produced $M$ surrogate datasets $x_i^{(m)}(t)$ ($i=1,\ldots,N$, $t=1,\ldots,T$), for $m=1,\ldots,M$, 
+for any desired number of surrogates, $M$, with properties detailed below. Since these surrogate datasets
+had symmetric tail associations between species but were otherwise statistically similar to the original dataset,
+$x_i(t)$, $\Scom=\sk(\xtot)$ was computed for the original data, and a surrogate skewness value, $\sk(\sum_i x_i^{(m)})$,
+was also computed for each of the surrogate datasets. A test of whether asymmetry of tail associations significantly influenced
+the $\Scom$ was obtained by examining whether $\Scom$ fell sufficiently in the tails of the distribution 
+of surrogate values to meet the desired confidence level. 
 
+The quantity $\Snta$ was defined as the median of the values $\sk(\sum_i x_i^{(m)})$ for the surrogate datasets,
+and it is $\Snta$, and associated quantities which we will now define, that are used to accomplish goal G3 of the Introduction. 
+We also defined the quantities $\phi_{S,\text{ta}}=\Scom/\Snta$ and $\phi_{S,\text{cor}}=\Snta/\Sind$,
+where "ta" stands for "tail association" and "nta" stands for "no tail association".
+The quantity $\phi_{S,\text{cor}}$ satisfies $\Snta=\phi_{S,\text{cor}}\Sind$, and therefore
+represents the factor by which correlations between species, as distinct from asymmetries of tail association,
+influence the skewness ratio. The subscript "cor" is a reference to the effects of correlation.
+The quantity $\phi_{S,\text{ta}}$ satisfies $\Scom=\phi_{S,\text{ta}}\Snta$, and therefore
+represents the factor by which asymmetric tail associations between species further influence the 
+skewness ratio. So a value of $\phi_{S,\text{ta}}$ which differs from $1$ indicates that asymmetric tail associations have a role in
+determining $\Scom$; statistical significance, here, is judged as in the previous paragraph.
+It is straightforward to show from the definitions that $\phi_S=\phi_{S,\text{ta}}\phi_{S,\text{cor}}$, so
+$\Scom=\phi_{S,\text{ta}}\phi_{S,\text{cor}}\Sind$.
+Thus the two newly defined quantities, $\phi_{S,\text{ta}}$ and $\phi_{S,\text{cor}}$, separate the influence of 
+species relationships on the skewness ratio into the factors due to asymmetries of tail associations and correlations
+with symmetric tail associations. 
+For comparison, $\CVcomsq$ was also computed for the empirical data and for surrogates, 
+defining quantities $\CVntasq$, $\phi_{\text{CV},\text{cor}}$ and $\phi_{\text{CV},\text{ta}}$
+which are related to each other in an analogous way. Fig. \ref{fig_method_box}A-D summarize the newly defined
+quantities and their interrelationships. However, because $\CVcomsq$ and $\phi_{\text{CV}}$ depend only 
+on variances, covariances and means of species, which are preserved by our surrogates, $\CVntasq$ should approximately
+equal $\CVcomsq$, and $\phi_{\text{CV},\text{ta}}$ should be approximately 1.
 
+Having defined our methods, we can now frame hypotheses suggested by Fig. \ref{fig_pedag_cv2_skw} and the reasoning of the 
+Theory section in terms of the new methods. Fig. \ref{fig_pedag_cv2_skw}A,C,E and 
+Fig. \ref{fig_theory}M-P suggest that communities exhibiting a preponderance of lower-tail association 
+should also have total community dynamics that are more left-skewed, or less right-skewed, than would have been the case
+without these tail associations. Using the language of our new methods, this constitutes
+a hypothesis that for communities for which $n_L>n_U$ and $A_{\text{tot}}>0$, we should have 
+$\Scom<\Snta$, and therefore $\phi_{S,\text{ta}}<1$. 
+Fig. \ref{fig_pedag_cv2_skw}B,D,F and 
+Fig. \ref{fig_theory}I-L suggest that communities exhibiting a preponderance of upper-tail association 
+should also have total community dynamics that are more right-skewed, or less left-skewed, than would have been the case
+without these tail associations. Using the language of our new methods, this constitutes
+a hypothesis that for communities for which $n_L<n_U$ and $A_{\text{tot}}<0$, we should have 
+$\Scom>\Snta$, and therefore $\phi_{S,\text{ta}}>1$.  
+<!--***DAN: Don't forget to make comparisons in the Results between the values of phi_S,ta and phi_S,cor,
+to judge the relative importance of asymmtric tail associations and other aspects of species interrelationships.
+Also, relate the results to stability, which is not conveniently done here because it depends on signs as
+well as magnitudes, e.g., if Scom<Snta and both are negative, then tail association have destabilized the community, I think,
+i.e., crashes to low values are accentuated or something. Better to work all these specifics out for the cases
+that actually materialize than to try to consider all possibilities here-->
 
-<!--partition between correlation and tail association effect in phi_s, phi_cv-->
-As we have mentioned earlier, the skewness of a community ($S_{com}$) is related 
-with its independent analog ($S_{ind}$) by the scaling factor $\phi_s$ that can be considered 
-as a measure of community-change over time. This $\phi_s$ can have two distinct independent
-contributions: $\phi_{s,cor}$ (due to only correlation) 
-and $\phi_{s,ta}$ (due to tail-asymmetry), i.e., $\phi_s = \phi_{s,cor} \times \phi_{s,ta}$. 
-One can consider $\phi_{s,cor}$ as a factor by which skewness of an independent-community 
-($S_{ind}$, skewness for species having no interactions) changes to the skewness of 
-the community when species show correlated fluctuations but no asymmetric tail-association ($S_{nta}$), 
-i.e., $S_{ind} = \phi_{s,cor} \times S_{nta}$. From now on, we will mention the later type of community 
-as 'tail-symmetric' community where interspecific response showed no 
-stronger correlation in either tail. Theoretically, one can make this tail-symmetric community 
-from the given community matrix by removing the asymmetric tail-association 
-among species but keeping the pairwise Pearson correlation same (upto sampling variation) via 
-algorithm stated in Appendix \ref{SI-alg_pp_com}. Now, if the interspecific response 
-are more correlated in their lower or higher values (i.e., asymmetric 
-tail-association) over years, then the skewness for the tail-symmetric community 
-would change by a factor $\phi_{s,ta}$ such that $S_{com} = \phi_{s,ta} \times S_{nta}$.
-We can also consider the corresponding analog for variance ratio metric, i.e., 
-$\phi_{cv} = \phi_{cv,cor} \times \phi_{cv,ta}$ but as co-variance does not incorporate the effect
-for extreme values, $\phi_{cv,ta}$ would be $\approx 1$. The relations between independent, tail-symmetric 
-and the given community with all these metrics are shown as a schematic diagram in Fig. \ref{fig_schematic_box}. 
-<!--What to expect for the values of $\phi_s$'s with two different kinds of tail-asymmetry?-->
-For a given community where most of the species showed stronger correlation in 
-lower values (i.e. stronger lower tail association with $A_{tot}>0$), one can 
-expect the change in skewness would be in the order $S_{com} < S_{nta}$ 
-and $\phi_{s,ta} < \phi_{s,cor}$ as lower tail association 
-tends to suppress the skewness (Fig. \ref{fig_pedag_cv2_skw}C). If the 
-community showed stronger tail-association for the higher values of 
-species-time series (i.e. $A_{tot}<0$), skewness should change in 
-reverse order, i.e., $S_{com} > S_{nta}$ with $\phi_{s,ta} > \phi_{s,cor}$.
-This anticipation is consistent with the fact that upper tail 
-association tends to increase the skewness (Fig. \ref{fig_pedag_cv2_skw}D). The 
-stronger the tail-asymmetry for the 
-interspecific response within the community (i.e. higher $|A_{tot}|$), the larger would be 
-the difference between $\phi_{s,cor}$ and $\phi_{s,ta}$. We summarize the 
-difference between classic variance ratio approach and our proposed 
-skewness ratio approach in Fig. \ref{fig_method_box} that can help to answer (Q2).
-
-The complete reproducible workflow 
-for this project is available at https://github.com/sghosh89/Copula_spaceavg. Following 
-we will present the results from the analyses with 
-two exemplary long-term community data described in Appendix \ref{SI-Data}.
+The surrogate datasets, $x_i^{(m)}(t)$, have the following properties. Complete descriptions of surrogates are in SI
+section \ref{SI-surrogs}. 
+First, for each $m$ and $i$, the sets $\{x_i(t) : t=1,\ldots,T\}$ and 
+$\{x_i^{(m)}(t) : t=1,\ldots,T\}$ are identical, as unordered sets.
+In particular this implies that the temporal means and variances of the time series
+$x_i(t)$ and $x_i^{(m)}(t)$ are identical, for all $i$ and $m$. 
+Second, the expected value of the sum $\sum_{i_2>i_1} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$
+is within $\pm 10\%$ of the sum $\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$;
+and for any $i_1$ and $i_2$, the expected value of
+$\cor(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ is as close as possible to
+$\cor(x_{i_1}(t),x_{i_2}(t))$ (see SI section \ref{SI-surrogs} for information on the extent to which
+these quantities agreed for our datasets).
+<!--***DAN: Once you put all the relevant material and figures in the sup mat, you may want to change this 
+reference to it is a reference to the appropriate SI figure instead of or in addition to the SI section on surrogs-->
+In particular, this means that the total community variance, 
+$\var(\sum_i x_i^{(m)}(t))= \sum_{i_1, i_2} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$
+for a surrogate dataset should be similar to the empirical total community variance,
+$\var(\sum_i x_i(t))= \sum_{i_1, i_2} \cov(x_{i_1}(t),x_{i_2}(t))$.
+Likewise,
+the variance ratios $\frac{\sum_{i_1, i_2} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))}
+{\sum_{i} \var(x_i^{(m)}(t))}$ and 
+$\frac{\sum_{i_1, i_2} \cov(x_{i_1}(t),x_{i_2}(t))}
+{\sum_{i} \var(x_i(t))}$ should be similar.
+Finally, for any $i_1$, $i_2$ and $m$, the tail associations of $x_{i_1}^{(m)}(t)$
+and $x_{i_2}^{(m)}(t)$ are symmetric, i.e., similar in their upper- and lower-tail association
+values. All analyses were done in R. Complete code for this project is at https://github.com/sghosh89/Copula_spaceavg. 
 
 # Results\label{Results}
+
+<!--***DAN: Dan made it to here 2020 06 16, 1120am. Need to stop for now. In addition to continuing from this
+point, Dan, don't forget to write a caption for the Theory fig and make sure all the technical stuff on 
+surrogates gets put in right sup mat section and notation gets adjusted to match with the notation we 
+have been using-->
 
 We here present the results from the study carried out with two long-term
 grassland community data sets: basal cover data (1932-1972)
@@ -815,17 +857,16 @@ the two extremes: an actual community ($com$) having both correlation and tail
 association between species and its independent ($ind$) analog with no
 interspecific interaction. This is explored in detail later (Fig. \ref{fig_method_box}).-->
 
-
 <!--Pedagogical figure to explain method-->
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=12.5cm]{./Results/pedagog_figs/pedagog_complex_cv2_skw.pdf}\\
-\includegraphics[width=12.5cm]{./Results/pedagog_figs/method_box_diagram.pdf}
-\caption{Schematic diagram showing the difference between two approach: variance-ratio based
-and skewness-ratio based. \label{fig_method_box}}
+\includegraphics[width=6.5in]{./Results/pedagog_figs/method_fig.pdf}\\
+\caption{Summary of approach and notation. Arrows in A-D imply an equation
+where the quantity in the box at the arrow tail, times the quantity labelled on 
+the arrow itself, equals the quantity in the box at the arrow head. For instance, the 
+arrow in A represents the quation $\CVcomsq=\phi_{\text{cv}} \CVindsq$. \label{fig_method_box}}
 \end{center}
 \end{figure}
-<!--***DAN: This figure to be replaced by a similar figure that Shyamolina is making-->
 
 <!--Results with corl-coru matrix plot-->
 \begin{figure*}[!h]

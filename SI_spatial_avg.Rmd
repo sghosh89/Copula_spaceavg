@@ -978,10 +978,14 @@ knitr::kable(tab_spinfo_knz,
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
 
-# Algorithm to generate "tail-symmetric community" but with same Pearson correlation between any two species  \label{alg_pp_com} 
+# Surrogate datasets  \label{surrogs} 
 
-See .tex file by DCR.
 
+
+\clearpage
+\newpage
+
+# Supporting figures
 
 <!--hays & knz: time-series results plot-->
 \begin{figure}[!h]
@@ -1024,11 +1028,8 @@ for any given year, if you take the sum of all the colored points it will be >10
 <!--***DAN: Shyamolina, please specify the units for panel A
 ***Shya: Done.-->
 
-
-
-
-
 \clearpage
+\newpage
 
 # References
 
