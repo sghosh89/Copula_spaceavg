@@ -867,6 +867,19 @@ considered in Fig. \ref{MT-fig_pedag_cv2_skw}.
 
 # Details of the simulations for the Theory section \label{TheoryMethods}
 
+The random variables $(x_1,x_2,\ldots,x_N)$ of Fig. \ref{MT-fig_theory} were generated as follows. Let $0 \leq \beta_1 < \beta_2 \leq 1$
+be thresholds which will control the tails in which the $x_i$ are perfectly related, and let $0 \leq \rho \leq 1$ be a correlation
+parameter which will control the strength of the correlation between the components, $x_i$, outside of the perfectly correlated tails.
+Let $\Sigma$ be a covariance matrix with $1$s on the diagonal and $\rho$ in all off-diagonal entries. Let 
+$(u_1,\ldots,u_N)$ be a random vector obtained by generating points from an $N$-dimensional multivariate normal distribution with 
+mean $(0,\ldots,0)$ and covariance matrix $\Sigma$ and then applying the cumulative distribution function of the univariate
+standard normal distribution to each component, to uniformize the marginals. Let $f$ be a uniformly distributed random variable
+on the unit interval, and use it and the $u_i$ to define random variables $v_i$ as follows. If $f<\beta_1$ or $f>\beta_2$, let 
+$v_i=f$ for all $i$. Otherwise let $v_i=u_i/(\beta_2-\beta_1)+\beta_1$.
+Then get $x_i$ by applying the inverse cumulative distribution function of a univariate standard normal distribution to the $v_i$.
+For scenario 1, $\rho=0.6$, $\beta_1=0$, and $\beta_2=1$. For scenario 2, $\beta_1=0$, $\beta_2=0.95$; for scenario 3, 
+$\beta_1=0.05$, $\beta_2=1$; and for scenario 4, $\beta_1=0.05$, $\beta_2=0.95$. For each of scenarios 2-4 (seperately),
+$\rho$ was chosen numerically for that scenario so that the covariance of $x_i$ and $x_j$ was the same as in scenario 1. 
 
 # Data \label{Data} 
 <!--***DAN: Dan still need to edit this section-->

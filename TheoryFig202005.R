@@ -1,4 +1,4 @@
-#This is for making a figure to help introducte the theoretical ideas of influence
+#This is for making a figure to help introduce the theoretical ideas of influence
 #of tail associations on variance of a sum and the limits of that.
 
 set.seed(101)
