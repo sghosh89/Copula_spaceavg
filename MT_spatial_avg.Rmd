@@ -304,7 +304,7 @@ total community biomass. The setup for the theory is as follows. As in the Intro
 measure for species $i=1,\ldots,N$ at time $t=1,\ldots,T$. We use $N=20$ and $T=100000$ in the examples of this 
 section. We assume the multivariate random variables $x(t)=(x_1(t),\ldots,x_N(t))$ are independent
 and identically distributed for distinct times, $t$. It should be straightforward to replace
-this assumption with an appropriate stationarity/ergodicity assumption, with no real change
+this assumption with an appropriate assumption of stationarity and ergodicity, with no real change
 to the theoretical development, but we adopt the stronger assumption for simplicity. 
 To describe relationships between species, 
 classic approaches consider the covariances
@@ -688,9 +688,7 @@ values. All analyses were done in R. Complete code for this project is at https:
 # Results\label{Results}
 
 <!--***DAN: Dan made it to here 2020 06 16, 1120am. Need to stop for now. In addition to continuing from this
-point, Dan, don't forget to write a caption for the Theory fig and make sure all the technical stuff on 
-surrogates gets put in right sup mat section and notation gets adjusted to match with the notation we 
-have been using-->
+point, Dan, don't forget to write all the technical stuff in three sup mat sections before moving on-->
 
 We here present the results from the study carried out with two long-term
 grassland community data sets: basal cover data (1932-1972)
@@ -824,10 +822,11 @@ for 60 years only, for clarity. \label{fig_pedag_cv2_skw}}
 \begin{figure}
 \begin{center}
 \includegraphics[width=9cm]{./Results/TheoryFig.pdf}
-\caption{Dan to fill in. \label{fig_theory}}
+\caption{Four simple theoretical scenarios demonstrating how species interrelationships can influence a community aggregate
+quantity in ways that are not detectable to classic approaches. See the Theory section for interpretations and SI section 
+\ref{SI-TheoryMethods} for mathematical details.\label{fig_theory}}
 \end{center}
 \end{figure}
-<!--***DAN: Don't forget to write this caption, Dan.-->
 
 <!--Methods figure for asymmetric tail association and partial Spearman correlation-->
 \begin{figure}[!h]
