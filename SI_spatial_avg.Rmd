@@ -1005,12 +1005,238 @@ knitr::kable(tab_spinfo_knz,
 
 # Surrogate datasets  \label{surrogs} 
 
+To start simply, we first describe the surrogate 
+algorithm for bivariate data. Then we move on to describing the algorithm
+for multivariate data. 
+
+Given data $(x(t),y(t))$ for $t=1,\ldots,T$, the bivariate
+surrogates algorithm will provide surrogate datasets
+$(x^{(m)}(t),y^{(m)}(t))$ for $t=1,\ldots,T$ with the following properties.
+First, for each $m$,
+the sets $\{x(t) : t=1,\ldots,T\}$ and $\{x^{(m)}(t) : t=1,\ldots,T\}$
+are identical, as unordered sets, as are the sets 
+$\{y(t) : t=1,\ldots,T\}$ and $\{y^{(m)}(t) : t=1,\ldots,T\}$. Thus,
+in particular, $\mean(x(t))=\mean(x^{(m)}(t))$ and 
+$\mean(y(t))=\mean(y^{(m)}(t))$ for all $m$, where these means are computed over time. Likewise
+$\var(x(t))=\var(x^{(m)}(t))$ and 
+$\var(y(t))=\var(y^{(m)}(t))$ for all $m$. Similarly for
+higher moments or other quantities that depend only on the time series
+univariate marginal distributions.
+Second, the Pearson correlations $\cor(x(t),y(t))$
+and $\cor(x^{(m)}(t),y^{(m)}(t))$ are approximately equal (differing 
+only due to a type of sampling variation), where these correlations are computed over time. 
+Finally, the copula 
+structure of the $(x^{(m)}(t),y^{(m)}(t))$ for $t=1,\ldots,T$
+will be normal. See @Ghosh_copula for a definition of "copula" and background, as well as 
+extensive references to additional literature. Copula statistics is a whole subfield of 
+statistics which we do not review here because we already reviewed the basics in
+our prior work [@Ghosh_copula], and many basic and advanced texts on the subject 
+are available [@joe2014_dependence;@nelsen2006_copula;@MaiScherer2017].
+Note also that the covariance
+$\cov(x^{(m)}(t),y^{(m)}(t))$ will be approximately equal to the covariance
+$\cov(x(t),y(t))$ (up to sampling variation), where these covariances are again computed over time, because 
+$\cor(x^{(m)}(t),y^{(m)}(t))$ is approximately equal to 
+$\cor(x(t),y(t))$ and $\var(x(t))=\var(x^{(m)}(t))$ and 
+$\var(y(t))=\var(y^{(m)}(t))$.
+
+To construct surrogates, we begin by defining a stochastic map
+$$\varphi:[-1,1]\rightarrow[-1,1]$$ as follows. Given $p \in [-1,1]$,
+consider $p$ to be the covariance of a bivariate normal distribution
+with standard normal univariate marginals. Generate data 
+$(a(t),b(t))$ for $t=1,\ldots,T$ via independent draws 
+from this distribution. Permute the ordered set $(x(1),\ldots,x(T))$
+so that, for all $k$, the time series position of the $k$th-largest element
+in the permuted set is the same as the time series position of the 
+$k$th-largest element of the ordered set $(a(1),\ldots,a(T))$. We refer to
+such a permutation operation as \emph{aligning the ranks} of the $x$
+to match those of the $a$. Aligning the ranks is not affected by possible ties in
+the set $\{x(1),\ldots,x(T)\}$, and, with probability 1, there are no ties in 
+the set $\{a(1),\ldots,a(T)\}$. Likewise align the ranks of the $y$
+to match those of the $b$. Another way to describe this rank alignment 
+step for $x$ is to select a permutation $\sigma_x$
+of the indices $1,\dots,T$ such that the time series
+$(x(\sigma_x(1)),\ldots,x(\sigma_x(T)))$ has 
+$\rank(x(\sigma_x(t)))=\rank(a(t))$ for all $t$, where $\rank(x(\sigma_x(t)))$ is
+the rank of $x(\sigma_x(t))$ in the set $\{x(1),\ldots,x(T)\}$ and 
+$\rank(a(t))$ is the rank of $a(t)$ in the set $\{a(1),\ldots,a(T)\}$.
+We consider the smallest element of a set of size $T$ to have rank $1$ and
+the largest element to have rank $T$. 
+The value of $\rank(a(t))$ is well defined,
+with probability 1, because, with probability 1, there are no ties in 
+$\{a(1),\ldots,a(T)\}$. 
+The value of $\rank(x(\sigma_x(t)))$ is defined by randomly ranking tied
+elements, e.g., the ranks of the elements of the set $\{5, 4.2, 4.2\}$
+can randomly be considered to be $\{3,1,2\}$ or $\{3,2,1\}$, with no effect
+on the rank alignment algorithm.
+We likewise select a permutation $\sigma_y$
+such that the time series $(y(\sigma_y(1)),\ldots,y(\sigma_y(T)))$ has 
+$\rank(y(\sigma_y(t)))=\rank(b(t))$ for all $t$. We then define $\varphi(p)$
+to be the Pearson correlation of the permuted time series, i.e.,
+$\cor(x(\sigma_x(t)),y(\sigma_y(t)))$. This is a 
+stochastic quantity, because it is based on the stochastically generated
+time series $(a(t),b(t))$. We also define the expected value map
+$\E\varphi(p)$. In practice, this is computed numerically by computing
+the stocastic map $\varphi(p)$ many times and taking the mean. Thus
+$\E\varphi(p)$ can be determined with error that can be reduced 
+arbitrarily through additional stochastic evaluations of $\varphi(p)$.
+
+Having defined $\varphi$, let $c=\cor(x(t),y(t))$ be the Pearson 
+correlation of the data, and select $\hat{p} \in [-1,1]$ such that $\E\varphi(\hat{p})=c$ 
+to within the desired precision. See below on how to do this, and our experience with
+when it is possible, and whether and when $\hat{p}$ is unique. Then Pearson-preserving 
+surrogates are constructed for
+the dataset $(x(t),y(t))$, $t=1,\ldots,T$, as follows. First, generate data 
+$(a(t),b(t))$ for $t=1,\ldots,T$ via independent draws from the bivariate normal
+distribution with standard normal marginals and covariance $\hat{p}$.
+Then align the ranks of $x(t)$ to match those of $a(t)$, and align the ranks
+of $y(t)$ to match those of $b(t)$. These permutations of $x(t)$ and $y(t)$, together, 
+form the surrogates.
+Numerous surrogate datasets can be generated by repeating this process.
+The first two desired properties of the surrogates listed above are 
+satisfied, by construction. The final desired property of the surrogates
+(normal copula structure) is satisfied because the ranks of the surrogates
+are the same as the ranks of $a$ and $b$ [@Ghosh_copula;@nelsen2006_copula]. 
+
+Given data $(x(t),y(t))$ for $t=1,\ldots,T$ and given $c \in [-1,1]$,
+we now discuss what we know about whether and when there exists $\hat{p} \in [-1,1]$ such 
+that $\E\varphi(\hat{p})=c$, and whether $\hat{p}$ is unique when it 
+exists; we simultaneously discuss how we obtained $\hat{p}$ for our data.
+Above we used $c=\cor(x(t),y(t))$, but here we consider general $c \in [-1,1]$. 
+Given $(x(t),y(t))$, we evaluated $\varphi$ $500$ times for $p$ equal to each
+of $18$ values evenly spaced from $-1$ to $1$, and plotted the results (e.g., Fig. 
+\ref{fig:varphiexample} shows an example plot). We generated such a plot
+whenever we made use of the map $\varphi$ for a dataset $(x(t),y(t))$.
+In every case we checked whether the piecewise-linear approximation 
+to the expected-value map $\E\varphi$ (depicted on Fig. \ref{fig:varphiexample} 
+for this example) was monotonic, finding that in every case it was. We then
+used this piecewise-linear approximation as a standin for the map
+$\E\varphi$ in subsequent computations. Whenever $c$ was between the values
+$\E\varphi(-1)$ and $\E\varphi(1)$, depicted on Fig. \ref{fig:varphiexample}
+as the extreme y-axis values obtained, the conditions checked above meant we could
+find a single unique pre-image of $c$ under the map $\E\varphi$. This was 
+an approximate pre-image because we used the piecewise-linear approximation for 
+$\E\varphi$, but was likely to be a good approximation because we used $500$
+evaluations of $\varphi$ for each value of $p$.
+Henceforth we will denote by $\E\varphi^{-1}$ the inverse of the piecewise-linear
+approximation of $\E\varphi$; this piecewise-linear approximation was always invertible
+thanks to the checks performed above. The extreme value 
+$\E\varphi(1)$ can be straightforwardly
+computed by sorting both $x$ and $y$ into ascending order and computing the Pearson correlation.
+The extreme value $\E\varphi(-1)$ can be straightforwardly
+computed by sorting $x$ into ascending order and $y$ into descending order, and
+then computing the Pearson correlation.
+
+Given multivariate data, $(x_1(t),\ldots,x_N(t))$ for $t=1,\ldots,T$,
+we now move on to describing surrogates for these data, 
+$(x_1^{(m)}(t),\ldots,x_N^{(m)}(t))$ for $t=1,\ldots,T$. Multivariate surrogates 
+have the following properties, the second of which is slightly weaker than the 
+corresponding property for the bivariate case.
+First, for each $m$ and $i$, the sets $\{x_i(t) : t=1,\ldots,T\}$ and 
+$\{x_i^{(m)}(t) : t=1,\ldots,T\}$ are identical, as unordered sets. 
+Second, the expected value of the sum $\sum_{i_2>i_1} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$
+is within $\pm 10\%$ of the sum $\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$;
+and for any $i_1$ and $i_2$, the expected value of
+$\cor(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ is as close as possible to
+$\cor(x_{i_1}(t),x_{i_2}(t))$ (below, we will make precise
+the degree to which these quantities agreed for our datasets).
+Finally, the copula structure of $(x_1^{(m)}(t),\ldots,x_N^{(m)}(t))$
+for $t=1,\ldots,T$ will be multivariate normal. Because
+$\sum_{i_2>i_1} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$
+is within $\pm 10\%$ of $\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$,
+the total community variance $\var(\sum_i x_i^{(m)}(t))= \sum_{i_1, i_2} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$
+for a surrogate dataset should be similar to the total community variance,
+$\var(\sum_i x_i(t))= \sum_{i_1, i_2} \cov(x_{i_1}(t),x_{i_2}(t))$, for the real data.
+Likewise,
+the variance ratios $\frac{\sum_{i_1, i_2} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))}
+{\sum_{i} \var(x_i^{(m)}(t))}$ and 
+$\frac{\sum_{i_1, i_2} \cov(x_{i_1}(t),x_{i_2}(t))}
+{\sum_{i} \var(x_i(t))}$ should be similar.
+
+We begin by defining the map $\varphi_{i_1 i_2}:[-1,1]\rightarrow[-1,1]$
+for each pair of taxa $i_1<i_2$, using the data $(x_{i_1}(t),x_{i_2}(t))$ for $t=1,\ldots,T$;
+this is done using the same procedure described in the bivariate case.
+We then construct $\hat{p}_{i_1 i_2} = \E\varphi_{i_1 i_2}^{-1}(c_{i_1 i_2})$ for 
+$c_{i_1 i_2} = \cor(x_{i_1}(t),x_{i_2}(t))$.
+For the datasets we considered, this was uniquely defined for all $i_1$ and $i_2$.
+We then construct a symmetric, $N \times N$ matrix, $\hat{P}$, with $1$s on the diagonal, based on the 
+values $\hat{p}_{i_1 i_2}$. If this were a positive-definite matrix, a surrogate 
+dataset $(x_1^{(m)}(t),\ldots,x_N^{(m)}(t))$ for $t=1,\ldots,T$ would 
+then be obtained by the following steps. First, generate data 
+$(a_1(t),\ldots,a_N(t))$ for $t=1,\ldots,T$ via independent draws from the multivariate normal
+distribution with standard normal marginals and covariance matrix $\hat{P}$
+(covariance matrices must be positive definite, so this is where positive definiteness is needed).
+Then, for each $i$, align the ranks of $x_i(t)$ to match those of $a_i(t)$.
+These permutations of the time series $x_i(t)$, together, form the surrogate dataset.
+Numerous surrogate datasets can be generated by repeating this process.
+Following reasoning similar to the bivariate case, it is straightforward
+to see that the desired properties of the surrogate dataset, listed above, are
+satisfied. In fact, the Pearson correlations 
+$\cor(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ should be approximately equal
+to the values $\cor(x_{i_1}(t),x_{i_2}(t))$ (up to sampling variation) 
+instead of merely being close. And
+the expected value of the sum $\sum_{i_2>i_1} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$
+should therefore also approximately equal the sum $\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$,
+rather than merely being within $10\%$. However, the matrix $\hat{P}$ was not 
+positive definite for our datasets, 
+so we proceeded instead as follows. 
+
+We defined an objective function $f(c)$, where $c$ is a vector consisting of 
+values between $-1$ and $1$ indexed by
+$i_1$ and $i_2$ where $1 \leq i_1 < i_2 \leq N$. For a given $c$, $f$ was
+computed by first computing $p_{i_1 i_2}=\E\varphi_{i_1 i_2}^{-1}(c_{i_1 i_2})$
+for all $1 \leq i_1 < i_2 \leq N$; then by forming an $N \times N$ symmetric 
+matrix $P$, with ones on the diagonal, from the $p_{i_1 i_2}$; then by computing
+the minimum eigenvalue of that matrix. Using the Nelder-Mead simplex algorithm, the 
+objective function $f$ was maximized subject to the constraints that: 
+$c_{i_1 i_2}$ must be in the domain of $\E\varphi_{i_1 i_2}^{-1}$; and
+$\sum_{i_2>i_1} c_{i_1 i_2} \sqrt{\var(x_{i_1}(t)) \var_t(x_{i_2}(t))}$ must be 
+within $10\%$ of $\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$.
+The Nelder-Mead algorithm was not run to completion, but rather was terminated 
+after the first value of $c$ was dicovered for which $f(c)$ was greater than $0$;
+we denote that first value of $c$ by $\hat{c}$. We then defined 
+$\hat{p}_{i_1 i_2}=\E\varphi_{i_1 i_2}^{-1}(\hat{c}_{i_1 i_2})$
+for all $1 \leq i_1 < i_2 \leq N$ and we formed the $N \times N$ symmetric matrix 
+$\hat{P}$ from these values, putting $1$s on the diagonal. This was a 
+positive definite matrix by construction. Surrogates were constructed as 
+described in the previous paragraph but using this matrix $\hat{P}$.
+
+With two multivariate species cover datasets (Hays, $N=19$ sp., and Konza, $N=22$ sp., both of these species counts 
+including the single pseudo-species consisting of "rare" and "intermediate" species combined, see Methods in 
+the main text), we checked whether the 
+surrogates actually had the properties outlined above. First, using 
+each of 10000 surrrogates indexed by $m=1, 2, \ldots, 10000$, we computed 
+$\sum_{i_2>i_1} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ 
+and compared the resulting distribution of values to the single quantity 
+$\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$ (Fig. \ref{fig:check_cov_var_vr}A, B). 
+The values for the data were very close to the middle of the distributions of surrogate
+values, as desired. 
+Second, we made similar 
+comparisons (Fig. \ref{fig:check_cov_var_vr}C, D) using the quantities 
+$\var(\sum_i x_i^{(m)}(t))$ and $\var(\sum_i x_i(t))$. Again, and by mathematical necessity
+given the results of Fig. \ref{fig:check_cov_var_vr}A, B,
+the values for the data were very close to the middle of the distributions of surrogate
+values, as desired. Third, we made similar comparisons using the variance ratio,
+i.e., using the quantities  $\var(\sum_i x_i^{(m)}(t))/ \sum_i(\var x_i^{(m)}(t))$
+and $\var(\sum_i x_i(t))/ \sum_i(\var x_i(t))$ (Fig. \ref{fig:check_cov_var_vr}E, F). 
+Again, and by mathematical necessity
+given the results from Fig. \ref{fig:check_cov_var_vr}A, B,
+the values for the data were very close to the middle of the distributions of surrogate
+values, as desired. 
+Finally, to see how 
+similar Pearson correlations from the surrogates were to those of the data for each pair of species, 
+we made a scatter plot with the Pearson correlations from actual data plotted against the same quantities
+for the surrogates, for each pair of distinct species (Fig. \ref{fig:check_pairwisecor}). 
+For most pairs of species, the 2.5th and 97.5th quantiles of the surrogate values 
+were on opposite sides of the data value.
 
 
 \clearpage
 \newpage
 
 # Supporting figures
+<!--***DAN: Shyamolina, currently when I knit this I get the header "Supporting figures" and then, on a new page,
+the references, and then on a new page, the figures, and then the tables. Please fix. Please also make "Supporting 
+tables" be a section, containing the tables.
 
 <!--hays & knz: time-series results plot-->
 \begin{figure}[!h]
@@ -1050,8 +1276,65 @@ z<-readRDS("./Results/knz_results/ts_all_sp_knz_soiltype_t.RDS") # whole process
 plot.ts(z,plot.type = "single",col=rainbow(ncol(z)),type="o",xlab="36 years",ylab="each 125 sp. mean cover over 20 plots")
 for any given year, if you take the sum of all the colored points it will be >100
 -->
-<!--***DAN: Shyamolina, please specify the units for panel A
-***Shya: Done.-->
+
+\clearpage
+\newpage
+
+\begin{figure}
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_1_2.pdf} 
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_2_8.pdf} \\
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_15_18.pdf}
+\caption[Approximations of the $\varphi$ map]{Approximation of the $\varphi$ map for 
+species 1 and 2 (A, top left), 2 and 8 (B, top right), and 15 and 18 (C, bottom left) 
+of the Hays dataset. Dashed lines are $0.025^{th}$, $25^{th}$, $50^{th}$, $75^{th}$, and $97.5^{th}$ percentiles 
+of stochastic realizations of the map, and
+the red line and points show the expected value. The horizontal-axis values of the red 
+points show the values of the
+parameter for which the map $\varphi$ was evaluated, with $500$ evaluations used for
+each parameter value.}\label{fig:varphiexample}
+\end{figure}
+<!--***DAN: Shyamolina, can you please modify the code that makes this figure so that the following changes 
+are implemented:
+1) Make the x-axis labels say "Normal-copula parameter, p"
+2) Make the y-axis labels say a latex rendering of \varphi(p)
+3) Make the axis labels and numbers, for both the x and y axes, be at least twice as big as they currently are.
+Also, the code should be configured so it runs when a knit is performed - I can't remember if that's been done
+or if this code is still kept separate.
+-->
+
+\clearpage
+\newpage
+
+\begin{figure}
+\includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_histplot_PPsurrogs.pdf}
+\includegraphics[width=9 cm]{./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/comparison_histplot_PPsurrogs.pdf}  
+\caption{(A, B) Distributions of surrogate values 
+$\sum_{i_2>i_1} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ 
+compared to the value $\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$ for Hays (A) and Konza (B),
+where surrogate datasets were indexed by $m=1,\ldots,10000$. 
+(C, D) Distributions of surrogate values $\var(\sum_i x_i^{(m)}(t))$ compared
+to the value $\var(\sum_i x_i(t))$ for Hays (C) and Konza (D). 
+(E, F) Distributions of surrogate values 
+$\var(\sum_i x_i^{(m)}(t))/ \sum_i(\var x_i^{(m)}(t))$ compared
+to the value $\var(\sum_i x_i(t))/ \sum_i(\var x_i(t))$ for Hays (E) and Konza (F). 
+The fraction, p, of surrogate values less than 
+the data value is at the top of each panel.}\label{fig:check_cov_var_vr}
+\end{figure}
+
+\clearpage
+\newpage
+
+\begin{figure}
+\textbf{ \hspace{4.5 cm} (A) \hspace{8 cm} (B)}\\
+\includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_pairwisecor_PPsurrogs.pdf}  
+\includegraphics[width=9 cm]{./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/comparison_pairwisecor_PPsurrogs.pdf} 
+\caption{For each pair of species $i_1<i_2$, the distribution of values 
+$\cor(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ for $m=1,\ldots,10000$ was plotted against the value
+$\cor(x_{i_1}(t),x_{i_2}(t))$ for Hays (A) and Konza (B). Distributions of surrogate 
+correlations were rendered by showing their $2.5^{th}$ and $97.5^{th}$ percentiles (extents of
+vertical lines) and their median (dots). Bars overlapping with the 1-1 line were rendered in black,
+and those not overlapping were rendered in red. }\label{fig:check_pairwisecor}
+\end{figure}
 
 \clearpage
 \newpage

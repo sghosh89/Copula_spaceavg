@@ -650,7 +650,7 @@ Fig. \ref{fig_theory}I-L suggest that communities exhibiting a preponderance of 
 should also have total community dynamics that are more right-skewed, or less left-skewed, than would have been the case
 without these tail associations. Using the language of our new methods, this constitutes
 a hypothesis that for communities for which $n_L<n_U$ and $A_{\text{tot}}<0$, we should have 
-$\Scom>\Snta$, and therefore $\phi_{S,\text{ta}}>1$.  
+$\Scom>\Snta$, and therefore $\phi_{S,\text{ta}}>1$.
 <!--***DAN: Don't forget to make comparisons in the Results between the values of phi_S,ta and phi_S,cor,
 to judge the relative importance of asymmtric tail associations and other aspects of species interrelationships.
 Also, relate the results to stability, which is not conveniently done here because it depends on signs as
