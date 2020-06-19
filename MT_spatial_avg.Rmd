@@ -181,8 +181,8 @@ have learned these lessons and have begun developing the necessary mathematics f
 can benefit from application of the same methods, and we hope this study helps begin that process.
 
 The goals of this study are as follows, and parallel the research suggestions listed above. (G1) We will develop 
-an approach to studying the relationships
-between species that complements classic approaches relying on covariances. (G2) We will also develop an
+and apply an approach to studying the relationships
+between species that complements classic approaches relying on covariances. (G2) We will also develop and apply an
 approach to studying aggregate community stability/variability that complements the traditional use of the 
 coefficient of variation. Finally, (G3) we will study how species interrelationships influence community stability/variability
 using the new approaches. Our results provide a new take on classic questions about the influence of synchronous or 

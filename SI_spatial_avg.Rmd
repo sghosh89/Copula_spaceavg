@@ -834,6 +834,21 @@ source("./pedagog_cv2_skw.R") # we used seed=104 in this source function
 source("./TheoryFig202005.R") #we used seed=101 in this source function
 ```
 
+<!--New investigations of empirical cdfs-->
+```{r empcdfs, echo=T, results="show"}
+#***DAN: Shyamolina, I want to do a few additional computations here. Can you please indicate the names of in a comment, 
+#or create and then
+#indicate the names of, variables which are available in the workspace at this point in the code that have the following:
+#1) Year by species population abundance matrix for Hays, including all 18 real species and the psuedo-species - so this is 
+#just the main data matrix. It's OK if it's species/pseudospecies by year instead (i.e., I don't care if it's transposed)
+#2) The same for Konza (but 22 species/pseudospecies)
+#I am sure these already exist in some form, and I suspect at this point in the code they are available, I just want to know what the
+#variables are, for sure, from you, to make sure I do not start my work with the wrong variables. If these are stored in some
+#form other than a matrix, please write code below to create matrices as specified. Please make the row names be the sampling years
+#and the column names be the species names.
+
+```
+
 # Details of the simulations for Fig. \ref{MT-fig_pedag_cv2_skw}\label{PedagogFigMethods}
 
 The populations of Fig. \ref{MT-fig_pedag_cv2_skw} were simulated as follows. Let $\Sigma$ be the $11 \times 11$
