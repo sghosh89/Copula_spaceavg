@@ -836,10 +836,10 @@ source("./TheoryFig202005.R") #we used seed=101 in this source function
 
 <!--New investigations of empirical cdfs-->
 ```{r empcdfs, echo=T, results="show"}
-#***DAN: Shyamolina, I want to do a few additional computations here. Can you please indicate the names of in a comment, 
+#***DAN: Shyamolina, I want to do a few additional computations here. Can you please indicate the names of, in a comment, 
 #or create and then
 #indicate the names of, variables which are available in the workspace at this point in the code that have the following:
-#1) Year by species population abundance matrix for Hays, including all 18 real species and the psuedo-species - so this is 
+#1) Year by species, population abundance matrix for Hays, including all 18 real species and the psuedo-species - so this is 
 #just the main data matrix. It's OK if it's species/pseudospecies by year instead (i.e., I don't care if it's transposed)
 #2) The same for Konza (but 22 species/pseudospecies)
 #I am sure these already exist in some form, and I suspect at this point in the code they are available, I just want to know what the
@@ -848,6 +848,10 @@ source("./TheoryFig202005.R") #we used seed=101 in this source function
 #and the column names be the species names.
 #BTW, if you need to move this chunk to a better location within the code to facilitate doing what I'm asking for, go ahead and 
 #move it
+#I also am going to need variables in this form:
+#3) Year by species by surrogate array with surrogate species abundance data for Hays
+#4) The same for Konza
+#So 3 and 4 are just the surrogates for 1 and 2, respectively. I need all 10000 surrogates here, please.
 ```
 
 # Details of the simulations for Fig. \ref{MT-fig_pedag_cv2_skw}\label{PedagogFigMethods}
