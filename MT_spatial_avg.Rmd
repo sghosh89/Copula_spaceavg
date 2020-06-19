@@ -687,6 +687,36 @@ values. All analyses were done in R. Complete code for this project is at https:
 
 # Results\label{Results}
 
+<!--***DAN: Shyamolina, I have thought about how I am going to edit this Results section, and I've made a plan, but I need
+a few things from you to implement that plan. 
+
+First, on Fig. 5, please remove the red/blue shading behind the green-dotted squares (but only those squares - the non-green-dotted
+squares should keep their shading, of course). It seems to me the shading on the green-dotted squares is not relevant to out main
+arguments. We just did it because we could. And in order to do it, we had to flip one of the two variables. That adds complexity 
+which we don't use for anything. So better to just show the green dot to indicate which species pairs were negatively associated,
+but don't do anything else with those. The range of the colorbar at the bottom should be modified, if necessary, to reflect the range
+of the values that are then displayed. Let me know if you see a reason I don't currently see why we should not make this change.
+To me it seems like a simplification with no consequence, since we are not currently using the results for compensatory species for
+anything, but perhaps I am missing something.
+
+Second, please split Fig. 6 into 2 parts, the top part and bottom part. Please put the bottom part in the SI. Please make a version of
+the top part using powerpoint, so we can edit, and either send it to me or put it in the repo (OK to commit a powerpoint in this case). 
+Replace the current Fig. 6 with a pdf export of this new version, which is the top part only. You can also add the pdf export to the repo.
+Don't worry about the captions. Also please make the 
+changes to the top part of Fig. 6 (which will become the whole of Fig. 6) so that it looks like the drawing I have sent you, and 
+so that phi_CV,ta is, instead of being indicated as being approximately 1, instead given to the same number of significant figures 
+as everything else, using scientific notation if necessary. This applies to both locations where a value of phi_CV,ta is listed.
+
+Please compute the fraction of surrogate values on the current Fig. 6F that are to the *left* of the black dot. This is the 
+p-value for a one-tailed test. It looks like it should be a very small number. Please type this number in a reponse to this comment, 
+but *also* please make the number available as an R variable, so when I edit the results I can render the number using an autolink. 
+Please say what the R variable name is in a response to this comment. 
+
+Please compute the fraction of surrogate values on the current Fig. 6H that are to the *right* of the black dot. This is the 
+p-value for a one-tailed test. It looks like it should be a small number. Please type this number in a reponse to this comment, 
+but *also* please make the number available as an R variable, so when I edit the results I can render the number using an autolink. 
+Please say what the R variable name is in a response to this comment. 
+-->
 
 
 We here present the results from the study carried out with two long-term
