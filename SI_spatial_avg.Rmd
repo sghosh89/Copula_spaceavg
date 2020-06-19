@@ -846,7 +846,8 @@ source("./TheoryFig202005.R") #we used seed=101 in this source function
 #variables are, for sure, from you, to make sure I do not start my work with the wrong variables. If these are stored in some
 #form other than a matrix, please write code below to create matrices as specified. Please make the row names be the sampling years
 #and the column names be the species names.
-
+#BTW, if you need to move this chunk to a better location within the code to facilitate doing what I'm asking for, go ahead and 
+#move it
 ```
 
 # Details of the simulations for Fig. \ref{MT-fig_pedag_cv2_skw}\label{PedagogFigMethods}
