@@ -687,8 +687,7 @@ values. All analyses were done in R. Complete code for this project is at https:
 
 # Results\label{Results}
 
-<!--***DAN: Dan made it to here 2020 06 16, 1120am. Need to stop for now. In addition to continuing from this
-point, Dan, don't forget to write all the technical stuff in three sup mat sections before moving on-->
+
 
 We here present the results from the study carried out with two long-term
 grassland community data sets: basal cover data (1932-1972)

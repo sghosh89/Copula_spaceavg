@@ -1308,7 +1308,7 @@ or if this code is still kept separate.
 \begin{figure}
 \includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_histplot_PPsurrogs.pdf}
 \includegraphics[width=9 cm]{./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/comparison_histplot_PPsurrogs.pdf}  
-\caption{(A, B) Distributions of surrogate values 
+\caption[Checks on the surrogates, 1]{(A, B) Distributions of surrogate values 
 $\sum_{i_2>i_1} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ 
 compared to the value $\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$ for Hays (A) and Konza (B),
 where surrogate datasets were indexed by $m=1,\ldots,10000$. 
@@ -1328,7 +1328,7 @@ the data value is at the top of each panel.}\label{fig:check_cov_var_vr}
 \textbf{ \hspace{4.5 cm} (A) \hspace{8 cm} (B)}\\
 \includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_pairwisecor_PPsurrogs.pdf}  
 \includegraphics[width=9 cm]{./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/comparison_pairwisecor_PPsurrogs.pdf} 
-\caption{For each pair of species $i_1<i_2$, the distribution of values 
+\caption[Checks on the surrogates, 2]{For each pair of species $i_1<i_2$, the distribution of values 
 $\cor(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ for $m=1,\ldots,10000$ was plotted against the value
 $\cor(x_{i_1}(t),x_{i_2}(t))$ for Hays (A) and Konza (B). Distributions of surrogate 
 correlations were rendered by showing their $2.5^{th}$ and $97.5^{th}$ percentiles (extents of
