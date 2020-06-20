@@ -1269,8 +1269,6 @@ For most pairs of species, the 2.5th and 97.5th quantiles of the surrogate value
 were on opposite sides of the data value.
 
 
-\clearpage
-\newpage
 
 <!--# Supporting figures-->
 <!--***DAN: Shyamolina, currently when I knit this I get the header "Supporting figures" and then, on a new page,
@@ -1325,8 +1323,6 @@ plot.ts(z,plot.type = "single",col=rainbow(ncol(z)),type="o",xlab="36 years",yla
 for any given year, if you take the sum of all the colored points it will be >100
 -->
 
-\clearpage
-\newpage
 
 ```{r reformatting_figs, echo=F, results="hide", cache=T, cache.extra=list(ts_mat_CP_hays,mtime("getmap.R"),mtime("Reform_suppmat_fig.R"))}
 # Don't put any seed in this chunk
@@ -1357,8 +1353,8 @@ or if this code is still kept separate.
 ***Shya: Done.
 -->
 
-\clearpage
-\newpage
+
+
 
 \begin{figure}
 \includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_histplot_PPsurrogs.pdf}
@@ -1376,8 +1372,8 @@ The fraction, p, of surrogate values less than
 the data value is at the top of each panel.}\label{fig:check_cov_var_vr}
 \end{figure}
 
-\clearpage
-\newpage
+
+
 
 \begin{figure}
 \textbf{ \hspace{4.5 cm} (A) \hspace{8 cm} (B)}\\
