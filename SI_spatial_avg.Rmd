@@ -1328,7 +1328,7 @@ for any given year, if you take the sum of all the colored points it will be >10
 \clearpage
 \newpage
 
-```{r reformatting_figs, echo=F, results="hide"}
+```{r reformatting_figs, echo=F, results="hide", cache=T, cache.extra=list(ts_mat_CP_hays,mtime("getmap.R"),mtime("Reform_suppmat_fig.R"))}
 # Don't put any seed in this chunk
 source("./Reform_suppmat_fig.R") 
 ```
