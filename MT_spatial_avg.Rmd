@@ -685,6 +685,15 @@ Finally, for any $i_1$, $i_2$ and $m$, the tail associations of $x_{i_1}^{(m)}(t
 and $x_{i_2}^{(m)}(t)$ are symmetric, i.e., similar in their upper- and lower-tail association
 values. All analyses were done in R. Complete code for this project is at https://github.com/sghosh89/Copula_spaceavg. 
 
+
+```{r pval_skw, echo=F}
+hays_skwres<-readRDS("./Results/hays_results/skewness_results/stability_CP_hays.RDS")
+pval_skw_hays<-sum(hays_skwres$skw_surrogs<hays_skwres$df_stability$skw_real)/length(hays_skwres$skw_surrogs)
+
+knz_skwres<-readRDS("./Results/knz_results/skewness_results/stability_CP_knz.RDS")
+pval_skw_knz<-sum(knz_skwres$skw_surrogs>knz_skwres$df_stability$skw_real)/length(knz_skwres$skw_surrogs)
+```
+
 # Results\label{Results}
 
 <!--***DAN: Shyamolina, I have thought about how I am going to edit this Results section, and I've made a plan, but I need
@@ -699,23 +708,26 @@ of the values that are then displayed. Let me know if you see a reason I don't c
 To me it seems like a simplification with no consequence, since we are not currently using the results for compensatory species for
 anything, but perhaps I am missing something.
 
-Second, please split Fig. 6 into 2 parts, the top part and bottom part. Please put the bottom part in the SI. Please make a version of
-the top part using powerpoint, so we can edit, and either send it to me or put it in the repo (OK to commit a powerpoint in this case). 
-Replace the current Fig. 6 with a pdf export of this new version, which is the top part only. You can also add the pdf export to the repo.
-Don't worry about the captions. Also please make the 
-changes to the top part of Fig. 6 (which will become the whole of Fig. 6) so that it looks like the drawing I have sent you, and 
-so that phi_CV,ta is, instead of being indicated as being approximately 1, instead given to the same number of significant figures 
-as everything else, using scientific notation if necessary. This applies to both locations where a value of phi_CV,ta is listed.
+***Shya: ok, I fill those cells with green colors.
+
+Second, please split Fig. 6 into 2 parts, the top part and bottom part. Please put the bottom part in the SI. Please make a version of the top part using powerpoint, so we can edit, and either send it to me or put it in the repo (OK to commit a powerpoint in this case). Replace the current Fig. 6 with a pdf export of this new version, which is the top part only. You can also add the pdf export to the repo. Don't worry about the captions. Also please make the 
+changes to the top part of Fig. 6 (which will become the whole of Fig. 6) so that it looks like the drawing I have sent you, and so that phi_CV,ta is, instead of being indicated as being approximately 1, instead given to the same number of significant figures as everything else, using scientific notation if necessary. This applies to both locations where a value of phi_CV,ta is listed.
+
+***Shya:................
+
 
 Please compute the fraction of surrogate values on the current Fig. 6F that are to the *left* of the black dot. This is the 
 p-value for a one-tailed test. It looks like it should be a very small number. Please type this number in a reponse to this comment, 
 but *also* please make the number available as an R variable, so when I edit the results I can render the number using an autolink. 
 Please say what the R variable name is in a response to this comment. 
+***Shya: 0.0027, variable name you can use: pval_skw_hays 
 
 Please compute the fraction of surrogate values on the current Fig. 6H that are to the *right* of the black dot. This is the 
 p-value for a one-tailed test. It looks like it should be a small number. Please type this number in a reponse to this comment, 
 but *also* please make the number available as an R variable, so when I edit the results I can render the number using an autolink. 
 Please say what the R variable name is in a response to this comment. 
+
+***Shya: 0.0252, variable name you can use: pval_skw_knz 
 -->
 
 
@@ -919,19 +931,10 @@ computed considering sum over all positively correlated cell-values.\label{fig_C
 <!--Skewness results for both datasets-->
 \begin{figure}[!h]
 \begin{center}
-\includegraphics[width=14cm]{./Results/pedagog_figs/results_hays_knz_complex_cv2_skw.pdf}\\
-\textbf{ \hspace{-5 cm} (E) \hspace{7 cm} (F)}\\
-\includegraphics[width=15cm]{./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf}\\
-\textbf{ \hspace{-5 cm} (G) \hspace{7 cm} (H)}\\
-\includegraphics[width=15cm]{./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf}
-\hspace{1 cm}
-\includegraphics[width=16cm]{./Results/hays_results/skewness_results/legend_plot.pdf}
+\includegraphics[width=14cm]{./Results/pedagog_figs/results_hays_knz_complex_cv2_skw.pdf}
 \caption{Results for Q2: $(A-B)$ schematic diagram with computed parameter 
 values for Hays following the route map given in Fig. \ref{fig_method_box}. $(C-D)$ similar 
-diagram but for Konza. $(E-H)$ graphical representation of $(A-D)$ with the actual communities, 
-$10000$ tail-symmetric surrogates and independent communities. Both communities show similar 
-interpretation for stability as per variance ratio (same $\phi_{cv}$) but contrasting conclusion 
-for skewness-based stability approach (different $\phi_s$).\label{fig_result_box}}
+diagram but for Konza.\label{fig_result_box}}
 \end{center}
 \end{figure}
 

@@ -351,6 +351,8 @@ id_surrogs<-sample(c(1:dim(surrogs_CP_hays)[3]),numsurrog,replace=F)
 surrogs_CP_hays_sampled<-surrogs_CP_hays[,,id_surrogs]
 
 stability_CP_hays<-make_tab_stability(m=ts_mat_CP_hays,surrogs = surrogs_CP_hays_sampled, surrogs_given = T)
+saveRDS(stability_CP_hays,"./Results/hays_results/skewness_results/stability_CP_hays.RDS")
+
 ans<-(stability_CP_hays$df_stability)
 rownames(ans)<-"C+P"
 class(ans)
@@ -676,6 +678,8 @@ id_surrogs<-sample(c(1:dim(surrogs_CP_knz)[3]),numsurrog,replace=F)
 surrogs_CP_knz_sampled<-surrogs_CP_knz[,,id_surrogs]
 
 stability_CP_knz<-make_tab_stability(m=ts_mat_CP_knz,surrogs = surrogs_CP_knz_sampled, surrogs_given = T)
+saveRDS(stability_CP_knz,"./Results/knz_results/skewness_results/stability_CP_knz.RDS")
+
 ans<-(stability_CP_knz$df_stability)
 rownames(ans)<-"C+P"
 class(ans)
@@ -841,7 +845,17 @@ source("./TheoryFig202005.R") #we used seed=101 in this source function
 #indicate the names of, variables which are available in the workspace at this point in the code that have the following:
 #1) Year by species, population abundance matrix for Hays, including all 18 real species and the psuedo-species - so this is 
 #just the main data matrix. It's OK if it's species/pseudospecies by year instead (i.e., I don't care if it's transposed)
+
+#***Shya:
+# ts_mat_CP_hays = a dataframe of 41 years by 19 sp.=(18+1pseudo)
+# please convert to matrix with as.matrix(ts_mat_CP_hays)
+
 #2) The same for Konza (but 22 species/pseudospecies)
+
+#***Shya:
+# ts_mat_CP_knz = a dataframe of 36 years by 22 sp.=(21+1pseudo)
+# please convert to matrix with as.matrix(ts_mat_CP_knz)
+
 #I am sure these already exist in some form, and I suspect at this point in the code they are available, I just want to know what the
 #variables are, for sure, from you, to make sure I do not start my work with the wrong variables. If these are stored in some
 #form other than a matrix, please write code below to create matrices as specified. Please make the row names be the sampling years
@@ -852,6 +866,11 @@ source("./TheoryFig202005.R") #we used seed=101 in this source function
 #3) Year by species by surrogate array with surrogate species abundance data for Hays
 #4) The same for Konza
 #So 3 and 4 are just the surrogates for 1 and 2, respectively. I need all 10000 surrogates here, please.
+
+#***Shya: following two vaiables are array (41x19x10000 for Hays, 36x22x10000 for knz), 10000 sampled from the initially saved 10^5 surrogs, seed was used 101 to sample. The following two variables we used to calculate stability indices in previous chunks. Each array contains a matrix (year by species) surrogate of actual data.
+
+# surrogs_CP_hays_sampled
+# surrogs_CP_knz_sampled
 ```
 
 # Details of the simulations for Fig. \ref{MT-fig_pedag_cv2_skw}\label{PedagogFigMethods}
@@ -1253,10 +1272,19 @@ were on opposite sides of the data value.
 \clearpage
 \newpage
 
-# Supporting figures
+<!--# Supporting figures-->
 <!--***DAN: Shyamolina, currently when I knit this I get the header "Supporting figures" and then, on a new page,
 the references, and then on a new page, the figures, and then the tables. Please fix. Please also make "Supporting 
 tables" be a section, containing the tables.
+
+***Shya: I can't, I remember the similar problem we faced in our BIVAN paper. 
+You have two choice as far as I can remember (I am attaching two version in my email):
+1) You can get a section heading, but figures/ table will be put after ref as you are using endfloat package in rmd,
+so, this is what now you are getting.
+2) without any section heading at all (see attached option2suppmat.pdf), like our BIVAN paper, I think suppmat does not need any specified formatting and I prefer this.
+3)I can put a tag (not a section number, and that too will not look good on the first appearence), see atached option3suppmat.pdf
+--->
+
 
 <!--hays & knz: time-series results plot-->
 \begin{figure}[!h]
@@ -1300,10 +1328,15 @@ for any given year, if you take the sum of all the colored points it will be >10
 \clearpage
 \newpage
 
+```{r reformatting_figs, echo=F, results="hide"}
+# Don't put any seed in this chunk
+source("./Reform_suppmat_fig.R") 
+```
+
 \begin{figure}
-\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_1_2.pdf} 
-\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_2_8.pdf} \\
-\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Map_15_18.pdf}
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Reform_maps/Map_1_2.pdf} 
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Reform_maps/Map_2_8.pdf} \\
+\includegraphics[width=3in]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/Reform_maps/Map_15_18.pdf}
 \caption[Approximations of the $\varphi$ map]{Approximation of the $\varphi$ map for 
 species 1 and 2 (A, top left), 2 and 8 (B, top right), and 15 and 18 (C, bottom left) 
 of the Hays dataset. Dashed lines are $0.025^{th}$, $25^{th}$, $50^{th}$, $75^{th}$, and $97.5^{th}$ percentiles 
@@ -1320,6 +1353,8 @@ are implemented:
 3) Make the axis labels and numbers, for both the x and y axes, be at least twice as big as they currently are.
 Also, the code should be configured so it runs when a knit is performed - I can't remember if that's been done
 or if this code is still kept separate.
+
+***Shya: Done.
 -->
 
 \clearpage
@@ -1354,6 +1389,22 @@ $\cor(x_{i_1}(t),x_{i_2}(t))$ for Hays (A) and Konza (B). Distributions of surro
 correlations were rendered by showing their $2.5^{th}$ and $97.5^{th}$ percentiles (extents of
 vertical lines) and their median (dots). Bars overlapping with the 1-1 line were rendered in black,
 and those not overlapping were rendered in red. }\label{fig:check_pairwisecor}
+\end{figure}
+
+<!--Skewness results for both datasets-->
+\begin{figure}[!h]
+\begin{center}
+\textbf{ \hspace{-5 cm} (A) \hspace{7 cm} (B)}\\
+\includegraphics[width=15cm]{./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf}\\
+\textbf{ \hspace{-5 cm} (C) \hspace{7 cm} (D)}\\
+\includegraphics[width=15cm]{./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf}
+\hspace{1 cm}
+\includegraphics[width=16cm]{./Results/hays_results/skewness_results/legend_plot.pdf}
+\caption{Results show graphical representation of Fig. \ref{MT-fig_method_box} $(A-D)$ with the actual communities, 
+$10000$ tail-symmetric surrogates and independent communities. Both communities show similar 
+interpretation for stability as per variance ratio (same $\phi_{CV}$) but contrasting conclusion 
+for skewness-based stability approach (different $\phi_s$).\label{fig_result_box}}
+\end{center}
 \end{figure}
 
 \clearpage

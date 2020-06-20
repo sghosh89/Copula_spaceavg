@@ -74,6 +74,7 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts
     tempo<-data$Corl
     indI<-data$posnI
     tempo[indI]<-NA
+    tempo[data$posnN]<-NA # this line would not include neg. correlated pair
     diag(tempo)<-NA
     
     minval<-min(tempo,na.rm=T)
@@ -104,6 +105,7 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts
     tempo<-data$Coru
     indI<-data$posnI
     tempo[indI]<-NA
+    tempo[data$posnN]<-NA # this line would not include neg. correlated pair
     diag(tempo)<-NA
     
     minval<-min(tempo,na.rm=T)
@@ -135,6 +137,7 @@ NonParamStat_matrixplot<-function(data,resloc,tagon,type,wd,ht,sigtest,ub,numpts
     indI<-data$posnI
     indN<-data$posnN
     tempo[indI]<-NA
+    tempo[indN]<-NA # this line would not include neg. correlated pair
     diag(tempo)<-NA
     
     CorlmCoru<-tempo

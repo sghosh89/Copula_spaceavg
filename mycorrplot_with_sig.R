@@ -62,9 +62,12 @@ mycorrplot_with_sig<-function(z,posnI_ind,posnN_ind,colrange,type="lower",sigtes
     N <- matrix(NA,nrow(z),ncol(z))
     N[posnN_ind]<- -1 
     
-    corrplot(N, cl.pos = "n", na.label = " ", add = T,addgrid.col = "transparent",type=type,
-             bg = "transparent", tl.col = "transparent",p.mat = N,sig.level = -2,col="transparent",
-             pch=20,pch.col="green",pch.cex = 5,number.cex = 2)
+    corrplot(N, cl.pos = "n", na.label = " ", add = T,addgrid.col = "black",type=type,
+             bg = "transparent", tl.col = "transparent",col="green",method="color")
+    
+    #corrplot(N, cl.pos = "n", na.label = " ", add = T,addgrid.col = "transparent",type=type,
+    #         bg = "transparent", tl.col = "transparent",p.mat = N,sig.level = -2,col="transparent",
+    #         pch=20,pch.col="green",pch.cex = 5,number.cex = 2)
     
   }
   
