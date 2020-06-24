@@ -110,7 +110,6 @@ by any existing extensions of which we are aware. To
 begin to illustrate the concepts we will explore in this 
 study, and to understand what has been omitted from earlier approaches, we consider two artificially
 generated community dynamics datasets (Fig. \ref{fig_pedag_cv2_skw}A, B; data generated as in SI section \ref{SI-PedagogFigMethods}).
-<!--***DAN: Dan to write the corresponding section of the SI.-->
 Both model communities consist of $N=20$ species, and data were generated so that species marginal distributions 
 (and therefore the means, $\mu_i$, and variances, $v_{ii}$, 
 through time) were the same, up to sampling variance, in both scenarios. Likewise, data were 
@@ -293,8 +292,6 @@ S1: splist for hays
 S2: splist for knz
 -->
 
-<!--***DAN: Add scenario labels to Fig. 1-->
-
 # Theory \label{Theory}
 
 \noindent In this section we illustrate theoretical concepts for how relationships between
@@ -367,7 +364,6 @@ to scenario 1, and, in fact, is the same as scenario C and hence is as high as i
 distributions used in all our scenarios. The community
 of scenario 2 is maximally unstable in the sense that its probability of exceeding certain high thresholds is maximal,
 given fixed species marginal distributions, although it does not appear unstable to the classic variance ratio approach.
-<!--***DAN: Don't forget to create the SI section mentioned above-->
 
 Scenario 3 is like scenario 2, but the comonotonicity is in the left tails instead of the right. 
 Each $x_i$ is again standard-normally distributed (Fig. \ref{fig_theory}M side panels), but for this scenario
@@ -432,7 +428,8 @@ assess. We therefore categorized species as "common" (present in the quadrats co
 into a single pseudo-species for analyses. Common species made up the overwhelming majority of both the Hays and Konza 
 communities that we studied (Fig. \ref{SI-fig_spaceavg_timeseries}), so it is the variability of these species, and their
 interspecific relationships, that mainly determine community stability. Common species are listed in Tables
-\ref{SI-tab_spinfo_hays} and \ref{SI-tab_spinfo_knz}. 
+\ref{SI-tab_spinfo_hays} and \ref{SI-tab_spinfo_knz}. Henceforth the terminology "species" is understood
+to include both true species the psudo-species which was formed by combining rare and intermediate species.
 
 ## Statistical methods
 
@@ -486,19 +483,19 @@ first part of (Q1).
 -->
 
 <!--Aggregating to the community-->
-Fig. \ref{fig_pedag_cv2_skw} and the Theory section
+We computed $\cor_l-\cor_u$ for all positively associated species (positive Spearman correlation); negatively associated 
+pairs were ignored. Fig. \ref{fig_pedag_cv2_skw} and the Theory section
 suggest that the aggregate nature of tail associations of positively associated species may influence
 the distribution of $\xtot$. Tail associations between positively associated species were 
 measured, in aggregate for a community, by counting the number, $n_L$, of values
-$\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$, for all $i \neq j$, that were positive, representing stronger lower- than
-upper-tail association between species; as well as the  number, $n_U$, of values 
-that were negative, representing stronger upper- than lower-tail association between species.
-We also computed the sum, $A_{\text{tot}}$, of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$
+$\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$, for $i \neq j$, that were positive, representing stronger lower- than
+upper-tail association between positively associated species; as well as the  number, $n_U$, of values 
+that were negative, representing stronger upper- than lower-tail association.
+We also computed the sum, $\Atot$, of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$
 across all positively associated species pairs, $i,j$. This was positive if lower-tail 
 association was, in aggregate across the community, stronger than upper-tail association, and
-negative if the reverse. We refer to $A_{\text{tot}}$ as the *total community tail association*
-of positively associated species pairs. Positive association interpreted to mean a positive 
-Spearman correlation.
+negative if the reverse. We refer to $\Atot$ as the *total community tail association*
+of positively associated species pairs. 
 <!--***DAN: Do some search and standardize the use of lower v. left-tail and upper v. right-tail
 association, and related quantities
 ***Shya: I did, it is always lower-tail and upper-tail association. Left- and right- tail for skewness.-->
@@ -643,13 +640,13 @@ Theory section in terms of the new methods. Fig. \ref{fig_pedag_cv2_skw}A,C,E an
 Fig. \ref{fig_theory}M-P suggest that communities exhibiting a preponderance of lower-tail association 
 should also have total community dynamics that are more left-skewed, or less right-skewed, than would have been the case
 without these tail associations. Using the language of our new methods, this constitutes
-a hypothesis that for communities for which $n_L>n_U$ and $A_{\text{tot}}>0$, we should have 
+a hypothesis that for communities for which $n_L>n_U$ and $\Atot>0$, we should have 
 $\Scom<\Snta$, and therefore $\phi_{S,\text{ta}}<1$. 
 Fig. \ref{fig_pedag_cv2_skw}B,D,F and 
 Fig. \ref{fig_theory}I-L suggest that communities exhibiting a preponderance of upper-tail association 
 should also have total community dynamics that are more right-skewed, or less left-skewed, than would have been the case
 without these tail associations. Using the language of our new methods, this constitutes
-a hypothesis that for communities for which $n_L<n_U$ and $A_{\text{tot}}<0$, we should have 
+a hypothesis that for communities for which $n_L<n_U$ and $\Atot<0$, we should have 
 $\Scom>\Snta$, and therefore $\phi_{S,\text{ta}}>1$.
 <!--***DAN: Don't forget to make comparisons in the Results between the values of phi_S,ta and phi_S,cor,
 to judge the relative importance of asymmtric tail associations and other aspects of species interrelationships.
@@ -699,30 +696,13 @@ pval_skw_knz<-sum(knz_skwres$skw_surrogs>knz_skwres$df_stability$skw_real)/lengt
 <!--***DAN: Shyamolina, I have thought about how I am going to edit this Results section, and I've made a plan, but I need
 a few things from you to implement that plan. 
 
-First, on Fig. 5, please remove the red/blue shading behind the green-dotted squares (but only those squares - the non-green-dotted
-squares should keep their shading, of course). It seems to me the shading on the green-dotted squares is not relevant to out main
-arguments. We just did it because we could. And in order to do it, we had to flip one of the two variables. That adds complexity 
-which we don't use for anything. So better to just show the green dot to indicate which species pairs were negatively associated,
-but don't do anything else with those. The range of the colorbar at the bottom should be modified, if necessary, to reflect the range
-of the values that are then displayed. Let me know if you see a reason I don't currently see why we should not make this change.
-To me it seems like a simplification with no consequence, since we are not currently using the results for compensatory species for
-anything, but perhaps I am missing something.
-
-***Shya: ok, I fill those cells with green colors.
-
-Second, please split Fig. 6 into 2 parts, the top part and bottom part. Please put the bottom part in the SI. Please make a version of the top part using powerpoint, so we can edit, and either send it to me or put it in the repo (OK to commit a powerpoint in this case). Replace the current Fig. 6 with a pdf export of this new version, which is the top part only. You can also add the pdf export to the repo. Don't worry about the captions. Also please make the 
-changes to the top part of Fig. 6 (which will become the whole of Fig. 6) so that it looks like the drawing I have sent you, and so that phi_CV,ta is, instead of being indicated as being approximately 1, instead given to the same number of significant figures as everything else, using scientific notation if necessary. This applies to both locations where a value of phi_CV,ta is listed.
-
-***Shya: Done.
-
-
-Please compute the fraction of surrogate values on the current Fig. 6F that are to the *left* of the black dot. This is the 
+Please compute the fraction of surrogate values on the current Fig. 6F (Dan, this is the new Fig. S5B) that are to the *left* of the black dot. This is the 
 p-value for a one-tailed test. It looks like it should be a very small number. Please type this number in a reponse to this comment, 
 but *also* please make the number available as an R variable, so when I edit the results I can render the number using an autolink. 
 Please say what the R variable name is in a response to this comment. 
 ***Shya: 0.0027, variable name you can use: pval_skw_hays 
 
-Please compute the fraction of surrogate values on the current Fig. 6H that are to the *right* of the black dot. This is the 
+Please compute the fraction of surrogate values on the current Fig. 6H that are to the *right* of the black dot (Dan, this is the current Fig. S5D). This is the 
 p-value for a one-tailed test. It looks like it should be a small number. Please type this number in a reponse to this comment, 
 but *also* please make the number available as an R variable, so when I edit the results I can render the number using an autolink. 
 Please say what the R variable name is in a response to this comment. 
@@ -730,48 +710,42 @@ Please say what the R variable name is in a response to this comment.
 ***Shya: 0.0252, variable name you can use: pval_skw_knz 
 -->
 
+To address goal G1 of the Introduction, we computed $\cor_l-\cor_u$ (Methods) for all positively associated 
+pairs of species within the Hays and
+Konza datasets, and the community-aggregate indices $n_L$, $n_U$, and $\Atot$ (Fig. \ref{fig_CorlmCoru}),
+as detailed in Methods. 
+Although both datasets had pairs of species with predominantly lower-tail association and pairs of species
+with predeominantly upper-tail association, $n_L$ was greater than $n_U$ for Hays and $n_L$ was less than $n_U$ for Konza: 
+species pairs with predominanty lower-tail association were more common at Hays, and species with predominantly
+upper-tail association were more common at Konza. The aggregate index $\Atot$ (Methods) was also positive for Hays
+and negative for Konza (Fig. \ref{fig_CorlmCoru}). 
 
-We here present the results from the study carried out with two long-term
-grassland community data sets: basal cover data (1932-1972)
-of mixed grass priarie near Hays, KS and Konza prairie 
-percent cover data (1983-2018) (for details see
-Appendix \ref{SI-Data}). 
+We earlier framed the hypotheses that communities exhibiting a preponderance of lower-tail association 
+should also have $\xtot$ that is more left-skewed, or less right-skewed, than would have been the case
+without species tail associations; and that communities exhibiting a preponderance of upper-tail association 
+should have $\xtot$ that is more right-skewed, or less left-skewed, than would have been the case
+without these tail associations (Methods). To address goals G1 and G2 of the Introduction, we tested
+these hypotheses. The quantities of Fig. \ref{fig_method_box} were computed for our 
+two datasets and are displayed in Fig. \ref{fig_result_box}.  
+Because $n_L>n_U$ and $\Atot>0$ for Hays (Fig. \ref{fig_CorlmCoru}A), it was hypothesized 
+that $\Scom$ should be less than $\Snta$, and 
+this was confirmed (Fig. \ref{fig_result_box}B). The component of the skewness ratio  
+due to tail association was, indeed, less than 1,
+i.e., $\phi_{S,\text{ta}}=0.2757<1$. 
+<!--***DAN: Shyamolina, please make the above number an autolink-->
+Becuse $n_L<n_U$ and $\Atot<0$ for Konza (Fig. \ref{fig_CorlmCoru}B), it was hypothesized 
+that $\Scom$ should be greater than 
+$\Snta$, and this was confirmed (Fig. \ref{fig_result_box}D). For this dataset, $\phi_{S,\text{ta}}=2.7999>1$.
+<!--***DAN: Shyamolina, please make the above number an autolink-->
+These results were statistically significant: for Hays, $\Scom$ was less than a fraction $`r round(1-pval_skw_hays,4)`$
+of the quantities $\sk(\sum_i x_i^{(m)})$ for surrogates $m=1,\ldots,M$ (Methods);
+whereas for Konza, $\Scom$ was greater than a fraction $`r round(1-pval_skw_knz,3)`$ of the analogous surrogate 
+values (but using surrogates of the Konza data; Fig. \ref{SI-fig_result_box}). Thus asymmetric 
+tail associations between species can 
+significantly modify the skewness of the total community property, $\xtot$, either raising it (upper-tail asociations)
+it or lowering it (lower-tail associations).  
 
-<!--Results for Q1
-(Q1) In a community, could we find 
-asymmetric tail associations (lower and/ or upper) that arise because of 
-synchronous/ compensatory interaction between species? 
-
-Do those interactions make the community overall lower-tail or 
-overall upper-tail asymmetric? 
-
-For Q1: plot with hays and knz corl-coru (Fig 4, panels a,b)-->
-
-For each unique pairwise species combination from 
-each of two exemplary communities, we computed lower and upper tail 
-association (*partial Spearman correlation* method) between 
-species over years. The difference (i.e. lower minus upper tail 
-association estimates) are presented in 
-Fig. \ref{fig_CorlmCoru}A for Hays and B for Konza. 
-We found both positively correlated (synchronous) and negatively 
-correlated (compensatory) species pairs showed 
-asymmetric tail association. For Hays, majority of species pair interaction showed 
-stronger lower tail association ($n_L$ = 70) than stronger 
-upper tail association ($n_U$ = 40). Negatively correlated pairs,indicated by green dots, 
-were excluded while counting $n_L$ and $n_U$ since the magnitude not the sign matters 
-for tail-asymmetry with competitive species interaction (see \ref{Methods} for details). 
-As the number of interspecific interaction with lower tail asymmetry,$n_L$ was nearly double 
-than the number of interspecific interaction with upper tail asymmetry,$n_U$ for Hays, 
-the overall tail-asymmetry estimate, $A_{tot}$ was strongly positive, $6.0842$, <!--caution, 
-not autolinked, I copied from fig. legend-->suggecting Hays community was strongly 
-lower tail asymmetric for the $1932-1972$ study period (Fig. \ref{fig_CorlmCoru}A). 
-On the other hand, for Konza (Fig. \ref{fig_CorlmCoru}B), majority of species pair 
-interaction showed stronger upper tail association ($n_U$ = 82) than stronger 
-upper tail association ($n_L$ = 70), though the difference between $n_L$ and $n_U$ 
-was not that apperent as of Hays. Total asymmetry $A_{tot}$ estimates for Konza
-was slightly negative, $-1.3496$, <!--caution, 
-not autolinked, I copied from fig. legend-->making the Konza community 
-overall upper tail asymmetric. These observations answered (Q1).
+<!--***DAN: stopped here on 2020 06 23-->
 
 <!--Results for Q2
 
@@ -914,17 +888,13 @@ arrow in A represents the quation $\CVcomsq=\phi_{\text{cv}} \CVindsq$. \label{f
 \textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
 \includegraphics[width=8cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
 \includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/soiltype_t/Corl-Coru_ub_0.5.pdf} 
-\caption{Results for Q1: Measure of tail-asymmetry (i.e., lower minus upper tail association) for species (Tables \ref{SI-tab_spinfo_hays}, \ref{SI-tab_spinfo_knz}) 
-found in (A) Hays and (B) Konza priarie (for details see \nameref{Results}). 
-$n_L$ and $n_U$, the count of cells (considered for positive correlation only)
-with positive and negative tail-asymmetry values, respectively. 
-$n_L>n_U$ (majority of red cells) indicates major lower tail association
-in Hays, whereas for Konza it is major upper tail association ($n_L<n_U$).
-For initially negatively correlated 
-cells (indicated by green cells), we measured the tail asymmetry by taking 
-negative of the time series of species shown in column, so the magnitude 
-matters only, not the sign or color of the cell. $A_{tot}$ is the total tail asymmetry 
-computed considering sum over all positively correlated cell-values.\label{fig_CorlmCoru}}
+\caption{Measures of asymmetry of tail association for all pairs of species with positive Spearman correlation,
+using the Hays (A) and Konza (B) datasets. The quantity $\cor_l-\cor_u$ (Methods) is displayed, using a blue/red split colorbar,
+for all positively associated species. Green-shaded species pairs were negatively associated. See
+Tables \ref{SI-tab_spinfo_hays}-\ref{SI-tab_spinfo_knz} for species names. Although both lower- and upper-tail
+association occur in both datasets, the quantities $n_L$, $n_U$ and $\Atot$ (Methods), displayed under each 
+panel, indicate that lower-tail association between species was stronger or more common in the Hays data, and 
+upper-tail association was stronger or more common in the Konza data. \label{fig_CorlmCoru}}
 \end{center}
 \end{figure*}
 
@@ -932,9 +902,8 @@ computed considering sum over all positively correlated cell-values.\label{fig_C
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=14cm]{./Results/pedagog_figs/Result_box.pdf}
-\caption{Results for Q2: $(A-B)$ schematic diagram with computed parameter 
-values for Hays following the route map given in Fig. \ref{fig_method_box}. $(C-D)$ similar 
-diagram but for Konza.\label{fig_result_box}}
+\caption{The quantities of Fig. \ref{fig_method_box} computed for the Hays (A, B) and Konza (C, D)
+datasets. See SI Fig. \ref{SI-fig_result_box} for related results. \label{fig_result_box}}
 \end{center}
 \end{figure}
 

@@ -838,39 +838,238 @@ source("./pedagog_cv2_skw.R") # we used seed=104 in this source function
 source("./TheoryFig202005.R") #we used seed=101 in this source function
 ```
 
-<!--New investigations of empirical cdfs-->
+<!--Investigations of empirical cdfs, added 2020 06-->
 ```{r empcdfs, echo=T, results="show"}
-#***DAN: Shyamolina, I want to do a few additional computations here. Can you please indicate the names of, in a comment, 
-#or create and then
-#indicate the names of, variables which are available in the workspace at this point in the code that have the following:
-#1) Year by species, population abundance matrix for Hays, including all 18 real species and the psuedo-species - so this is 
-#just the main data matrix. It's OK if it's species/pseudospecies by year instead (i.e., I don't care if it's transposed)
+#Organize the data from earlier chunks into the format I want to analyze it in in this chunk
+dhays<-as.matrix(ts_mat_CP_hays) #dhays is now a matrix with one column for each species/pseudo-species in hays,
+#one row for each year, and with species names in the column names, and years in
+#the row names
+dkonz<-as.matrix(ts_mat_CP_knz)  #similar for dkonz, except it's for Konza
 
-#***Shya:
-# ts_mat_CP_hays = a dataframe of 41 years by 19 sp.=(18+1pseudo)
-# please convert to matrix with as.matrix(ts_mat_CP_hays)
+#Organize the surrogates from earlier chunks into the format I want to analyze it in in this chunk - already done
+#in earlier code. So these are years by species/pseudo-species by 10000 surrogates. These are nta surrogates.
+shays<-surrogs_CP_hays_sampled
+skonz<-surrogs_CP_knz_sampled
 
-#2) The same for Konza (but 22 species/pseudospecies)
+#Also get so-called independent surrogates - randomly permute each species time series, independently of the 
+#others, to make one of these time series
+sihays<-array(dhays,dim=c(dim(dhays)[1],dim(dhays)[2],dim(shays)[3]))
+sihays<-apply(FUN=function(x){return(sample(x,length(x),FALSE))},X=sihays,MARGIN=c(2,3))
+sikonz<-array(dkonz,dim=c(dim(dkonz)[1],dim(dkonz)[2],dim(skonz)[3]))
+sikonz<-apply(FUN=function(x){return(sample(x,length(x),FALSE))},X=sikonz,MARGIN=c(2,3))
 
-#***Shya:
-# ts_mat_CP_knz = a dataframe of 36 years by 22 sp.=(21+1pseudo)
-# please convert to matrix with as.matrix(ts_mat_CP_knz)
+#xtot for real data and each surrogate
+dhays_xtot<-unname(apply(FUN=sum,X=dhays,MARGIN=1))
+dkonz_xtot<-unname(apply(FUN=sum,X=dkonz,MARGIN=1))
+shays_xtot<-unname(apply(FUN=sum,X=shays,MARGIN=c(1,3)))
+skonz_xtot<-unname(apply(FUN=sum,X=skonz,MARGIN=c(1,3)))
+sihays_xtot<-unname(apply(FUN=sum,X=sihays,MARGIN=c(1,3)))
+sikonz_xtot<-unname(apply(FUN=sum,X=sikonz,MARGIN=c(1,3)))
 
-#I am sure these already exist in some form, and I suspect at this point in the code they are available, I just want to know what the
-#variables are, for sure, from you, to make sure I do not start my work with the wrong variables. If these are stored in some
-#form other than a matrix, please write code below to create matrices as specified. Please make the row names be the sampling years
-#and the column names be the species names.
-#BTW, if you need to move this chunk to a better location within the code to facilitate doing what I'm asking for, go ahead and 
-#move it
-#I also am going to need variables in this form:
-#3) Year by species by surrogate array with surrogate species abundance data for Hays
-#4) The same for Konza
-#So 3 and 4 are just the surrogates for 1 and 2, respectively. I need all 10000 surrogates here, please.
+#empical cdfs for real data
+dhays_ecdf<-cbind(sort(dhays_xtot),(1:length(dhays_xtot))/length(dhays_xtot))
+colnames(dhays_ecdf)<-c("x","y")
+dkonz_ecdf<-cbind(sort(dkonz_xtot),(1:length(dkonz_xtot))/length(dkonz_xtot))
+colnames(dkonz_ecdf)<-c("x","y")
 
-#***Shya: following two vaiables are array (41x19x10000 for Hays, 36x22x10000 for knz), 10000 sampled from the initially saved 10^5 surrogs, seed was used 101 to sample. The following two variables we used to calculate stability indices in previous chunks. Each array contains a matrix (year by species) surrogate of actual data.
+#empirical cdfs for surrogates
+shays_ecdf<-matrix(NA,dim(shays_xtot)[1],dim(shays_xtot)[2]+1)
+for (counter in 1:(dim(shays_xtot)[2]))
+{
+  shays_ecdf[,counter]<-sort(shays_xtot[,counter])
+}
+shays_ecdf[,counter+1]<-(1:(dim(shays_xtot)[1]))/(dim(shays_xtot)[1])
+colnames(shays_ecdf)<-c(paste0("x",1:(dim(shays_xtot)[2])),"y")
 
-# surrogs_CP_hays_sampled
-# surrogs_CP_knz_sampled
+skonz_ecdf<-matrix(NA,dim(skonz_xtot)[1],dim(skonz_xtot)[2]+1)
+for (counter in 1:(dim(skonz_xtot)[2]))
+{
+  skonz_ecdf[,counter]<-sort(skonz_xtot[,counter])
+}
+skonz_ecdf[,counter+1]<-(1:(dim(skonz_xtot)[1]))/(dim(skonz_xtot)[1])
+colnames(skonz_ecdf)<-c(paste0("x",1:(dim(skonz_xtot)[2])),"y")
+
+sihays_ecdf<-matrix(NA,dim(sihays_xtot)[1],dim(sihays_xtot)[2]+1)
+for (counter in 1:(dim(sihays_xtot)[2]))
+{
+  sihays_ecdf[,counter]<-sort(sihays_xtot[,counter])
+}
+sihays_ecdf[,counter+1]<-(1:(dim(sihays_xtot)[1]))/(dim(sihays_xtot)[1])
+colnames(sihays_ecdf)<-c(paste0("x",1:(dim(sihays_xtot)[2])),"y")
+
+sikonz_ecdf<-matrix(NA,dim(sikonz_xtot)[1],dim(sikonz_xtot)[2]+1)
+for (counter in 1:(dim(sikonz_xtot)[2]))
+{
+  sikonz_ecdf[,counter]<-sort(sikonz_xtot[,counter])
+}
+sikonz_ecdf[,counter+1]<-(1:(dim(sikonz_xtot)[1]))/(dim(sikonz_xtot)[1])
+colnames(sikonz_ecdf)<-c(paste0("x",1:(dim(sikonz_xtot)[2])),"y")
+
+#For each y axis value, evaluate what fraction of corresponding surrogate x-axis values that
+#are less than the corresponding data x axis value. This is the number of surrogate ecdfs
+#that surpass that y axis value before the data ecdf does. So when this number is big,
+#e.g., bigger than 0.95 or 0.975, then the quantile corresponding to the y axis values
+#is passed earlier for surrogates than it is for real data. When this number is
+#small, e.g., less than 0.025 or 0.05, then the quantile corresponding to the y axis values
+#is passed later for surrogates than it is for real data.
+quants_hays_nta<-NA*numeric(dim(dhays_ecdf)[1])
+for (counter in 1:(dim(dhays_ecdf)[1]))
+{
+  quants_hays_nta[counter]<-sum(shays_ecdf[counter,1:(dim(shays_ecdf)[2]-1)]<dhays_ecdf[counter,1])/(dim(shays_ecdf)[2]-1)
+}
+
+quants_konz_nta<-NA*numeric(dim(dkonz_ecdf)[1])
+for (counter in 1:(dim(dkonz_ecdf)[1]))
+{
+  quants_konz_nta[counter]<-sum(skonz_ecdf[counter,1:(dim(skonz_ecdf)[2]-1)]<dkonz_ecdf[counter,1])/(dim(skonz_ecdf)[2]-1)
+}
+
+quants_hays_ind<-NA*numeric(dim(dhays_ecdf)[1])
+for (counter in 1:(dim(dhays_ecdf)[1]))
+{
+  quants_hays_ind[counter]<-sum(sihays_ecdf[counter,1:(dim(sihays_ecdf)[2]-1)]<dhays_ecdf[counter,1])/(dim(sihays_ecdf)[2]-1)
+}
+
+quants_konz_ind<-NA*numeric(dim(dkonz_ecdf)[1])
+for (counter in 1:(dim(dkonz_ecdf)[1]))
+{
+  quants_konz_ind[counter]<-sum(sikonz_ecdf[counter,1:(dim(sikonz_ecdf)[2]-1)]<dkonz_ecdf[counter,1])/(dim(sikonz_ecdf)[2]-1)
+}
+
+quants_hays_nta
+quants_hays_ind
+quants_konz_nta
+quants_konz_ind
+
+#now make some plots
+
+#Makes plots comparing empirical and surrogate distributions of xtot
+#
+#Args
+#ecdf       The empirical ecdf, dhays_ecdf or dkonz_ecdf from above
+#secdf      The surrogate ecdfs, nta surrogs, shays_ecdf or skonz_ecdf from above
+#siecdf     The surrogate ecdfs, indep surrogs, sihays_ecdf or sikonz_ecdf from above
+ecdfplot<-function(ecdf,secdf,siecdf,filename)
+{
+  #set up the plot, plotting dimensions units inches
+  xmarght<-.5
+  ymargwd<-.5
+  gap<-0.1
+  panwd<-5
+  totwd<-ymargwd+panwd+gap
+  panht<-.6*panwd
+  totht<-xmarght+2*panht+2*gap
+  pdf(file=paste0(filename,".pdf"),width=totwd,height=totht)
+
+  #first panel, uses nta surrogates
+  par(fig=c((ymargwd)/totwd,
+            (ymargwd+panwd)/totwd,
+            (xmarght+panht+gap)/totht,
+            (xmarght+2*panht+gap)/totht),
+      mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25)
+  
+  #plot the data
+  xlimits<-range(secdf[,1:(dim(secdf)[2]-1)],siecdf[,1:(dim(siecdf)[2]-1)])
+  ylimits<-c(0,1)
+  xlimits_exp<-xlimits
+  xlimits_exp[2]<-xlimits[2]+.3*diff(xlimits)
+  plot(ecdf[,"x"],ecdf[,"y"],col='red',type="p",ylim=ylimits,pch=20,
+       xlab=expression(x[tot]),xaxt="n",
+       xlim=xlimits_exp,cex=.5)
+  mtext(expression(rank(x[tot])/T),side=2,line=1.1)
+  axis(1,labels=FALSE)
+  text(xlimits[1],ylimits[2],"A",adj=c(0,1))
+  
+  #plot distributions of surrogates, nta surrogates
+  lines(apply(FUN=min,X=secdf[,1:(dim(secdf)[2]-1)],MARGIN=1),secdf[,"y"],lty='dotted')
+  lines(apply(FUN=quantile,X=secdf[,1:(dim(secdf)[2]-1)],MARGIN=1,probs=.025),secdf[,"y"],lty='dashed')
+  #lines(apply(FUN=quantile,X=secdf[,1:(dim(secdf)[2]-1)],MARGIN=1,probs=.25),secdf[,"y"],lty='solid')
+  lines(apply(FUN=quantile,X=secdf[,1:(dim(secdf)[2]-1)],MARGIN=1,probs=.5),secdf[,"y"],lty='solid')
+  #lines(apply(FUN=quantile,X=secdf[,1:(dim(secdf)[2]-1)],MARGIN=1,probs=.75),secdf[,"y"],lty='solid')
+  lines(apply(FUN=quantile,X=secdf[,1:(dim(secdf)[2]-1)],MARGIN=1,probs=.975),secdf[,"y"],lty='dashed')
+  lines(apply(FUN=max,X=secdf[,1:(dim(secdf)[2]-1)],MARGIN=1),secdf[,"y"],lty='dotted')
+
+  #plot the numbers
+  for (counter in 1:(dim(ecdf)[1]))
+  {
+    h<-sum(secdf[counter,1:(dim(secdf)[2]-1)]<ecdf[counter,1])/(dim(secdf)[2]-1)
+    if (counter %% 2 ==0)
+    {
+      if (h>.95 || h<.05)
+      {
+        text(xlimits_exp[2],ecdf[counter,"y"],round(h,3),adj=c(1,.5),cex=.75,col='red')
+      }else
+      {
+        text(xlimits_exp[2],ecdf[counter,"y"],round(h,3),adj=c(1,.5),cex=.75)
+      }
+    }else
+    {
+      if (h>.95 || h<.05)
+      {
+        text(xlimits[2],ecdf[counter,"y"],round(h,3),adj=c(0,.5),cex=.75,col="red")
+      } else
+      {
+        text(xlimits[2],ecdf[counter,"y"],round(h,3),adj=c(0,.5),cex=.75)
+      }
+    }
+  }
+
+  #make a legend
+  
+  
+  #second panel, uses ind surrogates
+  par(fig=c((ymargwd)/totwd,
+            (ymargwd+panwd)/totwd,
+            (xmarght)/totht,
+            (xmarght+panht)/totht),
+      mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+  
+  #plot the data again
+  plot(ecdf[,"x"],ecdf[,"y"],col='red',type="p",ylim=ylimits,pch=20,
+       xlab=expression(x[tot]),
+       xlim=xlimits_exp,cex=0.5)
+  mtext(expression(rank(x[tot])/T),side=2,line=1.1)
+  text(xlimits[1],ylimits[2],"B",adj=c(0,1))
+  
+  #plot distributions of surrogates, ind surrogates
+  lines(apply(FUN=min,X=siecdf[,1:(dim(secdf)[2]-1)],MARGIN=1),siecdf[,"y"],lty='dotted')
+  lines(apply(FUN=quantile,X=siecdf[,1:(dim(siecdf)[2]-1)],MARGIN=1,probs=.025),siecdf[,"y"],lty='dashed')
+  #lines(apply(FUN=quantile,X=siecdf[,1:(dim(siecdf)[2]-1)],MARGIN=1,probs=.25),siecdf[,"y"],lty='solid')
+  lines(apply(FUN=quantile,X=siecdf[,1:(dim(siecdf)[2]-1)],MARGIN=1,probs=.5),siecdf[,"y"],lty='solid')
+  #lines(apply(FUN=quantile,X=siecdf[,1:(dim(siecdf)[2]-1)],MARGIN=1,probs=.75),siecdf[,"y"],lty='solid')
+  lines(apply(FUN=quantile,X=siecdf[,1:(dim(siecdf)[2]-1)],MARGIN=1,probs=.975),siecdf[,"y"],lty='dashed')
+  lines(apply(FUN=max,X=siecdf[,1:(dim(siecdf)[2]-1)],MARGIN=1),siecdf[,"y"],lty='dotted')
+    
+  #plot the numbers
+  for (counter in 1:(dim(ecdf)[1]))
+  {
+    h<-sum(siecdf[counter,1:(dim(siecdf)[2]-1)]<ecdf[counter,1])/(dim(siecdf)[2]-1)
+    if (counter %% 2 ==0)
+    {
+      if (h>.95 || h<.05)
+      {
+        text(xlimits_exp[2],ecdf[counter,"y"],round(h,3),adj=c(1,.5),cex=.75,col='red')
+      }else
+      {
+        text(xlimits_exp[2],ecdf[counter,"y"],round(h,3),adj=c(1,.5),cex=.75)
+      }
+    }else
+    {
+      if (h>.95 || h<.05)
+      {
+        text(xlimits[2],ecdf[counter,"y"],round(h,3),adj=c(0,.5),cex=.75,col="red")
+      } else
+      {
+        text(xlimits[2],ecdf[counter,"y"],round(h,3),adj=c(0,.5),cex=.75)
+      }
+    }
+  }
+  
+  dev.off() 
+}
+
+ecdfplot(ecdf=dhays_ecdf,secdf=shays_ecdf,siecdf=,sihays_ecdf,filename="./Results/Hays_ecdfs")
+ecdfplot(ecdf=dkonz_ecdf,secdf=skonz_ecdf,siecdf=sikonz_ecdf,filename="./Results/Konz_ecdfs")
 ```
 
 # Details of the simulations for Fig. \ref{MT-fig_pedag_cv2_skw}\label{PedagogFigMethods}
@@ -1342,19 +1541,6 @@ points show the values of the
 parameter for which the map $\varphi$ was evaluated, with $500$ evaluations used for
 each parameter value.}\label{fig:varphiexample}
 \end{figure}
-<!--***DAN: Shyamolina, can you please modify the code that makes this figure so that the following changes 
-are implemented:
-1) Make the x-axis labels say "Normal-copula parameter, p"
-2) Make the y-axis labels say a latex rendering of \varphi(p)
-3) Make the axis labels and numbers, for both the x and y axes, be at least twice as big as they currently are.
-Also, the code should be configured so it runs when a knit is performed - I can't remember if that's been done
-or if this code is still kept separate.
-
-***Shya: Done.
--->
-
-
-
 
 \begin{figure}
 \includegraphics[width=9 cm]{./Results/hays_results/skewness_results/pp_surrogs_hays_CP/comparison_histplot_PPsurrogs.pdf}
@@ -1371,9 +1557,6 @@ to the value $\var(\sum_i x_i(t))/ \sum_i(\var x_i(t))$ for Hays (E) and Konza (
 The fraction, p, of surrogate values less than 
 the data value is at the top of each panel.}\label{fig:check_cov_var_vr}
 \end{figure}
-
-
-
 
 \begin{figure}
 \textbf{ \hspace{4.5 cm} (A) \hspace{8 cm} (B)}\\
@@ -1396,12 +1579,19 @@ and those not overlapping were rendered in red. }\label{fig:check_pairwisecor}
 \includegraphics[width=15cm]{./Results/knz_results/skewness_results/knz_pearson_preserving_results_cvsq_skw_plots.pdf}
 \hspace{1 cm}
 \includegraphics[width=16cm]{./Results/hays_results/skewness_results/legend_plot.pdf}
-\caption{Results show graphical representation of Fig. \ref{MT-fig_method_box} $(A-D)$ with the actual communities, 
-$10000$ tail-symmetric surrogates and independent communities. Both communities show similar 
-interpretation for stability as per variance ratio (same $\phi_{CV}$) but contrasting conclusion 
-for skewness-based stability approach (different $\phi_s$).\label{fig_result_box}}
+\caption[Elaboration of some results of Fig. \ref{MT-fig_result_box}]{Squared coefficients of variation and 
+skewness values for $\xtot$ for data, surrogates, and the independent-species null hypothesis, for Hays (A, B) 
+and Konza (C, D). Panels A and C show the values of $\CVcomsq$ (black dot) and $\CVindsq$ (dashed vertical line)
+for Hays and Konza, as well as the distribution of values of the squared coefficient of variation of $\sum_i x_i^{(m)}$ 
+over all surrogate datasets $m=1,\ldots,M$ (Methods). Dotted lines give the $2.5\%$ and $97.5\%$ quantiles
+of these distributions, and the triangle symbols give the medians. Panels B and D show the values of 
+$\Scom$ (black dot) and $\Sind$ (dashed vertical line) for Hays and Konza, as well as the distribution of
+values of $\sk(\sum_i x_i^{(m)})$ over all surrogate datasets $m=1,\ldots,M$ (Methods). Dotted lines again
+give quantiles and the triangles give medians. \label{fig_result_box}}
 \end{center}
 \end{figure}
+
+<!---->
 
 \clearpage
 \newpage
