@@ -70,7 +70,7 @@ for decades [@macarthur1955fluctuations; @paine1969note; @grimm1992application; 
 An important early insight was that an aggregate 
 community property such as the total biomass of all species can be relatively stable through time, even 
 while the dynamics of individual species are highly variable, if different species exhibit offsetting fluctuations.
-This is often referred to as *compensatory dynamics*, because decreases in species abundances are compensated
+Such fluctuations are often referred to as *compensatory dynamics*, because decreases in species abundances are compensated
 for by simultaneous increases in other species [@frost1995species;@bai2004ecosystem;@hallett2014]. When species instead exhibit 
 positively correlated fluctuations through time, it tends to cause increased variability through time in the community 
 aggregate property [@keitt2008coherent;@loreau2008species;@ma2017climate]. This is called *synchrony* because 
@@ -143,7 +143,7 @@ exhibits occasional crashes may experience different growth prospects than graze
 instead shows occasional explosions of abundance. 
 Thus species interrelationships and their effects on community aggregate dynamics may differ in potentially ecologically
 meaningful ways which are nevertheless not detected by classical approaches. 
-It is the reliance of earlier approaches on variances, covariance and related linear tools
+It is the reliance of earlier approaches on variances, covariances and related linear tools
 that causes those approaches to be unable to register the differences
 we have illustrated here.
 
@@ -157,8 +157,7 @@ are common, or rare.
 Second, statistical descriptions of community 
 stability/variability that are more nuanced than the coefficient of variation ought to be developed 
 and used. The results of Fig. \ref{fig_pedag_cv2_skw} suggest that measures related to skewness may
-be useful first steps.
-Third, we ought to then study how species relationships
+be useful. Third, we ought to then study how species relationships
 influence community stability/variability using the nuanced descriptors. 
 
 The core ideas of this study relate to rare and extreme events, and specifically to how the relationships between the constituents of 
@@ -294,94 +293,90 @@ S2: splist for knz
 
 # Theory \label{Theory}
 
-\noindent In this section we illustrate theoretical concepts for how relationships between
+\noindent In this section we illustrate theoretically how relationships between
 constituent species of a community, beyond just pairwise covariances/correlations of the species
-time series, can influence the variability of an aggregate community property such as the 
+time series, can influence the variability of the 
 total community biomass. The setup for the theory is as follows. As in the Introduction, let $x_i(t)$ be an abundance 
-measure for species $i=1,\ldots,N$ at time $t=1,\ldots,T$. We use $N=20$ and $T=100000$ in the examples of this 
-section. We assume the multivariate random variables $x(t)=(x_1(t),\ldots,x_N(t))$ are independent
+measure for species $i=1,\ldots,N$ at time $t=1,\ldots,T$. We use $N=20$ and $T=100000$ in the examples here. 
+We assume the multivariate random variables $x(t)=(x_1(t),\ldots,x_N(t))$ are independent
 and identically distributed for distinct times, $t$. It should be straightforward to replace
 this assumption with an appropriate assumption of stationarity and ergodicity, with no real change
 to the theoretical development, but we adopt the stronger assumption for simplicity. 
 To describe relationships between species, 
-classic approaches consider the covariances
-$v_{ij}=\cov(x_i,x_j)$, and quantities based on them. We will instead consider, for each $i,j$, the whole 
-joint distribution $(x_i,x_j)$, and some quantities based on it that are distinct from the $v_{ij}$.
+classic approaches use the covariances
+$v_{ij}=\cov(x_i,x_j)$, and related quantities. We will instead consider how 
+$x_i$ and $x_j$ are related to each other in their tails.
 To describe community variability, classic
-approaches such as the variance ratio approach consider the variance of 
-$\xtot=\sum_i x_i$, and quantities based on it (such as the 
-squared coefficient of variation of $\xtot$, i.e. $\CVcomsq$). But this is only a summary of the 
+approaches consider the variance of 
+$\xtot=\sum_i x_i$, and related quantities. But this is only a summary of the 
 distribution $\xtot$. We will instead consider the 
 whole distribution of $\xtot$, and its skewness. 
-We will present four scenarios (labeled 1-4 below) for which the marginal distributions $x_i$ and
-the covariances $v_{ij}$ are the same
-in all scenarios, as is the quantity $\var(\xtot)$ and the variance ratio $\phi_{\text{cv}}$. Thus 
-our scenarios are indistinguishable from the standpoint of classic approaches. But our scenarios are,
-in fact, ecologically distinct, as we will see, in that the total biomass $\xtot$ achieves much
+
+We present four scenarios (1-4 below). For all scenarios, the marginal distributions $x_i$ and
+the covariances $v_{ij}$ are the same, as are the quantities $\var(\xtot)$, $\CVcomsq$, 
+and $\phi_{\text{cv}}$. Thus 
+our scenarios are indistinguishable from the standpoint of classic approaches. But our scenarios are
+nevertheless ecologically distinct. As we will see, the total biomass $\xtot$ achieves 
 more extreme values under some scenarios than others. Hence our scenarios represent communities showing 
 different characteristics of stability/variability. 
-Our scenarios are intentionally as simple as
-possible, with complexities of population dynamics such as autocorrelation not included, so that the main
-new ideas can be clearly described. But the ideas here apply to real communities, as we will see in 
-subsequent sections of the paper. We will also compare our four scenario to a reference scenario, a 
-so-called *comonotonic* scenario for which the $x_i$ are deterministically related via perfect positive relationships. 
+Scenarios are intentionally as simple as
+possible, with complexities of population dynamics such as autocorrelation not included, so that 
+new ideas can be clearly described. But the ideas here apply to real communities, as will be demonstrated. 
+We also compare our four scenario to a reference scenario, called the *comonotonic* scenario, for which 
+the $x_i$ are deterministically related via perfect positive relationships. 
 This is a scenario of maximal covariance between species
-and a maximal value of $\var(\xtot)$.
+and a maximal value of $\var(\xtot)$ [@cheung2013]; it is a scenario of maximal community instability, given
+fixed species marginal distributions, $x_i$.
 
-In scenario 1, which is a baseline scenario to which the other scenarios will be compared, 
+In scenario 1, which is a baseline for comparison, 
 $(x_1,\ldots,x_N)$ is a multivariate normal distribution with mean $(0,\ldots,0)$ and covariance matrix
 having $1$s along the diagonal and off-diagonal entries $0.6$. A sample from $(x_1,x_2)$ (Fig. \ref{fig_theory}A)
-and marginal histograms (side panels of Fig. \ref{fig_theory}A) help illustrate that this is a simple
-multivariate normal distribution. The marginal distributions $x_1$ and $x_2$ will be the same in all scenarios.
+and marginal histograms (side panels of Fig. \ref{fig_theory}A) help illustrate the distribution. 
 The standard deviation of $\xtot$ was about $`r round(sqrt(vartotX1),1)`$, and the skewness of $\xtot$
 was close to $0$ (Fig. \ref{fig_theory}B). The probability of $\xtot$ exceeding a high threshold is given 
 in Fig. \ref{fig_theory}C for a range of high thresholds. Likewise the probability of $\xtot$ falling below a
-low threshold is in Fig. \ref{fig_theory}D for a range of low thresholds. 
+low threshold is in Fig. \ref{fig_theory}D for a range of low thresholds. These probabilities represent the 
+possibility that $\xtot$ will surpass or fall below a threshold considered disasterous or unacceptable from an
+applied or ecological viewpoint, and we refer to these as *disaster thresholds*.
 
-The other scenario for comparison is the comonotonic scenario, scenario C, for which we assume in this example that $x_i=x_1$ for all $i$. 
-This is a specific form of comonotonicity. Comonotonicity between $x_1$ and $x_2$ is pictured in Fig.  \ref{fig_theory}E.
-Because synchrony between the dynamics of individual species is perfect in this case, $\sd(\xtot)$ is much larger
-than it was in scenario 1 (Fig.  \ref{fig_theory}F). The probabilities of $\xtot$ exceeding a high threshold or falling
-below a low threshold are likewise larger (Fig.  \ref{fig_theory}G-H) than they were for scenario 1.
+For our other baseline scenario, the comonotonic scenario (scenario C), we assume $x_i=x_1$ for all $i$. 
+This is a specific form of comonotonicity [@cheung2013]. The relationship between $x_1$ and $x_2$ is 
+pictured in Fig.  \ref{fig_theory}E.
+Because synchrony between the dynamics of individual species is perfect, $\sd(\xtot)$ is much larger
+than for scenario 1 (Fig.  \ref{fig_theory}F). Probabilities of $\xtot$ exceeding a high disaster threshold or falling
+below a low one are likewise larger (Fig.  \ref{fig_theory}G-H).
 
-Scenarios 2-4 illustrate the ideas, previously little recognized within ecological research, 
+Scenarios 2-4 illustrate the ideas, previously little recognized in ecological research, 
 of tail comonotonicity [@cheung2013] and tail associations [@Ghosh_extinction;@Ghosh_copula], and the consequences of tail
-associations for the distribution of $\xtot$ and the probability of $\xtot$ passing a threshold. 
-In scenario 2, each $x_i$ is again standard-normally distributed (Fig. \ref{fig_theory}I side panels),
+associations for $\xtot$ and the extreme values of $\xtot$. 
+In scenario 2, as in all our scenarios, each $x_i$ is standard-normally distributed (Fig. \ref{fig_theory}I side panels),
 but $(x_1,\ldots,x_N)$ is not a multivariate normal distribution. Instead, $(x_1,\ldots,x_N)$ was engineered so
-that $x_i$ and $x_j$ are perfectly correlated when they exceed some threshold, but imperfectly correlated 
+that $x_i$ and $x_j$ are perfectly related when they exceed some threshold, but imperfectly related 
 below the threshold (Fig. \ref{fig_theory}I; see SI section \ref{SI-TheoryMethods} for 
-details). Correlation below the threshold was selected 
-to make $\cov(x_i,x_j)$ equal to the same value that pertained in scenario 1, and so $\sd(\xtot)$ was also
-the same, up to sampling variation, as it was in scenario 1 (Fig. \ref{fig_theory}J). (Recall that 
-$\var(\xtot)=\sum_{i,j} \cov(x_i,x_j)$ and that the standard deviations is the square root of the variance.)
-Comonotonicity in the upper tails produces right/positive skewness in $\xtot$ (Fig. \ref{fig_theory}J). The
-skewness translates to elevated probabilities of $\xtot$ exceeding high thresholds (Fig. \ref{fig_theory}K),
-compared to the baseline of scenario 1. In fact, the probability of exceeding sufficiently high thresholds is the
-same as for scenario C. So, although scenarios 1 and 2 are indistinguishable to the classic variance ratio approach
-and related approaches, the probability of exceeding high thresholds in scenario 2 is much elevated compared 
-to scenario 1, and, in fact, is the same as scenario C and hence is as high as it can possibly be given the species marginal
-distributions used in all our scenarios. The community
-of scenario 2 is maximally unstable in the sense that its probability of exceeding certain high thresholds is maximal,
-given fixed species marginal distributions, although it does not appear unstable to the classic variance ratio approach.
+details of this and the other scenarios). The strength of association below the threshold was chosen 
+to make $\cov(x_i,x_j)$ equal to the same value as in scenario 1, so $\sd(\xtot)$ was also
+the same, up to sampling variation, as scenario 1 (Fig. \ref{fig_theory}J). (Recall that 
+$\sd(\xtot)=\sqrt{\var(\xtot)}$ and $\var(\xtot)=\sum_{i,j} \cov(x_i,x_j)$.)
+Comonotonicity in the upper tails produces right/positive skewness in $\xtot$ (Fig. \ref{fig_theory}J).
+Skewness translates to elevated probabilities of $\xtot$ exceeding high disaster thresholds (Fig. \ref{fig_theory}K),
+compared to scenario 1. The probability of exceeding sufficiently high disaster thresholds is, in fact, the
+same as scenario C. So although scenarios 1 and 2 are indistinguishable to classic approaches, the probability 
+of disaster in scenario 2 is much elevated, and is as high as it can be given the species marginal
+distributions used. Although it does not appear unstable to classic approaches, the scenario 2 community
+is maximally unstable with respect to high disaster thresholds.
 
-Scenario 3 is like scenario 2, but the comonotonicity is in the left tails instead of the right. 
-Each $x_i$ is again standard-normally distributed (Fig. \ref{fig_theory}M side panels), but for this scenario
-$(x_1,\ldots,x_N)$ was engineered so
-that $x_i$ and $x_j$ are perfectly correlated when they go below some threshold, but imperfectly correlated 
-above the threshold (Fig. \ref{fig_theory}M; see SI section \ref{SI-TheoryMethods} for details).
-Correlation above the threshold was selected 
-to again make $\cov(x_i,x_j)$ equal to the same value that pertained in scenario 1, and so $\sd(\xtot)$ was also
-the same, up to sampling variation, as it was in scenario 1 (Fig. \ref{fig_theory}N).
-Comonotonicity in the lower tails produces left/negative skewness in $\xtot$ (Fig. \ref{fig_theory}N). The
-skewness translates to elevated probabilities of $\xtot$ falling below low thresholds (Fig. \ref{fig_theory}P),
-compared to the baseline of scenario 1. The probability of falling below sufficiently low thresholds is the
-same as for scenario C. Although scenarios 1-3 are indistinguishable to classic approaches, 
-the probabilities of exceeding high thresholds in 2 or falling below low thresholds in 3 are as 
-high as they can possibly be, given fixed species marginals. The communities of scenarios 2 and 3 
-are maximally unstable in the right and left tails, respectively. 
-Scenario 4 shows comonotonicity in both tails. Therefore probabilities of exceeding high thresholds or falling below
-low thresholds are as high as they can be, even though scenario 4 again appears the same as 1-3 to classic approaches.
+Scenario 3 is symmetrically like scenario 2, with comonotonicity in the left tails instead of the right (Fig.  \ref{fig_theory}M-P).
+Comonotonicity in the lower tails produces left/negative skewness in $\xtot$, 
+which in turn translates to elevated probabilities that $\xtot$ will fall below low disaster thresholds (Fig. \ref{fig_theory}P).
+For sufficiently low thresholds, the probability is the same as for scenario C, and is therefore maximal for the 
+species marginal distributions used. 
+
+Scenario 4 shows comonotonicity in both tails, and therefore probabilities of $\xtot$ exceeding high disaster thresholds or falling below
+low disaster thresholds are both as high as for scenario C, and are maximal. Although 
+scenarios 1-4 are indistinguishable to classic approaches, 
+the probabilities of disaster are elevated, and are maximal given species marginal distributions. 
+The communities in scenarios 2-4 are each maximally unstable in a different respect, although they are indistinguishable from
+each other, and from the relatively stable scenario 1, to classic approaches. 
 
 Our scanarios were constructed making use of mathematical results of @cheung2008 and @cheung2013. We refer the reader
 to those papers for mathematical specifics, while summarizing some of their importance for ecological
@@ -409,6 +404,9 @@ the community can exhibit the same extreme behavior as the comonotonic case, whi
 quantity $\var(\xtot)$ gives the impression of a much stabler community.
 
 # Methods\label{Methods} 
+
+<!--***DAN: Dan got to here in re-editing on 2020 06 25, continue from this point when you pick up again. Once done
+re-editing, continue writing the results according to your outline.-->
 
 ## Data
 
