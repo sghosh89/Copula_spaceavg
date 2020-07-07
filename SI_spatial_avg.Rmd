@@ -839,7 +839,7 @@ source("./TheoryFig202005.R") #we used seed=101 in this source function
 ```
 
 <!--Investigations of empirical cdfs, added 2020 06-->
-```{r empcdfs, echo=T, results="show"}
+```{r empcdfs, echo=FALSE, results="hide"}
 #Organize the data from earlier chunks into the format I want to analyze it in in this chunk
 dhays<-as.matrix(ts_mat_CP_hays) #dhays is now a matrix with one column for each species/pseudo-species in hays,
 #one row for each year, and with species names in the column names, and years in
@@ -1014,9 +1014,6 @@ ecdfplot<-function(ecdf,secdf,siecdf,filename)
     }
   }
 
-  #make a legend
-  
-  
   #second panel, uses ind surrogates
   par(fig=c((ymargwd)/totwd,
             (ymargwd+panwd)/totwd,
@@ -1029,6 +1026,7 @@ ecdfplot<-function(ecdf,secdf,siecdf,filename)
        xlab=expression(x[tot]),
        xlim=xlimits_exp,cex=0.5)
   mtext(expression(rank(x[tot])/T),side=2,line=1.1)
+  mtext(expression(x[tot]),side=1,line=1.1)
   text(xlimits[1],ylimits[2],"B",adj=c(0,1))
   
   #plot distributions of surrogates, ind surrogates
@@ -1467,21 +1465,20 @@ for the surrogates, for each pair of distinct species (Fig. \ref{fig:check_pairw
 For most pairs of species, the 2.5th and 97.5th quantiles of the surrogate values 
 were on opposite sides of the data value.
 
+# An empirical cdf approach \label{ecdf_approach}
+
+The empirical cumulative distribution function (ECDF) associated with a sample $y_j$, $j=1,\ldots,L$,
+from a random variable $Y$ is a non-continuous, piecewise-constant function $\hat{F}(y): \mathbb{R} \rightarrow [0,1]$ from 
+the real line to the interval $[0,1]$ that is zero for $y$ less than the minimum of the $y_j$, and that
+jumps by the fraction $1/L$ at $y=y_j$, for all $j=1,\ldots,L$. The value of $\hat{F}(y_j)$ is here taken
+to be $\rank(y_j)/L$, where the rank is $1$ for the smallest element of the set
+$\{ y_j : j=1,\ldots,L \}$ and $T$ for the largest element. The ECDF therefore takes the value $1$
+for $y$ greater than the maximum of the $y_j$. The ECDF approximates the CDF of $Y$ for large $L$.
 
 
-<!--# Supporting figures-->
-<!--***DAN: Shyamolina, currently when I knit this I get the header "Supporting figures" and then, on a new page,
-the references, and then on a new page, the figures, and then the tables. Please fix. Please also make "Supporting 
-tables" be a section, containing the tables.
 
-***Shya: I can't, I remember the similar problem we faced in our BIVAN paper. 
-You have two choice as far as I can remember (I am attaching two version in my email):
-1) You can get a section heading, but figures/ table will be put after ref as you are using endfloat package in rmd,
-so, this is what now you are getting.
-2) without any section heading at all (see attached option2suppmat.pdf), like our BIVAN paper, I think suppmat does not need any specified formatting and I prefer this.
-3)I can put a tag (not a section number, and that too will not look good on the first appearence), see atached option3suppmat.pdf
---->
 
+<!--***DAN: Not close to done on this section-->
 
 <!--hays & knz: time-series results plot-->
 \begin{figure}[!h]
@@ -1590,11 +1587,6 @@ values of $\sk(\sum_i x_i^{(m)})$ over all surrogate datasets $m=1,\ldots,M$ (Me
 give quantiles and the triangles give medians. \label{fig_result_box}}
 \end{center}
 \end{figure}
-
-<!---->
-
-\clearpage
-\newpage
 
 # References
 
