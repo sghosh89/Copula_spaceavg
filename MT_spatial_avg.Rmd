@@ -90,20 +90,20 @@ the covariances, $v_{ij}$, which appear directly in the formula. Denoting by
 $\CVindsq=\left(\sum_i v_{ii}\right)/\left(\sum_i \mu_i\right)^2$ the value that $\CVcomsq$ would take if 
 the dynamics of each species were independent of the dynamics of all other species (so $v_{ij}=0$ for all $i \neq j$), the 
 classic *variance ratio* was defined [@schluter1984variance;@peterson1975] as 
-$\phi_{\text{cv}}=\CVcomsq/\CVindsq=\var(\xtot)/\left(\sum_i v_{ii}\right)=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i v_{ii}\right)$. 
-Thus $\CVcomsq=\phi_{\text{cv}} \CVindsq$. Because $\CVindsq$ is interpreted as what community variability would be, without species interactions,
-$\phi_{\text{cv}}$ is the factor by which species interactions inflate or decrease community variability.
+$\phicv=\CVcomsq/\CVindsq=\var(\xtot)/\left(\sum_i v_{ii}\right)=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i v_{ii}\right)$. 
+Thus $\CVcomsq=\phicv \CVindsq$. Because $\CVindsq$ is interpreted as what community variability would be, without species interactions,
+$\phicv$ is the factor by which species interactions inflate or decrease community variability.
 The variance ratio has therefore commonly been used [@houlahan2007;@winfree2009;@hallett2014] as an index of whether dynamics 
-are synchronous or compensatory. If $\phi_{\text{cv}}>1$, the interpretation has been that dynamics are, on balance,
+are synchronous or compensatory. If $\phicv>1$, the interpretation has been that dynamics are, on balance,
 synchronous because then $\CVcomsq>\CVindsq$, i.e., the total community abundance $\xtot$ is more variable than
-it would be if species dynamics were independent. Conversely, if $\phi_{\text{cv}}<1$, the interpretation has been
+it would be if species dynamics were independent. Conversely, if $\phicv<1$, the interpretation has been
 that dynamics are, on balance, compensatory. 
 
 Timescale-specific extensions of the variance ratio [@vasseur2007;
 @brown2016;@zhao2020] have revealed that it is possible for compensatory 
 dynamics to occur on some timescales while 
 synchronous dynamics simultaneously occur on other timescales, and other improvements and alternatives to the variance ratio 
-have also been proposed [@loreau2008species]. However, $\phi_{\text{cv}}$ is still commonly used; 
+have also been proposed [@loreau2008species]. However, $\phicv$ is still commonly used; 
 furthermore, as we will show, how species relationships influence community stability is likely to be 
 more nuanced than is revealed by either the classic variance ratio approach or
 by any existing extensions of which we are aware. To 
@@ -116,7 +116,7 @@ through time) were the same, up to sampling variance, in both scenarios. Likewis
 generated so that pairwise species covariances, $v_{ij}$ for $i \neq j$,
 were essentially the same for Fig. \ref{fig_pedag_cv2_skw}A and B. Thus both $\CVcomsq$ and $\CVindsq$, which 
 depend only on the $\mu_i$ and $v_{ij}$,
-were the same in both scenarios, and so $\phi_{\text{cv}}$ was also the same. The Loreau-de Mazancourt variance ratio
+were the same in both scenarios, and so $\phicv$ was also the same. The Loreau-de Mazancourt variance ratio
 [@loreau2008species], which itself depends only on the $v_{ij}$, was also the same, up to sampling variance, in the two scenarios 
 (Fig. \ref{fig_pedag_cv2_skw}A, B). Classical approaches such as these do not distinguish between our two scenarios, neither in the nature
 of species interrelationships nor in the effects of interrelationships on community aggregate dynamics $\xtot(t)$.
@@ -314,7 +314,7 @@ whole distribution of $\xtot$, and its skewness.
 
 We present four scenarios (1-4 below). For all scenarios, the marginal distributions $x_i$ and
 the covariances $v_{ij}$ are the same, as are the quantities $\var(\xtot)$, $\CVcomsq$, 
-and $\phi_{\text{cv}}$. Thus 
+and $\phicv$. Thus 
 our scenarios are indistinguishable from the standpoint of classic approaches. But our scenarios are
 nevertheless ecologically distinct. As we will see, the total abundance $\xtot$ achieves 
 more extreme values under some scenarios than others. Hence our scenarios represent communities showing 
@@ -540,7 +540,7 @@ indicate that $\xtot$ undergoes occasional large upward departures from typical 
 Fig. \ref{fig_pedag_cv2_skw}, either of these dynamical behaviors can happen independently of the 
 values of $\var(\xtot)$ and $\CVcomsq$. 
 
-Just as, in the classic approach, the variance ratio $\phi_{\text{cv}}$ is the quotient $\CVcomsq/\CVindsq$, we 
+Just as, in the classic approach, the variance ratio $\phicv$ is the quotient $\CVcomsq/\CVindsq$, we 
 analogously define a *skewness ratio*, as follows. Let $\Scom=\sk(\xtot)$, and consider the value that 
 this quantity would take if species dynamics were independent.
 We have $\sk(\xtot)=\frac{m_3(\xtot)}{\var(\xtot)^{3/2}}=\frac{\sum_{i,j,k}m_{ijk}}{(\sum_{i,j}v_{ij})^{3/2}}$,
@@ -552,7 +552,7 @@ Values of the skewness ratio provide a summary of how species interactions influ
 complements the information provided by the variance ratio. The skewness ratio can be positive or negative because 
 $\Scom$ and $\Sind$ can be positive or negative, unlike $\CVcomsq$ and $\CVindsq$. If $\phi_S>1$, 
 $\Scom$ has greater magnitude, but the same sign, as what its value would be in 
-the absence of species interactions, i.e., $\Sind$. In such a case, and assuming for simplicity $\phi_{\text{cv}} \approx 1$
+the absence of species interactions, i.e., $\Sind$. In such a case, and assuming for simplicity $\phicv \approx 1$
 (see Discussion for more on this assumption), species interactions
 magnify the tendency for the community aggregate quantity $\xtot$ to crash, or explode to large values.
 This can be viewed as a new type of synchrony among species, in the sense that species relationships
@@ -561,7 +561,7 @@ mutual sign of $\Scom$ and $\Sind$ that determines whether crashes or
 explosions to high values are magnified. 
 If $0<\phi_S<1$, then $\Scom$ has lower magnitude, but the same sign, as $\Sind$, so species interactions
 mitigate the tendency for the $\xtot$ to crash, or explode to large values (again assuming, for simplicity, that
-$\phi_{\text{cv}} \approx 1$ -- see Discussion). This can be viewed as a new type of compensatory dynamics, in the sense that species 
+$\phicv \approx 1$ -- see Discussion). This can be viewed as a new type of compensatory dynamics, in the sense that species 
 relationships reduce community instability. 
 <!--If $\phi_S \approx 0$,
 then skewness of $\xtot$ is eliminated by species interactions, i.e., the tendency of the community to
@@ -574,7 +574,7 @@ exhibits occasional explosions to high values (or, respectively, crashes).
 Our skewness ratio does not supplant the classic variance ratio approach, but rather
 complements it. Just as one understands more about a distribution by knowing both its variance and skewness, so
 one understands more about community dynamics by combining variance ratio and skewness
-ratio approaches. The values of $\phi_{\text{cv}}$ and $\phi_S$ provide complementary
+ratio approaches. The values of $\phicv$ and $\phi_S$ provide complementary
 information about how the distribution of $\xtot$ is influenced by species interactions (see Discussion).
 See Fig. \ref{fig_method_box}A,B for a summary of the two approaches, and 
 Fig. \ref{fig_method_box}E for a summary of notation.
@@ -606,8 +606,8 @@ in stability metric into two distinct parts - due to correlation and
 due to tail association for extreme values between interspecific response, as follows. 
 -->
 
-The skewness ratio $\phi_{S}$ provides information about the influence of species interactions, of all kinds,
-on the skewness of $\xtot$; this is because $\phi_{S}$ is the quotient of $\Scom$, which is influenced by species interactions
+The skewness ratio $\phiS$ provides information about the influence of species interactions, of all kinds,
+on the skewness of $\xtot$; this is because $\phiS$ is the quotient of $\Scom$, which is influenced by species interactions
 of all kinds, and $\Sind$, which is influenced by none. But goal G3 of the Introduction was 
 to understand the specific influence of species tail associations
 and asymmetries of tail associations on $\Scom=\sk(\xtot)$. We did this through a randomization procedure
@@ -623,26 +623,26 @@ of surrogate values to meet a desired statistical confidence level.
 
 The quantity $\Snta$ was defined as the median of the values $\sk(\sum_i x_i^{(m)})$,
 and it is $\Snta$, and associated quantities which we will now define, that are used to accomplish goal G3 of the Introduction. 
-We also defined the quantities $\phi_{S,\text{ta}}=\Scom/\Snta$ and $\phi_{S,\text{cor}}=\Snta/\Sind$,
+We also defined the quantities $\phiSta=\Scom/\Snta$ and $\phiScor=\Snta/\Sind$,
 where "ta" stands for "tail association" and "nta" stands for "no tail association".
-The quantity $\phi_{S,\text{cor}}$ satisfies $\Snta=\phi_{S,\text{cor}}\Sind$, and therefore
+The quantity $\phiScor$ satisfies $\Snta=\phiScor\Sind$, and therefore
 represents the factor by which correlations between species, as distinct from asymmetries of tail association,
 influence the skewness ratio. The subscript "cor" is a reference to the effects of correlation.
-The quantity $\phi_{S,\text{ta}}$ satisfies $\Scom=\phi_{S,\text{ta}}\Snta$, and therefore
+The quantity $\phiSta$ satisfies $\Scom=\phiSta\Snta$, and therefore
 represents the factor by which asymmetric tail associations between species further influence community variation. 
-So a value of $\phi_{S,\text{ta}}$ which differs from $1$ indicates that asymmetric tail associations have a role in
+So a value of $\phiSta$ which differs from $1$ indicates that asymmetric tail associations have a role in
 determining $\Scom$; statistical significance, here, is judged as in the previous paragraph.
-It is straightforward to show from the definitions that $\phi_S=\phi_{S,\text{ta}}\phi_{S,\text{cor}}$, so
-$\Scom=\phi_{S,\text{ta}}\phi_{S,\text{cor}}\Sind$.
-Thus the two newly defined quantities, $\phi_{S,\text{ta}}$ and $\phi_{S,\text{cor}}$, separate the influence of 
+It is straightforward to show from the definitions that $\phiS=\phiSta\phiScor$, so
+$\Scom=\phiSta \phiScor\Sind$.
+Thus the two newly defined quantities, $\phiSta$ and $\phiScor$, separate the influence of 
 species relationships on the skewness ratio into the factors due to asymmetries of tail associations and correlations
 with symmetric tail associations. 
 For comparison, $\CVcomsq$ was also computed for the empirical data and for surrogates, 
-defining quantities $\CVntasq$, $\phi_{\text{cv},\text{cor}}$ and $\phi_{\text{cv},\text{ta}}$
+defining quantities $\CVntasq$, $\phicvcor$ and $\phicvta$
 which are related to each other in an analogous way. Fig. \ref{fig_method_box}A-D summarize the newly defined
 quantities and their interrelationships. Because $\CVcomsq$ depends only 
 on species means and covariances, which are preserved by surrogates, we should have $\CVntasq \approx \CVcomsq$ and 
-$\phi_{\text{cv},\text{ta}} \approx 1$.
+$\phicvta \approx 1$.
 
 Having defined methods, we can now frame hypotheses suggested by Fig. \ref{fig_pedag_cv2_skw} and the 
 Theory section in terms of the new methods; tests of the hypotheses will help address goal G3 of the Introduction. 
@@ -736,12 +736,12 @@ goals G2 and G3 of the Introduction. The quantities of Fig. \ref{fig_method_box}
 two datasets in Fig. \ref{fig_result_box}.
 Because $n_L>n_U$ and $\Atot>0$ for Hays (Fig. \ref{fig_CorlmCoru}A), $\Scom$ should be less than $\Snta$.
 This was confirmed (Fig. \ref{fig_result_box}B). Both $\Scom$ and $\Snta$ were positive and the component 
-of the skewness ratio due to tail association, $\phi_{S,\text{ta}}$, was less than 1,
-i.e., $\phi_{S,\text{ta}}=0.2757<1$. 
+of the skewness ratio due to tail association, $\phiSta$, was less than 1,
+i.e., $\phiSta=0.2757<1$. 
 <!--***DAN: Shyamolina, please make the above number an autolink-->
 Becuse $n_L<n_U$ and $\Atot<0$ for Konza (Fig. \ref{fig_CorlmCoru}B), $\Scom$ should be greater than 
 $\Snta$. This was also confirmed (Fig. \ref{fig_result_box}D). $\Scom$ and $\Snta$ were again positive,
-so for Konza $\phi_{S,\text{ta}}$ was greater than 1 (it was $2.7999$). 
+so for Konza $\phiSta$ was greater than 1 (it was $2.7999$). 
 <!--***DAN: Shyamolina, please make the above number an autolink-->
 These results were statistically significant: for Hays, $\Scom$ was less than a fraction $`r round(1-pval_skw_hays,4)`$
 of the quantities $\sk(\sum_i x_i^{(m)})$ for the Hays surrogates $m=1,\ldots,M$ (Methods);
@@ -751,7 +751,7 @@ tail associations between species can
 significantly modify the skewness of the total community abundance, $\xtot$, either raising it (upper-tail asociations)
 it or lowering it (lower-tail associations).  
 
-As anticipated (Methods), $\CVntasq \approx \CVcomsq$ and $\phi_{\text{cv,ta}} \approx 1$ for both Hays and Konza 
+As anticipated (Methods), $\CVntasq \approx \CVcomsq$ and $\phicvta \approx 1$ for both Hays and Konza 
 (Fig. \ref{fig_result_box}A, C) -- the variance ratio approach does register the importance of 
 tail associations for community variability. This was expected because $\CVcomsq$ 
 depends only on species means and covariances, which were preserved 
@@ -760,7 +760,7 @@ $\sum_i x_i^{(m)}$ was centered very close to the value of $\CVcomsq$, for both 
 
 We compare conclusions about synchronous versus compensatory dynamics that would typically be drawn about Hays using
 only the variance ratio approach to conclusions drawn using both approaches together.
-Because $\phi_{\text{cv}}<1$ (Fig. \ref{fig_result_box}), the conclusion solely based on the classic 
+Because $\phicv<1$ (Fig. \ref{fig_result_box}), the conclusion solely based on the classic 
 variance ratio approach would simply have been 
 that population dynamics at Hays are compensatory, i.e., species interactions reduce or buffer against
 community instability. However, the combined approach yields more nuanced information.  
@@ -780,7 +780,7 @@ crashes versus explosions in Hays.
 
 We next compare conclusions about synchronous versus compensatory dynamics that would typically be drawn about Konza using
 only the variance ratio approach to conclusions drawn using both approaches.
-Because $\phi_{\text{cv}}$ was slightly less than $1$ for Konza (Fig. \ref{fig_result_box}), the conclusion solely based on the classic 
+Because $\phicv$ was slightly less than $1$ for Konza (Fig. \ref{fig_result_box}), the conclusion solely based on the classic 
 variance ratio approach would have been 
 that population dynamics at Konza are slightly compensatory, i.e., species interactions slightly reduce or buffer against
 community instability. But using both the variance and skewness ratios together yields conclusions that differ 
@@ -794,7 +794,7 @@ modify the extreme bahavior of $\xtot$ very differently in the two extremes of i
 for more results and further discussion.
 
 Combining the skewness and variance ratio approaches also reveals differences between Hays and Konza that the variance 
-ratio alone does not  reveal. For both communities, $\phi_{\text{cv}}$ is slightly or moderately less than $1$,
+ratio alone does not  reveal. For both communities, $\phicv$ is slightly or moderately less than $1$,
 suggesting compensatory, stabilizing species interactions in both communities. But $\phi_S$ was less than 1 for Hays 
 and was markedly greater than 1 for Konza. The influence of tail associations between species on the distribution 
 and extreme values of $\xtot$, not revealed by the classic variance ratio approach, differs markedly between the Hays 
@@ -802,15 +802,12 @@ and Konza systems.
 
 Our results also reveal that the influence of tail associations between species on the distribution of $\xtot$ is
 just as great as the influence of aspects of species interactions other than tail association. For Konza, 
-$\phi_{S,\text{cor}}$ and $\phi_{S,\text{ta}}$ were similar (Fig. \ref{fig_result_box}), indicating that both tail associations and
+$\phiScor$ and $\phiSta$ were similar (Fig. \ref{fig_result_box}), indicating that both tail associations and
 aspects of species interactions that were not related to tail associations were comparable in their effects on the skewness
-of $\xtot$ (recall that $\Scom=\phi_{S,\text{ta}} \phi_{S,\text{cor}} \Sind$). However, for Hays, $\phi_{S,\text{cor}}$
-was close to 1 and $\phi_{S,\text{ta}}$ differed substantially from 1 (Fig. \ref{fig_result_box}), indicating that essentially all of the 
+of $\xtot$ (recall that $\Scom=\phiSta \phiScor \Sind$). However, for Hays, $\phiScor$
+was close to 1 and $\phiSta$ differed substantially from 1 (Fig. \ref{fig_result_box}), indicating that essentially all of the 
 influence of species interactions on the skewness of $\xtot$ is due to tail associations. 
 
-<!--***DAN: Your capitalization of CV is inconsistent across the vaious notation (see \phi_cv and related quantities, compared to
-CV_com^2 and related quantities) and in Fig. 6. Likewise for S. Fix it by just capitalizing CV everywhere and S everywhere. You also
-need S to be italicized everywhere, and CV to be upright everywhere.-->
 
 # Discussion\label{Discussion}
 
@@ -849,6 +846,8 @@ additional details. Time series were generated and statistics computed for 10000
 for 60 years only, for clarity. \label{fig_pedag_cv2_skw}}
 \end{center}
 \end{figure}
+<!--***DAN: Shyamolina, in this fig, in panels A and B, are written two instances of 
+\phi_cv. Please change them to \phi_CV-->
 
 <!--Theory figure-->
 \begin{figure}
