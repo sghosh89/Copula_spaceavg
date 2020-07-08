@@ -1473,7 +1473,9 @@ the real line to the interval $[0,1]$ that is zero for $y$ less than the minimum
 jumps by the fraction $1/L$ at $y=y_j$, for all $j=1,\ldots,L$. The value of $\hat{F}(y_j)$ is here taken
 to be $\rank(y_j)/L$, where the rank is $1$ for the smallest element of the set
 $\{ y_j : j=1,\ldots,L \}$ and $T$ for the largest element. The ECDF therefore takes the value $1$
-for $y$ greater than the maximum of the $y_j$. The ECDF approximates the CDF of $Y$ for large $L$.
+for $y$ greater than the maximum of the $y_j$. It approximates the CDF of $Y$ for large $L$. We here
+use the EDCF to further illuminate some of the claims made in the main text about the influence of species
+interactions on the distribution of $\xtot$. 
 
 
 
