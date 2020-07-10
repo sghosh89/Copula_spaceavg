@@ -48,12 +48,12 @@ sound to you?
 
 ```{r setup_Paper, echo=F}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
-options(scipen = 1, digits = 4) #This option round all numbers appeared in the inline r code upto 5th digit
+options(scipen = 1, digits = 4) #This option round all numbers appeared in the inline r code upto specified digit
 ```
 
 <!--Abstract-->
 \newpage
-
+hays_
 \noindent \textbf{ABSTRACT.} 
 
 <!--keywords-->
@@ -797,7 +797,7 @@ substantially. The skewness ratio, $\phi_S$, was much greater than $1$
 (it was `r knz_stab$phi_skw`), with $\Scom=$ `r knz_stab$skw_real` correspondingly much greater than $\Sind=$ 
 `r knz_stab$skw_indep`(Fig. \ref{fig_result_box}).  
 <!--***DAN: Shyamolina, please make the above three numbers into autolinks
-***Shya: done.-->
+***Shya: done. but see sometimes decimal numbers are not exactly the same as in figure because the saved table considers the full numbers to calculate phi_cv whereas phi_cv in figures are calculated with the truncated values.-->
 So although species interactions slightly reduce the variance of $\xtot$, they also dramatically increase right skew
 of $\xtot$, leading to an overall greater propensity for explosions of $\xtot$ to high values. Crashes of $\xtot$
 to low values are reduced by species interactions. The variance ratio result obscures the fact that species interactions
