@@ -48,12 +48,12 @@ sound to you?
 
 ```{r setup_Paper, echo=F}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
-options(scipen = 1, digits = 5) #This option round all numbers appeared in the inline r code upto 5th digit
+options(scipen = 1, digits = 4) #This option round all numbers appeared in the inline r code upto specified digit
 ```
 
 <!--Abstract-->
 \newpage
-
+hays_
 \noindent \textbf{ABSTRACT.} 
 
 <!--keywords-->
@@ -332,7 +332,9 @@ In scenario 1, which is a baseline for comparison,
 $(x_1,\ldots,x_N)$ is a multivariate normal distribution with mean $(0,\ldots,0)$ and covariance matrix
 having $1$s along the diagonal and off-diagonal entries $0.6$. A sample from $(x_1,x_2)$ (Fig. \ref{fig_theory}A)
 and marginal histograms (side panels of Fig. \ref{fig_theory}A) help illustrate the distribution. 
-The standard deviation of $\xtot$ was about $`r round(sqrt(vartotX1),1)`$, and the skewness of $\xtot$
+The standard deviation of $\xtot$ was about $15.7$ 
+<!--`r round(sqrt(vartotX1),1)`
+***Shya: I could not find vartotX1 variable-->, and the skewness of $\xtot$
 was close to $0$ (Fig. \ref{fig_theory}B). The probability of $\xtot$ exceeding a high threshold is given 
 in Fig. \ref{fig_theory}C for a range of high thresholds. Likewise the probability of $\xtot$ falling below a
 low threshold is in Fig. \ref{fig_theory}D for a range of low thresholds. These probabilities represent the 
@@ -696,9 +698,11 @@ values. All analyses were done in R. Complete computer code for this project is 
 ```{r pval_skw, echo=F}
 hays_skwres<-readRDS("./Results/hays_results/skewness_results/stability_CP_hays.RDS")
 pval_skw_hays<-sum(hays_skwres$skw_surrogs<hays_skwres$df_stability$skw_real)/length(hays_skwres$skw_surrogs)
+hays_stab<-hays_skwres$df_stability
 
 knz_skwres<-readRDS("./Results/knz_results/skewness_results/stability_CP_knz.RDS")
 pval_skw_knz<-sum(knz_skwres$skw_surrogs>knz_skwres$df_stability$skw_real)/length(knz_skwres$skw_surrogs)
+knz_stab<-knz_skwres$df_stability
 ```
 
 # Results\label{Results}
@@ -739,12 +743,14 @@ goals G2 and G3 of the Introduction. The quantities of Fig. \ref{fig_method_box}
 two datasets in Fig. \ref{fig_result_box}.
 Because $n_L>n_U$ and $\Atot>0$ for Hays (Fig. \ref{fig_CorlmCoru}A), $\Scom$ should be less than $\Snta$.
 This was confirmed (Fig. \ref{fig_result_box}B). Both $\Scom$ and $\Snta$ were positive and the component 
-of the skewness ratio due to tail association, $\phiSta=0.2757$, was less than 1. 
-<!--***DAN: Shyamolina, please make the above number an autolink-->
+of the skewness ratio due to tail association, $\phiSta=$ `r hays_stab$skw_real/hays_stab$skw_ntd_median`, was less than 1. 
+<!--***DAN: Shyamolina, please make the above number an autolink
+***Shya: done.-->
 Becuse $n_L<n_U$ and $\Atot<0$ for Konza (Fig. \ref{fig_CorlmCoru}B), $\Scom$ should be greater than 
 $\Snta$. This was also confirmed (Fig. \ref{fig_result_box}D). $\Scom$ and $\Snta$ were again positive,
-so for Konza $\phiSta=2.7999$ was greater than 1. 
-<!--***DAN: Shyamolina, please make the above number an autolink-->
+so for Konza $\phiSta=$ `r knz_stab$skw_real/knz_stab$skw_ntd_median` was greater than 1. 
+<!--***DAN: Shyamolina, please make the above number an autolink
+***Shya: done.-->
 These results were statistically significant: for Hays, $\Scom$ was less than a fraction $`r round(1-pval_skw_hays,4)`$
 of the quantities $\sk(\sum_i x_i^{(m)})$ for the Hays surrogates $m=1,\ldots,M$ (Methods);
 whereas for Konza, $\Scom$ was greater than a fraction $`r round(1-pval_skw_knz,3)`$ of the analogous surrogate 
@@ -771,8 +777,9 @@ Because $\phicv<1$ (Fig. \ref{fig_result_box}), dynamics in Hays would classical
 compensatory, i.e., species interactions reduce or buffer against
 community instability. However, the combined approach yields more nuanced information.
 The skewness ratio, $\phi_S$, was substantially less than $1$ 
-(it was $0.2911$), with $\Scom=0.2246$ less than $\Sind=0.7718$ (Fig. \ref{fig_result_box}).
-<!--***DAN: Shyamolina, please make the above three numbers into autolinks-->
+(it was `r hays_stab$phi_skw`), with $\Scom=$ `r hays_stab$skw_real` less than $\Sind=$ `r hays_stab$skw_indep`(Fig. \ref{fig_result_box}).
+<!--***DAN: Shyamolina, please make the above three numbers into autolinks
+***Shya: done.-->
 So the tendency for the total community abundance $\xtot$ to explode to high values (right skewness)
 and surpass high disaster thresholds is mitigated by species interactions. This new 
 information agrees with and supports the old, variance-ratio-based
@@ -790,8 +797,14 @@ Because $\phicv$ was slightly less than $1$ (Fig. \ref{fig_result_box}), dynamic
 would classically be interpreted as slightly compensatory, i.e., species interactions slightly reduce or buffer against
 community instability. But using both the variance and skewness ratios together yields conclusions that differ 
 substantially. The skewness ratio, $\phi_S$, was much greater than $1$ 
-(it was $7.3811$), with $\Scom=1.3655$ correspondingly much greater than $\Sind=0.1850$ (Fig. \ref{fig_result_box}).
-<!--***DAN: Shyamolina, please make the above three numbers into autolinks-->
+<!--(it was $7.3811$), with $\Scom=1.3655$ correspondingly much greater than $\Sind=0.1850$ (Fig. \ref{fig_result_box}).-->
+(it was `r knz_stab$phi_skw`), with $\Scom=$ `r knz_stab$skw_real` correspondingly much greater than $\Sind=$ 
+`r knz_stab$skw_indep`(Fig. \ref{fig_result_box}).  
+<!--***DAN: Shyamolina, please make the above three numbers into autolinks
+***Shya: done. but see sometimes decimal numbers are not exactly the same as in figure because the saved table considers the full numbers to calculate phi_cv whereas phi_cv in figures are calculated with the truncated values.
+***DAN: Please do not use truncated values. Please use rounded values instead - this is standard scientific practice. 
+Please verify that these and any other numbers that appear in two places agree, except that one could be rounded to
+fewer significant figures than the other.-->
 So although species interactions slightly reduce the variance of $\xtot$, they also dramatically increase right skew
 of $\xtot$. This in turn leads to an overall greater propensity for explosions of $\xtot$ to high values, and 
 a correspondingly accentuated probability that $\xtot$ will exceed high disaster thresholds. Crashes of $\xtot$
@@ -862,7 +875,8 @@ for 60 years only, for clarity. \label{fig_pedag_cv2_skw}}
 \end{center}
 \end{figure}
 <!--***DAN: Shyamolina, in this fig, in panels A and B, are written two instances of 
-\phi_cv. Please change them to \phi_CV-->
+\phi_cv. Please change them to \phi_CV
+***Shya: Done.-->
 
 <!--Theory figure-->
 \begin{figure}

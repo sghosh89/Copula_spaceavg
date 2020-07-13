@@ -91,7 +91,7 @@ cvsq_com<-round(tab2$cvsq_real,4)
 #cvsq_ind<-round(tab2$cvsq_indep,4)
 cvsq_ind<-formatC(tab2$cvsq_ind,4,format="f")
 phi_loreau<-round(get_var_ratio(m=normres_p2)$loreau_var_ratio,2)
-legend(x=38,y=3,c(as.expression(bquote(phi[cv]==.(phi_cv_l))),
+legend(x=38,y=3,c(as.expression(bquote(phi[CV]==.(phi_cv_l))),
                   as.expression(bquote(phi[LdM]==.(phi_loreau)))),
        y.intersp = 1.2,
        bty="n",cex=1,text.col="black")
@@ -111,7 +111,7 @@ cvsq_com<-round(tab1$cvsq_real,4)
 #cvsq_ind<-round(tab1$cvsq_indep,4)
 cvsq_ind<-formatC(tab1$cvsq_ind,4,format="f")
 phi_loreau<-round(get_var_ratio(m=normres_p1)$loreau_var_ratio,2)
-legend(x=38,y=3,c(as.expression(bquote(phi[cv]==.(phi_cv_r))),
+legend(x=38,y=3,c(as.expression(bquote(phi[CV]==.(phi_cv_r))),
                        as.expression(bquote(phi[LdM]==.(phi_loreau)))),
        y.intersp = 1.2,
        bty="n",cex=1,text.col="black")
