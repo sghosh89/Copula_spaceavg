@@ -799,12 +799,13 @@ community instability. But using both the variance and skewness ratios together 
 substantially. The skewness ratio, $\phi_S$, was much greater than $1$ 
 <!--(it was $7.3811$), with $\Scom=1.3655$ correspondingly much greater than $\Sind=0.1850$ (Fig. \ref{fig_result_box}).-->
 (it was `r knz_stab$phi_skw`), with $\Scom=$ `r knz_stab$skw_real` correspondingly much greater than $\Sind=$ 
-`r knz_stab$skw_indep`(Fig. \ref{fig_result_box}).  
+`r knz_stab$skw_indep` (Fig. \ref{fig_result_box}). 
 <!--***DAN: Shyamolina, please make the above three numbers into autolinks
 ***Shya: done. but see sometimes decimal numbers are not exactly the same as in figure because the saved table considers the full numbers to calculate phi_cv whereas phi_cv in figures are calculated with the truncated values.
-***DAN: Please do not use truncated values. Please use rounded values instead - this is standard scientific practice. 
-Please verify that these and any other numbers that appear in two places agree, except that one could be rounded to
-fewer significant figures than the other.-->
+***DAN: Please fix this. Of course we cannot have the same number reported in two places being different. Please make the
+figures (all of them, not just this one we are currently talking about) use the full values for all computations, just the
+in the same way as is done for the tables. Values should be rounded, please (not truncated) to the same number of 
+significant figures wherever they appear.-->
 So although species interactions slightly reduce the variance of $\xtot$, they also dramatically increase right skew
 of $\xtot$. This in turn leads to an overall greater propensity for explosions of $\xtot$ to high values, and 
 a correspondingly accentuated probability that $\xtot$ will exceed high disaster thresholds. Crashes of $\xtot$
