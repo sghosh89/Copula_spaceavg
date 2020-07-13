@@ -48,12 +48,12 @@ sound to you?
 
 ```{r setup_Paper, echo=F}
 knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
-options(scipen = 1, digits = 4) #This option round all numbers appeared in the inline r code upto specified digit
+options(scipen = 1, digits = 4) #This option round all numbers appeared in the inline r code upto specified digit, default value=7
 ```
 
 <!--Abstract-->
 \newpage
-hays_
+
 \noindent \textbf{ABSTRACT.} 
 
 <!--keywords-->
@@ -752,16 +752,17 @@ earlier comment that perhaps the values in the figures were based on doing math 
 This is not the correct way to do it. You round at the end of a computation, typically, not in the middle. Please fix,
 here and everwhere that similar problems occur. I would like for the next version I look at, please, to have the same,
 and correct, numbers whenever the same result is reported twice, please. I would prefer to not have to revisit this issue
-again. Thanks!-->
+again. Thanks!
+***Shya: done.-->
 
 Becuse $n_L<n_U$ and $\Atot<0$ for Konza (Fig. \ref{fig_CorlmCoru}B), $\Scom$ should be greater than 
 $\Snta$. This was also confirmed (Fig. \ref{fig_result_box}D). $\Scom$ and $\Snta$ were again positive,
 so for Konza $\phiSta=$ `r knz_stab$skw_real/knz_stab$skw_ntd_median` was greater than 1. 
 <!--***DAN: Shyamolina, please make the above number an autolink
 ***Shya: done.-->
-These results were statistically significant: for Hays, $\Scom$ was less than a fraction $`r round(1-pval_skw_hays,4)`$
+These results were statistically significant: for Hays, $\Scom$ was less than a fraction `r 1-pval_skw_hays`
 of the quantities $\sk(\sum_i x_i^{(m)})$ for the Hays surrogates $m=1,\ldots,M$ (Methods);
-whereas for Konza, $\Scom$ was greater than a fraction $`r round(1-pval_skw_knz,3)`$ of the analogous surrogate 
+whereas for Konza, $\Scom$ was greater than a fraction `r 1-pval_skw_knz` of the analogous surrogate 
 values for Konza (Fig. \ref{SI-fig_result_box}). Thus asymmetric 
 tail associations between species 
 significantly modified the skewness of the total community abundance, $\xtot$, lowering it for Hays
