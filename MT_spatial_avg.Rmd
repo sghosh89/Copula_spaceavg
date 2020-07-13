@@ -527,9 +527,8 @@ test to check whether the community shows significantly stronger lower-tail (or 
 
 To accomplish goal G2 of the Introduction, we need a statistical measure of the distribution $\xtot$ that
 characterizes community variability in a way that complements the classic use of $\var(\xtot)$ or $\CVcomsq$. We use
-the skewness, denoted $\sk(\xtot)$. The skewness of $\xtot$ is the third central moment, 
-$m_3(\xtot)$, divided by the cube of the standard 
-deviation of $\xtot$. The
+the skewness, $\sk(\xtot)$. The skewness of $\xtot$ is the third central moment, 
+$m_3(\xtot)$, divided by the cubed standard deviation of $\xtot$. The
 unbiased estimator (with Bessel's correction) was used for the standard deviation. For the third central moment, we used 
 the third $h$-statistic, $m_3(\xtot)=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (\xtot(t)-\mean(\xtot))^3$, which is the 
 unique symmetric unbiased estimator of that quantity. As illustrated in Fig. \ref{fig_pedag_cv2_skw}, skewness 
@@ -538,7 +537,9 @@ $\var(\xtot)$ or $\CVcomsq$ to characterize community variability, because stron
 undergoes occasional large downward departures from typical values (i.e., crashes), and large positive values
 indicate that $\xtot$ undergoes occasional large upward departures from typical values. As also illustrated in
 Fig. \ref{fig_pedag_cv2_skw}, either of these dynamical behaviors can happen independently of the 
-values of $\var(\xtot)$ and $\CVcomsq$. 
+values of $\var(\xtot)$ and $\CVcomsq$. Because $\sk(\xtot)$ relates to occasional large upward
+or downward departures of $\xtot$ from typical values, it also relates to probabilities that $\xtot$  
+will surpass a high disaster threshold (see Theory) or fall below a low one. 
 
 Just as, in the classic approach, the variance ratio $\phicv$ is the quotient $\CVcomsq/\CVindsq$, we 
 analogously define a *skewness ratio*, as follows. Let $\Scom=\sk(\xtot)$, and consider the value that 
@@ -556,7 +557,8 @@ the absence of species interactions, i.e., $\Sind$. In such a case, and assuming
 (see Discussion for more on this assumption), species interactions
 magnify the tendency for the community aggregate quantity $\xtot$ to crash, or explode to large values.
 This can be viewed as a new type of synchrony among species, in the sense that species relationships
-inflate community instability by accentuating either positive or negative skewness. It is the
+inflate community instability by accentuating the probability that $\xtot$ will exceed large 
+disaster threshold, or fall below small ones. It is the
 mutual sign of $\Scom$ and $\Sind$ that determines whether crashes or 
 explosions to high values are magnified. 
 If $0<\phi_S<1$, then $\Scom$ has lower magnitude, but the same sign, as $\Sind$, so species interactions
@@ -614,7 +616,7 @@ and asymmetries of tail associations on $\Scom=\sk(\xtot)$. We did this through 
 that rendered symmetric the tail associations between species, while keeping other statistical properties of 
 community dynamics approximately fixed. Given the data $x_i(t)$ ($i=1,\ldots,N$, $t=1,\ldots,T$), the randomization 
 procedure produced $M$ surrogate datasets $x_i^{(m)}(t)$ ($i=1,\ldots,N$, $t=1,\ldots,T$), for $m=1,\ldots,M$, 
-for any desired number of surrogates, $M$, with properties detailed below. Since these surrogate datasets
+for any desired number of surrogates, $M$, with properties detailed below. We used $M=10000$. Since these surrogate datasets
 had symmetric tail associations between species but were otherwise statistically similar to the original dataset,
 $x_i(t)$, $\Scom=\sk(\xtot)$ was computed for the original data, and a surrogate skewness value, $\sk(\sum_i x_i^{(m)})$,
 was also computed for each of the surrogate datasets. A test of whether asymmetry of tail associations significantly influenced
@@ -631,7 +633,7 @@ influence the skewness ratio. The subscript "cor" is a reference to the effects 
 The quantity $\phiSta$ satisfies $\Scom=\phiSta\Snta$, and therefore
 represents the factor by which asymmetric tail associations between species further influence community variation. 
 So a value of $\phiSta$ which differs from $1$ indicates that asymmetric tail associations have a role in
-determining $\Scom$; statistical significance, here, is judged as in the previous paragraph.
+determining $\Scom$. Statistical significance, here, is judged as in the previous paragraph.
 It is straightforward to show from the definitions that $\phiS=\phiSta\phiScor$, so
 $\Scom=\phiSta \phiScor\Sind$.
 Thus the two newly defined quantities, $\phiSta$ and $\phiScor$, separate the influence of 
@@ -649,14 +651,13 @@ Theory section in terms of the new methods; tests of the hypotheses will help ad
 Fig. \ref{fig_pedag_cv2_skw}A,C,E and 
 Fig. \ref{fig_theory}M-P suggest that communities exhibiting a preponderance of lower-tail association 
 should have total community dynamics that are more left-skewed, or less right-skewed, than would have been the case
-without these tail associations. Using the language of our new methods, this constitutes
-a hypothesis that for communities for which $n_L>n_U$ and $\Atot>0$, we should have 
+without these tail associations. Using the language of our new methods, this is the same as saying 
+that for communities for which $n_L>n_U$ and $\Atot>0$, we should have 
 $\Scom<\Snta$. Fig. \ref{fig_pedag_cv2_skw}B,D,F and 
 Fig. \ref{fig_theory}I-L suggest that communities exhibiting a preponderance of upper-tail association 
 should have total community dynamics that are more right-skewed, or less left-skewed, than would have been the case
-without these tail associations. Using the language of our new methods, this constitutes
-a hypothesis that for communities for which $n_L<n_U$ and $\Atot<0$, we should have 
-$\Scom>\Snta$.
+without these tail associations. This is the same as saying that for 
+communities for which $n_L<n_U$ and $\Atot<0$, we should have $\Scom>\Snta$.
 <!--***DAN: Don't forget to make comparisons in the Results between the values of phi_S,ta and phi_S,cor,
 to judge the relative importance of asymmtric tail associations and other aspects of species interrelationships.
 Also, relate the results to stability, which is not conveniently done here because it depends on signs as
@@ -722,17 +723,17 @@ Please say what the R variable name is in a response to this comment.
 Addressing goal G1 of the Introduction, the quantities $\cor_l-\cor_u$ for all positively associated 
 pairs of species within the Hays and Konza datasets are displayed in Fig. \ref{fig_CorlmCoru}, as are the
 community aggregate quantities $n_L$ and $n_U$ and the total community tail association values $\Atot$ (Methods). 
-Results revealed marked differences between the two communities in patterns of species tail associations. 
+Results revealed marked differences between Hays and Konza in patterns of species tail associations. 
 Although both the Hays and Konza datasets had pairs of species with more 
 lower-tail association and pairs with more upper-tail association, $n_L$ was greater than $n_U$ and $\Atot$ was positive
 for Hays, and $n_L$ was less than $n_U$ and $\Atot$ was negative for Konza (Fig. \ref{fig_CorlmCoru}). Thus 
 lower-tail association was dominant at Hays and upper-tail association was dominant at Konza.
 
-We earlier framed the hypotheses that communities exhibiting more lower-tail association 
-should also have $\xtot$ that is more left-skewed, or less right-skewed, than would have been the case
-without species tail associations; and that communities exhibiting more upper-tail association 
+We earlier framed the hypotheses that communities exhibiting more lower- than upper-tail association 
+between species should also have $\xtot$ that is more left-skewed, or less right-skewed, than would have been the case
+with symmetric tail associations; and that communities exhibiting more upper- than lower-tail association 
 should have $\xtot$ that is more right-skewed, or less left-skewed, than would have been the case
-without tail associations (Methods). We tested these hypotheses for Hays and Konza, thereby exploring the influence
+with symmetric tail associations (Methods). We tested these hypotheses for Hays and Konza, thereby exploring the influence
 of species tail associations on the distribution of $\xtot$ and addressing 
 goals G2 and G3 of the Introduction. The quantities of Fig. \ref{fig_method_box} are displayed for our 
 two datasets in Fig. \ref{fig_result_box}.
@@ -748,9 +749,10 @@ These results were statistically significant: for Hays, $\Scom$ was less than a 
 of the quantities $\sk(\sum_i x_i^{(m)})$ for the Hays surrogates $m=1,\ldots,M$ (Methods);
 whereas for Konza, $\Scom$ was greater than a fraction $`r round(1-pval_skw_knz,3)`$ of the analogous surrogate 
 values for Konza (Fig. \ref{SI-fig_result_box}). Thus asymmetric 
-tail associations between species can 
-significantly modify the skewness of the total community abundance, $\xtot$, either lowering it (lower-tail asociations, as in Hays)
-or raising it (upper-tail associations, as in Konza) and thereby having an influence on patterns of community variability.  
+tail associations between species 
+significantly modified the skewness of the total community abundance, $\xtot$, lowering it for Hays
+and raising it for Konza and thereby influencing community variability and probabilities that
+disaster thresholds are passed.  
 
 As anticipated (Methods), $\CVntasq \approx \CVcomsq$ and $\phicvta \approx 1$ for both Hays and Konza 
 (Fig. \ref{fig_result_box}A, C), i.e., the variance ratio approach does not register the importance of 
@@ -764,7 +766,7 @@ $\sum_i x_i^{(m)}$ ($\CVntasq$ was defined to be the median of this distribution
 close to the value of $\CVcomsq$, for both Hays and Konza (Fig. \ref{SI-fig_result_box}A, C).
 
 We now compare conclusions about Hays that would typically be drawn by using
-only the variance ratio approach, to conclusions drawn using both the variance and skewness ratio approaches.
+only the variance ratio approach, to conclusions drawn using both the variance and skewness ratios.
 Because $\phicv<1$ (Fig. \ref{fig_result_box}), dynamics in Hays would classically be interpreted as
 compensatory, i.e., species interactions reduce or buffer against
 community instability. However, the combined approach yields more nuanced information.
@@ -772,53 +774,54 @@ The skewness ratio, $\phi_S$, was substantially less than $1$
 (it was $0.2911$), with $\Scom=0.2246$ less than $\Sind=0.7718$ (Fig. \ref{fig_result_box}).
 <!--***DAN: Shyamolina, please make the above three numbers into autolinks-->
 So the tendency for the total community abundance $\xtot$ to explode to high values (right skewness)
-is mitigated by species interactions. This new information agrees with and supports the old, variance-ratio-based
+and surpass high disaster thresholds is mitigated by species interactions. This new 
+information agrees with and supports the old, variance-ratio-based
 conclusion that species interactions are generally stabilizing at Hays, but the new information
 also extends the classic result by revealing 
 the greater importance of community interactions for mitigating explosions of $\xtot$ to high values,
 compared to their lesser role in mitigating crashes. Apparently species interactions can mitigate or accentuate
 extreme values of $\xtot$ differentially for high versus low extremes.
-See SI section \ref{ecdf_approach} for more results
-and further discussion.
+See SI section \ref{SI-ecdf_approach} for related results
+and discussion.
 
 We next compare conclusions about Konza that would typically be drawn by using
-only the variance ratio approach, to conclusions drawn using both the variance and skewness ratio approaches.
+only the variance ratio approach, to conclusions drawn using both the variance and skewness ratios.
 Because $\phicv$ was slightly less than $1$ (Fig. \ref{fig_result_box}), dynamics in Konza 
 would classically be interpreted as slightly compensatory, i.e., species interactions slightly reduce or buffer against
 community instability. But using both the variance and skewness ratios together yields conclusions that differ 
 substantially. The skewness ratio, $\phi_S$, was much greater than $1$ 
-(it was $7.3811$), with $\Scom=1.3655$ correspondingly much greater than $\Sind=0.1850$ (Fig. \ref{fig_result_box}).  
+(it was $7.3811$), with $\Scom=1.3655$ correspondingly much greater than $\Sind=0.1850$ (Fig. \ref{fig_result_box}).
 <!--***DAN: Shyamolina, please make the above three numbers into autolinks-->
 So although species interactions slightly reduce the variance of $\xtot$, they also dramatically increase right skew
-of $\xtot$, leading to an overall greater propensity for explosions of $\xtot$ to high values. Crashes of $\xtot$
+of $\xtot$. This in turn leads to an overall greater propensity for explosions of $\xtot$ to high values, and 
+a correspondingly accentuated probability that $\xtot$ will exceed high disaster thresholds. Crashes of $\xtot$
 to low values are reduced by species interactions. The variance ratio result obscures the fact that species interactions
-modify extreme bahavior of $\xtot$ very differently in the two tails of its distribution. The extent to which it makes 
-sense to say that species interactions promote community stability for Konza is less than what is implied
-by the variance ratio. See SI section \ref{ecdf_approach} 
-for more results and further discussion.
+modify extreme bahavior of $\xtot$ very differently in the two tails of its distribution. Although the variance 
+ratio suggests that species dynamics at Konza are compensatory, promoting community 
+stability, in fact this is not wholly true. See SI section \ref{SI-ecdf_approach} 
+for related results and discussion.
 
-Thus combining approaches newly reveals differences between Hays and Konza.
+Thus the skewness ratio newly reveals differences between Hays and Konza.
 For both communities, $\phicv$ is slightly or moderately less than $1$,
 suggesting compensatory, stabilizing species interactions. But $\phi_S$ was less than 1 for Hays 
-and was markedly greater than 1 for Konza: the influence of interspecific tail associations on the distributions 
-of $\xtot$ differs markedly between Hays and Konza. Hays can probably still be fairly labeled as a community where
-compensatory dynamics are dominant, and species interactions stabilize community dynamics. But, in contrast,
-species interactions in Konza only appear to be compensatory in the narrow viewpoint of the variance ratio
-approach. Our broader approach that considers both variance and skewness, and that assesses the influence of 
-species interactions on both crashes and explosions of $\xtot$, reveals that the situation is more complex
-and it is probably not fair to state, without futher qualification, that species interactions are stabilizing in 
-Konza.  
+and was markedly greater than 1 for Konza. The influence of interspecific tail associations on the distributions 
+of $\xtot$ differs markedly between Hays and Konza. Hays can probably still fairly be labeled as a community showing
+stabilizing, compensatory dynamics. In contrast,
+species interactions in Konza are only stabilizing in that they mitigate crashes of $\xtot$. 
+Interactions simultaneously accentuate explosions of $\xtot$ to high values, a feature that should probably 
+not be considered as stabilizing.
 
 Finally, our results highlight the importance of tail associations for community dynamics. 
-The influence of tail associations on distributions of $\xtot$ can be
-as great or greater than the influence of aspects of species interactions other than tail association. For Konza, 
+The influence of tail associations on the distribution of $\xtot$ can be
+as great or greater than the influence of species correlations with symmetric tail association. For Konza, 
 $\phiScor$ and $\phiSta$ were similar (Fig. \ref{fig_result_box}), indicating that both tail associations and
-aspects of species interactions other than tail associations were comparable in their effects on the skewness
+correlations were comparable in their effects on the skewness
 of $\xtot$ (recall that $\Scom=\phiSta \phiScor \Sind$). For Hays, however, $\phiScor$
 was close to 1 and $\phiSta$ differed substantially from 1 (Fig. \ref{fig_result_box}), indicating that essentially all of the 
-influence of species interactions on the skewness of $\xtot$ is due to the nature of tail associations between species. 
-The influence of tail associations on the CV of $\xtot$ is negligible, as indicated previously, but reflects
-the inability of classical approaches to detect the importance of tail associations rather than indicating that
+influence of species interactions on $\sk(\xtot)$ is due to asymmetric tail associations between species. 
+The influence of tail associations on the CV of $\xtot$ was negligible, as indicated 
+previously, but that reflects
+the inability the CV to detect the impact of tail associations rather than indicating that
 tail associations are unimportant.
 
 # Discussion\label{Discussion}

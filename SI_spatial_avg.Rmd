@@ -1066,7 +1066,7 @@ ecdfplot<-function(ecdf,secdf,siecdf,filename)
   dev.off() 
 }
 
-ecdfplot(ecdf=dhays_ecdf,secdf=shays_ecdf,siecdf=,sihays_ecdf,filename="./Results/Hays_ecdfs")
+ecdfplot(ecdf=dhays_ecdf,secdf=shays_ecdf,siecdf=sihays_ecdf,filename="./Results/Hays_ecdfs")
 ecdfplot(ecdf=dkonz_ecdf,secdf=skonz_ecdf,siecdf=sikonz_ecdf,filename="./Results/Konz_ecdfs")
 ```
 
@@ -1468,19 +1468,82 @@ were on opposite sides of the data value.
 # An empirical cdf approach \label{ecdf_approach}
 
 The empirical cumulative distribution function (ECDF) associated with a sample $y_j$, $j=1,\ldots,L$,
-from a random variable $Y$ is a non-continuous, piecewise-constant function $\hat{F}(y): \mathbb{R} \rightarrow [0,1]$ from 
-the real line to the interval $[0,1]$ that is zero for $y$ less than the minimum of the $y_j$, and that
-jumps by the fraction $1/L$ at $y=y_j$, for all $j=1,\ldots,L$. The value of $\hat{F}(y_j)$ is here taken
-to be $\rank(y_j)/L$, where the rank is $1$ for the smallest element of the set
-$\{ y_j : j=1,\ldots,L \}$ and $T$ for the largest element. The ECDF therefore takes the value $1$
-for $y$ greater than the maximum of the $y_j$. It approximates the CDF of $Y$ for large $L$. We here
-use the EDCF to further illuminate some of the claims made in the main text about the influence of species
-interactions on the distribution of $\xtot$. 
+from a random variable $Y$ is the function $\hat{F}: \mathbb{R} \rightarrow [0,1]$ such that
+$\hat{F}(y)$ equals the number of elements of the set $\{y_1,y_2,\ldots,y_L\}$ which are less than
+or equal to $y$, divided by $L$. The ECDF approximates the CDF of $Y$ for large $L$, and hence 
+$\hat{F}(y)$ approximates the probability $P[Y \leq y]$. We here
+use the EDCF of $\xtot$ to further illuminate some of the claims made in the main text about the 
+influence of species interactions on the distribution of $\xtot$ and on probabilities that 
+$\xtot$ exceeds high disaster thresholds or falls below low ones.
+Henceforth letting $\hat{F}(x)$ denote the ECDF of the sample $\xtot(t)$, $t=1,\ldots,T$, we can interpret 
+$\hat{F}(x)$ as an approximation of the probability that $\xtot$ will fall below $x$ for a low 
+disaster threshold, $x$. If $x$ is instead a high disater threshold, then $1-\hat{F}(x)$
+approximates the probability that $\xtot$ will exceed $x$. 
 
+Denoting, as in the main text, our species abundance data as 
+$x_i(t)$ for species $i=1,\ldots,N$ and times $t=1,\ldots,T$, and also again denoting $\xtot(t)=\sum_i x_i(t)$,
+we computed the ECDF $\hat{F}(x)$ of $\xtot$, and compared it to ECDFs $\hat{F}^{(m)}(x)$
+based on surrogate datasets $x_i^{(m)}(t)$ for $m=1,\ldots,M$. We again used $M=10000$.
+The surrogates described in the main text and in SI section \ref{surrogs} were used, but we 
+also, in separate computations, used independent surrogates $x_i^{(\text{ind},m)}(t)$
+obtained by randomly and independently permuting the species time series, $x_i(t)$. The purpose, here,
+was to compare the ECDF of data, $\hat{F}(x)$, to two null hypotheses, corresponding to the two different types
+of surrogates used: one based on a null assumption of symmetric tail associations, but unchanged 
+overall correlations between species; and the other based on independent species dynamics. 
 
+The ECDF of data was
+displayed by plotting the values of $\hat{F}(x)$ against $x$ for $x$ equal to each of the values $\xtot$.
+To compare to the surrogate ECDFs, for each of the possible vertical axis values $y=1/T,2/T,\ldots,(T-1)/T,T/T=1$ 
+that our ECDFs could take, 
+and for each $m=1,\ldots,M$, the $x$ value was computed at which $\hat{F}^{(m)}(x)$ first
+reached the value $y$. For each of $y=1/T,2/T,\ldots,(T-1)/T,1$,
+the resulting distribution of $M=10000$ $x$ values was then displayed and compared to the $x$ value
+at which $\hat{F}(x)$ first reached $y$. Fig. \ref{hays_ecdf} shows results for Hays
+and Fig. \ref{konz_ecdf} shows results for Konza. Panels (A) of these plots show comparisons with
+symmetric tail association surrogates, and panels (B) show comparisons with independent surrogates. 
 
+If a red point near the top of one of the panels of Fig. \ref{hays_ecdf} or \ref{konz_ecdf}
+is in the right tail of the surrogate distribution, it indicates that $\xtot$ values for data reached higher 
+upper extremes than expected from the corresponding surrogate null hypothesis. In other words, asymmetric tail associations
+(panels A) or species interactions, generally (panels B) significantly destabilized (made more extreme) the upper tails of 
+$\xtot$. If, on the other hand, the red point is instead in the left tail of the surrogate distribution, it indicates that 
+the upper extremes of the $\xtot$ distribution for data were lower than expected from the corresponding null hypothesis. 
+In other words, asymmetric tail associations (panels A) or species interactions, generally (panels B) significantly 
+stabilized (made less extreme) the upper tails of $\xtot$. 
 
-<!--***DAN: Not close to done on this section-->
+Analogously, if a red point near the bottom 
+of one of the panels of Fig. \ref{hays_ecdf} or \ref{konz_ecdf}
+is in the left tail of the surrogate distribution, it indicates that $\xtot$ values for data reached smaller 
+lower extremes than expected from the corresponding surrogate null hypothesis. In other words, asymmetric tail associations
+(panels A) or species interactions, generally (panels B) significantly destabilized (made more extreme) the lower tails of 
+$\xtot$. If, on the other hand, the red point is instead in the right tail of the surrogate distribution, it indicates that 
+the lower extremes of the $\xtot$ distribution for data were not as low as expected from the corresponding null hypothesis. 
+In other words, asymmetric tail associations (panels A) or species interactions, generally (panels B) significantly 
+stabilized (made less extreme) the lower tails of $\xtot$. 
+
+In this way Figs \ref{hays_ecdf} or \ref{konz_ecdf}
+reveal possible stabilizing tendencies of species interactions, acting separately on the very large or small
+values of $\xtot$. Thus Figs \ref{hays_ecdf} or \ref{konz_ecdf} separately reveal whether species interactions mitigate 
+probabilities of $\xtot$ exceeding a high disaster threshold or fall below a low disaster thresholds. 
+
+Applying these techniques to Hays, we see that the highest values of $\xtot$ are significantly less extreme than 
+would be expected given symmetric tail associations between species (top part of Fig. \ref{hays_ecdf}A), and are
+significantly and even more substantially less extreme than would be expected given independent species dynamics
+(top part of Fig. \ref{hays_ecdf}B). Both correlations and asymmetry of tail associations between species in
+Hays apparently mitigate explosions of $\xtot$ to high values in the system, and reduce the probability of $\xtot$ exceeding
+high disaster thresholds. Now looking at low values of $\xtot$, the bottom part of Fig. \ref{hays_ecdf}A shows that
+low values of $\xtot$ were significantly lower (more extreme) or not significantly different from what
+would be expected given symmetric
+tail associations between species. However, they were higher (less extreme) than would be expected given independent
+species dynamics (bottom part of Fig. \ref{hays_ecdf}B). So species interactions mitigated the severity of 
+low extremes of $\xtot$, and this was due to aspects of species interactions other than tail associations.
+
+Applying our techniques to Konza, we see that some of the highest values of $\xtot$ are more extreme than would be expected given
+symmetric tail associations between species (top part of Fig. \ref{konz_ecdf}A), and are more extreme than would
+be expected given independent species dynamics (top part of Fig. \ref{konz_ecdf}B). Looking at low values of $\xtot$,
+the bottom part of Fig. \ref{konz_ecdf}A shows that low values of $\xtot$ were significantly higher (less extreme)
+from what would have been expected given symmetric tail associations. Likewise they were higher (less extreme)
+than would be expected given independent species dynamics (bottom part of Fig. \ref{konz_ecdf}B).
 
 <!--hays & knz: time-series results plot-->
 \begin{figure}[!h]
@@ -1589,6 +1652,37 @@ values of $\sk(\sum_i x_i^{(m)})$ over all surrogate datasets $m=1,\ldots,M$ (Me
 give quantiles and the triangles give medians. \label{fig_result_box}}
 \end{center}
 \end{figure}
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=15cm]{./Results/Hays_ecdfs.pdf}
+\caption[Empirical CDF of $\xtot$ compared to surrogates, Hays]{Comparison of the ECDF $\hat{F}(x)$ of $\xtot$ to 
+the surrogate-based quantities $\hat{F}^{(m)}(x)$, $m=1,\ldots,10000$, for Hays (see SI section \ref{ecdf_approach}). 
+Red points display $\hat{F}(x)$ at the values of $\xtot$. For each of the
+quantities $1/T, 2/T,\ldots,(T-1)/T,T/T=1$, black lines show the distribution of $x$ values at which
+surrogate ECDFs $\hat{F}^{(m)}(x)$ first reached that $y$ axis value, using the surrogates of SI section \ref{surrogs} (A)
+or independent surrogates (B). Minima and maxima (dotted lines), $2.5$th and $97.5$th percentiles (dashed lines) and the median 
+(solid line) of the distribution are shown for each $y$ axis values. Numbers at the right show the fraction of surrogate
+values less than the empirical value, and are rendered in red whenever they are outside the range $(0.05,0.95)$. 
+See SI section \ref{ecdf_approach} for interpretations. \label{hays_ecdf}}
+\end{center}
+\end{figure}
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=15cm]{./Results/Konz_ecdfs.pdf}
+\caption[Empirical CDF of $\xtot$ compared to surrogates, Konza]{Comparison of the ECDF $\hat{F}(x)$ of $\xtot$ to 
+the surrogate-based quantities $\hat{F}^{(m)}(x)$, $m=1,\ldots,10000$, for Konza (see SI section \ref{ecdf_approach}). 
+Red points display $\hat{F}(x)$ at the values of $\xtot$. For each of the
+quantities $1/T, 2/T,\ldots,(T-1)/T,T/T=1$, black lines show the distribution of $x$ values at which
+surrogate ECDFs $\hat{F}^{(m)}(x)$ first reached that $y$ axis value, using the surrogates of SI section \ref{surrogs} (A)
+or independent surrogates (B). Minima and maxima (dotted lines), $2.5$th and $97.5$th percentiles (dashed lines) and the median 
+(solid line) of the distribution are shown for each $y$ axis values. Numbers at the right show the fraction of surrogate
+values less than the empirical value, and are rendered in red whenever they are outside the range $(0.05,0.95)$. 
+See SI section \ref{ecdf_approach} for interpretations. \label{konz_ecdf}}
+\end{center}
+\end{figure}
+
 
 # References
 
