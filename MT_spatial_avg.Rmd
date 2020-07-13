@@ -742,24 +742,9 @@ two datasets in Fig. \ref{fig_result_box}.
 Because $n_L>n_U$ and $\Atot>0$ for Hays (Fig. \ref{fig_CorlmCoru}A), $\Scom$ should be less than $\Snta$.
 This was confirmed (Fig. \ref{fig_result_box}B). Both $\Scom$ and $\Snta$ were positive and the component 
 of the skewness ratio due to tail association, $\phiSta=$ `r hays_stab$skw_real/hays_stab$skw_ntd_median`, was less than 1. 
-<!--***DAN: Shyamolina, please make the above number an autolink
-***Shya: done.-->
-<!--***DAN: Now the table and the text disagree in the last digit. I gather this is because you rounded in one place and 
-truncated in the other, or somethinbg like that. Of course you know that values that appear in two places in a manuscript
-should be the same, or if they differ it should be because one is a rounded (not truncated) version of the other. Please 
-make values the same, not only here but everywhere. Please make all values agree with the *accurate* answer. I gather from your
-earlier comment that perhaps the values in the figures were based on doing math with intermediate stages rounded or truncated.
-This is not the correct way to do it. You round at the end of a computation, typically, not in the middle. Please fix,
-here and everwhere that similar problems occur. I would like for the next version I look at, please, to have the same,
-and correct, numbers whenever the same result is reported twice, please. I would prefer to not have to revisit this issue
-again. Thanks!
-***Shya: done.-->
-
 Becuse $n_L<n_U$ and $\Atot<0$ for Konza (Fig. \ref{fig_CorlmCoru}B), $\Scom$ should be greater than 
 $\Snta$. This was also confirmed (Fig. \ref{fig_result_box}D). $\Scom$ and $\Snta$ were again positive,
 so for Konza $\phiSta=$ `r knz_stab$skw_real/knz_stab$skw_ntd_median` was greater than 1. 
-<!--***DAN: Shyamolina, please make the above number an autolink
-***Shya: done.-->
 These results were statistically significant: for Hays, $\Scom$ was less than a fraction `r 1-pval_skw_hays`
 of the quantities $\sk(\sum_i x_i^{(m)})$ for the Hays surrogates $m=1,\ldots,M$ (Methods);
 whereas for Konza, $\Scom$ was greater than a fraction `r 1-pval_skw_knz` of the analogous surrogate 
@@ -786,9 +771,8 @@ Because $\phicv<1$ (Fig. \ref{fig_result_box}), dynamics in Hays would classical
 compensatory, i.e., species interactions reduce or buffer against
 community instability. However, the combined approach yields more nuanced information.
 The skewness ratio, $\phi_S$, was substantially less than $1$ 
-(it was `r hays_stab$phi_skw`), with $\Scom=$ `r hays_stab$skw_real` less than $\Sind=$ `r hays_stab$skw_indep` (Fig. \ref{fig_result_box}).
-<!--***DAN: Shyamolina, please make the above three numbers into autolinks
-***Shya: done.-->
+(it was `r hays_stab$phi_skw`), with $\Scom=$ `r hays_stab$skw_real` less 
+than $\Sind=$ `r hays_stab$skw_indep` (Fig. \ref{fig_result_box}).
 So the tendency for the total community abundance $\xtot$ to explode to high values (right skewness)
 and surpass high disaster thresholds is mitigated by species interactions. This new 
 information agrees with and supports the old, variance-ratio-based
@@ -806,15 +790,8 @@ Because $\phicv$ was slightly less than $1$ (Fig. \ref{fig_result_box}), dynamic
 would classically be interpreted as slightly compensatory, i.e., species interactions slightly reduce or buffer against
 community instability. But using both the variance and skewness ratios together yields conclusions that differ 
 substantially. The skewness ratio, $\phi_S$, was much greater than $1$ 
-<!--(it was $7.3811$), with $\Scom=1.3655$ correspondingly much greater than $\Sind=0.1850$ (Fig. \ref{fig_result_box}).-->
 (it was `r knz_stab$phi_skw`), with $\Scom=$ `r knz_stab$skw_real` correspondingly much greater than $\Sind=$ 
 `r knz_stab$skw_indep` (Fig. \ref{fig_result_box}). 
-<!--***DAN: Shyamolina, please make the above three numbers into autolinks
-***Shya: done. but see sometimes decimal numbers are not exactly the same as in figure because the saved table considers the full numbers to calculate phi_cv whereas phi_cv in figures are calculated with the truncated values.
-***DAN: Please fix this. Of course we cannot have the same number reported in two places being different. Please make the
-figures (all of them, not just this one we are currently talking about) use the full values for all computations, just the
-in the same way as is done for the tables. Values should be rounded, please (not truncated) to the same number of 
-significant figures wherever they appear.-->
 So although species interactions slightly reduce the variance of $\xtot$, they also dramatically increase right skew
 of $\xtot$. This in turn leads to an overall greater propensity for explosions of $\xtot$ to high values, and 
 a correspondingly accentuated probability that $\xtot$ will exceed high disaster thresholds. Crashes of $\xtot$
@@ -849,6 +826,37 @@ tail associations are unimportant.
 
 # Discussion\label{Discussion}
 
+It has been known for decades that species interactions can accentuate or mitigate the 
+instability/variability of an aggregate community property such as the total abundance of 
+all species, through synchrony or compensatory dynamics of species. However, our overall 
+results show that consequences of species interactions for community instability are more 
+complex and nuanced than previously recognized. We demonstrated that relationships between 
+the dynamics of different species are not necessarily well characterized by standard, commonly 
+used covariance measures: species can exhibit contrasting patterns of tail association which 
+are not detected by standard approaches. We demonstrated that the instability/variability of 
+total abundance is also not necessarily well characterized by commonly used measures, which 
+are based on the coefficient of variation. Total abundance can exhibit patterns of skewness 
+which correspond to increased probabilities of community crashes, or explosions to high values, 
+and these are readily interpretable as community instability. Thus the classic and widely 
+used variance ratio approach, whereby patterns of species’ synchronous or compensatory dynamics 
+are assessed using covariance tools and are then linked to community variability measured using 
+a coefficient of variation, is probably inadequate, by itself. Species interactions can actually 
+mitigate or accentuate community instability differentially for community crashes, or explosions 
+to high values, a fact which was, to our knowledge, not previously recognized, and which is not 
+detected by standard approaches. In other words, species interactions can mitigate explosions of 
+total abundance to high values, while simultaneously exacerbating the tendency for the community 
+to crash, or vice versa. Our new skewness ratio approach, when combined with the variance ratio, 
+reveals the more multidimensional nature of species interactions, and their correspondingly 
+multifarious effects on community instability. We provided measures of tail association, measures 
+of community variability based on skewness, and a simple skewness ratio calculus which is analogous 
+to the variance ratio approach and which complements it. In particular, the new approach detects the 
+importance of tail associations between species. Our two example grassland datasets appeared similar 
+when considered using solely the variance ratio approach, but were revealed to differ importantly 
+when considered using the variance and skewness ratios together. Results suggest that compensatory 
+dynamics in grasslands may come to be seen as less common than some studies have previously 
+suggested, when a more nuanced approach to synchrony and compensatory dynamics is adopted.  
+Overall, our work established the beginning of a new and more flexible approach to synchrony, 
+compensatory dynamics, and their influence on community stability.
 
 
 
