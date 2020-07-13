@@ -332,9 +332,7 @@ In scenario 1, which is a baseline for comparison,
 $(x_1,\ldots,x_N)$ is a multivariate normal distribution with mean $(0,\ldots,0)$ and covariance matrix
 having $1$s along the diagonal and off-diagonal entries $0.6$. A sample from $(x_1,x_2)$ (Fig. \ref{fig_theory}A)
 and marginal histograms (side panels of Fig. \ref{fig_theory}A) help illustrate the distribution. 
-The standard deviation of $\xtot$ was about $15.7$ 
-<!--`r round(sqrt(vartotX1),1)`
-***Shya: I could not find vartotX1 variable-->, and the skewness of $\xtot$
+The standard deviation of $\xtot$ was about $`r round(sqrt(vartotX1),1)`$, and the skewness of $\xtot$
 was close to $0$ (Fig. \ref{fig_theory}B). The probability of $\xtot$ exceeding a high threshold is given 
 in Fig. \ref{fig_theory}C for a range of high thresholds. Likewise the probability of $\xtot$ falling below a
 low threshold is in Fig. \ref{fig_theory}D for a range of low thresholds. These probabilities represent the 
@@ -746,6 +744,16 @@ This was confirmed (Fig. \ref{fig_result_box}B). Both $\Scom$ and $\Snta$ were p
 of the skewness ratio due to tail association, $\phiSta=$ `r hays_stab$skw_real/hays_stab$skw_ntd_median`, was less than 1. 
 <!--***DAN: Shyamolina, please make the above number an autolink
 ***Shya: done.-->
+<!--***DAN: Now the table and the text disagree in the last digit. I gather this is because you rounded in one place and 
+truncated in the other, or somethinbg like that. Of course you know that values that appear in two places in a manuscript
+should be the same, or if they differ it should be because one is a rounded (not truncated) version of the other. Please 
+make values the same, not only here but everywhere. Please make all values agree with the *accurate* answer. I gather from your
+earlier comment that perhaps the values in the figures were based on doing math with intermediate stages rounded or truncated.
+This is not the correct way to do it. You round at the end of a computation, typically, not in the middle. Please fix,
+here and everwhere that similar problems occur. I would like for the next version I look at, please, to have the same,
+and correct, numbers whenever the same result is reported twice, please. I would prefer to not have to revisit this issue
+again. Thanks!-->
+
 Becuse $n_L<n_U$ and $\Atot<0$ for Konza (Fig. \ref{fig_CorlmCoru}B), $\Scom$ should be greater than 
 $\Snta$. This was also confirmed (Fig. \ref{fig_result_box}D). $\Scom$ and $\Snta$ were again positive,
 so for Konza $\phiSta=$ `r knz_stab$skw_real/knz_stab$skw_ntd_median` was greater than 1. 
