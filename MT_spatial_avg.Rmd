@@ -759,6 +759,7 @@ $\Snta$. This was also confirmed (Fig. \ref{fig_result_box}D). $\Scom$ and $\Snt
 so for Konza $\phiSta=$ `r knz_stab$skw_real/knz_stab$skw_ntd_median` was greater than 1. 
 <!--***DAN: Shyamolina, please make the above number an autolink
 ***Shya: done.-->
+<!--***DAN: The values now disagree in the last digit, please fix.-->
 These results were statistically significant: for Hays, $\Scom$ was less than a fraction $`r round(1-pval_skw_hays,4)`$
 of the quantities $\sk(\sum_i x_i^{(m)})$ for the Hays surrogates $m=1,\ldots,M$ (Methods);
 whereas for Konza, $\Scom$ was greater than a fraction $`r round(1-pval_skw_knz,3)`$ of the analogous surrogate 
@@ -785,7 +786,7 @@ Because $\phicv<1$ (Fig. \ref{fig_result_box}), dynamics in Hays would classical
 compensatory, i.e., species interactions reduce or buffer against
 community instability. However, the combined approach yields more nuanced information.
 The skewness ratio, $\phi_S$, was substantially less than $1$ 
-(it was `r hays_stab$phi_skw`), with $\Scom=$ `r hays_stab$skw_real` less than $\Sind=$ `r hays_stab$skw_indep`(Fig. \ref{fig_result_box}).
+(it was `r hays_stab$phi_skw`), with $\Scom=$ `r hays_stab$skw_real` less than $\Sind=$ `r hays_stab$skw_indep` (Fig. \ref{fig_result_box}).
 <!--***DAN: Shyamolina, please make the above three numbers into autolinks
 ***Shya: done.-->
 So the tendency for the total community abundance $\xtot$ to explode to high values (right skewness)
