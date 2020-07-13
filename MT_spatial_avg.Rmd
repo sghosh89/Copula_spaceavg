@@ -1,5 +1,5 @@
 ---
-title: "Species relationships in the extremes and their specific influence on community stability"
+title: "Species relationships in the extremes and their influence on community stability"
 author:
  - Shyamolina Ghosh\textsuperscript{1}, Daniel C. Reuman\textsuperscript{1,2,\dag}
  - \textsuperscript{1}Department of Ecology and Evolutionary Biology and Kansas Biological Survey, University of Kansas, Lawrence, KS, 66045, USA; \textsuperscript{2}Laboratory of Populations, Rockefeller University, 1230 York Ave., New York, NY 10065, USA
@@ -54,11 +54,34 @@ options(scipen = 1, digits = 4) #This option round all numbers appeared in the i
 <!--Abstract-->
 \newpage
 
-\noindent \textbf{ABSTRACT.} 
+\noindent \textbf{ABSTRACT.} The degree of synchrony among the population density fluctuations of multiple 
+species coexisting within an ecological community is well known to have a major impact on the stability, 
+though time, of aggregate measures such as the total community abundance/biomass. Synchronous or asynchronous 
+(compensatory) species responses can also dictate the response of the total community to perturbations such as 
+climatic changes. However, in community ecology synchrony and its influence on stability is usually measured 
+using covariance methods. Such approaches do not account for the possibility that species abundances may be 
+more correlated when the species are relatively common than when they are relatively rare, or vice versa. 
+Recent work showed that species commonly exhibit such “asymmetric tail associations”, for instance if two 
+species are both influenced by an environmental variable only when that variable exceeds a threshold. After 
+reviewing the basics of the large literature on synchronous versus compensatory dynamics of species in a 
+community and the consequences for ecology of such dynamics, 
+<!--***DAN: The review material mentioned above is not in there currently, and needs to be added-->
+we here consider, to our knowledge for the first time, the influence of asymmetric tail associations on 
+community stability. We propose the skewness of the total community abundance time series as an alternative 
+measure of the community variability, which complements and extends standard measures. We develop a “skewness 
+ratio” which quantifies the extent to which synchronous or compensatory relationships between species, and the 
+asymmetry of these relationships in the tails, serve to modify community stability. The skewness ratio is analogous 
+to, but complements and extends, the widely used variance ratio. Using two multi-decadal grassland datasets we 
+show that taking into account asymmetric tail associations gives a new and useful viewpoint on the relationship 
+between synchrony and community stability. Our theory and results constitute the beginnings of a new and more 
+flexible paradigm for exploring synchronous and compensatory dynamics of species and their influence on community 
+stability. Furthermore, we discuss how aspects of our approach may also lead to insights for other fields in which 
+synchrony is an important phenomenon.
+<!--***DAN: This last sentence also not implemented yet - do it in the Discussion, refer to other papers in the
+special issue.-->
 
 <!--keywords-->
 \noindent \textbf{\textit{Keywords:}} variance ratio, community-stability, synchrony, tail-association, grassland, skewness
-
 
 \newpage
 
@@ -827,35 +850,35 @@ tail associations are unimportant.
 # Discussion\label{Discussion}
 
 It has been known for decades that species interactions can accentuate or mitigate the 
-instability/variability of an aggregate community property such as the total abundance of 
+temporal instability of an aggregate community property such as the total abundance of 
 all species, through synchrony or compensatory dynamics of species. However, our overall 
 results show that consequences of species interactions for community instability are more 
-complex and nuanced than previously recognized. We demonstrated that relationships between 
+complex than previously recognized. We demonstrated that synchronous relationships between 
 the dynamics of different species are not necessarily well characterized by standard, commonly 
 used covariance measures: species can exhibit contrasting patterns of tail association which 
-are not detected by standard approaches. We demonstrated that the instability/variability of 
+are not detected by standard approaches. We demonstrated that the temporal instability of 
 total abundance is also not necessarily well characterized by commonly used measures, which 
 are based on the coefficient of variation. Total abundance can exhibit patterns of skewness 
-which correspond to increased probabilities of community crashes, or explosions to high values, 
-and these are readily interpretable as community instability. Thus the classic and widely 
+which correspond to increased probabilities of crashes, or explosions to high values, 
+and these are readily interpretable as instability. Thus the classic and widely 
 used variance ratio approach, whereby patterns of species’ synchronous or compensatory dynamics 
-are assessed using covariance tools and are then linked to community variability measured using 
+are assessed using covariance tools and are then related to community variability measured using 
 a coefficient of variation, is probably inadequate, by itself. Species interactions can actually 
 mitigate or accentuate community instability differentially for community crashes, or explosions 
 to high values, a fact which was, to our knowledge, not previously recognized, and which is not 
-detected by standard approaches. In other words, species interactions can mitigate explosions of 
-total abundance to high values, while simultaneously exacerbating the tendency for the community 
-to crash, or vice versa. Our new skewness ratio approach, when combined with the variance ratio, 
-reveals the more multidimensional nature of species interactions, and their correspondingly 
+detectable by standard approaches. In other words, species interactions can mitigate explosions of 
+total abundance to high values, while simultaneously exacerbating its tendency 
+to crash to low values, or vice versa. Our new skewness ratio approach combines with the variance ratio 
+to reveal the more multidimensional nature of species interactions, and their correspondingly 
 multifarious effects on community instability. We provided measures of tail association, measures 
 of community variability based on skewness, and a simple skewness ratio calculus which is analogous 
 to the variance ratio approach and which complements it. In particular, the new approach detects the 
 importance of tail associations between species. Our two example grassland datasets appeared similar 
-when considered using solely the variance ratio approach, but were revealed to differ importantly 
-when considered using the variance and skewness ratios together. Results suggest that compensatory 
+when using solely the variance ratio approach, but were revealed to differ importantly 
+using the variance and skewness ratios together. Results suggest that compensatory 
 dynamics in grasslands may come to be seen as less common than some studies have previously 
-suggested, when a more nuanced approach to synchrony and compensatory dynamics is adopted.  
-Overall, our work established the beginning of a new and more flexible approach to synchrony, 
+suggested, when a more nuanced approach to synchrony and compensatory dynamics is adopted.
+Overall, our work has established the beginning of a new and more flexible approach to synchrony, 
 compensatory dynamics, and their influence on community stability.
 
 
