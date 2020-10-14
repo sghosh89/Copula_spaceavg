@@ -1,5 +1,5 @@
 ---
-title: "Supporting Information: Species relationships in the extremes and their specific influence on community stability"
+title: "Supporting Information: Species relationships in the extremes and their influence on community stability"
 author: "Shyamolina Ghosh, Daniel C. Reuman"
 date: ""
 fontsize: 11pt
@@ -39,6 +39,7 @@ library(dplyr)
 library(kableExtra)
 library(stringr)
 library(rmarkdown)
+#library(xfun)
 # families<-c(1,3:10,13,14,16:20)
 source("mtime.R") #A function needed for caching
 ```
