@@ -187,16 +187,22 @@ botthreshrg<-c(-60,-20)
 
 #***plot dimensions, units inches
 xmarght<-.5
-ymargwd<-.6
-totwd<-6
-gap<-0.25
-spf<-0.45
-panwd<-(totwd-2*gap-3*ymargwd)/(3+spf)
+ymargwd<-.5
+totwd<-7
+gap<-0.2 #general purpose gap, aside from the below purposes
+cdfgap<-.25
+rsgap<-.125 #gap on the right side of everything, also at the top of everything
+scgap<-.2 #vertical gap between scenarios
+spgap<-.1 #gap between a main panel and a marginal distribution panel
+spf<-0.45 #fraction of the panel that a side panel for marginals is
+panwd<-(totwd-2*gap-3*ymargwd-spgap-rsgap)/(3+spf)
 smallpan<-panwd*spf
 panht<-panwd
-cdfpanht<-(panht+gap+smallpan-gap)/2
-totht<-xmarght+5*(panht+2*gap+smallpan)
+cdfpanht<-(panht+spgap+smallpan-cdfgap)/2
+totht<-5*(xmarght+panht+spgap+smallpan)+4*scgap+rsgap
 textsz<-.9
+col3alpha<-rgb(red=255/256,green=165/256,blue=0/256,alpha=.3)
+col3<-rgb(red=255/256,green=165/256,blue=0/256)
 pdf(file="./Results/TheoryFig.pdf",width=totwd,height=totht)
 
 #***Example 1, top row of panels, normal copula
@@ -205,20 +211,21 @@ pdf(file="./Results/TheoryFig.pdf",width=totwd,height=totht)
 panrownum<-5
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25)
 plot(d1[1:numscatpts,1],d1[1:numscatpts,2],xaxt='n',pch=20,cex=.5,col=rgb(red=190/256,green=190/256,blue=190/256,alpha=.3),
      xlim=scatxlim,ylim=scatylim)
-axis(side=1,labels=FALSE)
+axis(side=1,labels=TRUE)
 mtext(expression(x[2]),side=2,line=1.2)
+mtext(expression(x[1]),side=1,line=1.2)
 text(scatxlim[1],scatylim[2],"A",adj=c(0,1))
 
 #X1 marginal of scatterplot
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap+smallpan)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap+smallpan)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d1[,1],breaks=histXbreaks,plot=FALSE)
 x<-h$breaks
@@ -226,13 +233,14 @@ x<-x[2:length(x)]-diff(x)[1]/2
 plot(x,h$counts,xaxt='n',yaxt='n',type="l")
 axis(side=1,labels=FALSE)
 axis(side=2,labels=TRUE)
-mtext("Ct.",side=2,line=1.2)
+mtext("Fr.",side=2,line=1.2)
+mtext("Scenario 1",at=c(max(histXbreaks),max(h$counts)),adj=-0.1,padj=1.55,font=2,cex=1.3)
 
 #X2 marginal of scatterplot
-par(fig=c((ymargwd+panwd+gap)/totwd,
-          (ymargwd+panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((ymargwd+panwd+spgap)/totwd,
+          (ymargwd+panwd+spgap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d1[,2],breaks=histYbreaks,plot=FALSE)
 y<-h$breaks
@@ -241,30 +249,31 @@ plot(h$counts,y,yaxt='n',xaxt='n',type="l")
 #axis(side=1,at=c(0,400),labels=c("0","400"))
 axis(side=1,labels=TRUE)
 axis(side=2,labels=FALSE)
-mtext("Scenario 1",side=3,line=2)
+mtext("Fr.",side=1,line=1.2)
 
 #Histogram of totX
-par(fig=c((2*ymargwd+panwd+gap+smallpan)/totwd,
-          (2*ymargwd+2*panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((2*ymargwd+panwd+spgap+smallpan+gap)/totwd,
+          (2*ymargwd+panwd+spgap+smallpan+gap+panwd)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h1<-hist(totX1,breaks=histtotXbreaks,plot=FALSE)
 x1<-h1$breaks
 x1<-x1[2:length(x1)]-diff(x1)[1]/2
 plot(x1,h1$counts,xaxt='n',type="l")
-axis(side=1,labels=FALSE)
-mtext("Count",side=2,line=1.2)
+axis(side=1,labels=TRUE)
+mtext("Frequency",side=2,line=1.2)
 mtext(bquote(cov(x[i],x[j]) %~~% .(round(cov1,3))),side=3,line=1.6,cex=textsz)
 mtext(bquote(sd(x[tot]) == .(round(sqrt(vartotX1),3))),side=3,line=.8,cex=textsz)
 mtext(bquote(sk(x[tot]) == .(round(sktotX1,3))),side=3,line=0,cex=textsz)
+mtext(expression(x[tot]),side=1,line=1.2)
 text(min(x1),max(h1$counts),"B",adj=c(0,1))
 
 #cdf panel for exceeding large thresholds (top panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+smallpan+2*gap)/totwd,
+          (3*ymargwd+3*panwd+spgap+smallpan+2*gap)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht+cdfgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+2*cdfpanht+cdfgap)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
 x<-empcdf1$x[inds]
@@ -274,16 +283,17 @@ mtext("P>th.",side=2,line=1.2)
 text(mean(range(x)),max(range(y)),"C",adj=c(.5,1))
 
 #cdf panel for falling under small thresholds (bottom panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+2*gap+smallpan)/totwd,
+          (3*ymargwd+3*panwd+spgap+2*gap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
 x<-empcdf1$x[inds]
 y<-empcdf1$y[inds]
 plot(x,y,type="l")
 mtext("P<th.",side=2,line=1.2)
+mtext("Threshold (th.)",side=1,line=1.2)
 text(mean(range(x)),max(range(y)),"D",adj=c(.5,1))
 
 #***Example 2, second row of panels, comonotonic case
@@ -292,33 +302,35 @@ text(mean(range(x)),max(range(y)),"D",adj=c(.5,1))
 panrownum<-4
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 plot(d2[1:numscatpts,1],d2[1:numscatpts,2],xaxt='n',pch=20,cex=.5,col=rgb(red=255/256,green=0/256,blue=0/256,alpha=.3),
      xlim=scatxlim,ylim=scatylim)
-axis(side=1,labels=FALSE)
+axis(side=1,labels=TRUE)
 mtext(expression(x[2]),side=2,line=1.2)
+mtext(expression(x[1]),side=1,line=1.2)
 text(scatxlim[1],scatylim[2],"E",adj=c(0,1))
 
 #X1 marginal of scatterplot
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap+smallpan)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap+smallpan)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d2[,1],breaks=histXbreaks,plot=FALSE)
 x<-h$breaks
 x<-x[2:length(x)]-diff(x)[1]/2
 plot(x,h$counts,xaxt='n',type="l")
 axis(side=1,labels=FALSE)
-mtext("Ct.",side=2,line=1.2)
+mtext("Fr.",side=2,line=1.2)
+mtext("Scenario C",at=c(max(histXbreaks),max(h$counts)),adj=-0.1,padj=1.55,font=2,cex=1.3)
 
 #X2 marginal of scatterplot
-par(fig=c((ymargwd+panwd+gap)/totwd,
-          (ymargwd+panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((ymargwd+panwd+spgap)/totwd,
+          (ymargwd+panwd+spgap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d2[,2],breaks=histYbreaks,plot=FALSE)
 y<-h$breaks
@@ -326,33 +338,34 @@ y<-y[2:length(y)]-diff(y)[1]/2
 plot(h$counts,y,yaxt='n',xaxt='n',type="l")
 axis(side=1,labels=TRUE)
 axis(side=2,labels=FALSE)
-mtext("Scenario C",side=3,line=2)
+mtext("Fr.",side=1,line=1.2)
 
 #Histogram of totX
-par(fig=c((2*ymargwd+panwd+gap+smallpan)/totwd,
-          (2*ymargwd+2*panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((2*ymargwd+panwd+spgap+smallpan+gap)/totwd,
+          (2*ymargwd+panwd+spgap+smallpan+gap+panwd)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(totX2,breaks=histtotXbreaks,plot=FALSE)
 x<-h$breaks
 x<-x[2:length(x)]-diff(x)[1]/2
 plot(x,h$counts,xaxt='n',type="l",col="red",ylim=range(h$counts,h1$counts))
 lines(x1,h1$counts,xaxt='n',type="l",lty="dashed")
-axis(side=1,labels=FALSE)
-mtext("Count",side=2,line=1.2)
+axis(side=1,labels=TRUE)
+mtext("Frequency",side=2,line=1.2)
 mtext(bquote(cov(x[i],x[j]) %~~% .(round(cov2,3))),side=3,line=1.6,cex=textsz)
 #mtext(bquote(sd(Sigma[i] * x[i]) == .(round(sqrt(vartotX2),3))),side=3,line=.8,cex=textsz)
 mtext(bquote(sd(x[tot]) == .(round(sqrt(vartotX2),3))),side=3,line=.8,cex=textsz)
 #mtext(bquote(sk(Sigma[i] * x[i]) == .(round(sktotX2,3))),side=3,line=0,cex=textsz)
 mtext(bquote(sk(x[tot]) == .(round(sktotX2,3))),side=3,line=0,cex=textsz)
+mtext(expression(x[tot]),side=1,line=1.2)
 text(min(x1),max(h1$counts),"F",adj=c(0,1))
 
 #cdf panel for exceeding large thresholds (top panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+smallpan+2*gap)/totwd,
+          (3*ymargwd+3*panwd+spgap+smallpan+2*gap)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht+cdfgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+2*cdfpanht+cdfgap)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
 x<-empcdf1$x[inds]
@@ -366,10 +379,10 @@ mtext("P>th.",side=2,line=1.2)
 text(mean(range(x)),max(range(y,yn)),"G",adj=c(.5,1))
 
 #cdf panel for falling under small thresholds (bottom panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+2*gap+smallpan)/totwd,
+          (3*ymargwd+3*panwd+spgap+2*gap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
 x<-empcdf1$x[inds]
@@ -380,6 +393,7 @@ yn<-empcdf2$y[inds]
 plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn)))
 lines(xn,yn,type='l',col='red')
 mtext("P<th.",side=2,line=1.2)
+mtext("Threshold (th.)",side=1,line=1.2)
 text(mean(range(x)),max(range(y,yn)),"H",adj=c(.5,1))
 
 #***Example 3, third row of panels, comonotonicity in the right tails only
@@ -388,33 +402,35 @@ text(mean(range(x)),max(range(y,yn)),"H",adj=c(.5,1))
 panrownum<-3
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 plot(d3[1:numscatpts,1],d3[1:numscatpts,2],xaxt='n',pch=20,cex=.5,col=rgb(red=0/256,green=0/256,blue=255/256,alpha=.3),
      xlim=scatxlim,ylim=scatylim)
-axis(side=1,labels=FALSE)
+axis(side=1,labels=TRUE)
 mtext(expression(x[2]),side=2,line=1.2)
+mtext(expression(x[1]),side=1,line=1.2)
 text(scatxlim[1],scatylim[2],"I",adj=c(0,1))
 
 #X1 marginal of scatterplot
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap+smallpan)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap+smallpan)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d3[,1],breaks=histXbreaks,plot=FALSE)
 x<-h$breaks
 x<-x[2:length(x)]-diff(x)[1]/2
 plot(x,h$counts,xaxt='n',type="l")
 axis(side=1,labels=FALSE)
-mtext("Ct.",side=2,line=1.2)
+mtext("Fr.",side=2,line=1.2)
+mtext("Scenario 2",at=c(max(histXbreaks),max(h$counts)),adj=-0.1,padj=1.55,font=2,cex=1.3)
 
 #X2 marginal of scatterplot
-par(fig=c((ymargwd+panwd+gap)/totwd,
-          (ymargwd+panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((ymargwd+panwd+spgap)/totwd,
+          (ymargwd+panwd+spgap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d3[,2],breaks=histYbreaks,plot=FALSE)
 y<-h$breaks
@@ -422,31 +438,32 @@ y<-y[2:length(y)]-diff(y)[1]/2
 plot(h$counts,y,yaxt='n',xaxt='n',type="l")
 axis(side=1,labels=TRUE)
 axis(side=2,labels=FALSE)
-mtext("Scenario 2",side=3,line=2)
+mtext("Fr.",side=1,line=1.2)
 
 #Histogram of totX
-par(fig=c((2*ymargwd+panwd+gap+smallpan)/totwd,
-          (2*ymargwd+2*panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((2*ymargwd+panwd+spgap+smallpan+gap)/totwd,
+          (2*ymargwd+panwd+spgap+smallpan+gap+panwd)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(totX3,breaks=histtotXbreaks,plot=FALSE)
 x<-h$breaks
 x<-x[2:length(x)]-diff(x)[1]/2
 plot(x,h$counts,xaxt='n',type="l",col="blue",ylim=range(h$counts,h1$counts))
 lines(x1,h1$counts,xaxt='n',type="l",lty="dashed")
-axis(side=1,labels=FALSE)
-mtext("Count",side=2,line=1.2)
+axis(side=1,labels=TRUE)
+mtext("Frequency",side=2,line=1.2)
 mtext(bquote(cov(x[i],x[j]) %~~% .(round(cov3,3))),side=3,line=1.6,cex=textsz)
 mtext(bquote(sd(x[tot]) == .(round(sqrt(vartotX3),3))),side=3,line=.8,cex=textsz)
 mtext(bquote(sk(x[tot]) == .(round(sktotX3,3))),side=3,line=0,cex=textsz)
+mtext(expression(x[tot]),side=1,line=1.2)
 text(min(x),max(h$counts),"J",adj=c(0,1))
 
 #cdf panel for exceeding large thresholds (top panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+smallpan+2*gap)/totwd,
+          (3*ymargwd+3*panwd+spgap+smallpan+2*gap)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht+cdfgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+2*cdfpanht+cdfgap)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
 x<-empcdf1$x[inds]
@@ -464,10 +481,10 @@ mtext("P>th.",side=2,line=1.2)
 text(mean(range(x)),max(range(y,yn,yr_l)),"K",adj=c(.5,1))
 
 #cdf panel for falling under small thresholds (bottom panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+2*gap+smallpan)/totwd,
+          (3*ymargwd+3*panwd+spgap+2*gap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
 x<-empcdf1$x[inds]
@@ -482,6 +499,7 @@ plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn,yr_s)))
 lines(xr_s,yr_s,type="l",lty="dashed",col="red")
 lines(xn,yn,type='l',col='blue')
 mtext("P<th.",side=2,line=1.2)
+mtext("Threshold (th.)",side=1,line=1.2)
 text(mean(range(x)),max(range(y,yn,yr_s)),"L",adj=c(.5,1))
 
 #***Example 4, fourth row of panels, comonotonicity in the left tails only
@@ -490,33 +508,35 @@ text(mean(range(x)),max(range(y,yn,yr_s)),"L",adj=c(.5,1))
 panrownum<-2
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
-plot(d4[1:numscatpts,1],d4[1:numscatpts,2],xaxt='n',pch=20,cex=.5,col=rgb(red=0/256,green=255/256,blue=0/256,alpha=.3),
+plot(d4[1:numscatpts,1],d4[1:numscatpts,2],xaxt='n',pch=20,cex=.5,col=col3alpha,
      xlim=scatxlim,ylim=scatylim)
-axis(side=1,labels=FALSE)
+axis(side=1,labels=TRUE)
 mtext(expression(x[2]),side=2,line=1.2)
+mtext(expression(x[1]),side=1,line=1.2)
 text(scatxlim[1],scatylim[2],"M",adj=c(0,1))
 
 #X1 marginal of scatterplot
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap+smallpan)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap+smallpan)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d4[,1],breaks=histXbreaks,plot=FALSE)
 x<-h$breaks
 x<-x[2:length(x)]-diff(x)[1]/2
 plot(x,h$counts,xaxt='n',type="l")
 axis(side=1,labels=FALSE)
-mtext("Ct.",side=2,line=1.2)
+mtext("Fr.",side=2,line=1.2)
+mtext("Scenario 3",at=c(max(histXbreaks),max(h$counts)),adj=-0.1,padj=1.55,font=2,cex=1.3)
 
 #X2 marginal of scatterplot
-par(fig=c((ymargwd+panwd+gap)/totwd,
-          (ymargwd+panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((ymargwd+panwd+spgap)/totwd,
+          (ymargwd+panwd+spgap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d4[,2],breaks=histYbreaks,plot=FALSE)
 y<-h$breaks
@@ -524,31 +544,32 @@ y<-y[2:length(y)]-diff(y)[1]/2
 plot(h$counts,y,yaxt='n',xaxt='n',type="l")
 axis(side=1,labels=TRUE)
 axis(side=2,labels=FALSE)
-mtext("Scenario 3",side=3,line=2)
+mtext("Fr.",side=1,line=1.2)
 
 #Histogram of totX
-par(fig=c((2*ymargwd+panwd+gap+smallpan)/totwd,
-          (2*ymargwd+2*panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((2*ymargwd+panwd+spgap+smallpan+gap)/totwd,
+          (2*ymargwd+panwd+spgap+smallpan+gap+panwd)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(totX4,breaks=histtotXbreaks,plot=FALSE)
 x<-h$breaks
 x<-x[2:length(x)]-diff(x)[1]/2
-plot(x,h$counts,xaxt='n',type="l",col="green",ylim=range(h$counts,h1$counts))
+plot(x,h$counts,xaxt='n',type="l",col=col3,ylim=range(h$counts,h1$counts))
 lines(x1,h1$counts,xaxt='n',type="l",lty="dashed")
-axis(side=1,labels=FALSE)
-mtext("Count",side=2,line=1.2)
+axis(side=1,labels=TRUE)
+mtext("Frequency",side=2,line=1.2)
 mtext(bquote(cov(x[i],x[j]) %~~% .(round(cov4,3))),side=3,line=1.6,cex=textsz)
 mtext(bquote(sd(x[tot]) == .(round(sqrt(vartotX4),3))),side=3,line=.8,cex=textsz)
 mtext(bquote(sk(x[tot]) == .(round(sktotX4,3))),side=3,line=0,cex=textsz)
+mtext(expression(x[tot]),side=1,line=1.2)
 text(min(x),max(h$counts),"N",adj=c(0,1))
 
 #cdf panel for exceeding large thresholds (top panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+smallpan+2*gap)/totwd,
+          (3*ymargwd+3*panwd+spgap+smallpan+2*gap)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht+cdfgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+2*cdfpanht+cdfgap)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
 x<-empcdf1$x[inds]
@@ -558,15 +579,15 @@ xn<-empcdf4$x[inds]
 yn<-1-empcdf4$y[inds]
 plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn,yr_l)))
 lines(xr_l,yr_l,type="l",lty="dashed",col="red")
-lines(xn,yn,type='l',col='green')
+lines(xn,yn,type='l',col=col3)
 mtext("P>th.",side=2,line=1.2)
 text(mean(range(x)),max(range(y,yn,yr_l)),"O",adj=c(.5,1))
 
 #cdf panel for falling under small thresholds (bottom panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+2*gap+smallpan)/totwd,
+          (3*ymargwd+3*panwd+spgap+2*gap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
 x<-empcdf1$x[inds]
@@ -576,8 +597,9 @@ xn<-empcdf4$x[inds]
 yn<-empcdf4$y[inds]
 plot(x,y,type="l",lty="dashed",ylim=c(0,max(y,yn,yr_s)))
 lines(xr_s,yr_s,type="l",lty="dashed",col="red")
-lines(xn,yn,type='l',col='green')
+lines(xn,yn,type='l',col=col3)
 mtext("P<th.",side=2,line=1.2)
+mtext("Threshold (th.)",side=1,line=1.2)
 text(mean(range(x)),max(range(y,yn,yr_s)),"P",adj=c(.5,1))
 
 #***Example 5, fifth row of panels, comonotonicity in the right and left tails only
@@ -586,8 +608,8 @@ text(mean(range(x)),max(range(y,yn,yr_s)),"P",adj=c(.5,1))
 panrownum<-1
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 plot(d5[1:numscatpts,1],d5[1:numscatpts,2],xaxt='n',pch=20,cex=.5,col=rgb(red=160/256,green=32/256,blue=240/256,alpha=.3),
      xlim=scatxlim,ylim=scatylim)
@@ -599,21 +621,22 @@ text(scatxlim[1],scatylim[2],"Q",adj=c(0,1))
 #X1 marginal of scatterplot
 par(fig=c((ymargwd)/totwd,
           (ymargwd+panwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht+gap+smallpan)/totht),
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht+spgap+smallpan)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d5[,1],breaks=histXbreaks,plot=FALSE)
 x<-h$breaks
 x<-x[2:length(x)]-diff(x)[1]/2
 plot(x,h$counts,xaxt='n',type="l")
 axis(side=1,labels=FALSE)
-mtext("Ct.",side=2,line=1.2)
+mtext("Fr.",side=2,line=1.2)
+mtext("Scenario 4",at=c(max(histXbreaks),max(h$counts)),adj=-0.1,padj=1.55,font=2,cex=1.3)
 
 #X2 marginal of scatterplot
-par(fig=c((ymargwd+panwd+gap)/totwd,
-          (ymargwd+panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((ymargwd+panwd+spgap)/totwd,
+          (ymargwd+panwd+spgap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(d5[,2],breaks=histYbreaks,plot=FALSE)
 y<-h$breaks
@@ -621,14 +644,13 @@ y<-y[2:length(y)]-diff(y)[1]/2
 plot(h$counts,y,yaxt='n',xaxt='n',type="l")
 axis(side=1,labels=TRUE)
 axis(side=2,labels=FALSE)
-mtext("Ct.",side=1,line=1.2)
-mtext("Scenario 4",side=3,line=2)
+mtext("Fr.",side=1,line=1.2)
 
 #Histogram of totX
-par(fig=c((2*ymargwd+panwd+gap+smallpan)/totwd,
-          (2*ymargwd+2*panwd+gap+smallpan)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+panht)/totht),
+par(fig=c((2*ymargwd+panwd+spgap+smallpan+gap)/totwd,
+          (2*ymargwd+panwd+spgap+smallpan+gap+panwd)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+panht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 h<-hist(totX5,breaks=histtotXbreaks,plot=FALSE)
 x<-h$breaks
@@ -636,7 +658,7 @@ x<-x[2:length(x)]-diff(x)[1]/2
 plot(x,h$counts,xaxt='n',type="l",col="purple",ylim=range(h$counts,h1$counts))
 lines(x1,h1$counts,xaxt='n',type="l",lty="dashed")
 axis(side=1,labels=TRUE)
-mtext("Count",side=2,line=1.2)
+mtext("Frequency",side=2,line=1.2)
 mtext(bquote(cov(x[i],x[j]) %~~% .(round(cov5,3))),side=3,line=1.6,cex=textsz)
 mtext(bquote(sd(x[tot]) == .(round(sqrt(vartotX5),3))),side=3,line=.8,cex=textsz)
 mtext(bquote(sk(x[tot]) == .(round(sktotX5,3))),side=3,line=0,cex=textsz)
@@ -644,10 +666,10 @@ mtext(expression(x[tot]),side=1,line=1.2)
 text(min(x),max(h$counts),"R",adj=c(0,1))
 
 #cdf panel for exceeding large thresholds (top panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht+gap)/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+2*cdfpanht+gap)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+smallpan+2*gap)/totwd,
+          (3*ymargwd+3*panwd+spgap+smallpan+2*gap)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht+cdfgap)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+2*cdfpanht+cdfgap)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>topthreshrg[1] & empcdf1$x<topthreshrg[2])
 x<-empcdf1$x[inds]
@@ -662,10 +684,10 @@ mtext("P>th.",side=2,line=1.2)
 text(mean(range(x)),max(range(y,yn,yr_l)),"S",adj=c(.5,1))
 
 #cdf panel for falling under small thresholds (bottom panel of the cdf panels)
-par(fig=c((2*ymargwd+2*panwd+gap+smallpan+ymargwd)/totwd,
-          (2*ymargwd+3*panwd+gap+smallpan+ymargwd)/totwd,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan))/totht,
-          (xmarght+(panrownum-1)*(panht+2*gap+smallpan)+cdfpanht)/totht),
+par(fig=c((3*ymargwd+2*panwd+spgap+2*gap+smallpan)/totwd,
+          (3*ymargwd+3*panwd+spgap+2*gap+smallpan)/totwd,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght)/totht,
+          ((panrownum-1)*(xmarght+panht+spgap+smallpan+scgap)+xmarght+cdfpanht)/totht),
     mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
 inds<-which(empcdf1$x>botthreshrg[1] & empcdf1$x<botthreshrg[2])
 x<-empcdf1$x[inds]

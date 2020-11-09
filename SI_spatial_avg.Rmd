@@ -1,6 +1,6 @@
 ---
 title: "Supporting Information: Species relationships in the extremes and their influence on community stability"
-author: "Shyamolina Ghosh, Daniel C. Reuman"
+author: "Shyamolina Ghosh, Kathryn L. Cottingham, Daniel C. Reuman"
 date: ""
 fontsize: 11pt
 geometry: "left=1.5cm,right=1.5cm,top=1cm,bottom=1.8cm"
@@ -797,46 +797,97 @@ library(VineCopula)
 par_rho_0.8<-copula::iRho(claytonCopula(5),rho=0.8)
 ccop<-BiCopSim(200,3,par=par_rho_0.8)
 sccop<-BiCopSim(200,13,par=par_rho_0.8)
-pdf("./Results/pedagog_figs/LTUT_rho_0.8.pdf",height=3,width=6)
-op<-par(mfrow=c(1,2),mar=c(3.5, 3.5, 0.1, 1.1),mgp=c(1.8,0.5,0))
-plot(ccop[,1],ccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab=expression("u"[i]),ylab=expression("u"[j]),cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
-lines(c(0,0.3),c(0.3,0),type='l')
-lines(c(0,0.6),c(0.6,0),type='l')	
-ind1<-which(ccop[,1]+ccop[,2]>0.3 & ccop[,1]+ccop[,2]<0.6)
-points(ccop[ind1,1],ccop[ind1,2],col=rgb(1,0,0,0.1),pch=20)
+#pdf("./Results/pedagog_figs/LTUT_rho_0.8.pdf",height=3,width=6)
+#op<-par(mfrow=c(1,2),mar=c(3.5, 3.5, 0.1, 1.1),mgp=c(1.8,0.5,0))
+#plot(ccop[,1],ccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab=expression("u"[i]),ylab=expression("u"[j]),cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
+#lines(c(0,0.3),c(0.3,0),type='l')
+#lines(c(0,0.6),c(0.6,0),type='l')	
+#ind1<-which(ccop[,1]+ccop[,2]>0.3 & ccop[,1]+ccop[,2]<0.6)
+#points(ccop[ind1,1],ccop[ind1,2],col=rgb(1,0,0,0.1),pch=20)
 #lines(c(0,1),c(1,0),type='l',lty=2)
 
-lines(c(0,1.4),c(1.4,0),type='l')	
-lines(c(0,1.7),c(1.7,0),type='l')	
-ind1<-which(ccop[,1]+ccop[,2]>1.4 & ccop[,1]+ccop[,2]<1.7)
-points(ccop[ind1,1],ccop[ind1,2],col=rgb(0,0,1,0.1),pch=20)
+#lines(c(0,1.4),c(1.4,0),type='l')	
+#lines(c(0,1.7),c(1.7,0),type='l')	
+#ind1<-which(ccop[,1]+ccop[,2]>1.4 & ccop[,1]+ccop[,2]<1.7)
+#points(ccop[ind1,1],ccop[ind1,2],col=rgb(0,0,1,0.1),pch=20)
 
-text(x=0.1,y=0.9,"(A)",cex=1.3, family="serif")
+#text(x=0.1,y=0.9,"(A)",cex=1.3, family="serif")
 
-plot(sccop[,1],sccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab=expression("u"[i]),ylab=expression("u"[j]),cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
-lines(c(0,0.3),c(0.3,0),type='l')
-lines(c(0,0.6),c(0.6,0),type='l')	
-ind1<-which(sccop[,1]+sccop[,2]>0.3 & sccop[,1]+sccop[,2]<0.6)
-points(sccop[ind1,1],sccop[ind1,2],col=rgb(1,0,0,0.1),pch=20)
+#plot(sccop[,1],sccop[,2],col=rgb(0,0,0,0.1),pch=20,xlab=expression("u"[i]),ylab=expression("u"[j]),cex.lab=1.5,cex.axis=0.8,xaxs="i",yaxs="i")
+#lines(c(0,0.3),c(0.3,0),type='l')
+#lines(c(0,0.6),c(0.6,0),type='l')	
+#ind1<-which(sccop[,1]+sccop[,2]>0.3 & sccop[,1]+sccop[,2]<0.6)
+#points(sccop[ind1,1],sccop[ind1,2],col=rgb(1,0,0,0.1),pch=20)
 
-lines(c(0,1.4),c(1.4,0),type='l')	
-lines(c(0,1.7),c(1.7,0),type='l')	
-ind1<-which(sccop[,1]+sccop[,2]>1.4 & sccop[,1]+sccop[,2]<1.7)
-points(sccop[ind1,1],sccop[ind1,2],col=rgb(0,0,1,0.1),pch=20)
+#lines(c(0,1.4),c(1.4,0),type='l')	
+#lines(c(0,1.7),c(1.7,0),type='l')	
+#ind1<-which(sccop[,1]+sccop[,2]>1.4 & sccop[,1]+sccop[,2]<1.7)
+#points(sccop[ind1,1],sccop[ind1,2],col=rgb(0,0,1,0.1),pch=20)
 #lines(c(0,1),c(1,0),type='l',lty=2)
 
-text(x=0.1,y=0.9,"(B)",cex=1.3, family="serif")
+#text(x=0.1,y=0.9,"(B)",cex=1.3, family="serif")
 
-par(op)
+#par(op)
 #box(which="figure")
+#dev.off()
+
+#------------------------------------------------------------------
+#Another version of the same thing, but splitting the two panels into two figures and
+#also making some other presentational tweaks
+
+panht<-1
+panwd<-1
+xht<-.4
+ywd<-.4
+gap<-.05
+totwd<-ywd+panwd+gap
+totht<-xht+panht+gap
+
+bl<-.1
+bu<-.25
+
+pdf("./Results/pedagog_figs/LTUT_rho_0p8_LTdep.pdf.pdf",width=totwd,height=totht)
+par(fig=c((ywd)/totwd,
+          (ywd+panwd)/totwd,
+          (xht)/totht,
+          (xht+panht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25)
+
+ccop<-copula::pobs(ccop)
+plot(ccop[,1],ccop[,2],pch=20,xaxt="n",yaxt="n",cex=.5) 
+lines(c(0,2*bl),c(2*bl,0),type='l')
+lines(c(0,2*bu),c(2*bu,0),type='l')	
+axis(side=1,labels=TRUE,cex.axis=1)
+axis(side=2,labels=TRUE,cex.axis=1)
+mtext(expression(u[i]),side=1,line=1,cex=1)
+mtext(expression(u[j]),side=2,line=1,cex=1)
+
 dev.off()
 
+pdf("./Results/pedagog_figs/LTUT_rho_0p8_UTdep.pdf.pdf",width=totwd,height=totht)
+par(fig=c((ywd)/totwd,
+          (ywd+panwd)/totwd,
+          (xht)/totht,
+          (xht+panht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25)
+
+sccop<-copula::pobs(sccop)
+plot(sccop[,1],sccop[,2],pch=20,xaxt="n",yaxt="n",cex=.5) 
+axis(side=1,labels=TRUE,cex.axis=1)
+axis(side=2,labels=TRUE,cex.axis=1)
+mtext(expression(u[i]),side=1,line=1,cex=1)
+mtext(expression(u[j]),side=2,line=1,cex=1)
+
+dev.off()
+
+#------------------------------------------------------------------
 # Another type of pedagog fig
 source("./pedagog_cv2_skw.R") # we used seed=104 in this source function
 ```
 
 ```{r theory_fig, echo=F, results="hide"}
-source("./TheoryFig202005.R") #we used seed=101 in this source function
+source("./TheoryFig202005_MT.R") #We used seed=101 in this source function. This makes the stripped down, main text version.
+source("./TheoryFig202005.R") #We used seed=101 in this source function
 ```
 
 <!--Investigations of empirical cdfs, added 2020 06-->
@@ -1102,9 +1153,10 @@ the marginal distribution for each species standard normal. Population time seri
 shifting all the $q_i(t)$ vertically to make them all positive and to make means the same in the two cases
 considered in Fig. \ref{MT-fig_pedag_cv2_skw}.
 
-# Details of the simulations for the Theory section \label{TheoryMethods}
+# Details of the simulations for the Theory section and extended results \label{TheoryMethods}
 
-The random variables $(x_1,x_2,\ldots,x_N)$ of Fig. \ref{MT-fig_theory} were generated as follows. Let $0 \leq \beta_1 < \beta_2 \leq 1$
+The random variables $(x_1,x_2,\ldots,x_N)$ of Fig. \ref{MT-fig_theory} and SI Fig. \ref{fig_theory_SM} 
+were generated as follows. Let $0 \leq \beta_1 < \beta_2 \leq 1$
 be thresholds which will control the tails in which the $x_i$ are perfectly related, and let $0 \leq \rho \leq 1$ be a correlation
 parameter which will control the strength of the correlation between the components, $x_i$, outside of the perfectly correlated tails.
 Let $\Sigma$ be a covariance matrix with $1$s on the diagonal and $\rho$ in all off-diagonal entries. Let 
@@ -1118,76 +1170,97 @@ For scenario 1, $\rho=0.6$, $\beta_1=0$, and $\beta_2=1$. For scenario 2, $\beta
 $\beta_1=0.05$, $\beta_2=1$; and for scenario 4, $\beta_1=0.05$, $\beta_2=0.95$. For each of scenarios 2-4 (seperately),
 $\rho$ was chosen numerically for that scenario so that the covariance of $x_i$ and $x_j$ was the same as in scenario 1. 
 
-# Data \label{Data} 
-<!--***DAN: Dan still need to edit this section-->
+Interpretations of scenario 2 and comparisons to scenarios 1 and C are in the main text. We here provide 
+interpretations of scenarios 3 and 4, briefly because interpretations are similar to scenario 2. 
+Scenario 3 is symmetrically like scenario 2, but
+with comonotonicity in the left tails instead of the right (Fig.  \ref{fig_theory_SM}M).
+Comonotonicity in the lower tails produces left/negative skewness in $\xtot$ (Fig.  \ref{fig_theory_SM}N), 
+which in turn translates to elevated probabilities that $\xtot$ will fall below low disaster thresholds (Fig. \ref{fig_theory_SM}P).
+For sufficiently low thresholds, the probability is the same as for scenario C, and is therefore maximal for the 
+species marginal distributions used. Although it does not appear unstable to classic approaches, the scenario 3 community
+is maximally unstable with respect to low disaster thresholds.
+The dashed lines on Fig. \ref{fig_theory_SM}N-P are copies of the same-color 
+solid lines from above panels, reproduced to facilitate comparison. 
+
+Scenario 4 shows comonotonicity in both tails simultaneously (Fig.  \ref{fig_theory_SM}Q), causing
+both extreme low and high values to occur in the distribution of $\xtot$ (Fig. \ref{fig_theory_SM}R).
+This does not produce skewness in $\xtot$, because the effect is symmetric, but it does result in elevated probabilities,
+relative to scenario 1, both that $\xtot$ will exceed high disaster thresholds (Fig. \ref{fig_theory_SM}S) and that it will fall below
+low disaster thresholds (Fig. \ref{fig_theory_SM}T). Probabilities of exceeding sufficiently high disaster 
+thresholds or falling below sufficiently low ones are, in fact, the same as scenario C, and hence are maximal,
+given fixed species marginal distributions. Although it does not appear unstable to classic approaches, the scenario 4 community
+is maximally unstable with respect to both low and high disaster thresholds. The dashed lines on 
+Fig. \ref{fig_theory_SM}R-T are copies of the same-color 
+solid lines from above panels, reproduced to facilitate comparison.
+
+# Details of the data \label{Data} 
 <!--Hays data-->
-For first dataset, we used basal cover of vascular plants mapped in permanent quadrats in 
-Kansas mixed-grass prairie every year from 1932-1972 [@adler2007long]. Researchers from 
+Our first dataset comprised basal cover of vascular plants mapped in permanent quadrats in 
+a Kansas mixed-grass prairie every year from 1932-1972 [@adler2007long]. Researchers from 
 Fort Hays State University, in Hays, Kansas, mapped all individual plants in a series 
 of 1 sq. meter quadrats in a mixed grass prairie (38.8$^\circ$N, 99.3$^\circ$W) 
-[@albertson1937ecology; @albertson1965vegation]. In fact, data produced 
-using the pantograph technique can be used the same way as data generated by tagging
-individual plants, with spatial coordinates substituting for tags. 
-The Hays data set later had been digitized [@adler2007long] and is now available
-[online](http://esapubs.org/archive/ecol/E088/161/). $41$ years (1932-1972)
-long spatio-temporal data was widely used in earlier studies to understand plant demographic process. 
-Here we will give a brief description of the [data](http://esapubs.org/archive/ecol/E088/161/).
-`allrecords.csv` is basal cover (area in $cm^2$) datasets for 151 unique species (when observed) 
+[@albertson1937ecology; @albertson1965vegation].
+These data were later digitized [@adler2007long] and are now available
+online (\url{http://esapubs.org/archive/ecol/E088/161/}). These data were widely used in 
+earlier studies to understand plant demographic processes. 
+Here we give a brief description of the data.
+The file `allrecords.csv` is basal cover (area in $\text{cm}^2$) data for 151 unique species (when observed) 
 recorded for 41 years from 51 (1m $\times$ 1m) quadrats.
-Counts for each unique species occurred in the entire `allrecords.csv` dataset 
-were stored in `species_list.csv` file with categories like `type`, `PLANTS.Symbol`,
-`PLANTS.Synonym` (for 
-explanation see [`metadata file`](http://esapubs.org/archive/ecol/E088/161/metadata.htm)). 
-5 of 151 species were classified in `'remove'` category as 
-mentioned in `type` column of `species_list.csv`. They were non-plant 
-species like `Bare ground`, `Fragment` and other unidentified sp. like
-`Mixed grass`, `Polygonum spp.` (only occurred once), `Unknown`. Among 51 quadrats, 36 permanent 
+Information on each unique species occurring in the entire `allrecords.csv` dataset 
+was stored in `species_list.csv` file, which had column names like 'type', 'PLANTS.Symbol',
+'PLANTS.Synonym' (for 
+explanations, see the `metadata file` at http://esapubs.org/archive/ecol/E088/161/metadata.htm). 
+5 of 151 species were labelled as belonging to a 'remove' category as 
+mentioned in 'type' column of `species_list.csv`. They were non-plant 
+categories like 'Bare ground' or 'Fragment', or were unidentified or poorly resolved species like
+'Mixed grass', 'Polygonum spp.' (which only occurred once), and 'Unknown'. Among 51 quadrats, 36 permanent 
 quadrats were arranged along a gradient 
-of soil depth and located in two livestock exclosures ("e1" and "e2"). Rest 15 quadrats 
+of soil depth and located in two livestock exclosures ('e1' and 'e2'). The remaining 15 quadrats 
 were located in grazed areas outside the exclosures, mostly in the 
-shortgrass community. Location of 51 quadrats were recorded as (quadX $cm$, quadY $cm$)
-in East-West and North-South direction, respectively relative to the south-west corner 
-of exclosure "e1" (see `quadrat_info.csv`). Each quadrat have some polygons with ID number processed 
-in GIS tracking position for individual plants. Each polygon location was 
-recorded as centroid co-ordinate (x $cm$, y $cm$) of corresponding 
-polygon (see `allrecords.csv`). For our purpose, we computed basal 
+shortgrass community. Locations of the 51 quadrats were recorded as (quadX $cm$, quadY $cm$)
+in the East-West and North-South directions, respectively, relative to the south-west corner 
+of exclosure 'e1' (see `quadrat_info.csv`). Each quadrat has polygons with ID numbers processed 
+in GIS tracking positions for individual plants. Each polygon location was 
+recorded using the centroid co-ordinate (x $cm$, y $cm$) of the corresponding 
+polygon (see `allrecords.csv`). For our purposes, we computed basal 
 cover time-series (1932-1972) averaged over the 36 quadrats within the exclosure 
-for each of 146 species (excluding the `remove` category from 
-151 species list). 
+for each of 146 species (excluding the 'remove' category from described above). 
 
 <!--add description about KNZ data-->
-For second dataset, we used plant species composition data from [`Konza Prairie LTER site`](http://lter.konza.ksu.edu/content/pvc02-plant-species-composition-selected-watersheds-konza-prairie); data accessed on November, 2019 [@Hartnett2019]. The data 
+Our second dataset comprised plant species composition data from the Konza Prairie LTER site (http://lter.konza.ksu.edu/content/pvc02-plant-species-composition-selected-watersheds-konza-prairie). Data 
+were accessed on November, 2019 [@Hartnett2019]. The data 
 collection is an ongoing project (1983 onwards)
 where canopy coverage and frequency have been recorded for different 
-burn treatment in ungrazed and grazed watersheds located in 
+burn treatments in ungrazed and grazed watersheds located in 
 different topographic sites (upland 
-topographic locations -florence soils, lowland topographic 
+topographic locations - florence soil, lowland topographic 
 locations - tully soils, and slope locations). Only locations with florence soils and tully soils were 
-sampled every year (1983-). For our purpose we chose watershed *001d* as 
-it is the only one longest operated (1983-) ungrazed-annually burned watershed (for details see [`fire-history information`](http://lter.konza.ksu.edu/content/kfh011)). 
+sampled every year (1983-). For our purposes we used data from watershed 001d as 
+it is the only subset of the data operated over the longest period (1983-) in an ungrazed, 
+annually burned watershed (for details see fire-history information at http://lter.konza.ksu.edu/content/kfh011). 
 In this watershed, four 50 m long transects (A, B, C, and D) were established on each
-topographic position and within each transect, five evenly spaced, permanently 
-marked plots are located (so total 20 plots for each topographic position). Canopy cover are reported
+topographic position; and within each transect, five evenly spaced, permanently 
+marked plots are located (so there were a total of 20 plots for each topographic position). Canopy cover data are reported
 in **7** classes (**1** <1%; **2** 1-5%; **3** 5-25%; **4** 25-50%; **5** 50-75%; **6** 75-95%; **7** 95-100%).
-Species sampled on multiple census date in a year (initially started with three times a year but 1991 onwards 
-sampling frequency changed to twice a year) we used the highest cover class for each plot. Finally, the 
-percent cover for each plot was computed by averaging the mid-points of the cover classes for the 20 plots. This is in accordance with the method used in raw cover data processing (see [`methods manual for PVC02`](http://lter.konza.ksu.edu/sites/default/files/MM.pdf)). We presented our result considering average canopy cover sampled from tully soils only as we could not produce 
-Pearson correlation preserving surrogate data for the other soiltype (florence soils) - this surrogates were used 
-to answer (Q2) from \nameref{MT-Introduction}.
+For species sampled on multiple census dates 
+in a year (sampling was initially done three times a year, but from 1991 onwards 
+sampling frequency dropped to twice a year) we used the highest cover class for each plot. Finally, the 
+percent cover for each plot was computed by averaging the mid-points of the cover classes for the 20 plots. This is in accordance with the methods used in raw cover data processing (see 'methods manual for PVC02', http://lter.konza.ksu.edu/sites/default/files/MM.pdf). We presented our result considering average canopy cover sampled from tully soils only, as we could not produce 
+suitable Pearson correlation preserving surrogate data for the other soil type (florence soils).
 
 <!--data category-->
 For both datasets, we classified all the species into 
 three distinct categories depending on their 
 availability throughout the study period over all 
 the quadrats considered. They are 
-(i) "common sp." which were present at least 35 years,
-(ii) "rare sp." which were present maximum for 2 years, (iii) the rests were
-put into "intermediate" class. For tail association analysis,
-we considered only the common sp. for each datasets (see 
+(i) "common species", which were present at least 35 years,
+(ii) "rare species", which were present for a maximum of 2 years, and (iii) "intermediate species", which
+were the remaining species. For tail association analysis,
+we considered only the common species for each dataset (see 
 Tables \ref{tab_spinfo_hays} and \ref{tab_spinfo_knz}) along with 
 the other species merged into a single pseudo species. Fig. \ref{fig_spaceavg_timeseries} 
 summarizes the species fluctuation over years for different 
-categories from each of those two datasets.
+categories from each of our two datasets.
 
 ```{r make_tab_common_splist_for_hays, echo=F, results="asis"}
 library(kableExtra)
@@ -1203,7 +1276,7 @@ tab_spinfo_hays$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_hays, 
              format="latex", align="c", linesep = "",
              caption.short="Species list for Hays data",
-             caption = "`Common' species (see Methods) of the Hays dataset. The column `ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column `Sp. code' is a species code used in the downloaded, raw data. \\label{tab_spinfo_hays}", 
+             caption = "`Common' species (see Methods) of the Hays dataset. The column `ID' is the species ID used in Fig. \\ref{fig_CorlmCoru}. The column `Sp. code' is a species code used in the downloaded, raw data. \\label{tab_spinfo_hays}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
@@ -1234,17 +1307,212 @@ tab_spinfo_knz$`Species name`<-c(splistfullnm)
 knitr::kable(tab_spinfo_knz, 
              format="latex", align="c", linesep = "",
              caption.short="Species list for Konza",
-             caption = "`Common' species (see Methods) of the Konza dataset. The column `ID' is the species ID used in Fig. \\ref{MT-fig_CorlmCoru}. The column `Sp. code' is a species code used in the downloaded, raw data.\\label{tab_spinfo_knz}", 
+             caption = "`Common' species (see Methods) of the Konza dataset. The column `ID' is the species ID used in Fig. \\ref{fig_CorlmCoru}. The column `Sp. code' is a species code used in the downloaded, raw data.\\label{tab_spinfo_knz}", 
              booktabs = T,col.names = NULL) %>%
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
 
+```{r further_discussion_table, echo=F, results="asis"}
+library(tibble)
+h<-c("r skew $\\uparrow$","l skew $\\uparrow$","skew $\\bullet$","skew $\\bullet$","r skew $\\downarrow$","l skew $\\downarrow$","r to l skew","l to r skew")
+tabres<-tibble("$\\phicv$"=c(rep("$\\approx 1$",8),rep("$>1$",8),rep("$<1$",8)),
+                   "$\\phi_S$"=rep(c("$>1$","$>1$","$\\approx 1$","$\\approx 1$","$<1$, $\\geq 0$","$<1$, $\\geq 0$","$<0$","$<0$"),times=3),
+                   "$\\Sind$"=rep(c("$>0$","$<0$"),times=12),
+                   "$\\Scom$"=rep(c(rep(c("$>0$","$<0$"),times=3),"$<0$","$>0$"),times=3),
+                   "Interpretation, what species relationships do to variance and skewness of $\\xtot$"=
+                      c(paste("variance $\\bullet$;",h),
+                        paste("variance $\\uparrow$;",h),
+                        paste("variance $\\downarrow$;",h)),
+                   "Interpretation, what species relationships do to extreme low values of $\\xtot$"=
+                      c("Less extreme",
+                        "More extreme",
+                        "About the same",
+                        "About the same",
+                        "More extreme",
+                        "Less extreme",
+                        "More extreme",
+                        "Less extreme",
+                        "??",
+                        "More extreme",
+                        "More extreme",
+                        "More extreme",
+                        "More extreme",
+                        "??",
+                        "More extreme",
+                        "??",
+                        "Less extreme",
+                        "??",
+                        "Less extreme",
+                        "Less extreme",
+                        "??",
+                        "Less extreme",
+                        "??",
+                        "Less extreme"),
+                   "Interpretation, what species relationships do to extreme high values of $\\xtot$"=
+                      c("More extreme",
+                        "Less extreme",
+                        "About the same",
+                        "About the same",
+                        "Less extreme",
+                        "More extreme",
+                        "Less extreme",
+                        "More extreme",
+                        "More extreme",
+                        "??",
+                        "More extreme",
+                        "More extreme",
+                        "??",
+                        "More extreme",
+                        "??",
+                        "More extreme",
+                        "??",
+                        "Less extreme",
+                        "Less extreme",
+                        "Less extreme",
+                        "Less extreme",
+                        "??",
+                        "Less extreme",
+                        "??"))
+colnames(tabres)<-c("$\\phicv$",
+                   "$\\phi_S$",
+                   "$\\Sind$",
+                   "$\\Scom$",
+                   "Interpretation, what species relationships do to variance and skewness of $\\xtot$",
+                   "Interpretation, what species relationships do to extreme low values of $\\xtot$",
+                   "Interpretation, what species relationships do to extreme high values of $\\xtot$")
+knitr::kable(tabres, format="latex", booktabs = T, linesep = "", escape=F,
+             caption.short="Further interpretations of $\\phicv$ and $\\phi_S$",
+             caption = "Further interpretations of what different values of $\\phicv$ and $\\phi_S$ mean
+             for the effects of species relationships on the distribution of $\\xtot$. The first four columns
+             contain scenarios for $\\phicv$, $\\phi_S$, $\\Sind$, and $\\Scom$. Column 5 indicates the effects 
+             species relationships will therefore have on the variance and skewness of the $\\xtot$ distribution, 
+             with $\\uparrow$ indicating an increase, $\\downarrow$ indicating a decrease, and $\\bullet$ indicating
+             no change. The last two columns indicate the effects species relationships are expected to have on the
+             extreme left and right tails of the $\\xtot$ distribution, either making those values more extreme 
+             or making them less extreme. An entry `??' in one of the last two columns indicates the effects of 
+             species relationships on variance and skewness suggest opposing trends for the corresponding tail 
+             of $\\xtot$, so results will depend on the relative strengths of these effects. \\label{further_discussion_table}")%>%
+     column_spec(column = 1,width=".9 cm")%>%
+     column_spec(column = 2,width="1.8 cm")%>%
+     column_spec(column = 3,width=".9 cm")%>%
+     column_spec(column = 4,width=".9 cm")%>%
+     column_spec(column = 5,width="4 cm")%>%
+     column_spec(column = 6,width="3 cm")%>%
+     column_spec(column = 7,width="3 cm")
+```
+
+# Details of the statistical methods \label{stats_details}
+
+Our theory predicted that tail associations between positively associated pairs of species (synchronous
+species) should influence the skew of the total community, $\xtot$, so this is what we investigated
+empirically. We ignored pairs of species which were negatively associated (pairs of species exhibiting compensatory
+dynamics). However, compensatory dynamics is known to help reduce the 
+variance of $\xtot$. Tail associations between species exhibiting compensatory dynamics may influence the 
+skewness of $\xtot$, or another aspect of its distribution, so the presence/absence of tail associations
+in compensatory pairs of species should be studied in future work. Modified methods will be needed; for instance,
+the terminology "lower-tail association" and "upper-tail association" does not make sense in the context
+of negatively associated variables, since the upper tail of one variable is associated with the lower tail
+of the other.
+
+The skewness of $\xtot$ is the third central moment, 
+$m_3(\xtot)$, divided by the cubed standard deviation of $\xtot$. The standard
+unbiased estimator (with Bessel's correction) was used for the standard deviation. For the third central moment, we used 
+the third $h$-statistic, $m_3(\xtot)=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (\xtot(t)-\mean(\xtot))^3$, which is the 
+unique symmetric unbiased estimator of that quantity. 
+
+To see that the quantity $\Sind=\frac{\sum_i m_{iii}}{(\sum_i v_{ii})^{3/2}}$ defined in the main text is
+the value that $\Scom$ would take if species dynamics were independent, we write 
+$\sk(\xtot)=\frac{m_3(\xtot)}{\var(\xtot)^{3/2}}=\frac{\sum_{i,j,k}m_{ijk}}{(\sum_{i,j}v_{ij})^{3/2}}$,
+where $m_{ijk}=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (x_i(t)-\mean(x_i))(x_j(t)-\mean(x_j))(x_k(t)-\mean(x_k))$ is a third
+cross-moment. Assuming independence of species dynamics, this becomes $\frac{\sum_i m_{iii}}{(\sum_i v_{ii})^{3/2}}$.
+
+#Additional interpretations of $\phi_S$ \label{phiSinterp}
+
+In Methods in the main text, we presented interpretations of the meaning of different values of $\phi_S$ under a 
+simplifying assumption that $\phicv \approx 1$. We here discuss interpretations when $\phicv$ is not 
+close to $1$. The two governing equations are $\CVcomsq=\phicv \CVindsq$ and $\Scom=\phi_S \Sind$, and 
+these equations describe two effects. 
+The first of these equations/effects means that, when $\phicv>1$, the variance of the distribution $\xtot$ is 
+magnified by species relationships; whereas when $\phicv<1$, the variance of $\xtot$ is mitigated by 
+species relationships. To interpret the second equation/effect, we consider the separate cases $\Scom>0$ 
+and $\Scom<0$. If $\Scom>0$, corresponding to right skew in the $\xtot$ distribution, then $\phi_S>1$ 
+means that right skew was accentuated by species relationships, i.e., some of the observed right skew 
+in $\xtot$ was due to species relationships. Whereas $0<\phi_S<1$ means right skew in the $\xtot$ 
+distribution was mitigated by species relationships, i.e., right skew would have been stronger were it 
+not for species relationships. If $\phi_S<0$, it means species relationships are fully responsible for 
+the right skew of the $\xtot$ distribution, i.e., were it not for species relationships, the 
+distribution $\xtot$ would have been left skewed instead. If $\Scom<0$, corresponding to left skew in 
+the $\xtot$ distribution, then $\phi_S>1$ means that left skew was accentuated by species relationships, 
+i.e., some of the observed left skew in $\xtot$ was due to species relationships. Whereas $0<\phi_S<1$ 
+means left skew in the $\xtot$ distribution was mitigated by species relationships, i.e., left skew 
+would have been stronger were it not for species relationships. If $\phi_S<0$, it means species 
+relationships are fully responsible for the left skew of the $\xtot$ distribution, i.e., were it 
+not for species relationships, the distribution $\xtot$ would have been right skewed instead. 
+
+What does this mean about the influence of species relationships on extreme high and low 
+values of the $\xtot$ distribution? 
+Table \ref{further_discussion_table} enumerates possibilities. The two effects described above 
+sometimes act together and sometimes act in opposition to influence extreme portions of the 
+$\xtot$ distribution. The variance effect (described first in the previous paragraph, and linked to 
+the equation $\CVcomsq=\phicv \CVindsq$) tends to render more extreme both extreme low and high 
+portions of the distribution, when $\phicv>1$; or tends to render them both less extreme,
+when $\phicv<1$. The skewness effect (linked to the equation $\Scom=\phi_S \Sind$) tends 
+to render one tail more extreme and the other less extreme. For instance, if $\phicv>1$ 
+and $\phi_S>1$ (rows 8 and 9 of Table \ref{further_discussion_table}) and if $\Sind$ and $\Scom$
+are positive (row 8 of Table \ref{further_discussion_table}), species relationships 
+increase the variance of $\xtot$ and render it more right skewed. In the right tail of 
+the $\xtot$ distribution, these effects reinforce each other to render high values of
+$\xtot$ more extreme than they would be in the absence of species relationships. But in the
+left tail of the $\xtot$ distribution, the variance effect tends to render values more extreme
+and the skewness effects tends to render them less extreme. The net outcome of these two
+influences depends on their relative strength. 
+
+There is a mathematical relationship between $\phi_S$ and $\phicv$. We have 
+\begin{align}
+\phi_S &= \frac{\Scom}{\Sind} \\
+&= \frac{m_3(\xtot)}{\var(\xtot)^{3/2}} \frac{(\sum_i v_{ii})^{3/2}}{\sum_i m_{iii}} \label{eq_int_2} \\
+&= \left( \frac{m_3(\xtot)}{\sum_i m_{iii}} \right) \left( \frac{1}{\phicv} \right)^{3/2},
+\end{align}
+\noindent where (\ref{eq_int_2}) follows from the definitions and results in SI section \ref{stats_details}.
+While this may be a useful relationship for future work, it is neither as straightforward as it
+may seem, nor does it render superfluous our new $\phi_S$ metric by relating it the classic
+variance ratio. The reason is, the factor $\frac{m_3(\xtot)}{\sum_i m_{iii}}$ does not necessarily
+vary independently of $\phicv$ and $\phi_S$, and the biological interpretation of 
+$\frac{m_3(\xtot)}{\sum_i m_{iii}}$ is not immediately obvious, at least not to us.
+It may be useful, in future work, to calculate $\phicv$, $\phi_S$ and $\frac{m_3(\xtot)}{\sum_i m_{iii}}$
+for a large number and variety of community datasets and to explore empirically how $\phicv$ and 
+$\phi_S$ are related across ecosystems.
+
 # Surrogate datasets  \label{surrogs} 
 
-To start simply, we first describe the surrogate 
-algorithm for bivariate data. Then we move on to describing the algorithm
+We first outline the properties of our surrogate datasets. We then describe the surrogate 
+algorithm, starting with bivariate data, for simplicity, and then moving on to describing the algorithm
 for multivariate data. 
+
+The surrogate datasets, $x_i^{(m)}(t)$, have the following properties. 
+First, for each $m$ and $i$, the sets $\{x_i(t) : t=1,\ldots,T\}$ and 
+$\{x_i^{(m)}(t) : t=1,\ldots,T\}$ are identical, as unordered sets.
+In particular this implies that the temporal means and variances of the time series
+$x_i(t)$ and $x_i^{(m)}(t)$ are identical, for all $i$ and $m$. 
+Second, the expected value of the sum $\sum_{i_2>i_1} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$
+is within $\pm 10\%$ of the sum $\sum_{i_2>i_1} \cov(x_{i_1}(t),x_{i_2}(t))$;
+and for any $i_1$ and $i_2$, the expected value of
+$\cor(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$ is as close as possible to
+$\cor(x_{i_1}(t),x_{i_2}(t))$ (see below for information on the extent to which
+these quantities agreed for our datasets).
+In particular, this means that the total community variance, 
+$\var(\sum_i x_i^{(m)}(t))= \sum_{i_1, i_2} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))$
+for a surrogate dataset should be similar to the empirical total community variance,
+$\var(\sum_i x_i(t))= \sum_{i_1, i_2} \cov(x_{i_1}(t),x_{i_2}(t))$.
+Likewise,
+the variance ratios $\frac{\sum_{i_1, i_2} \cov(x_{i_1}^{(m)}(t),x_{i_2}^{(m)}(t))}
+{\sum_{i} \var(x_i^{(m)}(t))}$ and 
+$\frac{\sum_{i_1, i_2} \cov(x_{i_1}(t),x_{i_2}(t))}
+{\sum_{i} \var(x_i(t))}$ should be similar.
+Finally, for any $i_1$, $i_2$ and $m$, the tail associations of $x_{i_1}^{(m)}(t)$
+and $x_{i_2}^{(m)}(t)$ are symmetric, i.e., similar in their upper- and lower-tail association
+values. 
 
 Given data $(x(t),y(t))$ for $t=1,\ldots,T$, the bivariate
 surrogates algorithm will provide surrogate datasets
@@ -1474,7 +1742,7 @@ $\hat{F}(y)$ equals the number of elements of the set $\{y_1,y_2,\ldots,y_L\}$ w
 or equal to $y$, divided by $L$. The ECDF approximates the CDF of $Y$ for large $L$, and hence 
 $\hat{F}(y)$ approximates the probability $P[Y \leq y]$. We here
 use the EDCF of $\xtot$ to further illuminate some of the claims made in the main text about the 
-influence of species interactions on the distribution of $\xtot$ and on probabilities that 
+influence of species relationships on the distribution of $\xtot$ and on probabilities that 
 $\xtot$ exceeds high disaster thresholds or falls below low ones.
 Henceforth letting $\hat{F}(x)$ denote the ECDF of the sample $\xtot(t)$, $t=1,\ldots,T$, we can interpret 
 $\hat{F}(x)$ as an approximation of the probability that $\xtot$ will fall below $x$ for a low 
@@ -1506,25 +1774,25 @@ symmetric tail association surrogates, and panels (B) show comparisons with inde
 If a red point near the top of one of the panels of Fig. \ref{hays_ecdf} or \ref{konz_ecdf}
 is in the right tail of the surrogate distribution, it indicates that $\xtot$ values for data reached higher 
 upper extremes than expected from the corresponding surrogate null hypothesis. In other words, asymmetric tail associations
-(panels A) or species interactions, generally (panels B) significantly destabilized (made more extreme) the upper tails of 
+(panels A) or species relationships, generally (panels B) significantly destabilized (made more extreme) the upper tails of 
 $\xtot$. If, on the other hand, the red point is instead in the left tail of the surrogate distribution, it indicates that 
 the upper extremes of the $\xtot$ distribution for data were lower than expected from the corresponding null hypothesis. 
-In other words, asymmetric tail associations (panels A) or species interactions, generally (panels B) significantly 
+In other words, asymmetric tail associations (panels A) or species relationships, generally (panels B) significantly 
 stabilized (made less extreme) the upper tails of $\xtot$. 
 
 Analogously, if a red point near the bottom 
 of one of the panels of Fig. \ref{hays_ecdf} or \ref{konz_ecdf}
 is in the left tail of the surrogate distribution, it indicates that $\xtot$ values for data reached smaller 
 lower extremes than expected from the corresponding surrogate null hypothesis. In other words, asymmetric tail associations
-(panels A) or species interactions, generally (panels B) significantly destabilized (made more extreme) the lower tails of 
+(panels A) or species relationships, generally (panels B) significantly destabilized (made more extreme) the lower tails of 
 $\xtot$. If, on the other hand, the red point is instead in the right tail of the surrogate distribution, it indicates that 
 the lower extremes of the $\xtot$ distribution for data were not as low as expected from the corresponding null hypothesis. 
-In other words, asymmetric tail associations (panels A) or species interactions, generally (panels B) significantly 
+In other words, asymmetric tail associations (panels A) or species relationships, generally (panels B) significantly 
 stabilized (made less extreme) the lower tails of $\xtot$. 
 
 In this way Figs \ref{hays_ecdf} or \ref{konz_ecdf}
-reveal possible stabilizing tendencies of species interactions, acting separately on the very large or small
-values of $\xtot$. Thus Figs \ref{hays_ecdf} or \ref{konz_ecdf} separately reveal whether species interactions mitigate 
+reveal possible stabilizing tendencies of species relationships, acting separately on the very large or small
+values of $\xtot$. Thus Figs \ref{hays_ecdf} or \ref{konz_ecdf} separately reveal whether species relationships mitigate 
 probabilities of $\xtot$ exceeding a high disaster threshold or fall below a low disaster thresholds. 
 
 Applying these techniques to Hays, we see that the highest values of $\xtot$ are significantly less extreme than 
@@ -1536,8 +1804,8 @@ high disaster thresholds. Now looking at low values of $\xtot$, the bottom part 
 low values of $\xtot$ were significantly lower (more extreme) or not significantly different from what
 would be expected given symmetric
 tail associations between species. However, they were higher (less extreme) than would be expected given independent
-species dynamics (bottom part of Fig. \ref{hays_ecdf}B). So species interactions mitigated the severity of 
-low extremes of $\xtot$, and this was due to aspects of species interactions other than tail associations.
+species dynamics (bottom part of Fig. \ref{hays_ecdf}B). So species relationships mitigated the severity of 
+low extremes of $\xtot$, and this was due to aspects of species relationships other than tail associations.
 
 Applying our techniques to Konza, we see that some of the highest values of $\xtot$ are more extreme than would be expected given
 symmetric tail associations between species (top part of Fig. \ref{konz_ecdf}A), and are more extreme than would
@@ -1545,6 +1813,110 @@ be expected given independent species dynamics (top part of Fig. \ref{konz_ecdf}
 the bottom part of Fig. \ref{konz_ecdf}A shows that low values of $\xtot$ were significantly higher (less extreme)
 from what would have been expected given symmetric tail associations. Likewise they were higher (less extreme)
 than would be expected given independent species dynamics (bottom part of Fig. \ref{konz_ecdf}B).
+
+# Possible application to other fields \label{other_fields}
+
+We borrowed a statistical approach from finance and applied it to community-ecological data, 
+hence the approach is cross-disciplinary. The approach
+may be useful in diverse other fields as well, beyond finance and community ecology. 
+In many hierarchical dynamical systems,
+synchrony between multiple signals is more important than the individuals signals themselves, because
+what really matters to the next level of functioning in the system is the total value, or another kind of 
+aggregated value, of the signals. And the aggregated value is crucially impacted by the nature of 
+the synchrony or asynchrony of the signals. This was
+true of both the financial systems from which our methods were adapted and of the population systems
+we studied. But it seems likely to be a common feature of many 
+systems. For instance, a neuron may fire only when its input neurons fire simultaneously, so that total
+inputs pass a threshold. The electrical grid may crash only when the demands of a multitude of users become synchronized,
+producing total usage spikes. A predator may starve only when prey populations are simultaneously low over its whole
+hunting range. Macroeconomic measures may become depressed only when the 
+multitude of microeconomic activities
+that comprise them are simultaneously depressed. Human fish exploitation is only reduced 
+if fish populations decline synchronously over
+all accessible fishing locations. Female insects may be drawn to an area only when the vocalizations of males in
+the area are coordinated to reinforce each other, so that calling amplitude passes a threshold. The 
+impacts of agricultural pests
+are accentuated when the pests outbreak simultaneously over large areas. Disease outbreaks
+in multiple areas simultaneously are much more likely to strain public health infrastructure then unsynchonized
+local case fluctuations. Numerous additional 
+examples are easy to imagine. In every case it is the aggregate that matters, so synchrony between
+system components is crucial. In many fields concerned with synchrony, including finance and 
+ecology, techniques for quantifying the
+synchrony of individual signals and relating that synchrony to distributional properties of the 
+aggregate quantity of interest have historically been crude. We believe there is great opportunity to 
+improve these techniques to benefit nuerous fields, using the methods of this paper and related methods.
+
+More detailed statistical descriptions of synchrony are likely to be useful in many fields, 
+even when making a connection to the distribution of an aggregate quantity is not of interest,
+in part because because detailed descriptions often allow more powerful inferences of mechanisms. 
+As mentioned in the main text, in the population literature, synchrony has most commonly been measured
+using simple and crude correlation or covariance statistics between time series measured in different
+locations [@liebhold2004]. But @sheppard2016 and @sheppard2019 developed measures of 
+synchrony which decompose the phenomenon by the frequency or 
+timescale of population oscillations, and which can also describe
+how synchrony changes through time, thereby taking a much more detailed look at the phenomenon of synchrony. 
+As a result, they were newly able to perform inferences of causes of synchrony, document changes through
+time in synchrony and attribute them to climatic changes, and document interactions between Moran effects,
+each of which was an important new advance. @walter2017 added geographic details to descriptions of synchrony,
+thereby documenting an important new aspect of the phenomenon and also further improving our ability to infer 
+causes of synchrony [@Anderson2018;@Anderson2019]. 
+
+Of the papers in this special issue, at least two seem
+to proceed principally by developing newly detailed descriptions of a kind of synchrony, and then using them
+to make inferences about the mechanisms or consequences of synchrony. For instance, @DotovInReview
+developed frequency-specific synchrony measures and used them to describe behavioral rhythm phenomena that 
+would have been undetectable with classic measures of synchrony. And, adding
+empirical instead of statistical detail, @PouwInReview describe rhythm interactions
+between animals along multiple modalities (e.g., auditory and visual, simultaneously), illustrating
+that adaptiveness of interactions can be better inferred with such a more detailed description. 
+<!--***DAN: make sure the above two references remain valid when I see the final papers--> 
+
+Many of the other papers in this special issue describe synchrony between two or more phenomena solely with
+a univariate description of how strong or consistent the synchrony is. One wonders
+if additional inferences may be possible, or additional discoveries made, by employing more 
+detailed decriptions of synchrony, perhaps using tail association statistics, as in this study, or perhaps using 
+frequency-specific [@sheppard2016;@sheppard2019;@DotovInReview] or other approaches. For instance,
+@LenseInReview indicate that many childhood neurodevelopmental disorders are associated deficits in 
+rhythm, timing and synchrony. One wonders if improved diagnosis may be achievable
+by formulating and applying appropriate, more detailed statistical descriptors of rhythm and synchrony
+tasks attempted by patients; perhaps different disorders result in deficits that can be distinguished 
+more effectively with more detailed statistical tools for measuring rhythm and synchrony. 
+In another example from this special issue, 
+@TakahashiInReview modelled turn taking in marmoset monkeys. One wonders if a usefully more exacting test of
+model-data agreement might be possible by comparing the values of more 
+detailed desciptors of the nature of the (a)synchrony between individuals for models versus data. 
+As a final example, @KellerInReview studied the degree of synchrony between participants engaged in a 
+complex drumming task. Those authors appear to have measured synchrony with a univariate measure 
+describing the "degree" or "strength" of synchrony. But synchrony is multifarious, and one wonders if 
+additional results could be possible using a more detailed or multivariate measure not only of
+the strength of synchrony but of its nature, possibly including changes through time, timescale structure,
+measures related to the tail association ideas of this paper, and/or other aspects. 
+
+Mathematically, 
+the nature of the relationship between two quantities is an infinite dimensional object [@Ghosh_copula].  
+But many studies
+of synchrony and related concepts measure their phenomena of interest with simple, univariate statistics. It seems 
+quite plausible to believe that improved results and scientific understanding of synchrony could be extracted
+in many domains of application through the use of improved statistics such as we have used here and elsewhere.
+<!--***DAN: make sure all references to papers in this special issue remain valid when I see the final 
+papers, and also finalize the specifics of the references--> 
+
+<!--Larger version of panels A and B from the example fig first cited in the Intro-->
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{./Results/pedagog_figs/pedagog_cv2_skw_SM.pdf}
+\caption[Larger version of Fig. \ref{MT-fig_pedag_cv2_skw} from the main text, panels A and B.]{Larger version of Fig. \ref{MT-fig_pedag_cv2_skw} from the main text, panels A and B. \label{fig_pedag_cv2_skw_SM}}
+\end{center}
+\end{figure}
+
+<!--Theory figure, extended-->
+\begin{figure}
+\begin{center}
+\includegraphics[height=.95\textheight]{./Results/TheoryFig.pdf}
+\caption[Extended version of Fig. \ref{MT-fig_theory} of the main text]{Extended version of Fig. \ref{MT-fig_theory} of the main text. See the caption of that
+figure for details.\label{fig_theory_SM}}
+\end{center}
+\end{figure}
 
 <!--hays & knz: time-series results plot-->
 \begin{figure}[!h]
@@ -1560,31 +1932,39 @@ because species percent cover values for a year and a plot were computed as the 
 occasions. See SI section \ref{Data} for details.\label{fig_spaceavg_timeseries}}
 \end{center}
 \end{figure}
-<!--***DAN: Shyamolina, the y axis on panel B says "Total percent cover", but the values are always above 100, and
-occassionally go about 200. It is possible for percent cover to go about 100, since for Konza they used canopy percent cover 
-(according to the descriptions in your SI section S1), and canopies overlap. However, it is also possible there is some
-mistake here. Please check, determine whether or not there was a mistake, and correct if there was. Let me know, please,
-whether there was a mistake, since if there was then we may need to re-run some things. If there was not a mistake, you 
-will need to insert a note in the caption of this figure explaining to the reader why percent covers can go over 200.
-***Shya: I don't think it is a mistake. The percent cover should not take literally as the cover is computed based on midpoint 
-rule of each of the seven "class" categories: see details already explained in the Data section (line 909 of this Rmd). If you 
-agree with me I will write something like this in the figure caption.
-***DAN: Please do write something. However, I don't think using cover class categories, by itself, can produce this - that'll 
-introduce some noise, but I can't see how it will introduce bias toward high values. On the other hand, it occurs to me you wrote
-"Species sampled on multiple census date
-in a year (initially started with three times a year but 1991 onwards sampling frequency changed to twice a
-year) we used the highest cover class for each plot. Finally, the percent cover for each plot was computed by
-averaging the mid-points of the cover classes for the 20 plots." Does this mean that if species A was at 90% cover 
-on census date 1 and then died out later in the same summer, and species B took over later in the summer and was at
-90% cover on census date 2, and there were no other species, then the total cover would be 180%, since they take the
-max cover for each species? If so, then please put that in your explanation.
-***Shya: Yes, I wanted to mean this. Say, for 1983 the mean cover over 20 plots for sp.A is 70, sp.B is 50, sp.C is 60 and so on...when I take sum over all species cover(which are mean over 20 plots) it will cross 100%, I checked it is not the case that any individual species cover (mean over 20 plots) would cross 100%.
-# run the below code to visualize:
-z<-readRDS("./Results/knz_results/ts_all_sp_knz_soiltype_t.RDS") # whole processed data 36yrs by 125sp.
-plot.ts(z,plot.type = "single",col=rainbow(ncol(z)),type="o",xlab="36 years",ylab="each 125 sp. mean cover over 20 plots")
-for any given year, if you take the sum of all the colored points it will be >100
--->
 
+\begin{figure}
+\begin{center}
+\includegraphics[width=4 cm]{./Results/pedagog_figs/LTUT_rho_0p8_UTdep.pdf}
+\caption[Normalized rank plot with stronger association in the upper tails than in the lower]{A normalized rank 
+plot with stronger association in the upper tails than in the lower, opposite to Fig. \ref{MT-fig_pedag_taildep}
+of the main text.\label{fig_pedag_taildep_SM}}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{./Results/pedagog_figs/method_fig_SM.pdf}
+\caption[Summary of notation]{Summary of notation.\label{fig_notation}}
+\end{center}
+\end{figure}
+
+<!--Results with corl-coru matrix plot-->
+\begin{figure*}[!h]
+\begin{center}
+\textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
+\includegraphics[width=8cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
+\includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/soiltype_t/Corl-Coru_ub_0.5.pdf} 
+\caption[Measures of asymmetry of tail association for pairs of species]{Measures of asymmetry of 
+tail association for all pairs of species with positive Spearman correlation,
+using the Hays (A) and Konza (B) datasets. The quantity $\cor_l-\cor_u$ (Methods) is displayed, using a blue/red split colorbar,
+for all positively associated pairs of species. Green-shaded species pairs were negatively associated. See
+Tables \ref{tab_spinfo_hays}-\ref{tab_spinfo_knz} for species names. Although both lower- and upper-tail
+association occur in both datasets, the quantities $n_L$, $n_U$ and $\Atot$ (Methods), displayed under each 
+panel, indicate that lower-tail association between species was stronger or more common in the Hays data, and 
+upper-tail association was stronger or more common in the Konza data. \label{fig_CorlmCoru}}
+\end{center}
+\end{figure*}
 
 ```{r reformatting_figs, echo=F, results="hide", cache=T, cache.extra=list(ts_mat_CP_hays,mtime("getmap.R"),mtime("Reform_suppmat_fig.R"))}
 # Don't put any seed in this chunk

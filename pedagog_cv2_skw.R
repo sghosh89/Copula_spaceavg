@@ -215,10 +215,46 @@ par(op)
 #box(which="figure")
 dev.off()
 
-
 #x1<-tot_ts_l
 #x2<-tot_ts_r
 #plot(ecdf(x1))
 #plot(ecdf(x2),col="red",add=T)
 
+#------------------Now make a version for the sup mat with just the time series
+
+xht<-.5
+ywd<-.5
+panwd<-7.5
+panht<-panwd/2
+gap<-.1
+totwd<-ywd+panwd+gap
+totht<-xht+2*gap+2*panht
+
+pdf("./Results/pedagog_figs/pedagog_cv2_skw_SM.pdf",height=totht,width=totwd)
+
+#top panel
+par(fig=c((ywd)/totwd,
+          (ywd+panwd)/totwd,
+          (xht+gap+panht)/totht,
+          (xht+gap+2*panht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25)
+ylimits<-range(normres_p2_show)
+plot.ts(normres_p2_show,col=c(rep(1,d),rep(2,d)),ylab="",xlab="",xaxt="n",plot.type = "single",ylim=ylimits)
+text(0,ylimits[1],"A",cex=2,adj=c(0,0))
+axis(side=1,labels=FALSE)
+mtext(expression(x[i](t)),side=2,line=1.25)
+
+#bottom panel
+par(fig=c((ywd)/totwd,
+          (ywd+panwd)/totwd,
+          (xht)/totht,
+          (xht+panht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+ylimits<-range(normres_p1_show)
+plot.ts(normres_p1_show,col=c(rep(1,d),rep(2,d)),ylab="",xlab="",plot.type = "single",ylim=ylimits)
+text(0,ylimits[1],"B",cex=2,adj=c(0,0))
+mtext("Year",side=1,line=1.25)
+mtext(expression(x[i](t)),side=2,line=1.25)
+
+dev.off()
 
