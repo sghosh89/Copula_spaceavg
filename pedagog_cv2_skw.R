@@ -186,8 +186,8 @@ abline(v=th_low,lty=2)
 abline(v=th_high,lty=3)
 #legend(x=38,y=570,"(E)", bty="n",cex=1.4)
 text(xlm[1],max(y$counts),"E",adj=c(0,1),cex=1.4)
-text(x=th_low,y=1000,paste0("p=",round(pval_low,4)),adj=c(1,0),cex=1.1)
-text(x=th_high,y=1000,paste0("p=",round(pval_hi,4)),adj=c(0,0),cex=1.1)
+text(x=th_low,y=1000,paste0("p=",round(pval_low,4)),adj=c(1.05,0),cex=1.1)
+text(x=th_high,y=1000,paste0("p=",round(pval_hi,4)),adj=c(-.05,0),cex=1.1)
 
 #hist(tot_ts_l,breaks = 100, col="grey",lty="blank")
 
@@ -208,8 +208,8 @@ mtext(expression("Total community biomass, x"[tot]*"(t)"),side=1,line=2.4, adj =
 text(xlm[1],max(y$counts),"F",adj=c(0,1),cex=1.4)
 #legend(x=20,y=120,paste("p = ",round(pval_low,2)),bty="n",cex=1.1)
 #legend(x=50,y=120,paste("p = ",round(pval_hi,2)),bty="n",cex=1.1)
-text(x=th_low,y=1000,paste0("p=",round(pval_low,4)),adj=c(1,0),cex=1.1)
-text(x=th_high,y=1000,paste0("p=",round(pval_hi,4)),adj=c(0,0),cex=1.1)
+text(x=th_low,y=1000,paste0("p=",round(pval_low,4)),adj=c(1.05,0),cex=1.1)
+text(x=th_high,y=1000,paste0("p=",round(pval_hi,4)),adj=c(-.05,0),cex=1.1)
 
 par(op)
 #box(which="figure")

@@ -846,7 +846,7 @@ totht<-xht+panht+gap
 bl<-.1
 bu<-.25
 
-pdf("./Results/pedagog_figs/LTUT_rho_0p8_LTdep.pdf.pdf",width=totwd,height=totht)
+pdf("./Results/pedagog_figs/LTUT_rho_0p8_LTdep.pdf",width=totwd,height=totht)
 par(fig=c((ywd)/totwd,
           (ywd+panwd)/totwd,
           (xht)/totht,
@@ -857,6 +857,7 @@ ccop<-copula::pobs(ccop)
 plot(ccop[,1],ccop[,2],pch=20,xaxt="n",yaxt="n",cex=.5) 
 lines(c(0,2*bl),c(2*bl,0),type='l')
 lines(c(0,2*bu),c(2*bu,0),type='l')	
+lines(c(0,1),c(0,1),lty="solid")
 axis(side=1,labels=TRUE,cex.axis=1)
 axis(side=2,labels=TRUE,cex.axis=1)
 mtext(expression(u[i]),side=1,line=1,cex=1)
@@ -864,7 +865,7 @@ mtext(expression(u[j]),side=2,line=1,cex=1)
 
 dev.off()
 
-pdf("./Results/pedagog_figs/LTUT_rho_0p8_UTdep.pdf.pdf",width=totwd,height=totht)
+pdf("./Results/pedagog_figs/LTUT_rho_0p8_UTdep.pdf",width=totwd,height=totht)
 par(fig=c((ywd)/totwd,
           (ywd+panwd)/totwd,
           (xht)/totht,
@@ -873,6 +874,7 @@ par(fig=c((ywd)/totwd,
 
 sccop<-copula::pobs(sccop)
 plot(sccop[,1],sccop[,2],pch=20,xaxt="n",yaxt="n",cex=.5) 
+lines(c(0,1),c(0,1),lty="solid")
 axis(side=1,labels=TRUE,cex.axis=1)
 axis(side=2,labels=TRUE,cex.axis=1)
 mtext(expression(u[i]),side=1,line=1,cex=1)
@@ -1421,11 +1423,12 @@ unbiased estimator (with Bessel's correction) was used for the standard deviatio
 the third $h$-statistic, $m_3(\xtot)=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (\xtot(t)-\mean(\xtot))^3$, which is the 
 unique symmetric unbiased estimator of that quantity. 
 
-To see that the quantity $\Sind=\frac{\sum_i m_{iii}}{(\sum_i v_{ii})^{3/2}}$ defined in the main text is
-the value that $\Scom$ would take if species dynamics were independent, we write 
+To see that the quantity $\Sind=\frac{\sum_i m_3(x_i)}{(\sum_i v_{ii})^{3/2}}$ defined in the main text is
+the value that $\Scom$ would take if species dynamics were independent, we use the definiton of skew to write 
 $\sk(\xtot)=\frac{m_3(\xtot)}{\var(\xtot)^{3/2}}=\frac{\sum_{i,j,k}m_{ijk}}{(\sum_{i,j}v_{ij})^{3/2}}$,
 where $m_{ijk}=\frac{T}{(T-2)(T-1)}\sum_{t=1}^T (x_i(t)-\mean(x_i))(x_j(t)-\mean(x_j))(x_k(t)-\mean(x_k))$ is a third
-cross-moment. Assuming independence of species dynamics, this becomes $\frac{\sum_i m_{iii}}{(\sum_i v_{ii})^{3/2}}$.
+cross-moment. Assuming independence of species dynamics, this becomes $\frac{\sum_i m_{iii}}{(\sum_i v_{ii})^{3/2}}=
+\frac{\sum_i m_3(x_i)}{(\sum_i v_{ii})^{3/2}}=\Sind$.
 
 #Additional interpretations of $\phi_S$ \label{phiSinterp}
 
@@ -1912,14 +1915,17 @@ papers, and also finalize the specifics of the references-->
 <!--Theory figure, extended-->
 \begin{figure}
 \begin{center}
-\includegraphics[height=.95\textheight]{./Results/TheoryFig.pdf}
-\caption[Extended version of Fig. \ref{MT-fig_theory} of the main text]{Extended version of Fig. \ref{MT-fig_theory} of the main text. See the caption of that
-figure for details.\label{fig_theory_SM}}
+\includegraphics[height=.9\textheight]{./Results/TheoryFig.pdf}
+\caption[Extended version of Fig. \ref{MT-fig_theory} of the main text]{Extended version of Fig. \ref{MT-fig_theory} 
+of the main text. Dashed black lines on panels F, J, N R are copied from the solid black line on panel B, to facilitate 
+comparison. Likewise dashed black lines on panels G, K, O and S are copied from C; black lines on H, L, P and T are 
+copied from D; dashed red lines on K, O and S are copied from G; and dashed red lines on L, P and T are copied from 
+H. See the caption of that figure for additional details.\label{fig_theory_SM}}
 \end{center}
 \end{figure}
 
 <!--hays & knz: time-series results plot-->
-\begin{figure}[!h]
+\begin{figure}
 \begin{center}
 \textbf{ \hspace{0.5 cm} (A) \hspace{5.5 cm} (B)} \\
 \includegraphics[width=6 cm]{./Results/hays_results/skewness_results/total_timeseries.pdf}
@@ -1948,23 +1954,6 @@ of the main text.\label{fig_pedag_taildep_SM}}
 \caption[Summary of notation]{Summary of notation.\label{fig_notation}}
 \end{center}
 \end{figure}
-
-<!--Results with corl-coru matrix plot-->
-\begin{figure*}[!h]
-\begin{center}
-\textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
-\includegraphics[width=8cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
-\includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/soiltype_t/Corl-Coru_ub_0.5.pdf} 
-\caption[Measures of asymmetry of tail association for pairs of species]{Measures of asymmetry of 
-tail association for all pairs of species with positive Spearman correlation,
-using the Hays (A) and Konza (B) datasets. The quantity $\cor_l-\cor_u$ (Methods) is displayed, using a blue/red split colorbar,
-for all positively associated pairs of species. Green-shaded species pairs were negatively associated. See
-Tables \ref{tab_spinfo_hays}-\ref{tab_spinfo_knz} for species names. Although both lower- and upper-tail
-association occur in both datasets, the quantities $n_L$, $n_U$ and $\Atot$ (Methods), displayed under each 
-panel, indicate that lower-tail association between species was stronger or more common in the Hays data, and 
-upper-tail association was stronger or more common in the Konza data. \label{fig_CorlmCoru}}
-\end{center}
-\end{figure*}
 
 ```{r reformatting_figs, echo=F, results="hide", cache=T, cache.extra=list(ts_mat_CP_hays,mtime("getmap.R"),mtime("Reform_suppmat_fig.R"))}
 # Don't put any seed in this chunk
@@ -2013,8 +2002,25 @@ vertical lines) and their median (dots). Bars overlapping with the 1-1 line were
 and those not overlapping were rendered in red. }\label{fig:check_pairwisecor}
 \end{figure}
 
+<!--Results with corl-coru matrix plot-->
+\begin{figure*}
+\begin{center}
+\textbf{ \hspace{-7 cm} (A) \hspace{7 cm} (B)}\\
+\includegraphics[width=8cm]{./Results/hays_results/corstat_hays_spaceavg_results/Corl-Coru_ub_0.5.pdf}
+\includegraphics[width=8cm]{./Results/knz_results/corstat_knz_spaceavg_results/soiltype_t/Corl-Coru_ub_0.5.pdf} 
+\caption[Measures of asymmetry of tail association for pairs of species]{Measures of asymmetry of 
+tail association for all pairs of species with positive Spearman correlation,
+using the Hays (A) and Konza (B) datasets. The quantity $\cor_l-\cor_u$ (Methods) is displayed, using a blue/red split colorbar,
+for all positively associated pairs of species. Green-shaded species pairs were negatively associated. See
+Tables \ref{tab_spinfo_hays}-\ref{tab_spinfo_knz} for species names. Although both lower- and upper-tail
+association occur in both datasets, the quantities $n_L$, $n_U$ and $\Atot$ (Methods), displayed under each 
+panel, indicate that lower-tail association between species was stronger or more common in the Hays data, and 
+upper-tail association was stronger or more common in the Konza data. \label{fig_CorlmCoru}}
+\end{center}
+\end{figure*}
+
 <!--Skewness results for both datasets-->
-\begin{figure}[!h]
+\begin{figure}
 \begin{center}
 \textbf{ \hspace{-5 cm} (A) \hspace{7 cm} (B)}\\
 \includegraphics[width=15cm]{./Results/hays_results/skewness_results/hays_pearson_preserving_results_cvsq_skw_plots.pdf}\\
@@ -2034,7 +2040,7 @@ give quantiles and the triangles give medians. \label{fig_result_box}}
 \end{center}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}
 \begin{center}
 \includegraphics[width=15cm]{./Results/Hays_ecdfs.pdf}
 \caption[Empirical CDF of $\xtot$ compared to surrogates, Hays]{Comparison of the ECDF $\hat{F}(x)$ of $\xtot$ to 
@@ -2049,7 +2055,7 @@ See SI section \ref{ecdf_approach} for interpretations. \label{hays_ecdf}}
 \end{center}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}
 \begin{center}
 \includegraphics[width=15cm]{./Results/Konz_ecdfs.pdf}
 \caption[Empirical CDF of $\xtot$ compared to surrogates, Konza]{Comparison of the ECDF $\hat{F}(x)$ of $\xtot$ to 
