@@ -46,27 +46,38 @@ options(scipen = 1, digits = 4) #This option round all numbers appeared in the i
 <!--Abstract-->
 \newpage
 
-\noindent \textbf{ABSTRACT.} The degree of synchrony among the population fluctuations of multiple 
-coexisting species is known to have a major impact on the stability, 
-through time, of aggregate properties such as total community abundance or biomass. 
-Synchronous or asynchronous 
-(compensatory) species responses to environmental changes can also dictate the response of the total community. 
-However, in community ecology, synchrony and its influence on stability are usually measured 
+\noindent \textbf{ABSTRACT.} 
+<!--background-->
+The degree of synchrony among the population fluctuations of multiple 
+coexisting species is known to have a major impact on community stability, i.e., the stability, 
+through time, of aggregate community properties such as total community abundance or biomass. 
+However, synchrony and its influence on stability are usually measured 
 using covariance methods. Such approaches do not account for the possibility that species abundances may be 
-more correlated when the species are relatively common than when they are relatively rare, or vice versa. 
+more correlated when the species are relatively common than when they are relatively scarce, or vice versa. 
 Recent work showed that species commonly exhibit such “asymmetric tail associations”. For instance, if two 
 species are both positively influenced by an environmental variable only when that variable exceeds a 
 threshold, then fluctuations of the species may be more similar when the species are both abundant than
-when they are rare. We here consider, to our knowledge for the first time, the influence of asymmetric tail associations on 
-community stability. We propose the skewness of the aggregate property time series as an alternative 
-measure of community variability, which complements and extends standard measures. We develop a “skewness 
-ratio” which quantifies the extent to which relationships between species, and the 
-asymmetry of these relationships, serve to modify community variability. The skewness ratio is analogous 
-to, but complements, the widely used variance ratio. Using two multi-decadal grassland datasets, we 
-show that taking into account asymmetric tail associations gives a useful new viewpoint on the relationship 
-between synchrony and community stability. Our theory and results constitute the beginnings of a new and more 
-flexible paradigm for exploring species relationships and community 
-stability. 
+when they are scarce. 
+<!--main goal-->
+We here consider, to our knowledge for the first time, the influence of asymmetric tail associations on 
+community stability. 
+<!--new methods-->
+We propose using skewness of the aggregate community property time series in an alternative 
+measure of community stability which complements and extends standard measures. We develop a “skewness 
+ratio” which quantifies the extent to which relationships between species, and asymmetric tail associations in 
+these relationships, serve to modify community stability. The skewness ratio is analogous 
+to, but complements, the classic variance ratio. Using two multi-decadal grassland datasets, we 
+show that taking into account asymmetric tail associations gives new viewpoints on the relationship 
+between synchrony and community stability. 
+<!--results-->
+For instance, we show that species associations can augment or degrade community stability differentially for
+community crashes or explosions to high values, a fact which is not detectable by standard approaches.
+In other words, species associations can mitigate explosions of total community abundance to high values (increasing
+one aspect of community stability), while simultaneously exacerbating the
+tendency to crash to low values (decreasing another aspect of stability); or vice versa.
+<!--summary-->
+Our theory and results constitute the beginnings of a new and more 
+flexible paradigm for exploring species relationships and community stability. 
 
 <!--keywords-->
 \noindent \textbf{\textit{Keywords:}} variance ratio, community stability, community variability, 
@@ -118,7 +129,8 @@ together with covariances between population time series, to characterize specie
 relationships [@peterson1975; @schluter1984variance; @RN23; @frost1995species].
 For instance, if $x_i(t)$ are data representing the population abundance or biomass 
 of species $i=1,\ldots,N$ at the sampling times
-$t=1,\ldots,T$, and if $\mu_i=\mean(x_i)$, $v_{ii}=\var(x_i)$, and $v_{ij}=\cov(x_i,x_j)$, community variability
+$t=1,\ldots,T$, and if $\mu_i=\mean(x_i)$, $v_{ii}=\var(x_i)$, and $v_{ij}=\cov(x_i,x_j)$ (here $j=1,\ldots,N$
+is another species index), community variability
 has commonly been quantified using the squared coefficient of variation of $\xtot(t)=\sum_i x_i(t)$, i.e., 
 $\CVcomsq=\var(\xtot)/\left(\mean(\xtot)\right)^2=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i \mu_i\right)^2$.
 This quantity obviously connects to species relationships measured via 
@@ -163,14 +175,17 @@ of species relationships nor in the effects of relationships on community aggreg
 
 Nevertheless, species relationships and aggregate dynamics differed in important and 
 related ways in our scenarios. In both scenarios,
-the 20 species could be separated into two groups of 10 species (red and black lines on Fig. \ref{fig_pedag_cv2_skw}A, B), 
+the 20 species could be separated into two groups of 10 species (the red lines on Fig. \ref{fig_pedag_cv2_skw}A, B are one 
+group and the black lines are the other), 
 and the dynamics of species in the different groups were compensatory. However, in scenario 1 (Fig. \ref{fig_pedag_cv2_skw}A), 
-species in the same group exhibited strongly synchronous dynamics when rare and much less synchronous dynamics when 
-common; whereas in scenario 2 (Fig. \ref{fig_pedag_cv2_skw}B) species in the same group exhibited strongly synchronous dynamics 
-when common and much less synchronous dynamics when rare. Dynamics like scenario 1 could occur ecologically
+species in the same group exhibited strongly synchronous dynamics when those species were scarce (below about 5.5 on the 
+$y$-axis of Fig. \ref{fig_pedag_cv2_skw}A), 
+and much less synchronous dynamics when those species common (above about 5.5); whereas in scenario 
+2 (Fig. \ref{fig_pedag_cv2_skw}B) species in the same group exhibited strongly synchronous dynamics 
+when common and much less synchronous dynamics when scarce. Dynamics like scenario 1 could occur ecologically
 if red species in Fig. \ref{fig_pedag_cv2_skw}A were sensitive to an environmental factor, $F$, but only when it 
 goes below a threshold. So all the red species are controlled by the same factor, $F$, when it is below the threshold,
-and hence are synchronous when rare. 
+and hence are synchronous when scarce. 
 When $F$ is above the threshold, the red species are each sensitive, instead, to other, 
 distinct factors, rendering them asynchronous when common. Black species 
 of Fig. \ref{fig_pedag_cv2_skw}A may also be sensitive to $F$, but in a reverse manner, being all adversely impacted 
@@ -791,12 +806,16 @@ of Fish and Wildlife Delta Science Program.
 via the classic variance ratio approach and related approaches, but that nonetheless differ markedly in 
 potentially important ways. See Introduction for details and interpretation. See 
 SI Fig. \ref{SI-fig_pedag_cv2_skw_SM} for larger versions of panels A, B.
-Dashed and dotted lines on C-F show lower and upper thresholds which may be considered
-disastrous for $\xtot(t)$ to cross. The probability of crossing each threshold was negligible for one scenario, but
-not negligible for the other.
+Dashed and dotted lines on C-F represent thresholds. If the lower threshold (dashed line) were
+a disasterous threshold for $\xtot(t)$ to cross, then the first scenario (C, E) would involve much
+more risk than the second scenario (see probabilities of crossing the threshold listed to the left
+of the dashed lines on E, F - the probability for scenario 1 is an order of magnitude higher).
+On the other hand, if the upper threshold (dotted line) were a disasterous threshold for 
+$\xtot(t)$, the second scenario would involve more risk (see probabilities to the right of the 
+dotted lines on E, F - the probability for scenario 2 is much higher).
 Time series were generated and statistics computed for 100000 years, but are plotted on A, B
 for 60 years only, for clarity. \label{fig_pedag_cv2_skw}}
-\end{figure}
+\end{figure} 
 <!--\caption{Pedagogical example showing two communities (A, B) of twenty species each that are not distinguishable 
 via the classic variance ratio approach and related approaches, but that nonetheless differ markedly in 
 potentially important ways. Species marginal distributions, and therefore species means and variances
