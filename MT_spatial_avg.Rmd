@@ -62,7 +62,7 @@ when they are scarce.
 We here consider, to our knowledge for the first time, the influence of asymmetric tail associations on 
 community stability. 
 <!--new methods-->
-We propose using skewness of the aggregate community property time series in an alternative 
+We propose using skewness of the aggregate community property time series as an alternative 
 measure of community stability which complements and extends standard measures. We develop a “skewness 
 ratio” which quantifies the extent to which relationships between species, and asymmetric tail associations in 
 these relationships, serve to modify community stability. The skewness ratio is analogous 
@@ -103,16 +103,19 @@ have increased variability [@RN1;@keitt2008coherent;@loreau2008species;@ma2017cl
 and specifically the degree of synchrony between the dynamics 
 of different species, are important contributors to the stability of an aggregate community property.
 Here, the terminology "species relationships" encompasses direct species interactions as well as related 
-responses to environmental and other drivers (see below). In addition to total biomass, aggregated community
+responses to environmental and other drivers. In addition to total biomass, aggregated community
 properties can include total abundance, net primary productivity, decomposition rate, and various nutrient cycling rates.
 
 Synchronous versus compensatory dynamics, and their influence on community stability, have been studied 
-in a wide variety of ecological communities, including marine benthic invertebrates (e.g., @peterson1975); 
+in a wide variety of ecological communities (e.g., @peterson1975; @RN13; @houlahan2007).
+<!--, including marine benthic invertebrates (e.g., @peterson1975); 
 freshwater plankton (e.g., @frost1995species; @RN6; @RN7; @vasseur2007; @downing2008; @keitt2008coherent; @RN10;
 @Vasseur2014; @brown2016); butterflies and moths [@houlahan2007; @RN13]; small mammals [@RN14; @RN15; @RN16];
 birds (e.g., @RN17); and plants in deserts (e.g., @RN14; @RN15), grasslands (e.g., @bai2004ecosystem; @houlahan2007;
-@hallett2014), and forests (e.g., @houlahan2007; @RN18). These and other studies suggest that synchrony is often 
-due to common responses to environmental changes (e.g., @peterson1975; @RN19; @RN6; @houlahan2007), whereas 
+@hallett2014), and forests (e.g., @houlahan2007; @RN18). 
+These and other studies suggest that synchrony is often -->
+Synchrony is often due to common responses to environmental 
+changes (e.g., @peterson1975; @RN19; @RN6; @houlahan2007), whereas 
 compensatory dynamics result from multiple mechanisms, including competitive interactions and differing responses 
 to environmental changes (e.g., @RN19; @gonzalez2009causes; @houlahan2007; @RN21; @RN22). Severe environmental 
 stressors that impact all populations are expected to synchronize dynamics, whereas stressors with differential 
@@ -123,6 +126,57 @@ of "stability" [@Ives2003], we here focus on the common practice of examining th
 of an aggregate community property such as the total biomass of all species, referring to this henceforth 
 as "community variability."
 
+Much past work on community variability and the influence of species relationships on it has proceeded by examining 
+the variance through time of an aggregate community property, 
+together with covariances between population time series, to characterize species 
+relationships [@peterson1975; @schluter1984variance; @RN23; @frost1995species; @loreau2008species; @Gross2014].
+For instance, if $x_i(t)$ are data representing the population abundance or biomass 
+of species $i=1,\ldots,N$ at the sampling times
+$t=1,\ldots,T$, and if $\mu_i=\mean(x_i)$, $v_{ii}=\var(x_i)$, and $v_{ij}=\cov(x_i,x_j)$ (here $j=1,\ldots,N$
+is another species index), community variability
+has commonly been quantified using the squared coefficient of variation of $\xtot(t)=\sum_i x_i(t)$, i.e., 
+$\CVcomsq=\var(\xtot)/\left(\mean(\xtot)\right)^2=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i \mu_i\right)^2$.
+This quantity obviously connects to species relationships measured via 
+the covariances, $v_{ij}$, which appear directly in the formula.
+Denoting by 
+$\CVindsq=\left(\sum_i v_{ii}\right)/\left(\sum_i \mu_i\right)^2$ the value that $\CVcomsq$ would take if 
+the dynamics of each species were independent of the dynamics of other species (so $v_{ij}=0$ for all $i \neq j$), the 
+classic *variance ratio* was defined [@peterson1975] as 
+$\phicv=\CVcomsq/\CVindsq=\var(\xtot)/\left(\sum_i v_{ii}\right)=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i v_{ii}\right)$. 
+Thus $\CVcomsq=\phicv \CVindsq$.
+Because $\CVindsq$ is interpreted as what community variability would be, without species relationships,
+$\phicv$ is the factor by which species relationships inflate or decrease community variability.
+The variance ratio has therefore been 
+used [@frost1995species;@houlahan2007;@hallett2014;@ma2017climate] 
+<!--DAN: Loreau said 2 of these don't actually use the VR, need to address-->
+as an index of whether dynamics 
+are synchronous or compensatory. If $\phicv>1$, the interpretation has been that dynamics are, on balance,
+synchronous because then $\CVcomsq>\CVindsq$, i.e., the aggregate property $\xtot$ is more variable than
+it would be if species dynamics were independent. Conversely, if $\phicv<1$, the interpretation has been
+that dynamics are compensatory (but see @loreau2008species, and below, for alternative perspectives).
+
+Extensions, improvements and alternatives to the original variance ratio have been proposed, notably the synchrony metric of 
+@loreau2008species, here denoted $\phiLdM$. 
+Whereas newer metrics such as $\phiLdM$ have some interpretive and other advantages over the 
+original variance ratio [@loreau2008species; @Thibaut2013], in this study
+we show that the ways in which species relationships influence community variability are likely to be 
+more nuanced than is revealed by either the variance ratio approach or
+by any extensions or alternatives of which we are aware. Whereas the variance ratio 
+compares $\CVcomsq$ to the baseline value $\CVindsq$ that 
+would be the community $\text{CV}^2$ under an assumption of species independence (by considering the ratio 
+$\phicv=\CVcomsq/\CVindsq$), $\phiLdM$
+instead compares $\CVcomsq$ to the baseline value $\CVsynsq$ that would be the community $\text{CV}^2$ under an assumption of 
+perfect linear correlation between species dynamics (again by considering a ratio): $\phiLdM=\CVcomsq/\CVsynsq$. 
+It is straightforward to show [@Thibaut2013] that $\CVsynsq=\left(  \sum_i \sqrt{v_{ii}} \right)^2/\left(\sum_i \mu_i\right)^2$,
+i.e., that this expression is what community $\text{CV}^2$ would be under perfect linear correlation between species
+[@Thibaut2013]. Timescale-specific alternatives and extensions of the original variance ratio approach have also been developed
+[@vasseur2007; @brown2016;@zhao2020]. Although each of these alternative metrics improves upon the original variance ratio in 
+at least some respects, we nevertheless construct the specific statistical
+tools of this paper as extensions of the original variance ratio, for mathematical simplicity.
+Also, this choice makes little difference, because the main concepts of this study can be applied as 
+improvements to all existing frameworks of which we are aware.  We return to this topic in the Discussion.
+
+<!--Old version follows, adventurously trialing new versions, so keeping the old one here: 
 Much past work on community variability and the influence of species relationships on it has proceeded by examining 
 the coefficient of variation through time of an aggregate community property, 
 together with covariances between population time series, to characterize species 
@@ -146,7 +200,7 @@ used [@frost1995species;@houlahan2007;@hallett2014;@ma2017climate] as an index o
 are synchronous or compensatory. If $\phicv>1$, the interpretation has been that dynamics are, on balance,
 synchronous because then $\CVcomsq>\CVindsq$, i.e., the aggregate property $\xtot$ is more variable than
 it would be if species dynamics were independent. Conversely, if $\phicv<1$, the interpretation has been
-that dynamics are compensatory. 
+that dynamics are compensatory.
 
 Several extensions of the variance ratio approach have been proposed, but the original variance ratio 
 is still commonly used. Timescale-specific extensions [@vasseur2007;
@@ -155,9 +209,9 @@ dynamics to occur simultaneously on different timescales. Other alternatives to 
 have also been proposed [@loreau2008species]. 
 Here, we show that the ways in which species relationships influence community variability are likely to be 
 more nuanced than is revealed by either the classic variance ratio approach or
-by existing extensions. 
+by existing extensions. -->
 
-To begin, we consider two simulated community dynamics datasets 
+To begin by giving an intuitive introduction to the main concepts of this study, we consider two simulated community dynamics datasets 
 (Fig. \ref{fig_pedag_cv2_skw}A, B; data generated as in Supporting Information (SI) 
 section \ref{SI-PedagogFigMethods}, see also SI Fig. \ref{SI-fig_pedag_cv2_skw_SM}).
 Both communities consist of $N=20$ species, and data were generated so that species marginal distributions 
@@ -167,11 +221,13 @@ both scenarios. Likewise, data were
 generated so that species covariances, $v_{ij}$ for $i \neq j$,
 were essentially the same for Fig. \ref{fig_pedag_cv2_skw}A and B. Thus both $\CVcomsq$ and $\CVindsq$, which 
 depend only on the $\mu_i$ and $v_{ij}$,
-were the same in both scenarios, and so $\phicv$ was the same. The Loreau-de Mazancourt variance ratio
-[@loreau2008species] (denoted $\phi_{\text{LdM}}$ on Fig. \ref{fig_pedag_cv2_skw}), which itself 
-depends only on the $v_{ij}$, was also the same up to sampling variation 
+were the same in both scenarios, and so $\phicv$ was the same. Because $\CVsynsq$ also depends only on 
+the $\mu_i$ and $v_{ij}$, $\phiLdM$ was also the same in our two scenarios, up to sampling variation
 (Fig. \ref{fig_pedag_cv2_skw}A, B). Thus classical approaches do not distinguish between the scenarios, neither in the nature
 of species relationships nor in the effects of relationships on community aggregate dynamics $\xtot(t)$.
+Any approach that considers only species marginal distributions through time
+and the covariances $v_{ij}$ will not detect the differences between our two scenarios. The correlation-based
+metric of @Gross2014 is another such.
 
 Nevertheless, species relationships and aggregate dynamics differed in important and 
 related ways in our scenarios. In both scenarios,
@@ -180,7 +236,7 @@ group and the black lines are the other),
 and the dynamics of species in the different groups were compensatory. However, in scenario 1 (Fig. \ref{fig_pedag_cv2_skw}A), 
 species in the same group exhibited strongly synchronous dynamics when those species were scarce (below about 5.5 on the 
 $y$-axis of Fig. \ref{fig_pedag_cv2_skw}A), 
-and much less synchronous dynamics when those species common (above about 5.5); whereas in scenario 
+and much less synchronous dynamics when those species were common (above about 5.5); whereas in scenario 
 2 (Fig. \ref{fig_pedag_cv2_skw}B) species in the same group exhibited strongly synchronous dynamics 
 when common and much less synchronous dynamics when scarce. Dynamics like scenario 1 could occur ecologically
 if red species in Fig. \ref{fig_pedag_cv2_skw}A were sensitive to an environmental factor, $F$, but only when it 
@@ -795,9 +851,10 @@ compensatory dynamics, and their influence on community stability.
 
 
 # Acknowledgments
-\noindent The authors thank Jim Bever, Bryan Foster and Lauren Hallett for helpful discussions. The authors were partly supported 
-by U.S. National Science Foundation grants 1714195 and 2023474, the James S. McDonnell Foundation, and the California Department
-of Fish and Wildlife Delta Science Program. 
+\noindent The authors thank Jim Bever, Bryan Foster, Lauren Hallett and Michel Loreau for helpful discussions and 
+constructive criticism. The authors were partly supported 
+by U.S. National Science Foundation grants 1714195 and 2023474, the James S. McDonnell Foundation, and the 
+California Department of Fish and Wildlife Delta Science Program. 
 
 <!--Pedagogical figure-->
 \begin{figure}[!h]
