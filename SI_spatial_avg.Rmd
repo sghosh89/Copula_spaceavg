@@ -1847,7 +1847,7 @@ system components is crucial. In many fields concerned with synchrony, including
 ecology, techniques for quantifying the
 synchrony of individual signals and relating that synchrony to distributional properties of the 
 aggregate quantity of interest have historically been crude. We believe there is great opportunity to 
-improve these techniques to benefit nuerous fields, using the methods of this paper and related methods.
+improve these techniques to benefit numerous fields, using the methods of this paper and related methods.
 
 More detailed statistical descriptions of synchrony are likely to be useful in many fields, 
 even when making a connection to the distribution of an aggregate quantity is not of interest,
@@ -1896,7 +1896,7 @@ the strength of synchrony but of its nature, possibly including changes through 
 measures related to the tail association ideas of this paper, and/or other aspects. 
 
 Mathematically, 
-the nature of the relationship between two quantities is an infinite dimensional object [@Ghosh_copula].  
+the nature of the relationship between two quantities is an infinite dimensional object [@Ghosh_copula].
 But many studies
 of synchrony and related concepts measure their phenomena of interest with simple, univariate statistics. It seems 
 quite plausible to believe that improved results and scientific understanding of synchrony could be extracted

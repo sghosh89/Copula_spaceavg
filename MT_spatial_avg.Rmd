@@ -66,7 +66,7 @@ We propose using skewness of the aggregate community property time series as an 
 measure of community stability which complements and extends standard measures. We develop a “skewness 
 ratio” which quantifies the extent to which relationships between species, and asymmetric tail associations in 
 these relationships, serve to modify community stability. The skewness ratio is analogous 
-to, but complements, the classic variance ratio. Using two multi-decadal grassland datasets, we 
+to, but complements, the classic variance ratio and related metrics. Using two multi-decadal grassland datasets, we 
 show that taking into account asymmetric tail associations gives new viewpoints on the relationship 
 between synchrony and community stability. 
 <!--results-->
@@ -144,12 +144,9 @@ the dynamics of each species were independent of the dynamics of other species (
 classic *variance ratio* was defined [@peterson1975] as 
 $\phicv=\CVcomsq/\CVindsq=\var(\xtot)/\left(\sum_i v_{ii}\right)=\left(\sum_{i,j} v_{ij}\right)/\left(\sum_i v_{ii}\right)$. 
 Thus $\CVcomsq=\phicv \CVindsq$.
-Because $\CVindsq$ is interpreted as what community variability would be, without species relationships,
+Because $\CVindsq$ has been interpreted as what community variability would be, without species relationships,
 $\phicv$ is the factor by which species relationships inflate or decrease community variability.
-The variance ratio has therefore been 
-used [@frost1995species;@houlahan2007;@hallett2014;@ma2017climate] 
-<!--DAN: Loreau said 2 of these don't actually use the VR, need to address-->
-as an index of whether dynamics 
+The variance ratio has therefore been used [@frost1995species;@hallett2014] as an index of whether dynamics 
 are synchronous or compensatory. If $\phicv>1$, the interpretation has been that dynamics are, on balance,
 synchronous because then $\CVcomsq>\CVindsq$, i.e., the aggregate property $\xtot$ is more variable than
 it would be if species dynamics were independent. Conversely, if $\phicv<1$, the interpretation has been
@@ -157,7 +154,7 @@ that dynamics are compensatory (but see @loreau2008species, and below, for alter
 
 Extensions, improvements and alternatives to the original variance ratio have been proposed, notably the synchrony metric of 
 @loreau2008species, here denoted $\phiLdM$. 
-Whereas newer metrics such as $\phiLdM$ have some interpretive and other advantages over the 
+Whereas newer metrics such as $\phiLdM$ have interpretive and other advantages over the 
 original variance ratio [@loreau2008species; @Thibaut2013], in this study
 we show that the ways in which species relationships influence community variability are likely to be 
 more nuanced than is revealed by either the variance ratio approach or
@@ -169,12 +166,13 @@ instead compares $\CVcomsq$ to the baseline value $\CVsynsq$ that would be the c
 perfect linear correlation between species dynamics (again by considering a ratio): $\phiLdM=\CVcomsq/\CVsynsq$. 
 It is straightforward to show [@Thibaut2013] that $\CVsynsq=\left(  \sum_i \sqrt{v_{ii}} \right)^2/\left(\sum_i \mu_i\right)^2$,
 i.e., that this expression is what community $\text{CV}^2$ would be under perfect linear correlation between species
-[@Thibaut2013]. Timescale-specific alternatives and extensions of the original variance ratio approach have also been developed
-[@vasseur2007; @brown2016;@zhao2020]. Although each of these alternative metrics improves upon the original variance ratio in 
+[@Thibaut2013]; and therefore that $\phiLdM=\left( \sum_{i,j} v_{ij}  \right)/\left( \sum_i \sqrt{v_{ii}}  \right)^2$. Timescale-specific alternatives and extensions of the original variance ratio approach have also been developed
+[@vasseur2007; @brown2016;@zhao2020]. Although each alternative metric improves upon the original variance ratio in 
 at least some respects, we nevertheless construct the specific statistical
-tools of this paper as extensions of the original variance ratio, for mathematical simplicity.
-Also, this choice makes little difference, because the main concepts of this study can be applied as 
-improvements to all existing frameworks of which we are aware.  We return to this topic in the Discussion.
+tools of this paper as extensions of the original variance ratio. This is for mathematical simplicity, and also
+because the choice makes little difference: the concepts of this study can be applied as 
+improvements to all the existing frameworks of which we are aware.  We return to this topic in the Discussion.
+<!--***DAN: Don't forget to do that-->
 
 <!--Old version follows, adventurously trialing new versions, so keeping the old one here: 
 Much past work on community variability and the influence of species relationships on it has proceeded by examining 
@@ -211,7 +209,8 @@ Here, we show that the ways in which species relationships influence community v
 more nuanced than is revealed by either the classic variance ratio approach or
 by existing extensions. -->
 
-To begin by giving an intuitive introduction to the main concepts of this study, we consider two simulated community dynamics datasets 
+To begin by giving an intuitive introduction to how the main concepts of this study can extend previous approaches, 
+we consider two simulated community dynamics datasets 
 (Fig. \ref{fig_pedag_cv2_skw}A, B; data generated as in Supporting Information (SI) 
 section \ref{SI-PedagogFigMethods}, see also SI Fig. \ref{SI-fig_pedag_cv2_skw_SM}).
 Both communities consist of $N=20$ species, and data were generated so that species marginal distributions 
@@ -222,12 +221,14 @@ generated so that species covariances, $v_{ij}$ for $i \neq j$,
 were essentially the same for Fig. \ref{fig_pedag_cv2_skw}A and B. Thus both $\CVcomsq$ and $\CVindsq$, which 
 depend only on the $\mu_i$ and $v_{ij}$,
 were the same in both scenarios, and so $\phicv$ was the same. Because $\CVsynsq$ also depends only on 
-the $\mu_i$ and $v_{ij}$, $\phiLdM$ was also the same in our two scenarios, up to sampling variation
+the $\mu_i$ and $v_{ii}$, $\phiLdM$ was also the same in our two scenarios, up to sampling variation
 (Fig. \ref{fig_pedag_cv2_skw}A, B). Thus classical approaches do not distinguish between the scenarios, neither in the nature
 of species relationships nor in the effects of relationships on community aggregate dynamics $\xtot(t)$.
 Any approach that considers only species marginal distributions through time
 and the covariances $v_{ij}$ will not detect the differences between our two scenarios. The correlation-based
 metric of @Gross2014 is another such.
+<!--***DAN: Don't forget to roll out my notational changes in the figures, and also make sure it's worked in
+the sup mat. You'll have to read the whole sup mat again.-->
 
 Nevertheless, species relationships and aggregate dynamics differed in important and 
 related ways in our scenarios. In both scenarios,
@@ -249,9 +250,9 @@ by $F$ when it is above the threshold, and unaffected by $F$ below the threshold
 Resulting community dynamics 
 (Fig. \ref{fig_pedag_cv2_skw}C-F) differed between scenarios because of the distinct species relationships.
 The aggregate quantity, $\xtot$, was more likely to crash to low values in the first scenario (Fig. \ref{fig_pedag_cv2_skw}C, E)
-than in the second scenario (Fig. \ref{fig_pedag_cv2_skw}D, F; compare the probabilities on E and F listed to the left of the dashed line), 
+than in the second scenario (Fig. \ref{fig_pedag_cv2_skw}D, F; compare the probabilities on E and F listed to the left of the dashed lines), 
 whereas $\xtot(t)$ was more likely to explode to high values 
-in the second scenario than in the first (compare the probabilities on E, F to the right of the dotted line).
+in the second scenario than in the first (compare the probabilities on E, F to the right of the dotted lines).
 Thus total abundance was left-skewed, frequently crashing to low values, for scenario 1 (C, E); 
 but was right skewed, frequently exploding to high values, in scenario 2 (D, F). 
 
@@ -267,12 +268,21 @@ renders those approaches unable to register the differences illustrated here.
 This study addresses three gaps in the research literature. First, commonly used past descriptions of species 
 relationships have been oversimplified, based primarily on covariances or correlations of species time series.
 The example above suggests that more nuanced measures should be developed that identify whether species 
-abundances are more related to each other when the species are common, or rare (Fig. \ref{fig_pedag_cv2_skw}). 
+abundances are more related to each other when the species are common, or scarce (Fig. \ref{fig_pedag_cv2_skw}). 
+Our first goal (G1) is to develop 
+and apply an approach to studying relationships
+between species that complements classic approaches relying on covariances. 
 Second, commonly used past measures of community variability have focused on the variance or 
 coefficient of variation of an aggregate property like  $\xtot$. The example above suggests
 that more nuanced or complementary measures should be developed, taking skewness into account 
-(Fig. \ref{fig_pedag_cv2_skw}). Finally, ways in which species relationships
-influence community variability should be studied using the new measures.
+(Fig. \ref{fig_pedag_cv2_skw}). 
+Our goal (G2) is to develop and apply an
+approach to studying community variability that complements the traditional 
+coefficient of variation.
+Finally, the example above suggests that ways in which species relationships
+influence community variability should be studied using the new measures of G1 and G2.
+Our goal (G3) is to do so, using data from long-term studies from mixed-grass prairie in Hays, Kansas and 
+from the Konza Prairie Long-Term Ecological Research (LTER) site, also in Kansas.
 
 The core ideas of this study relate to extreme events, and to how relationships between constituents of 
 an aggregate quantity change during such events. There are strong connections to
@@ -290,15 +300,9 @@ between species using covariances may therefore neglect something important. For
 may change as global climate change progresses, or when extreme climatic events occur [@Ghosh_extinction]. 
 Financial analysts 
 have learned these lessons and have begun developing mathematics for more appropriate models [@cheung2013]. Ecologists 
-can benefit from application of the same methods.
+can benefit from application of the same methods. Overall, this study establishes the beginnings of a more flexible paradigm for
+conceptualizing synchronous and compensatory dynamics in ecosystems, and their influence on community variability.
 
-The goals of this study are as follows, paralleling the literature gaps identified above. (G1) We develop 
-and apply an approach to studying relationships
-between species that complements classic approaches relying on covariances. (G2) We develop and apply an
-approach to studying community variability that complements the traditional 
-coefficient of variation. Finally, (G3) we evaluate how species relationships influence community variability
-using the new approaches, and using data from long-term studies from mixed-grass prairie in Hays, Kansas and 
-from the Konza Prairie Long-Term Ecological Research (LTER) site, also in Kansas.
 <!--Synchronous versus compensatory dynamics in communities, and their influence on community stability, has most commonly
 been studied in plankton systems [@downing2008;@brown2016] and in grasslands 
 [@bai2004ecosystem;@houlahan2007;@hallett2014]. Evidence suggests that synchronous dynamics may be dominant,
@@ -310,8 +314,6 @@ or have found compensatory dynamics selectively, in some contexts [@grman2010;@h
 One outcome of our empirical work is a suggestion that compensatory dynamics in grasslands may be less 
 common than was previously appreciated, when one adopts a broader conceptual view of what constitutes synchronous versus 
 compensatory dynamics.--> 
-Overall, our work establishes the beginnings of a more flexible paradigm for
-conceptualizing synchronous and compensatory dynamics and their influence on community variability.
 
 <!--***DAN: Not sure how relevant this stuff is, but keeping it around for now, partly for the references.
 There are reasons to focus on skewness to better understand the community-stability 
@@ -332,7 +334,8 @@ this skewness into direct community-stability metric.-->
 
 \noindent We now illustrate theoretically how relationships between
 species, beyond covariances, can influence variability of the 
-total community. As in the Introduction, let $x_i(t)$ be an abundance 
+total community. The theory here relates to, but goes substantially beyond, the example of Fig. \ref{fig_pedag_cv2_skw}. 
+As in the Introduction, let $x_i(t)$ be an abundance 
 measure for species $i=1,\ldots,N$ at time $t=1,\ldots,T$. We use $N=20$ and $T=100000$ in the theoretical examples here.
 This large value of $T$ was used to ensure that sampling effects do not obscure our theoretical results.
 We assume the multivariate random variables $x(t)=(x_1(t),\ldots,x_N(t))$ are independent
@@ -352,15 +355,15 @@ whole distribution, including its skewness.
 We present four scenarios (scenarios 1-2 below, and 3-4 in SI section \ref{SI-TheoryMethods} and 
 SI Fig. \ref{SI-fig_theory_SM}). For all 
 scenarios, the marginal distributions $x_i$ and
-the covariances $v_{ij}$ are the same, as are the quantities $\var(\xtot)$, $\CVcomsq$, 
-and $\phicv$. Thus, as in the example of Fig. \ref{fig_pedag_cv2_skw}, 
+the covariances $v_{ij}$ are the same, as are the quantities $\var(\xtot)$, $\CVcomsq$, $\CVindsq$, $\CVsynsq$, 
+$\phicv$, and $\phiLdM$. Thus, as in the example of Fig. \ref{fig_pedag_cv2_skw}, 
 our scenarios are indistinguishable to classic approaches but are
 nevertheless ecologically distinct: the total abundance $\xtot$ achieves 
 more extreme values under some scenarios than others. Hence our scenarios represent communities showing 
 different characteristics of variability. 
 Scenarios are intentionally simplified, with complexities such as autocorrelation excluded, for clarity, 
-but the ideas apply to real communities (see below). 
-We also compare each scenario to a reference *comonotonic* scenario, for which 
+but the ideas also apply to real communities (see below). 
+We additionally compare each scenario to a reference *comonotonic* scenario (called scenario C), for which 
 the $x_i$ are related via perfect positive relationships. 
 This is a scenario of maximal covariance between species, 
 and therefore maximal values of $\var(\xtot)$ [@cheung2013] and of community variability, given
@@ -375,7 +378,10 @@ was close to $0$ (Fig. \ref{fig_theory}B). The probability of $\xtot$ exceeding 
 in Fig. \ref{fig_theory}C for a range of high thresholds. Likewise the probability of $\xtot$ falling below a
 low threshold is in Fig. \ref{fig_theory}D for a range of low thresholds. These probabilities represent the 
 chances that $\xtot$ will surpass or fall below a threshold considered disastrous or unacceptable from an
-applied or ecological viewpoint, and we refer to these as *disaster thresholds*.
+applied or ecological viewpoint, and we refer to these as *disaster thresholds*. It is possible to imagine 
+applied scenarios in which exceeding a high threshold is disasterous, and other scenarios in which disaster
+instead occurs when $\xtot$ falls below a low threshold. Our theory can be considered in relation to 
+either of these applied scenarios, so we keep them both in mind while developing the theory.
 
 For the comonotonic scenario, C, we assume $x_i=x_1$ for all $i$. 
 This is a specific form of comonotonicity [@cheung2013], with the relationship between $x_1$ and $x_2$
@@ -386,7 +392,7 @@ reproduced from
 Fig. \ref{fig_theory}B, to facilitate comparisons). 
 Probabilities of $\xtot$ exceeding a high disaster threshold or falling
 below a low one are likewise larger (red lines in Fig.  \ref{fig_theory}G-H; dashed black lines on those panels
-and the panels below them are reproduced from panels C and D, respectively, for comparison).
+and the panels below them are reproduced from panels C and D, respectively).
 
 Scenarios 2-4 illustrate the ideas, previously little recognized in ecology, 
 of tail comonotonicity [@cheung2013] and tail associations [@Ghosh_extinction;@Ghosh_copula;@Ghosh_aphidplankton], and the consequences of tail
@@ -403,8 +409,10 @@ Comonotonicity in the upper tails produces right/positive skewness in $\xtot$ (F
 Skewness translates to elevated probabilities of $\xtot$ exceeding high disaster thresholds, compared to 
 scenario 1 (blue lines in Fig. \ref{fig_theory}K; the dashed red lines on panels K and L are copied from the solid red lines of panels G and H, respectively, to facilitate comparisons). 
 The probability of exceeding sufficiently high disaster thresholds is actually the
-same as scenario C. So although scenarios 1 and 2 are indistinguishable to classic approaches, the probability 
-of disaster in scenario 2 is much elevated, and is as high as it can possibly be given the species marginal
+same as scenario C (Fig. \ref{fig_theory}K). So although scenarios 1 and 2 are 
+indistinguishable to classic approaches, the probability 
+of disaster in scenario 2, for high disaster thresholds, is much elevated, and is 
+as high as it can possibly be given the species marginal
 distributions used. Although it does not appear unstable to classic approaches, the scenario 2 community
 is maximally unstable with respect to high disaster thresholds.
 
@@ -418,7 +426,7 @@ the probabilities of disaster are elevated in scenarios 2-4, and are maximal, gi
 for some disaster types (high or low disaster thresholds), depending on the scenario. 
 Perfect comontonicity in
 the tails of population distributions $x_i$ simplifies our presentation of the theoretical ideas, but is not 
-necessary to generate skewness in $x_{\text{tot}}$ and elevated disaster probabilities. Similar result pertain 
+necessary to generate skewness in $x_{\text{tot}}$ and elevated disaster probabilities. Similar results pertain 
 for essentially any case where associations between species are asymmetric in the tails.
 
 Our scenarios were constructed using mathematical results of @cheung2008 and @cheung2013. We refer the reader
@@ -431,17 +439,18 @@ synchrony and compensatory dynamics between species) that can pertain, given fix
 species marginal distributions. So the question of what forms the distribution of $\xtot$ can take across the $\text{Fr\'{e}chet}$ space
 is a precisely formulated version of the classic question of how species interrelationships 
 such as synchrony and compensatory dynamics can influence community variability.
-It is well known that the sum
+It is well known to statisticians that the sum
 $\xtot$ exhibits maximal variance when the $x_i$ are comonotonic [@cheung2013]; this is the maximal-synchrony case.
 @cheung2013 showed the converse, i.e., if $\var(\xtot)$ is maximal in the $\text{Fr\'{e}chet space}$, then 
 $(x_1,\ldots,x_N)$ must be comonotonic (subject to some mild regularity assumptions about the $F_i$). 
-The classical, variance ratio approach essentially makes sole use of
+The classical, variance ratio and Loreau-de Mazancourt approaches essentially make sole use of
 $\var(\xtot)$ to quantify community variance ($\CVcomsq$ is used, actually, but this is equivalent, since species 
 marginals are fixed within the $\text{Fr\'{e}chet space}$). But @cheung2013 showed that, 
 even if we consider only the sub-$\text{Fr\'{e}chet}$ space
 consisting of random vectors $(x_1,\ldots,x_N)$ in $\mathcal{R}(F_1,\ldots,F_N)$ that additionally have 
 $\var(\xtot)=S$ for some fixed $S$, there are random vectors that achieve extreme values just as extreme as the
-comonotonic case (e.g., scenarios 2-4 in Fig. \ref{fig_theory} and SI Fig. \ref{SI-fig_theory_SM}). The classic approach tells us nothing
+comonotonic case (e.g., scenarios 2-4 in Fig. \ref{fig_theory} and SI Fig. \ref{SI-fig_theory_SM}). Existing approaches 
+in the ecological literature tell us nothing
 about true community variability, in the sense that if species relationships are tail associated,
 the community can exhibit the same extreme behavior as the comonotonic case, while the classically important
 quantity $\var(\xtot)$ gives the impression of a much more stable community.  
@@ -571,7 +580,9 @@ analogously define a *skewness ratio*. Let $\Scom=\sk(\xtot)$, and consider the 
 $\Scom$ would take if species dynamics were independent, i.e., 
 $\Sind=\frac{\sum_i m_3(x_i)}{(\sum_i v_{ii})^{3/2}}$, where $m_3(x_i)$ is the third central moment of $x_i$ 
 (SI section \ref{SI-stats_details}).
-The *skewness ratio* is $\phi_S=\Scom/\Sind$, so that $\Scom=\phi_S \Sind$. 
+The *skewness ratio* is $\phi_S=\Scom/\Sind$, so that $\Scom=\phi_S \Sind$. It is also possible to define 
+a skewness metric in a manner that attempts to parallel the choices made in constructing $\phiLdM$. This is 
+elaborated in the Discussion.
 
 <!--phi_S > 1, anmd assuming \phicv \approx 1-->
 Values of the skewness ratio provide a summary of how species relationships influence community variability that 
@@ -607,7 +618,8 @@ explosions, we instead have $\Scom<0$: with species relationships $\xtot$ instea
 exhibits occasional crashes. Thus the tendency of $\xtot$ to crash or explode is reversed by 
 species relationships. We again assume, here, for simplicity, that $\phicv \approx 1$ -- see SI section \ref{SI-phiSinterp}.
 
-Our skewness ratio does not supplant the variance ratio, but rather
+Our skewness ratio does not supplant the variance ratio (or any of its alternatives, such as the Loreau-de Mazancourt
+metric), but rather
 complements it. Just as one understands more about a distribution by knowing both its variance and skewness, so
 one understands more about community dynamics by combining the variance and skewness
 ratio approaches. The values of $\phicv$ and $\phi_S$ provide complementary
@@ -617,7 +629,8 @@ SI Fig. \ref{SI-fig_notation}E for a summary of notation.
 
 ## Statistical methods: the link from tail associations to variability
 
-\noindent The skewness ratio $\phiS$ provides information about the influence of species relationships, of all kinds,
+\noindent The skewness ratio $\phiS=\Scom/\Sind$ provides information 
+about the influence of species relationships, of all kinds,
 on community skewness, $\Scom=\sk(\xtot)$, because $\Scom$ is influenced by species relationships
 of all kinds and $\Sind$ is influenced by none. To understand the specific influence of species tail associations
 and asymmetries of tail associations on $\Scom$ (G3 of the Introduction), we developed a randomization procedure
@@ -786,9 +799,14 @@ a correspondingly accentuated probability that $\xtot$ will exceed high disaster
 to low values are reduced by species relationships. The variance ratio obscures the fact that species relationships
 modify extreme behavior of $\xtot$ differently in the two tails of its distribution. Although the variance 
 ratio suggests that species dynamics at Konza are compensatory, reducing community 
-variability, in fact this true only for mitigating crashes of $\xtot$ to low values; species relationships 
+variability, in fact this is true only for mitigating crashes of $\xtot$ to low values; species relationships 
 instead accentuate the tendency of $\xtot$ to explode to high values. 
 See SI section \ref{SI-ecdf_approach} for related results and discussion. 
+<!--***DAN: Interesting comparison to the LdM approach may be here (though put it in the discussion).
+\phiLdM is always less than 1, leading to the interpretation that species relationships always reduce 
+community variability, at least in comparison to the case of perfect linear relationships between species.
+
+-->
 
 Thus the skewness ratio newly reveals differences between Hays and Konza.
 For both communities, $\phicv$ is slightly or moderately less than $1$,
@@ -820,6 +838,51 @@ previously, but that reflects
 the inability of the CV to detect the impact of tail associations, rather than indicating that
 tail associations were unimportant. See also SI section \ref{SI-other_fields} for discussion of how our 
 methods may have applications in other fields.
+<!--***DAN: In light of the fact that I have added the below para and therefore the above sentence is no longer
+the last sentence of this Discussion, should I move it? -->
+
+As described in the Introduction, the variance ratio $\phicv$ compares $\CVcomsq$ to the independence benchmark
+$\CVindsq$ ($\phicv=\CVcomsq/\CVindsq$), whereas the Loreau-de Mazancourt metric 
+$\phiLdM$ compares $\CVcomsq$ to the benchmark value $\CVsynsq$
+that community $\text{CV}^2$ would take if species dynamics were perfectly linearly associated ($\phiLdM=\CVcomsq/\CVsynsq$). This
+choice leads to substantial interpretive and other advantages of $\phiLdM$ over $\phicv$ [@loreau2008species; @Thibaut2013],
+and as a result $\phiLdM$ is increasingly widely used.
+An approach to community skewness using a paradigm similar to that of Loreau and de Mazancourt is available, and reveals the 
+same main ideas we elaborated in this study using $\phiS$, but does not appear to have the same advantages over $\phiS$ that
+$\phiLdM$ has over $\phicv$; nevertheless, such a metric may be worth considering in future work, and we are happy to admit the 
+possibility that refinements of our metric $\phiS$ may later be developed incorporating the same main ideas of this study
+but in a more convenient package. 
+<!--An approach to community skewness using a paradigm similar to that of Loreau and de Mazancourt is available-->
+Because $\phiLdM=\CVcomsq/\CVsynsq$, whereas $\phicv=\CVcomsq/\CVindsq$, 
+an alternative to $\phiS=\Scom/\Sind$ which follows the same paradigm may be $\phiSLdM=\Scom/\Ssyn$, where 
+$\Ssyn$ is the benchmark value that community skewness would take in the case of perfect synchrony between species
+dynamics. Whereas $\CVsynsq$ was community $\text{CV}^2$ computed under an assumption of perfect linear associations 
+between the dynamics of different species [@Thibaut2013], under our framework it may make more sense to consider $\Ssyn$ to be
+community skewness under an assumption of species comonotonicity. Perfect linear associations between species cannot 
+generally be realized without altering the marginal distributions of the species, and such alteration seems, to us, to be
+inconsistent with using a benchmark scenario in which species relationships are altered but other aspects of dynamics are 
+kelpt constant. Species comonotonicity can be realized for data by sorting each species' time series. 
+<!--and reveals the same main ideas we elaborated in this study using $\phiS$-->
+The alternative approach would reveal essentially the same main ideas because $\Snta$ and $\CVntasq$ would probably have 
+to be defined in the same way. The main ideas of this manuscript center on the importance of tail associations for
+the skewness of $\xtot$, and therefore for extreme values of $\xtot$. Those ideas can be explored regardless of whether 
+independence or perfect synchrony is used as a benchmark for comparison.
+<!--but does not appear to have the same advantages over $\phiS$ that $\phiLdM$ has over $\phicv$-->
+One of the advantages
+of $\phiLdM$ over $\phicv$ is that $\phiLdM$ always takes values between $0$ and $1$, facilitating comparisons 
+across communities. But the same is not necessarily true for $\phiSLdM$, as a careful examination of Figs
+\ref{fig_theory} and \ref{SI-fig_theory_SM} will reveal ($\sk(\xtot)$ for scenario 2 divided by the same quantity for 
+scenario C is much greater than $1$, whereas computing the analogous quotient for scenario 3 gives a quantity much less
+than $-1$).
+Another advantage of $\phiLdM$ over $\phicv$ is that $\sqrt{\CVsynsq}$ equals a weighted average of the CVs of
+individual species, and hence can be interpreted as population-level variability. Thus $\phiLdM$ can be elegantly interpreted
+as a scaling factor converting population- to community-level variability. An analogous interpretation for 
+$\phicv$ is not available. But such an interpretive advantage does not appear to extend to $\phiSLdM$, at least
+not as that metric was formulated above. Decades passed between the original formulation of the variance ratio and the formulation
+of the Loreau-de Mazancourt and other improvements on the variance ratio. Our goal with this study was to introduce the 
+main ideas of tail association and its importance for community stability. We welcome the possibility that future research
+will reveal a metric that captures these main ideas, but with additional interpretive and other improvements over
+the skewness ratio we have presented.
 
 # Conclusion \label{Discussion}
 
@@ -916,7 +979,7 @@ for scenarios 3 and 4 and for mathematical details.\label{fig_theory}}
 \caption{A normalized rank plot (see Methods) can visually help reveal that 
 an association between variables is stronger in the lower tails of the variables' distributions than it is in the upper tails
 (as in this example), or \emph{vice versa} (as in SI Fig. \ref{SI-fig_pedag_taildep_SM}). In this example, points are clustered
-closer to the $u_i=u_j$ diagonal in the lower right than in the upper left, revealing stronger 
+closer to the $u_i=u_j$ diagonal in the lower left than in the upper right, revealing stronger 
 association between the variables in the lower tails of their distributions. 
 The partial Spearman correlation, $\cor_{b_l,b_u}(x_i,x_j)$ (Methods), within a band defined by two bounds $0 \leq b_l < b_u \leq 1$
 can be computed for any band to quantify the component of the overall Spearman correlation
