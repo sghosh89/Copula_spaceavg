@@ -453,7 +453,8 @@ comonotonic case (e.g., scenarios 2-4 in Fig. \ref{fig_theory} and SI Fig. \ref{
 in the ecological literature tell us nothing
 about true community variability, in the sense that if species relationships are tail associated,
 the community can exhibit the same extreme behavior as the comonotonic case, while the classically important
-quantity $\var(\xtot)$ gives the impression of a much more stable community.  
+quantity $\var(\xtot)$ gives the impression of a much more stable community. We next transition to describing the data
+and the statistics used to assess to what extent the above theory applies to those data.
 
 # Methods\label{Methods} 
 
@@ -836,10 +837,8 @@ influence of species relationships on $\sk(\xtot)$ was due to asymmetric tail as
 The influence of tail associations on the CV of $\xtot$ was negligible, as indicated 
 previously, but that reflects
 the inability of the CV to detect the impact of tail associations, rather than indicating that
-tail associations were unimportant. See also SI section \ref{SI-other_fields} for discussion of how our 
+tail associations were unimportant. See also below for discussion of how our 
 methods may have applications in other fields.
-<!--***DAN: In light of the fact that I have added the below para and therefore the above sentence is no longer
-the last sentence of this Discussion, should I move it? -->
 
 As described in the Introduction, the variance ratio $\phicv$ compares $\CVcomsq$ to the independence benchmark
 $\CVindsq$ ($\phicv=\CVcomsq/\CVindsq$), whereas the Loreau-de Mazancourt metric 
@@ -897,8 +896,8 @@ are not detected by standard approaches. Moreover, the temporal stability of
 total abundance is also not necessarily well characterized by commonly used measures 
 based on the coefficient of variation. Total abundance can exhibit patterns of skewness 
 which correspond to increased probabilities of crashes, or explosions to high values, 
-that are readily interpretable as instability. Thus the classic and widely 
-used variance ratio approach, whereby patterns of species’ synchronous or compensatory dynamics 
+that are readily interpretable as instability. Thus the original 
+variance ratio approach, whereby patterns of species’ synchronous or compensatory dynamics 
 are assessed using covariance tools and then related to community variability measured using 
 a coefficient of variation, is probably inadequate, by itself. Species relationships can actually 
 mitigate or accentuate community variability differentially for community crashes or explosions 
@@ -911,6 +910,58 @@ to reveal a more multidimensional nature of species relationships and their corr
 multifarious effects on community variability, in real-world datasets. 
 Overall, our work has established the beginning of a new and more flexible approach to synchrony, 
 compensatory dynamics, and their influence on community stability.
+
+Our work may also provide lessons for other fields: more detailed statistical 
+descriptions of synchrony, including but not limited to the descriptions we have
+provided, may be useful elsewhere, beyond finance and community ecology. 
+In many hierarchical dynamical systems,
+synchrony between multiple signals is more important than the individual signals themselves, because
+what really matters to the next level of functioning in the system is the total value, or another kind of 
+aggregated value, of the signals, and the aggregated value is crucially impacted by the nature of 
+the synchrony or asynchrony of the signals. This is
+true of both financial systems and of the population systems
+we studied. But it seems likely to be a common feature of many 
+systems. 
+<!--neuron-->
+For instance, a neuron may fire only when its input neurons fire simultaneously, so that total
+inputs pass a threshold. 
+<!--grid-->
+The electrical grid may crash only when the demands of a multitude of users become synchronized,
+producing total usage spikes. 
+<!--economics-->
+Macroeconomic measures may become depressed only when the 
+multitude of microeconomic activities
+that comprise them are simultaneously depressed. 
+<!--insect calls-->
+Female insects may be drawn to an area only when the vocalizations of males in
+the area are coordinated to reinforce each other, so that calling amplitude passes a threshold. 
+<!--After examples-->
+In many fields concerned with synchrony, techniques for quantifying the
+synchrony of individual signals and relating that synchrony to distributional properties of the 
+aggregate quantity of interest have historically been crude. We believe there is great opportunity to 
+improve these techniques to benefit numerous fields.
+At least one paper in this special issue seems
+to proceed principally by developing newly detailed descriptions of a kind of synchrony, and then using them
+to make inferences about the mechanisms or consequences of synchrony: @DotovInReview
+developed frequency-specific synchrony measures and used them to describe behavioral rhythm phenomena. 
+@sheppard2016, @sheppard2019 and @zhao2020 also developed frequency-specific measures of synchrony
+and made new inferences about population and community ecology. 
+Some of the other papers in this special issue describe synchrony between two or more phenomena principally  with
+a univariate description of how strong or consistent the synchrony is. 
+For instance,
+@LenseInReview indicate that many childhood neurodevelopmental disorders are associated deficits in 
+rhythm, timing and synchrony. One wonders how such deficits are typically measured, clinically,
+and whether additional inferences may be possible, or additional discoveries made, by employing more 
+detailed decriptions of synchrony. 
+For instance, one wonders if improved diagnosis of childhood neurodevelopmental disorders [@LenseInReview]
+may eventually be possible by appropriately formulating and applying
+more detailed statistical descriptors of rhythm and synchrony
+tasks attempted by patients. Mathematically, 
+the nature of the relationship between two quantities is an infinite dimensional object [@Ghosh_copula],
+but many studies
+of synchrony and related concepts have used univariate descriptions. 
+It is plausible that improved results could be extracted
+across many fields through the use of detailed statistics such as we have used here and elsewhere.
 
 
 # Acknowledgments

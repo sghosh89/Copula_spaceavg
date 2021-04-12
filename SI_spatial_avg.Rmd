@@ -786,6 +786,39 @@ resloc<-"./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/"
 Plotter_PPsurrogs_tests(m=m,ans=ans,resloc=resloc,tag_legend = c("(B)","(D)","(F)"))
 ```
 
+```{r for_Kathy, echo=F, results="hide"}
+
+# Writing csv file without rownames is needed, so we place the first column with the year as in csv
+# NOTE: ts_mat_cp_hays in RDS format only has species time series along column as it has rownames as years
+# but in csv file I am creating an extra first column as "Year" as rownames for reading/writing in csv file 
+# often creates column without any name
+
+#------------ for Hays --------------------
+ts_mat_CP_hays<-readRDS("./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS")
+Year_hays<-rownames(ts_mat_CP_hays)
+ts_mat_CP_hays_for_Kathy<-cbind(Year=Year_hays,ts_mat_CP_hays)
+row.names(ts_mat_CP_hays_for_Kathy)<-NULL
+write.csv(ts_mat_CP_hays_for_Kathy,"./Results/hays_results/skewness_results/ts_mat_CP_hays_for_Kathy.csv",row.names = F)
+
+# Now getting total species timeseries for Kathy
+xtot_hays<-apply(ts_mat_CP_hays,MARGIN=1,FUN=sum)
+xtot_hays<-cbind(Year=Year_hays,x_tot=xtot_hays)
+write.csv(xtot_hays,"./Results/hays_results/skewness_results/xtotal_hays_for_Kathy.csv",row.names = F)
+
+#-------- for KNZ ---------------
+ts_mat_CP_knz<-readRDS("./Results/knz_results/skewness_results/ts_CP_knz_soiltype_t.RDS")
+Year_knz<-rownames(ts_mat_CP_knz)
+Year_knz<-substr(Year_knz,6,9)
+ts_mat_CP_knz_for_Kathy<-cbind(Year=Year_knz,ts_mat_CP_knz)
+row.names(ts_mat_CP_knz_for_Kathy)<-NULL
+write.csv(ts_mat_CP_knz_for_Kathy,"./Results/knz_results/skewness_results/ts_mat_CP_knz_for_Kathy.csv",row.names = F)
+
+# Now getting total species timeseries for Kathy
+xtot_knz<-apply(ts_mat_CP_knz,MARGIN=1,FUN=sum)
+xtot_knz<-cbind(Year=Year_knz,x_tot=xtot_knz)
+write.csv(xtot_knz,"./Results/knz_results/skewness_results/xtotal_knz_for_Kathy.csv",row.names = F)
+```
+
 ```{r pedagog_fig, echo=F, results="hide"}
 set.seed(seed)
 #source("./pedagog_ts.R")
@@ -1816,93 +1849,6 @@ be expected given independent species dynamics (top part of Fig. \ref{konz_ecdf}
 the bottom part of Fig. \ref{konz_ecdf}A shows that low values of $\xtot$ were significantly higher (less extreme)
 from what would have been expected given symmetric tail associations. Likewise they were higher (less extreme)
 than would be expected given independent species dynamics (bottom part of Fig. \ref{konz_ecdf}B).
-
-# Possible application to other fields \label{other_fields}
-
-We borrowed a statistical approach from finance and applied it to community-ecological data, 
-hence the approach is cross-disciplinary. The approach
-may be useful in diverse other fields as well, beyond finance and community ecology. 
-In many hierarchical dynamical systems,
-synchrony between multiple signals is more important than the individuals signals themselves, because
-what really matters to the next level of functioning in the system is the total value, or another kind of 
-aggregated value, of the signals. And the aggregated value is crucially impacted by the nature of 
-the synchrony or asynchrony of the signals. This was
-true of both the financial systems from which our methods were adapted and of the population systems
-we studied. But it seems likely to be a common feature of many 
-systems. For instance, a neuron may fire only when its input neurons fire simultaneously, so that total
-inputs pass a threshold. The electrical grid may crash only when the demands of a multitude of users become synchronized,
-producing total usage spikes. A predator may starve only when prey populations are simultaneously low over its whole
-hunting range. Macroeconomic measures may become depressed only when the 
-multitude of microeconomic activities
-that comprise them are simultaneously depressed. Human fish exploitation is only reduced 
-if fish populations decline synchronously over
-all accessible fishing locations. Female insects may be drawn to an area only when the vocalizations of males in
-the area are coordinated to reinforce each other, so that calling amplitude passes a threshold. The 
-impacts of agricultural pests
-are accentuated when the pests outbreak simultaneously over large areas. Disease outbreaks
-in multiple areas simultaneously are much more likely to strain public health infrastructure then unsynchonized
-local case fluctuations. Numerous additional 
-examples are easy to imagine. In every case it is the aggregate that matters, so synchrony between
-system components is crucial. In many fields concerned with synchrony, including finance and 
-ecology, techniques for quantifying the
-synchrony of individual signals and relating that synchrony to distributional properties of the 
-aggregate quantity of interest have historically been crude. We believe there is great opportunity to 
-improve these techniques to benefit numerous fields, using the methods of this paper and related methods.
-
-More detailed statistical descriptions of synchrony are likely to be useful in many fields, 
-even when making a connection to the distribution of an aggregate quantity is not of interest,
-in part because because detailed descriptions often allow more powerful inferences of mechanisms. 
-As mentioned in the main text, in the population literature, synchrony has most commonly been measured
-using simple and crude correlation or covariance statistics between time series measured in different
-locations [@liebhold2004]. But @sheppard2016 and @sheppard2019 developed measures of 
-synchrony which decompose the phenomenon by the frequency or 
-timescale of population oscillations, and which can also describe
-how synchrony changes through time, thereby taking a much more detailed look at the phenomenon of synchrony. 
-As a result, they were newly able to perform inferences of causes of synchrony, document changes through
-time in synchrony and attribute them to climatic changes, and document interactions between Moran effects,
-each of which was an important new advance. @walter2017 added geographic details to descriptions of synchrony,
-thereby documenting an important new aspect of the phenomenon and also further improving our ability to infer 
-causes of synchrony [@Anderson2018;@Anderson2019]. 
-
-Of the papers in this special issue, at least two seem
-to proceed principally by developing newly detailed descriptions of a kind of synchrony, and then using them
-to make inferences about the mechanisms or consequences of synchrony. For instance, @DotovInReview
-developed frequency-specific synchrony measures and used them to describe behavioral rhythm phenomena that 
-would have been undetectable with classic measures of synchrony. And, adding
-empirical instead of statistical detail, @PouwInReview describe rhythm interactions
-between animals along multiple modalities (e.g., auditory and visual, simultaneously), illustrating
-that adaptiveness of interactions can be better inferred with such a more detailed description. 
-<!--***DAN: make sure the above two references remain valid when I see the final papers--> 
-
-Many of the other papers in this special issue describe synchrony between two or more phenomena solely with
-a univariate description of how strong or consistent the synchrony is. One wonders
-if additional inferences may be possible, or additional discoveries made, by employing more 
-detailed decriptions of synchrony, perhaps using tail association statistics, as in this study, or perhaps using 
-frequency-specific [@sheppard2016;@sheppard2019;@DotovInReview] or other approaches. For instance,
-@LenseInReview indicate that many childhood neurodevelopmental disorders are associated deficits in 
-rhythm, timing and synchrony. One wonders if improved diagnosis may be achievable
-by formulating and applying appropriate, more detailed statistical descriptors of rhythm and synchrony
-tasks attempted by patients; perhaps different disorders result in deficits that can be distinguished 
-more effectively with more detailed statistical tools for measuring rhythm and synchrony. 
-In another example from this special issue, 
-@TakahashiInReview modelled turn taking in marmoset monkeys. One wonders if a usefully more exacting test of
-model-data agreement might be possible by comparing the values of more 
-detailed desciptors of the nature of the (a)synchrony between individuals for models versus data. 
-As a final example, @KellerInReview studied the degree of synchrony between participants engaged in a 
-complex drumming task. Those authors appear to have measured synchrony with a univariate measure 
-describing the "degree" or "strength" of synchrony. But synchrony is multifarious, and one wonders if 
-additional results could be possible using a more detailed or multivariate measure not only of
-the strength of synchrony but of its nature, possibly including changes through time, timescale structure,
-measures related to the tail association ideas of this paper, and/or other aspects. 
-
-Mathematically, 
-the nature of the relationship between two quantities is an infinite dimensional object [@Ghosh_copula].
-But many studies
-of synchrony and related concepts measure their phenomena of interest with simple, univariate statistics. It seems 
-quite plausible to believe that improved results and scientific understanding of synchrony could be extracted
-in many domains of application through the use of improved statistics such as we have used here and elsewhere.
-<!--***DAN: make sure all references to papers in this special issue remain valid when I see the final 
-papers, and also finalize the specifics of the references--> 
 
 <!--Larger version of panels A and B from the example fig first cited in the Intro-->
 \begin{figure}
