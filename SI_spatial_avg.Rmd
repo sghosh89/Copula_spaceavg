@@ -819,6 +819,152 @@ xtot_knz<-cbind(Year=Year_knz,x_tot=xtot_knz)
 write.csv(xtot_knz,"./Results/knz_results/skewness_results/xtotal_knz_for_Kathy.csv",row.names = F)
 ```
 
+```{r for_skew_fig, echo=F, results="hide", cache=T, cache.extra=list(mtime("./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS"),mtime("./Results/knz_results/skewness_results/ts_CP_knz_soiltype_t.RDS"),mtime("./Results/hays_results/skewness_results/pp_surrogs_hays_CP/HaysSurrogates.RDS"),mtime("./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/KNZtSurrogates.RDS"))}
+#Here I generate a figure that shows the following:
+#1.	The histogram for the total-abundance time series for Hays
+#2.	The histogram for the total-abundance time series for a “typical” no-tail-association surrogate for Hays 
+#(one single surrogate, but a typical one – I’ll have to find one that has a skewness about equal to the median 
+#value and use that one)
+#3.	The same two histograms for Konza
+
+#Variables (created above) that will be used:
+#ts_mat_CP_hays: this is the matrix for Hays, each column is a species, aggregated pseudo-species in the last 
+#column, and row names equal to year. See the chunk "for_Kathy".
+#ts_mat_CP_knz: Same for Konza. See the chunk "for_Kathy".
+#surrogs_CP_hays: Pearson preserving surrogates for Hays, created in the r chunk named "make_surrogs_CP_hays"
+#surrogs_CP_KNZ_t: same for Konza, created in the r chunk named "make_surrogs_CP_knz_t"
+
+#In fact, the above variables are read in from where they were previously saved - makes these codes runnable 
+#separately from the chunk structure of this doc, to be commented after debugging
+ts_mat_CP_hays<- readRDS("./Results/hays_results/skewness_results/ts_mat_CP_hays.RDS")  
+ts_mat_CP_knz<-readRDS("./Results/knz_results/skewness_results/ts_CP_knz_soiltype_t.RDS")
+surrogs_CP_hays<-readRDS("./Results/hays_results/skewness_results/pp_surrogs_hays_CP/HaysSurrogates.RDS")
+surrogs_CP_KNZ_t<-readRDS( "./Results/knz_results/skewness_results/pp_surrogs_knz_t_CP/KNZtSurrogates.RDS" )
+
+#***plot dimensions, units inches
+xmarht<-.5
+ymarnumwd<-.25
+ymarlabwd<-.25
+ymarwd<-ymarnumwd+ymarlabwd
+totwd<-6
+gap<-0.2 #general purpose gap, aside from the below purposes
+panwd<-(totwd-ymarwd-ymarnumwd-gap)/2
+panht<-panwd/2
+totht<-2*xmarht+3*panht+2*gap
+pdf(file="./Results/EmpiricalParallelOfFig1.pdf",width=totwd,height=totht)
+
+#make historgram of total abundance of Hays
+tot_hays<-unname(apply(FUN=sum,MARGIN=1,X=as.matrix(ts_mat_CP_hays)))
+
+par(fig=c((ymarwd)/totwd,
+          (ymarwd+panwd)/totwd,
+          (xmarht+panht+gap)/totht,
+          (xmarht+2*panht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25)
+haysbreaks<-seq(from=2000,to=9000,by=1000)
+h<-hist(tot_hays,main="",breaks=haysbreaks)
+rug(tot_hays) #does not currently work in R markdown, but I hope it'll work when results are exported to a pdf instead
+mtext("Frequency",2,1.2)
+text(min(haysbreaks),max(h$counts),"B",cex=1.2,adj=c(0,1))
+text(max(haysbreaks),.7*max(h$counts),paste0("sk=",round(myskns(tot_hays),3)),cex=.8,adj=c(1,1))
+
+#calculate skewnesses of the totals of first 1000 surrogates, find the index of a close-to-median value
+tot_hays_surrs<-apply(FUN=sum,MARGIN=c(1,3),X=surrogs_CP_hays[,,1:1000])
+tot_hays_surrs_skns<-apply(FUN=myskns,MARGIN=2,X=tot_hays_surrs)
+h<-abs(tot_hays_surrs_skns-median(tot_hays_surrs_skns))
+ind_hays<-which(h==min(h))
+ind_hays<-ind_hays[1]
+#tot_hays_surrs_skns[ind_hays]
+
+#make histogram of total abundance of the selected Hays surrogate
+tot_hays_surr<-tot_hays_surrs[,ind_hays]
+
+par(fig=c((ymarwd)/totwd,
+          (ymarwd+panwd)/totwd,
+          (xmarht)/totht,
+          (xmarht+panht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+h<-hist(tot_hays_surr,main="",breaks=haysbreaks)
+mtext("Abundance",1,1.2)
+mtext("Frequency",2,1.2)
+text(min(haysbreaks),max(h$counts),"C",cex=1.2,adj=c(0,1))
+rug(tot_hays_surr) 
+text(max(haysbreaks),.7*max(h$counts),paste0("sk=",round(myskns(tot_hays_surr),3)),cex=.8,adj=c(1,1))
+
+#plot time series for hays
+yr_hays<-as.numeric(rownames(ts_mat_CP_hays))
+
+par(fig=c((ymarwd)/totwd,
+          (ymarwd+panwd)/totwd,
+          (2*xmarht+2*panht+gap)/totht,
+          (2*xmarht+3*panht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+ylimits<-range(tot_hays,tot_hays_surr)
+ylimits[2]<-ylimits[2]+.25*diff(ylimits)
+plot(yr_hays,tot_hays,type="l",xlab="Year",ylab="Total abundance",ylim=ylimits)
+lines(yr_hays,tot_hays_surr,type="l",lty="dashed")
+mtext("Year",1,1.2)
+mtext("Abundance",2,1.2)
+text(min(yr_hays),max(ylimits),"A",cex=1.2,adj=c(0,1))
+lines(range(yr_hays),rep(7800,2),type="l",lty="dotted")
+
+#make historgram of total abundance of Konza
+tot_knz<-unname(apply(FUN=sum,MARGIN=1,X=as.matrix(ts_mat_CP_knz)))
+
+par(fig=c((ymarwd+panwd+ymarnumwd)/totwd,
+          (ymarwd+2*panwd+ymarnumwd)/totwd,
+          (xmarht+panht+gap)/totht,
+          (xmarht+2*panht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+knzbreaks<-seq(from=100,to=240,by=20)
+h<-hist(tot_knz,main="",breaks=knzbreaks)
+rug(tot_knz)
+text(min(knzbreaks),max(h$counts),"E",cex=1.2,adj=c(0,1))
+text(max(knzbreaks),.7*max(h$counts),paste0("sk=",round(myskns(tot_knz),3)),cex=.8,adj=c(1,1))
+
+#calculate skewnesses of the totals of first 1000 surrogates, find the index of a close-to-median value
+tot_knz_surrs<-apply(FUN=sum,MARGIN=c(1,3),X=surrogs_CP_KNZ_t[,,1:1000])
+tot_knz_surrs_skns<-apply(FUN=myskns,MARGIN=2,X=tot_knz_surrs)
+h<-abs(tot_knz_surrs_skns-median(tot_knz_surrs_skns))
+h<-order(h)
+#ind_knz<-which(h==min(h))
+ind_knz<-h[5]
+tot_knz_surrs_skns[ind_knz]
+
+#make histogram of total abundance of the selected Konza surrogate
+tot_knz_surr<-tot_knz_surrs[,ind_knz]
+
+par(fig=c((ymarwd+panwd+ymarnumwd)/totwd,
+          (ymarwd+2*panwd+ymarnumwd)/totwd,
+          (xmarht)/totht,
+          (xmarht+panht)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+h<-hist(tot_knz_surr,main="",breaks=knzbreaks)
+rug(tot_knz_surr) 
+mtext("Abundance",1,1.2)
+text(min(knzbreaks),max(h$counts),"F",cex=1.2,adj=c(0,1))
+text(max(knzbreaks),.7*max(h$counts),paste0("sk=",round(myskns(tot_knz_surr),3)),cex=.8,adj=c(1,1))
+
+#plot time series for Konza
+yr_knz<-rownames(ts_mat_CP_knz)
+yr_knz<-as.numeric(substr(yr_knz,6,9))
+
+par(fig=c((ymarwd+panwd+ymarnumwd)/totwd,
+          (ymarwd+2*panwd+ymarnumwd)/totwd,
+          (2*xmarht+2*panht+gap)/totht,
+          (2*xmarht+3*panht+gap)/totht),
+    mai=c(0,0,0,0),mgp=c(3,.15,0),tcl=-.25,new=TRUE)
+ylimits<-range(tot_knz,tot_knz_surr)
+ylimits[2]<-ylimits[2]+.25*diff(ylimits)
+plot(yr_knz,tot_knz,type="l",xlab="Year",ylab="Total abundance",ylim=ylimits)
+mtext("Year",1,1.2)
+lines(yr_knz,tot_knz_surr,type="l",lty="dashed")
+lines(range(yr_knz),rep(125,2),type="l",lty="dotted")
+text(min(yr_knz),max(ylimits),"D",cex=1.2,adj=c(0,1))
+
+dev.off()
+```
+
 ```{r pedagog_fig, echo=F, results="hide"}
 set.seed(seed)
 #source("./pedagog_ts.R")
@@ -1177,12 +1323,12 @@ $u_{11},\ldots,u_{20}$ all equal $1/2-w_0/2$ and let $u_{1}=1-w_1/2,u_{2}=1-w_2/
 For the populations of Fig. \ref{MT-fig_pedag_cv2_skw}B, 
 define a random vector $(u_1,u_2,\ldots,u_{20})$ as follows. First draw a uniformly distributed 
 random variable, $f$, on the unit interval. Then generate a random vector $(w_0,\ldots,w_{10})$
-as described in the previous paragraph. Then, if $f<\frac{1}{2}$, let $u_1,\ldots,u_{10}$ all equal
+as described in the above paragraph. Then, if $f<\frac{1}{2}$, let $u_1,\ldots,u_{10}$ all equal
 $w_0/2+1/2$ and let $u_{11}=w_1/2,u_{12}=w_2/2,\ldots,u_{20}=w_{10}/2$. If $f \geq \frac{1}{2}$, instead let
 $u_{11},\ldots,u_{20}$ all equal $w_0/2+1/2$ and let $u_{1}=w_1/2,u_{2}=w_2/2,\ldots,u_{10}=w_{10}/2$.
 
 Next, get the vector $(q_1(t),\ldots,q_{20}(t))$ for each time step $t$ by generating an independent
-vector $(u_0,\ldots,u_{20})$ as described in the previous paragraph, and then applying the inverse of the 
+vector $(u_1,\ldots,u_{20})$ as described in one of the previous two paragraphs, and then applying the inverse of the 
 cumulative distribution function of a univariate standard normal distribution to each component. This makes
 the marginal distribution for each species standard normal. Population time series were obtained by 
 shifting all the $q_i(t)$ vertically to make them all positive and to make means the same in the two cases
@@ -1347,6 +1493,46 @@ knitr::kable(tab_spinfo_knz,
              column_spec(3,italic=T)%>%
              add_header_above(c("ID"=1,"Sp. code"=1,"Species name"=1))
 ```
+
+\begin{table}
+\begin{center}
+\caption[Summary of notation]{Summary of notation.}\label{fig_notation}
+\begin{tabular}{p{1.5in}|p{5.5in}}
+\hline
+Notation & Meaning \\ \hline
+$x_i(t)$ & species abundance, species indexed by $i=1,\ldots,N$, times by $t=1,\ldots,T$ \\
+$\mu_i$ & $\mean(x_i)$ \\ 
+$v_{ij}$ & $\cov(x_i,x_j)$, equals $\var(x_i)$ when $j=i$ \\
+$m_{iii}$ & 3rd moment of $x_i$ \\
+$\xtot$ & $\sum_i x_i(t)$ \\ \hline
+$\CVcomsq$ & $\var(\xtot)/(\mean(\xtot))^2=$ community instability measured using variance \\
+$\CVntasq$ & what $\CVcomsq$ would be without tail associations \\
+$\CVindsq$ & $\left(\sum_i v_{ii}  \right)/\left( \sum_i \mu_i \right)^{2}=$ what $\CVcomsq$ would be without species interactions \\
+$\CVsynsq$ & $\left( \sum_i \sqrt{v_{ii}} \right)^2/\left( \sum_i \mu_i \right)^2=$ what $\CVcomsq$ would be under perfect linear species associations \\
+$\phicv$ &  $\CVcomsq/\CVindsq=\left( \sum_{i,j} v_{ij}  \right) / \left( \sum_i v_{ii}  \right)$ \\
+$\phiLdM$ & $\CVcomsq/\CVsynsq = \left( \sum_{i,j} v_{ij}  \right) / \left( \sum_i \sqrt{v_{ii}}  \right)^2$ \\
+$\phicvcor$ & $\CVntasq / \CVindsq$ \\
+$\phicvta$ & $\CVcomsq / \CVntasq$ \\ \hline
+$\Scom$ & $\sk(\xtot)$, where $\sk(\cdot)$ is skewness \\
+$\Snta$ & what $\Scom$ would be without tail associations \\
+$\Sind$ & $\left( \sum_i m_{iii} \right)/\left( \sum_i v_{ii} \right)^{3/2}=$ what $\Scom$ would be without species interactions \\
+$\Ssyn$ & what $\Scom$ would be under perfect synchrony, see Discussion \\
+$\phiS$ & $\Scom / \Sind$ \\
+$\phiSLdM$ & $\Scom / \Ssyn$, see Discussion \\
+$\phiScor$ & $\Snta/\Sind$ \\
+$\phiSta$ & $\Scom/\Snta$ \\ \hline
+$u_i(t)$ & the normalized rank of $x_i(t)$ \\
+$b_l, b_u$ & lower and upper bounds used to delineate the band in the definition of the partial Spearman correlation \\
+$\cor_{b_l,b_u}(x_i,x_j)$ & partial Spearman correlation of $x_i$ and $x_j$ \\
+$\cor_l$ & $\cor_{b_l,b_u}$ using $b_l=0$ and $b_u=0.5$ \\
+$cor_u$ & $\cor_{b_l,b_u}$ using $b_l=0.5$ and $b_u=1$ \\
+$n_L$ & The number of values of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$ for $i \neq j$ that were positive, representing stronger lower- than upper-tail association. Only pairs with positive total Spearman correlation were considered in the count. \\
+$n_U$ & The number of values of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$ for $i \neq j$ that were negative, representing stronger upper- than lower-tail association. Only pairs with positive total Spearman correlation were considered in the count. \\
+$A_{\text{tot}}$ & the sum of $\cor_l(x_i,x_j)-\cor_u(x_i,x_j)$ across all positively associated species pairs, $i \neq j$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
 
 ```{r further_discussion_table, echo=F, results="asis"}
 library(tibble)
@@ -1891,13 +2077,6 @@ occasions. See SI section \ref{Data} for details.\label{fig_spaceavg_timeseries}
 \caption[Normalized rank plot with stronger association in the upper tails than in the lower]{A normalized rank 
 plot with stronger association in the upper tails than in the lower, opposite to Fig. \ref{MT-fig_pedag_taildep}
 of the main text.\label{fig_pedag_taildep_SM}}
-\end{center}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width=\textwidth]{./Results/pedagog_figs/method_fig_SM.pdf}
-\caption[Summary of notation]{Summary of notation.\label{fig_notation}}
 \end{center}
 \end{figure}
 

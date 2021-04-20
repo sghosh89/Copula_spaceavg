@@ -72,7 +72,7 @@ range(normres_p2)
 (tab2<-make_tab_stability(m=normres_p2,surrogs = NA,surrogs_given = F))
 
 #--------------- Now plot -----------------------------------------
-time_to_show<-c(1:60)
+time_to_show<-c(61:120)
 normres_p1_show<-normres_p1[time_to_show,]
 normres_p2_show<-normres_p2[time_to_show,]
 #ylm<-max(normres_p1_show,normres_p2_show)
@@ -91,13 +91,13 @@ cvsq_com<-round(tab2$cvsq_real,4)
 #cvsq_ind<-round(tab2$cvsq_indep,4)
 cvsq_ind<-formatC(tab2$cvsq_ind,4,format="f")
 phi_loreau<-round(get_var_ratio(m=normres_p2)$loreau_var_ratio,2)
-legend(x=38,y=3,c(as.expression(bquote(phi[CV]==.(phi_cv_l))),
-                  as.expression(bquote(phi[LdM]==.(phi_loreau)))),
+legend(x=36,y=3,c(as.expression(bquote(phi[V]==.(phi_cv_l))),
+                  as.expression(bquote(phi[list(V,LdM)]==.(phi_loreau)))),
        y.intersp = 1.2,
        bty="n",cex=1,text.col="black")
-legend(x=10,y=3.2,
-       c(as.expression(bquote(CV[com]^"2"==.(cvsq_com))),
-         as.expression(bquote(CV[ind]^"2"==.(cvsq_ind)))),
+legend(x=10,y=3,
+       c(as.expression(bquote(V[com]==.(cvsq_com))),
+         as.expression(bquote(V[ind]==.(cvsq_ind)))),
        y.intersp = 1.2,
        bty="n",cex=1,text.col="black",horiz=F)
 
@@ -111,13 +111,13 @@ cvsq_com<-round(tab1$cvsq_real,4)
 #cvsq_ind<-round(tab1$cvsq_indep,4)
 cvsq_ind<-formatC(tab1$cvsq_ind,4,format="f")
 phi_loreau<-round(get_var_ratio(m=normres_p1)$loreau_var_ratio,2)
-legend(x=38,y=3,c(as.expression(bquote(phi[CV]==.(phi_cv_r))),
-                       as.expression(bquote(phi[LdM]==.(phi_loreau)))),
+legend(x=36,y=3,c(as.expression(bquote(phi[V]==.(phi_cv_r))),
+                       as.expression(bquote(phi[list(V,LdM)]==.(phi_loreau)))),
        y.intersp = 1.2,
        bty="n",cex=1,text.col="black")
-legend(x=10,y=3.2,
-       c(as.expression(bquote(CV[com]^"2"==.(cvsq_com))),
-         as.expression(bquote(CV[ind]^"2"==.(cvsq_ind)))),
+legend(x=10,y=3,
+       c(as.expression(bquote(V[com]==.(cvsq_com))),
+         as.expression(bquote(V[ind]==.(cvsq_ind)))),
        y.intersp = 1.2,
        bty="n",cex=1,text.col="black")
 
@@ -131,7 +131,9 @@ tot_ts_r<-apply(FUN=sum,MARGIN=1,X=normres_p1)
 
 th_low<-92
 th_high<-113
-  
+#th_low<-94
+#th_high<-111
+
 # same mean 
 mu_l<-mean(tot_ts_l)
 mu_r<-mean(tot_ts_r)
@@ -146,7 +148,7 @@ tot_ts_r_show<-tot_ts_r[time_to_show]
 ylm<-c(80,145)
 #ylm<-range(tot_ts_l_show,tot_ts_r_show)
 
-plot(time_to_show,tot_ts_l_show,type="l",ylim=ylm,col="darkgrey",ylab="",xaxt="n",xlab="")
+plot(time_to_show-min(time_to_show)+1,tot_ts_l_show,type="l",ylim=ylm,col="darkgrey",ylab="",xaxt="n",xlab="")
 abline(h=th_low,lty=2)
 abline(h=th_high,lty=3)
 #legend(x=15,y=64,"(C)", bty="n",cex=1.4)
@@ -157,7 +159,7 @@ legend(x=25,y=ylm[2]+5,
                     as.expression(bquote(var(x[tot])==.(round(v_l,2))))),
        bty="n",cex=1,text.col="black",horiz = F)
 
-plot(time_to_show,tot_ts_r_show,type="l",ylim=ylm,col="darkgrey",xlab="",ylab="")
+plot(time_to_show-min(time_to_show)+1,tot_ts_r_show,type="l",ylim=ylm,col="darkgrey",xlab="",ylab="")
 abline(h=th_low,lty=2)
 abline(h=th_high,lty=3)
 #legend(x=-2.5,y=75,paste("(D) s = ",round(tab1$skw_real,3)),bty="n",cex=1.5)
