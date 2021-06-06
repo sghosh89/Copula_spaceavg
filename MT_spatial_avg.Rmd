@@ -48,36 +48,31 @@ options(scipen = 1, digits = 4) #This option round all numbers appeared in the i
 
 \noindent \textbf{ABSTRACT.} 
 <!--background-->
-The degree of synchrony among the population fluctuations of multiple 
-coexisting species is known to have a major impact on community stability, i.e., the relative constancy, 
-through time, of aggregate properties such as total community abundance or biomass. 
-However, synchrony and its influence on stability are usually measured 
-using covariance methods. Such approaches do not account for the possibility that species abundances may be 
-more correlated when the species are relatively common than when they are relatively scarce, or vice versa. 
-Recent work showed that species commonly exhibit such “asymmetric tail associations”. For instance, if two 
-species are both positively influenced by an environmental variable only when that variable exceeds a 
-threshold, then fluctuations of the species may be more similar when the species are both abundant than
-when they are scarce. 
+Synchrony among population fluctuations of multiple 
+coexisting species has a major impact on community stability, i.e., on the relative temporal constancy 
+of aggregate properties such as total community biomass. 
+However, synchrony and its impacts are usually measured 
+using covariance methods, which do not account for whether species abundances may be 
+more correlated when species are relatively common than when they are scarce, or vice versa. 
+Recent work showed that species commonly exhibit such “asymmetric tail associations”. 
 <!--main goal-->
-We here consider, to our knowledge for the first time, the influence of asymmetric tail associations on 
+We here consider the influence of asymmetric tail associations on 
 community stability. 
 <!--new methods-->
-We propose using skewness of the aggregate community property time series as an alternative 
-measure of community stability which extends standard measures. We develop a “skewness 
-ratio” which quantifies the extent to which relationships between species, and asymmetric tail associations in 
-these relationships, modify community stability. The skewness ratio is analogous 
-to, but complements, the classic variance ratio and related metrics based on covariances. 
-Using two multi-decadal grassland datasets, we 
-show that taking into account asymmetric tail associations gives new viewpoints on the relationship 
-between synchrony and community stability. 
+We develop a “skewness 
+ratio” which quantifies how much species relationships and tail associations 
+modify stability. The skewness ratio complements 
+the classic variance ratio and related metrics. 
+Using multi-decadal grassland datasets, we 
+show that accounting for tail associations gives new viewpoints on synchrony and stability. 
 <!--results-->
-For instance, we show that species associations can augment or degrade community stability differentially for
-community crashes or explosions to high values, a fact which is not detectable by standard approaches.
-In other words, species associations can mitigate explosions of total community abundance to high values (increasing
-one aspect of community stability), while simultaneously exacerbating the
-tendency to crash to low values (decreasing another aspect of stability); or vice versa.
+E.g., species associations can alter community stability differentially for
+community crashes or explosions to high values, a fact not previously detectable.
+Species associations can mitigate explosions of community abundance to high values, increasing
+one aspect of stability, while simultaneously exacerbating crashes to low values, decreasing another 
+aspect of stability; or vice versa.
 <!--summary-->
-Our theory and results constitute the beginnings of a new and more 
+Our work initiates a new, more 
 flexible paradigm for exploring species relationships and community stability. 
 
 <!--keywords-->
@@ -894,6 +889,50 @@ Loreau-de Mazancourt and other improvements. Our goal with this study was to int
 main ideas of tail association and its importance for community stability. We welcome the possibility that future research
 will reveal a metric that captures these main ideas, but with additional advantages.
 
+<!--Old version
+Our work may also provide lessons for other fields: more detailed statistical 
+descriptions of synchrony, including but not limited to the descriptions we have
+provided, may be useful elsewhere, beyond finance and community ecology. 
+In many hierarchical dynamical systems,
+synchrony between multiple signals is more important than the individual signals themselves, because
+what really matters to the next level of functioning in the system is the total value, or another kind of 
+aggregated value, of the signals. And the aggregated value is crucially impacted by the nature of 
+the synchrony of the signals. This is
+true of both financial and population systems. 
+But it seems likely to be a common feature of many systems. 
+For instance, a neuron may fire only when its input neurons fire simultaneously, so that total
+inputs pass a threshold. 
+The electrical grid may crash only when the demands of a multitude of users become synchronized,
+producing total usage spikes. 
+Macroeconomic measures may become depressed only when the 
+multitude of microeconomic activities
+that comprise them are simultaneously depressed. 
+In many fields concerned with synchrony, techniques for quantifying the
+synchrony of individual signals and relating that synchrony to distributional properties of the 
+aggregate quantity of interest have historically been crude. We believe there is great opportunity to 
+improve these techniques. At least one paper in this special issue seems
+to proceed principally by developing newly detailed descriptions of a kind of synchrony, and then using them
+to make inferences about the mechanisms or consequences of synchrony: @DotovInReview
+developed frequency-specific synchrony measures and used them to describe behavioral rhythm phenomena. 
+@sheppard2016, @sheppard2019 and @zhao2020 also developed frequency-specific measures of synchrony. 
+Some of the other papers in this special issue describe synchrony between two or more phenomena principally  with
+a simple, univariate description. For instance,
+@LenseInReview indicate that many childhood neurodevelopmental disorders are associated with deficits in 
+rhythm, timing and synchrony. One wonders how such deficits are typically measured, clinically,
+and whether additional inferences may be possible, or additional discoveries made, by employing more 
+detailed decriptions. 
+Perhaps diagnosis of childhood neurodevelopmental disorders
+may eventually be improved by appropriately formulating and applying
+more detailed statistical descriptors of rhythm and synchrony
+tasks attempted by patients. Mathematically, 
+the nature of the relationship between two quantities is an infinite dimensional object [@Ghosh_copula],
+but many studies
+of synchrony use univariate descriptions. 
+It is plausible that improved statistics could lead to improved results
+across many fields, as was the case in this study.
+Old version above-->
+
+<!--New version-->
 Our work may also provide lessons for other fields: more detailed statistical 
 descriptions of synchrony, including but not limited to the descriptions we have
 provided, may be useful elsewhere, beyond finance and community ecology. 
@@ -938,6 +977,7 @@ but many studies
 of synchrony use univariate descriptions. 
 It is plausible that improved statistics could lead to improved results
 across many fields, as was the case in this study.
+<!--New version above-->
 
 # Conclusion \label{Discussion}
 
@@ -1077,7 +1117,8 @@ by tail associations in Hays (e.g., values on C exceed 8000, but values on B do 
 dotted-line threshold on A); whereas extreme low
 values are mitigated in Konza (e.g., values on F go just below 120 but values on E do not, and see also the dotted-line
 threshold on D). If extreme values spell disaster in an applied scenario, these differences are important. This figure is an 
-empirical parallel to aspects of Fig. 1. Vertical ticks
+empirical parallel to aspects of Fig. 1. "Abundance" was basal cover (cm$^2$) for Hays (A-C) and percent cover
+for Konza (D-F). Vertical ticks
 between axes and histograms show the location of individual data points.
 Skewness, ``sk'', is displayed on each histogram panel. Surrogates were selected for display which were median
 with respect to skewness of the total abundance, so that values of skewness on C and F approximate $\Snta$.
