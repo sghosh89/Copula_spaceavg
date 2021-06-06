@@ -837,16 +837,16 @@ applied possibilities of the ideas of this study. For Hays, $\xtot$ would have r
 were it not for the dominance of lower-tail associations between species in that system. For Konza, $\xtot$
 would have fallen to more extreme low values were it not for the dominance of upper-tail assocations 
 in that system. Because grazers seem more likely to be harmed by extreme low values of $\xtot$ than by extreme high
-values, the differences we have observed between these systems illuminate some of the potential 
-applied possibilities of the ideas we explore. Whereas we emphasize that the data we used were from 
-livestock-excluded plots, and hence applications to grazing are suggestive rather than direct, 
-our overall results nevertheless show that details of the nature of species interactions can mitigate or
+values, the differences between these systems illuminate some of the
+applied possibilities of our ideas. Whereas we emphasize that our data were from 
+livestock-excluded plots, so applications to grazing are only suggestive, 
+our overall results nevertheless show that details of species interactions can mitigate or
 accentuate extreme values of aggregate ecosystem functioning differently for high versus low extremes.
 Since human systems that depend on ecosystem functions (e.g., livestock grazing, though there are many examples)
 will react differently to high versus low extremes (and this will depend on the ecosystem function in question),
 the details of tail associations between species should be of clear applied interest in many circumstances. In essence, 
-we have showed that tail associations between species can have important effects on extreme behavior of ecosystem 
-functioning variables, and hence there is applied importance for any scenario in which extreme values would be 
+we showed that tail associations between species can have important effects on extreme behavior of ecosystem 
+functioning variables; so there is applied importance whenever extreme values would be 
 a concern. See also below for discussion of how our methods may have applications in other fields.
 
 As described in the Introduction, the variance ratio $\phicv$ compares $\CVcomsq$ to the independence benchmark
@@ -933,51 +933,63 @@ across many fields, as was the case in this study.
 Old version above-->
 
 <!--New version-->
-Our work may also provide lessons for other fields: more detailed statistical 
-descriptions of synchrony, including but not limited to the descriptions we have
-provided, may be useful elsewhere, beyond finance and community ecology. 
-In many hierarchical dynamical systems,
+Our work may also provide lessons for other fields. More detailed statistical 
+descriptions of synchrony have become increasingly useful in recent years. 
+Tail association metrics and related "copula" statistics, though apparently 
+seldom used so far in most biological 
+research areas, may turn out to provide fruitful additional ways to 
+make synchrony statistics more detailed and more useful across many fields.
+In many fields, techniques for quantifying the
+synchrony of signals have historically been crude, 
+but have recently become more detailed, thereby enhancing progress. 
+For instance, one paper in this special issue develops newly detailed 
+frequency-specific descriptions of a kind of synchrony, and then uses them
+to make new inferences about musical and rhythmic 
+behavior in humans [@DotovInReview].
+The examples of [@Reus_etal_InPress] on the interactive vocalizations of primates 
+are also enhanced by a frequency-specific perspective: Fig. 1C of @Reus_etal_InPress shows coordination
+of not only the timings but also the pitches of the calls of a pair of indris, a feature which would not
+be revealed without the additional statistical detail provided by the frequency-specific techniques 
+of that paper (spectrograms).
+@sheppard2016, @sheppard2019 and @zhao2020 developed detailed frequency-specific measures 
+of synchrony in population ecology which provided major inferential benefits. 
+One common feature of all these studies is that progress was achieved through use of 
+frequency-specific statistical
+descriptors of synchrony that were more detailed than earlier correlation and related basic tools. 
+But spectral tools are not the only statistical approach by which additional 
+information can be extracted from synchronous or asynchronous pairs of signals. 
+Mathematically, the nature of the relationship between two quantities is an
+infinite-dimensional object, even when neither quantity exhibits spectral structure 
+of any kind [@Ghosh_copula]. Most synchrony measures extract only a small portion of the
+available information. The field of copula statistics [@nelsen2006_copula]
+provides well-developed and general tools for assessing this detailed structure. Tail 
+association tools such as used in this study assess one aspect of copula structure. 
+The potential of tail association and copula tools to reveal previously unsuspected
+useful information in patterns of synchrony across multiple fields of biology may be great,
+as demonstrated by our successes here. For instance, @LenseInReview indicate, in this special issue, 
+that many childhood neurodevelopmental disorders are associated with deficits in 
+rhythm, timing and synchrony. One wonders if diagnosis of childhood 
+neurodevelopmental disorders
+may eventually be improved by applying copula statistical approaches to data on synchrony
+tasks attempted by patients. Whereas we are not child psychologists and cannot
+critique work in that field or in the other disparate fields represented in this special issue,
+the power of copula statistics and the scarcity of prior application of such tools to 
+synchrony compel us to recommend these approaches to all synchrony researchers.
+
+<!--Examples of synchrony and aggregation in many fields-->
+<!--In many hierarchical dynamical systems,
 synchrony between multiple signals is more important than the individual signals themselves, because
 what really matters to the next level of functioning in the system is the total value, or another kind of 
 aggregated value, of the signals. And the aggregated value is crucially impacted by the nature of 
 the synchrony of the signals. This is
 true of both financial and population systems. 
 But it seems likely to be a common feature of many systems. 
-<!--neuron-->
 For instance, a neuron may fire only when its input neurons fire simultaneously, so that total
 inputs pass a threshold. 
-<!--grid-->
-The electrical grid may crash only when the demands of a multitude of users become synchronized,
-producing total usage spikes. 
-<!--economics-->
-Macroeconomic measures may become depressed only when the 
-multitude of microeconomic activities
-that comprise them are simultaneously depressed. 
-<!--After examples-->
-In many fields concerned with synchrony, techniques for quantifying the
-synchrony of individual signals and relating that synchrony to distributional properties of the 
-aggregate quantity of interest have historically been crude. We believe there is great opportunity to 
-improve these techniques. At least one paper in this special issue seems
-to proceed principally by developing newly detailed descriptions of a kind of synchrony, and then using them
-to make inferences about the mechanisms or consequences of synchrony: @DotovInReview
-developed frequency-specific synchrony measures and used them to describe behavioral rhythm phenomena. 
-@sheppard2016, @sheppard2019 and @zhao2020 also developed frequency-specific measures of synchrony. 
-Some of the other papers in this special issue describe synchrony between two or more phenomena principally  with
-a simple, univariate description. For instance,
-@LenseInReview indicate that many childhood neurodevelopmental disorders are associated with deficits in 
-rhythm, timing and synchrony. One wonders how such deficits are typically measured, clinically,
-and whether additional inferences may be possible, or additional discoveries made, by employing more 
-detailed decriptions. 
-Perhaps diagnosis of childhood neurodevelopmental disorders
-may eventually be improved by appropriately formulating and applying
-more detailed statistical descriptors of rhythm and synchrony
-tasks attempted by patients. Mathematically, 
-the nature of the relationship between two quantities is an infinite dimensional object [@Ghosh_copula],
-but many studies
-of synchrony use univariate descriptions. 
-It is plausible that improved statistics could lead to improved results
-across many fields, as was the case in this study.
-<!--New version above-->
+Or the electrical grid may crash only when the demands of a multitude of users become synchronized,
+producing total usage spikes.--> 
+<!--Examples of where improvements in stats has led to improved results. Refram so that looking 
+at frequency specificity is a clear way that more detailed stats have already benefitted us-->
 
 # Conclusion \label{Discussion}
 
